@@ -1,0 +1,91 @@
+---
+sidebar_position: 2
+---
+
+# Upgrade
+
+:::tip
+Before upgrading, be sure to back up your database and files.
+:::
+
+## Upgrade process
+
+Choose the corresponding upgrade method according to your installation method.
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs defaultValue="docker" groupId="upgrade">
+  <TabItem value="server" label="Upgrade from server">
+
+From the official [Typecho website](https://typecho.org/download) website, download the latest version of Typecho:
+
+```bash
+wget https://github.com/typecho/typecho/releases/latest/download/typecho.zip
+```
+
+Unzip Typecho to the temporary directory:
+
+```bash
+unzip typecho.zip -d /tmp/typecho
+```
+
+:::tip
+It is recommended to stop the webserver before performing file replacement to avoid file conflicts.
+:::
+
+Delete the following files and directories in the Typecho directory on the web server:
+
+- `/admin/`
+- `/var/`
+- `/index.php`
+- `/install.php`
+
+:::caution
+Please do not delete the `/usr/` directory, because this directory contains your theme, plug-ins and uploaded files, and it does not need to be upgraded.
+:::
+
+Upload/copy the following files and directories from the temporary directory to the Typecho directory on the web server:
+
+- `/admin/`
+- `/var/`
+- `/index.php`
+- `/install.php`
+
+At this point, the upgrade is complete! Don't forget to start again the web server.
+
+  </TabItem>
+
+  <TabItem value="docker" label="Upgrade from Docker">
+
+:::caution
+The upgrade of the Docker container that contains Typecho requires the container to be recreated.
+:::
+
+Execute the following command to delete the old container and create a new container:
+
+```bash
+docker pull joyqi/typecho:latest
+docker stop typecho
+docker rm typecho
+docker run -d -p 80:80 --name typecho -v ./typecho:/app/usr -e TYPECHO_SITE_URL=https://[YOUR DOMAIN NAME] -d joyqi/typecho:latest
+```
+
+  </TabItem>
+
+  <TabItem value="docker-compose" label="Upgrade from Docker Compose">
+
+To upgrade Typecho with Docker Compose, you only need to pull the image again and restart the container:
+
+```bash
+docker-compose pull
+docker-compose down
+docker-compose up -d
+```
+
+  </TabItem>
+</Tabs>
+
+## Complete the upgrade
+
+After the upgrade is complete, browse to the Typecho backend and log in as administrator. If there is a database upgrade operation, Typecho will automatically guide you through it.
