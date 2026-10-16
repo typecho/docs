@@ -121,4 +121,4 @@ SET str_value = REPLACE(str_value, 'http://old.example.com/', 'https://new.examp
 
 按源码（`var/Widget/Metas/EditTrait.php` 中的 `refreshCountByTypeAndStatus()`），刷新后的数字是**已发布的文章**数：独立页面、草稿、私密、待审核的文章都不计入。所以刷新后数字比你预期的少，可能是正常的。
 
-刷新标签时，Typecho 还会**删除**计数为 0 且不再关联任何内容的标签（`var/Widget/Metas/Tag/Edit.php` 中的 `clearTags()`）。
+刷新标签**不会**删除计数为 0 的空标签。源码（`var/Widget/Metas/Tag/Edit.php` 中的 `clearTags()`）本意是在刷新后顺带清理不再关联任何内容的标签，但 1.3.0 中查询条件把类型写成了 `tags`（应为 `tag`），实际什么都不删；实测刷新后空标签仍在。空标签需要在“管理 → 标签”中手动选中删除，见[分类与标签](../content/categories-tags.md#counts)。
