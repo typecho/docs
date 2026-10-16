@@ -50,7 +50,7 @@ class Upgrade
     }
 
     /**
-     * 1.3.1 的迁移
+     * Migration for 1.3.1
      */
     public static function v1_3_1(Db $db, Options $options)
     {
@@ -58,7 +58,7 @@ class Upgrade
             ->rows(['value' => '0'])
             ->where('name = ? AND user = 0', 'someOption'));
 
-        // 可选：返回一段文字，升级完成后显示给管理员
+        // Optional: return a message shown to the administrator after the upgrade
         return _t('已重置 someOption');
     }
 }
@@ -127,7 +127,7 @@ do {
 
     foreach ($rows as $row) {
         if (strpos($row['text'], 'a:') !== 0) {
-            continue;   // 已经不是序列化格式，跳过
+            continue;   // no longer serialized; skip
         }
 
         $value = @unserialize($row['text']);

@@ -22,9 +22,9 @@ There are also the magic properties in the tables below, which Typecho computes,
 ## Reading and outputting
 
 ```php
-<?php echo $this->options->title; ?>   <!-- 取值 -->
-<?php $this->options->title(); ?>      <!-- 直接输出，同上 -->
-<?php $this->options->siteUrl('archives/'); ?>   <!-- 带参数的方法 -->
+<?php echo $this->options->title; ?>   <!-- get the value -->
+<?php $this->options->title(); ?>      <!-- output directly; same as above -->
+<?php $this->options->siteUrl('archives/'); ?>   <!-- method with an argument -->
 ```
 
 Calling a method with the name of any option outputs its value directly (this is `Typecho\Config` behavior, with no HTML escaping). The methods in the table below have their own parameters; the table describes their behavior.

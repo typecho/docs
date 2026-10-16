@@ -28,8 +28,8 @@ usr/plugins/Guestbook/
 ├── Action.php        \TypechoPlugin\Guestbook\Action
 ├── Storage/
 │   └── Message.php   \TypechoPlugin\Guestbook\Storage\Message
-├── panel.php         后台面板（普通 PHP 文件，见“路由、Action 与后台面板”）
-└── lang/             语言文件
+├── panel.php         admin panel (a plain PHP file; see "Routes, Actions and Admin Panels")
+└── lang/             language files
 ```
 
 The rule is: strip the leading `TypechoPlugin\` from the class name, replace `\` with `/`, append `.php`, and look the file up under `usr/plugins/`.
@@ -49,7 +49,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 单文件插件示例：给每个前台响应加一个响应头
+ * Single-file plugin example: adds a response header to every front-end response
  *
  * @package Single
  * @version 1.0.0
@@ -89,11 +89,11 @@ The information shown in the plugin list comes from the **first** doc comment (`
 
 ```php
 /**
- * 插件描述，可以写多行
- * 第二行描述
+ * Plugin description; it can span several lines
+ * Second line of the description
  *
  * @package Guestbook
- * @author 你的名字
+ * @author Your Name
  * @version 1.0.0
  * @since 1.3.0
  * @link https://example.com
@@ -133,7 +133,7 @@ Typecho does not execute the plugin code. Instead, it reads the PHP tokens one b
 This check only works when the class declaration is written as `implements PluginInterface` (together with `use Typecho\Plugin\PluginInterface;`) or `implements Typecho_Plugin_Interface`. Under PHP 8, 1.3.0 **does not recognize** the form with a backslash:
 
 ```php
-// 后台会把插件当作“即插即用”，activate() 永远不会被调用
+// The admin panel treats the plugin as "Plug and play" (即插即用); activate() is never called
 class Plugin implements \Typecho\Plugin\PluginInterface
 ```
 

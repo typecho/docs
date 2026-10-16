@@ -89,7 +89,7 @@ Reading them in a template:
 
 ```php
 <?php if ($this->is('page') && '1' === $this->fields->hideTitle): ?>
-    <!-- 隐藏标题 -->
+    <!-- Hide the title -->
 <?php else: ?>
     <h1><?php $this->title(); ?></h1>
 <?php endif; ?>

@@ -2,7 +2,7 @@
 title: Attachments and file management
 sidebar_position: 5
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
 ---
 
 # Attachments and file management
@@ -21,7 +21,7 @@ Attachments are the images and other files uploaded to the site; in the admin me
 
 In the editor, switch to the "Attachments" panel on the right and drag files onto the "Drop files here" (拖放文件到这里) area, or click "Choose files to upload" (选择文件上传).
 
-- In 1.3.0 you select one file at a time (selecting several files at once is a change merged after 1.3.0 and not yet released).
+- In 1.3.0 you select one file at a time (selecting several files at once is a change merged after 1.3.0 and is not in 1.3.0).
 - The size limit for a single file comes from PHP's `upload_max_filesize`; when it is exceeded, "File size exceeds the limit" (文件大小超过限制) is shown. Uploads are also limited by PHP's `post_max_size` and by the web server (for example nginx's `client_max_body_size`).
 - When the extension is not in the allowed list, "X upload failed / File extension is not supported" (某某 上传失败 / 文件扩展名不被支持) is shown and disappears automatically after two seconds.
 - After a successful upload, click the file name to insert it into the content; see [Writing posts](./posts.md#attachments).

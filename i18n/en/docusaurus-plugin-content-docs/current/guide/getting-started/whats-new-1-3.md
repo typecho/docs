@@ -2,7 +2,7 @@
 title: What's new and changed in 1.3
 sidebar_position: 5
 translation: machine
-source_commit: 97eccd0fe4871e7b33f99f7b47436e058e9520d3
+source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
 ---
 
 # What's new and changed in 1.3
@@ -10,7 +10,7 @@ source_commit: 97eccd0fe4871e7b33f99f7b47436e058e9520d3
 Typecho 1.3.0 was released on 20 January 2026. This page is for site owners: it lists the changes you will notice directly after upgrading from 1.2 to 1.3, and the renames and removals to watch out for. For the upgrade steps, see [Upgrading](./upgrade.md).
 
 :::note
-This page only lists what is in the 1.3.0 release. Changes merged on the `master` branch after 1.3.0 (for example, selecting several attachments to upload at once) are not released yet and are not listed here.
+This page only lists what is in the 1.3.0 release. Changes merged on the `master` branch after 1.3.0 (for example, selecting several attachments to upload at once) are not listed here.
 :::
 
 ## New features

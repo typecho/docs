@@ -58,7 +58,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 登录组件
+ * Login widget
  */
 class Login extends Users implements ActionInterface
 {

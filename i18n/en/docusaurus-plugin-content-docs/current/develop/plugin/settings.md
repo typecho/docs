@@ -45,8 +45,8 @@ The "Settings" link appears in the plugin list only when the body of `config()` 
 ```php
 $config = \Widget\Options::alloc()->plugin('Greeting');
 
-echo $config->word;       // 读取一项
-$all = $config->toArray(); // 全部设置项组成的数组
+echo $config->word;       // read one setting
+$all = $config->toArray(); // array of all settings
 ```
 
 `plugin()` returns a `Typecho\Config` object. A setting that does not exist reads as `null`. The value of a Checkbox is an array; all other elements give strings.
@@ -165,10 +165,10 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 在后台导航栏和前台页脚显示一句问候语
+ * Shows a greeting in the admin navigation bar and the front-end footer
  *
  * @package Greeting
- * @author 你的名字
+ * @author Your Name
  * @version 1.1.0
  * @since 1.3.0
  * @link https://example.com

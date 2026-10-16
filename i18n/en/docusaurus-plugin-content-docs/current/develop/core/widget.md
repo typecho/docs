@@ -17,11 +17,11 @@ A widget is a class that extends `Typecho\Widget`. It plays two roles at once:
 - **Data set**: it pushes query results row by row onto an internal stack (`$stack`); templates iterate over the rows with `next()` and read fields of the current row (`$row`) through properties such as `$this->title`.
 
 ```php
-// 取最近 5 篇文章并输出标题
+// Fetch the 5 most recent posts and output their titles
 \Widget\Contents\Post\Recent::alloc('pageSize=5')->to($posts);
 
 while ($posts->next()) {
-    echo $posts->title;   // 当前行的 title
+    echo $posts->title;   // title of the current row
 }
 ```
 
@@ -53,10 +53,10 @@ In everyday code these two static methods are more common. They are just shortha
 
 ```php
 \Widget\Contents\Post\Recent::alloc($params, $request);
-// 等于 Widget::widget(\Widget\Contents\Post\Recent::class, $params, $request)
+// same as Widget::widget(\Widget\Contents\Post\Recent::class, $params, $request)
 
 \Widget\Contents\Post\Recent::allocWithAlias('five', $params, $request);
-// 等于 Widget::widget(\Widget\Contents\Post\Recent::class . '@five', $params, $request)
+// same as Widget::widget(\Widget\Contents\Post\Recent::class . '@five', $params, $request)
 ```
 
 ### The instance pool
@@ -67,9 +67,9 @@ When you create a widget with the same key a second time, the instance in the po
 
 ```php
 $a = \Widget\Contents\Post\Recent::alloc('pageSize=1');
-$b = \Widget\Contents\Post\Recent::alloc('pageSize=5');   // 返回 $a，pageSize 仍为 1
+$b = \Widget\Contents\Post\Recent::alloc('pageSize=5');   // returns $a; pageSize is still 1
 
-$c = \Widget\Contents\Post\Recent::allocWithAlias('five', 'pageSize=5');   // 新实例
+$c = \Widget\Contents\Post\Recent::allocWithAlias('five', 'pageSize=5');   // new instance
 ```
 
 So when one page needs two different sets of data from the same class, use `allocWithAlias()` to give one of them an alias. Objects that only need one copy per request, such as `Widget\Options`, `Widget\User` and `Widget\Security`, are shared precisely through the instance pool.
@@ -77,9 +77,9 @@ So when one page needs two different sets of data from the same class, use `allo
 Removing instances from the pool:
 
 ```php
-\Typecho\Widget::destroy('Widget_Contents_Post_Recent');        // 移除一个，键要用下划线写法
+\Typecho\Widget::destroy('Widget_Contents_Post_Recent');        // remove one; the key uses the underscore form
 \Typecho\Widget::destroy('Widget_Contents_Post_Recent@five');
-\Typecho\Widget::destroy();                                     // 清空整个实例池
+\Typecho\Widget::destroy();                                     // clear the whole instance pool
 ```
 
 In 1.3.0, calling `destroy()` on a subclass (such as `\Widget\Contents\Post\Recent::destroy()`), or passing a class name written with backslashes to `Typecho\Widget::destroy()`, does not remove the instance, because the key they build does not match the underscore key in the pool. To remove an instance, call `Typecho\Widget::destroy()` as shown above. The old name `destory()` is a deprecated alias of `destroy()`.
@@ -94,7 +94,7 @@ When the fourth argument is `false` or a callback, the widget is created in a sa
 - When a callback is passed, it is called with the widget as its argument after the widget has run, and only then is the sandbox exited.
 
 ```php
-// 在沙箱中取 cid 为 1 的文章，不受当前页面请求参数的影响
+// Fetch the post with cid 1 in a sandbox, unaffected by the current page's request parameters
 \Widget\Archive::alloc('type=post', 'cid=1', function ($post) {
     echo $post->title;
 });
@@ -124,7 +124,7 @@ Note that after `push()` the current row is the last row pushed and `sequence` i
 ```php
 $posts->parse('<li><a href="{permalink}">{title}</a></li>');
 
-$titles = $posts->toArray('title');                 // ['标题 1', '标题 2', ...]
+$titles = $posts->toArray('title');                 // ['Title 1', 'Title 2', ...]
 $pairs  = $posts->toArray(['cid', 'title']);        // [['cid' => 1, 'title' => '...'], ...]
 ```
 

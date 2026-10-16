@@ -35,22 +35,22 @@ server {
     root /srv/www/typecho;
     index index.php index.html;
 
-    # 永久链接：文件或目录不存在时交给 index.php
+    # Permalinks: hand the request to index.php when no such file or directory exists
     location / {
         try_files $uri $uri/ /index.php$is_args$args;
     }
 
-    # 禁止下载 SQLite 数据库文件和服务器上的备份文件
+    # Block downloads of SQLite database files and backup files on the server
     location ~ ^/usr/(.+\.db$|backups/) {
         deny all;
     }
 
-    # 上传目录中的 PHP 文件一律不执行
+    # Never execute PHP files in the upload directory
     location ~ ^/usr/uploads/.*\.php$ {
         deny all;
     }
 
-    # 同时匹配 /index.php 和 /index.php/action/login 这样的地址
+    # Matches both /index.php and addresses such as /index.php/action/login
     location ~ [^/]\.php(/|$) {
         fastcgi_split_path_info ^(.+?\.php)(/.*)$;
         if (!-f $document_root$fastcgi_script_name) {
@@ -92,7 +92,7 @@ Apache needs `mod_rewrite` enabled and must allow `.htaccess` in the site direct
         Require all granted
     </Directory>
 
-    # 使用 PHP-FPM 时（mod_proxy_fcgi）；使用 mod_php 时不需要这一段
+    # With PHP-FPM (mod_proxy_fcgi); not needed with mod_php
     <FilesMatch "\.php$">
         SetHandler "proxy:unix:/run/php/php8.2-fpm.sock|fcgi://localhost"
     </FilesMatch>
@@ -145,7 +145,7 @@ Caddy 2's `php_fastcgi` directive already does what Typecho needs: it splits the
 blog.example.com {
     root * /srv/www/typecho
 
-    # 禁止下载 SQLite 数据库文件、服务器上的备份文件和上传目录中的 PHP
+    # Block downloads of SQLite database files, backup files on the server and PHP files in the upload directory
     @blocked path_regexp ^/usr/(.+\.db$|backups/|uploads/.*\.php$)
     respond @blocked 403
 
@@ -172,11 +172,11 @@ The fix: add two lines before `php_fastcgi` that internally rewrite `/index.php/
 blog.example.com {
     root * /srv/www/typecho
 
-    # 禁止下载 SQLite 数据库文件、服务器上的备份文件和上传目录中的 PHP
+    # Block downloads of SQLite database files, backup files on the server and PHP files in the upload directory
     @blocked path_regexp ^/usr/(.+\.db$|backups/|uploads/.*\.php$)
     respond @blocked 403
 
-    # /index.php/action/login 这类地址直接交给 index.php（兼容 cgi.fix_pathinfo=0）
+    # Hand addresses such as /index.php/action/login straight to index.php (works with cgi.fix_pathinfo=0)
     @pathinfo path_regexp ^/index\.php/
     rewrite @pathinfo /index.php?{query}
 

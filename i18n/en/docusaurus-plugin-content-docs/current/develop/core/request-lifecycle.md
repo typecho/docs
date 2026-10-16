@@ -14,12 +14,12 @@ This page walks through, in execution order, the steps a front-end request goes 
 ```text
 index.php
  ├─ include config.inc.php
- │   ├─ require var/Typecho/Common.php   注册自动加载器
- │   ├─ \Typecho\Common::init()          输出缓冲 + 基础异常处理
- │   └─ new \Typecho\Db(...); Db::set()  数据库对象（尚未连接）
- ├─ \Widget\Init::alloc()                9 步初始化
+ │   ├─ require var/Typecho/Common.php   register the autoloader
+ │   ├─ \Typecho\Common::init()          output buffering + basic exception handling
+ │   └─ new \Typecho\Db(...); Db::set()  database object (not connected yet)
+ ├─ \Widget\Init::alloc()                9-step initialization
  ├─ Plugin::factory('index.php')->call('begin')
- ├─ \Typecho\Router::dispatch()          匹配路由，执行 Widget
+ ├─ \Typecho\Router::dispatch()          match the route, run the widget
  └─ Plugin::factory('index.php')->call('end')
 ```
 
@@ -85,9 +85,9 @@ Taking `/archives/999/` (a post that does not exist) as an example, the followin
 
 ```text
 pathInfo = /archives/999/
-  匹配 post       → Widget\Archive，cid=999 → 404，继续
-  匹配 feedback   → Widget\Feedback，permalink=/archives，type=999 → 404，继续
-  没有更多匹配    → 抛出 404
+  match post       → Widget\Archive, cid=999 → 404, continue
+  match feedback   → Widget\Feedback, permalink=/archives, type=999 → 404, continue
+  no more matches  → throw 404
 ```
 
 For the structure of the routing table, the rule syntax and reverse URL generation, see [Routing](./router.md).
@@ -145,7 +145,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 在 PHP 错误日志中记录请求经过的阶段
+ * Logs the stages a request goes through to the PHP error log
  *
  * @package RequestTrace
  * @version 1.0.0

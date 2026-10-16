@@ -102,9 +102,9 @@ class Action extends Contents implements ActionInterface
 {
     public function action()
     {
-        // 编辑以下的角色得到 403，未登录的请求跳到首页
+        // Roles below editor get a 403; requests that are not logged in go to the home page
         $this->user->pass('editor');
-        // 校验令牌
+        // Verify the token
         $this->security->protect();
 
         // ……
@@ -118,13 +118,13 @@ class Action extends Contents implements ActionInterface
 $user = \Widget\User::alloc();
 
 if ($user->pass('editor', true)) {
-    // 编辑及以上可见的内容
+    // Content visible to editors and above
 }
 
 if ($user->hasLogin()) {
-    echo $user->screenName;   // 当前用户的昵称
-    echo $user->group;        // 角色名，如 contributor
-    echo $user->uid;          // 用户 ID
+    echo $user->screenName;   // current user's display name
+    echo $user->group;        // role name, e.g. contributor
+    echo $user->uid;          // user ID
 }
 ```
 
@@ -135,7 +135,7 @@ To check "is this the author of the content", compare the content's `authorId` w
 The fifth argument of `Helper::addPanel()` is the minimum role. When the panel is opened, `Widget\Menu` checks this role, so you do not need to repeat the check in the panel file:
 
 ```php
-// 菜单“管理”（索引 3）下添加一个编辑及以上可见的面板
+// Add a panel visible to editors and above under the "Manage" (管理) menu (index 3)
 \Utils\Helper::addPanel(3, 'Guestbook/panel.php', '留言', '管理留言', 'editor');
 ```
 

@@ -22,9 +22,9 @@ Three constants change where attachments are stored and the URL they are served 
 How they relate (`var/Widget/Upload.php`):
 
 ```text
-文件位置 = UPLOAD_ROOT_DIR + UPLOAD_DIR + /年/月/文件名
-记录路径 =                   UPLOAD_DIR + /年/月/文件名
-访问地址 = UPLOAD_URL      + 记录路径
+file location = UPLOAD_ROOT_DIR + UPLOAD_DIR + /year/month/filename
+recorded path =                   UPLOAD_DIR + /year/month/filename
+access URL    = UPLOAD_URL      + recorded path
 ```
 
 For example:
@@ -48,7 +48,7 @@ define('__TYPECHO_UPLOAD_ROOT_DIR__', '/data/typecho');
 ```
 
 ```nginx
-# 访问 /usr/uploads/... 时读取 /data/typecho/usr/uploads/...
+# Requests for /usr/uploads/... read /data/typecho/usr/uploads/...
 location ^~ /usr/uploads/ {
     root /data/typecho;
 }

@@ -65,10 +65,10 @@ When `__TYPECHO_SECURE__` is true, every request is treated as HTTPS, including 
 | `__TYPECHO_DYNAMIC_SITE_URL__` | When true, the site URL is the root URL of the current request, that is, whatever domain the visitor uses. If `__TYPECHO_SITE_URL__` is also defined, this one wins |
 
 ```php
-// 固定站点地址，例如多台服务器共用一个数据库、或想防止在后台被改错
+// Fix the site URL, e.g. when several servers share one database, or to keep it from being changed by mistake in the admin panel
 define('__TYPECHO_SITE_URL__', 'https://blog.example.com');
 
-// 或者：同一站点绑定多个域名，各自使用访问时的域名
+// Or: the site is bound to several domains, and each request uses the domain it came in on
 define('__TYPECHO_DYNAMIC_SITE_URL__', true);
 ```
 
@@ -121,9 +121,9 @@ The login state is stored in cookies. Typecho's cookies have a few default behav
 
 ```php
 define('__TYPECHO_COOKIE_OPTIONS__', [
-    'domain'   => '',      // 留空表示使用根地址的域名；需要多个子域名共享时写 '.example.com'
-    'secure'   => true,    // 只通过 HTTPS 发送，站点可以用 HTTP 访问时不要开启
-    'httponly' => true,    // 禁止页面脚本读取
+    'domain'   => '',      // empty means the domain of the root URL; write '.example.com' to share it across subdomains
+    'secure'   => true,    // sent over HTTPS only; do not enable while the site can be reached over HTTP
+    'httponly' => true,    // not readable by page scripts
 ]);
 ```
 

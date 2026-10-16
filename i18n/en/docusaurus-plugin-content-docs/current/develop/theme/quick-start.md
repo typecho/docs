@@ -17,15 +17,15 @@ Create a directory `starter` under `usr/themes/`. The finished directory looks l
 
 ```text
 usr/themes/starter/
-├── index.php      必需：主题信息 + 文章列表
-├── header.php     页头
-├── footer.php     页脚
-├── post.php       文章页
-├── page.php       独立页面
-├── comments.php   评论列表与评论表单
-├── 404.php        找不到页面
-├── functions.php  主题设置等回调
-└── style.css      样式
+├── index.php      required: theme info + post list
+├── header.php     header
+├── footer.php     footer
+├── post.php       post page
+├── page.php       page
+├── comments.php   comment list and comment form
+├── 404.php        page not found
+├── functions.php  callbacks such as theme settings
+└── style.css      styles
 ```
 
 Only `index.php` is required: when any other template is missing, Typecho falls back to `index.php` for the output (for the order, see [Template hierarchy](./template-hierarchy.md)).
@@ -37,10 +37,10 @@ Only `index.php` is required: when any other template is missing, Typecho falls 
 ```php title="usr/themes/starter/index.php"
 <?php
 /**
- * 一个最小的示例主题
+ * A minimal example theme
  *
  * @package Starter
- * @author 你的名字
+ * @author Your Name
  * @version 1.0.0
  * @link https://example.com
  */

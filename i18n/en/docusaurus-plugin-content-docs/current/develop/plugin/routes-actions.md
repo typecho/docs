@@ -21,9 +21,9 @@ This page demonstrates the three kinds with a guestbook plugin, `Guestbook`: vis
 
 ```text
 usr/plugins/Guestbook/
-├── Plugin.php   注册路由、Action、面板，建数据表
-├── Action.php   前台页面和表单处理
-└── panel.php    后台面板
+├── Plugin.php   registers the route, Action and panel; creates the table
+├── Action.php   front-end page and form handling
+└── panel.php    admin panel
 ```
 
 ## Plugin.php
@@ -43,10 +43,10 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 留言板：前台 /guestbook/ 页面留言，后台“管理 → 留言”查看和删除
+ * Guestbook: visitors leave messages on the front-end /guestbook/ page; view and delete them under "Manage → Guestbook" (管理 → 留言) in the admin panel
  *
  * @package Guestbook
- * @author 你的名字
+ * @author Your Name
  * @version 1.0.0
  * @since 1.3.0
  */
@@ -77,7 +77,7 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * 建表，三种数据库各写一份
+     * Creates the table, with one version for each of the three databases
      */
     public static function install()
     {
@@ -181,7 +181,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Action extends Base implements ActionInterface
 {
     /**
-     * 路由 guestbook 的入口：输出前台留言页
+     * Entry point of the guestbook route: outputs the front-end guestbook page
      */
     public function render()
     {
@@ -210,7 +210,7 @@ class Action extends Base implements ActionInterface
     }
 
     /**
-     * Action guestbook 的入口
+     * Entry point of the guestbook Action
      */
     public function action()
     {
@@ -220,7 +220,7 @@ class Action extends Base implements ActionInterface
     }
 
     /**
-     * 访客提交留言
+     * A visitor submits a message
      */
     public function add()
     {
@@ -244,7 +244,7 @@ class Action extends Base implements ActionInterface
     }
 
     /**
-     * 管理员删除留言
+     * The administrator deletes messages
      */
     public function delete()
     {

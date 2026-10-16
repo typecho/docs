@@ -15,9 +15,9 @@ The routing table is stored in the option `routingTable`. It is an ordered array
 
 ```php
 'post' => [
-    'url'    => '/archives/[cid:digital]/',   // 规则
-    'widget' => '\Widget\Archive',            // 处理类
-    'action' => 'render',                     // 创建后调用的方法，可以为 null
+    'url'    => '/archives/[cid:digital]/',   // rule
+    'widget' => '\Widget\Archive',            // handler class
+    'action' => 'render',                     // method called after creation; may be null
 ],
 ```
 
@@ -176,7 +176,7 @@ class Release implements ParamsDelegateInterface
     }
 }
 
-// 假设已经用 Helper::addRoute('release', '/release/[version]/', ...) 添加了路由
+// Assuming the route was added with Helper::addRoute('release', '/release/[version]/', ...)
 echo Router::url('release', new Release('1.3.0'), $options->index);
 ```
 

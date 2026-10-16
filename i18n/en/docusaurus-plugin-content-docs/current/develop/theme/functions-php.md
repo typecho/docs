@@ -13,7 +13,7 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
-// 回调函数和自己的辅助函数写在这里
+// Put callbacks and your own helper functions here
 ```
 
 ## Callbacks at a glance
@@ -73,8 +73,8 @@ If `themeConfigHandle()` is defined as well, Typecho **no longer saves** the set
 ```php
 function themeConfigHandle(array $settings, bool $isInit)
 {
-    // $settings：表单中所有字段的值
-    // $isInit：启用主题时为 true，在“设置外观”中保存时为 false
+    // $settings: the values of all fields in the form
+    // $isInit: true when the theme is activated, false when saved in "Theme settings" (设置外观)
 }
 ```
 
@@ -109,8 +109,8 @@ For details, see [Custom fields in templates](./custom-fields.md).
 ```php
 function threadedComments($comments, $options)
 {
-    // $comments：当前这条评论（Widget\Comments\Archive）
-    // $options：listComments() 的选项（Typecho\Config），如 $options->avatarSize
+    // $comments: the current comment (Widget\Comments\Archive)
+    // $options: the options of listComments() (Typecho\Config), e.g. $options->avatarSize
 }
 ```
 

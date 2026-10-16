@@ -77,7 +77,7 @@ To switch database servers or change the password, edit the values here directly
 Add the `define(...)` calls at the end of the file, for example:
 
 ```php
-// 以下为自定义设置
+// Custom settings below
 define('__TYPECHO_SECURE__', true);
 define('__TYPECHO_THEME_WRITEABLE__', false);
 ```
@@ -159,8 +159,8 @@ For how the three attachment constants work together see [Attachment storage loc
 
 ```php
 $db = new \Typecho\Db('Pdo_Mysql', 'typecho_');
-$db->addServer([/* 主库连接参数 */], \Typecho\Db::WRITE);
-$db->addServer([/* 只读副本连接参数 */], \Typecho\Db::READ);
+$db->addServer([/* primary connection parameters */], \Typecho\Db::WRITE);
+$db->addServer([/* read-only replica connection parameters */], \Typecho\Db::READ);
 \Typecho\Db::set($db);
 ```
 

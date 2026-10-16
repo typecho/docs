@@ -2,7 +2,7 @@
 title: Containers and Cloud Hosting
 sidebar_position: 3
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
 ---
 
 # Containers and Cloud Hosting
@@ -26,7 +26,7 @@ As of October 2026 the image has 70 tags, and **there is no `latest` tag**; you 
 | Tag | Push date | Notes |
 |---|---|---|
 | `1.3.0-php7.4`, `1.3.0-php8.2` and their variants | 2026-01-20 | **1.3.0 stable release**; use this group in production |
-| `nightly-php7.4`, `nightly-php8.2` and their variants | 2026-04-11 | Built by continuous integration from the `master` branch; contains **unreleased** changes; **do not use in production** |
+| `nightly-php7.4`, `nightly-php8.2` and their variants | 2026-04-11 | Built by continuous integration from the `master` branch; contains changes that are **not in a stable release yet**; **do not use in production** |
 | `1.2.1-php7.3/7.4/8.0` and their variants | 2023-06-06 | Earlier version |
 | `1.2.0-php7.3/7.4/8.0` and their variants | 2022-03-31 | Earlier version |
 
@@ -131,7 +131,7 @@ volumes:
 
 ```bash
 docker compose up -d
-docker compose logs typecho   # 第一次启动时会打印“安装成功”和管理员帐号
+docker compose logs typecho   # on first start, prints "安装成功" (installation succeeded) and the admin account
 ```
 
 Some notes:
@@ -170,7 +170,7 @@ services:
     environment:
       TYPECHO_INSTALL: "1"
       TYPECHO_DB_NEXT: keep
-      # 其余 TYPECHO_* 变量同上
+      # other TYPECHO_* variables as above
     volumes:
       - app:/app
       - ./usr:/app/usr

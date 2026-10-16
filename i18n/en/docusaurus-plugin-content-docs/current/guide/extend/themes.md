@@ -38,10 +38,10 @@ For a directory to be recognized as a theme, it must contain at least an `index.
 ```php
 <?php
 /**
- * 主题的简短描述
+ * A short description of the theme
  *
- * @package 主题名称
- * @author 作者
+ * @package Theme Name
+ * @author Author
  * @version 1.0
  * @link https://example.com
  */

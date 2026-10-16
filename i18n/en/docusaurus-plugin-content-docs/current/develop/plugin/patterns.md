@@ -39,7 +39,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 站外链接在新窗口打开
+ * Opens external links in a new window
  *
  * @package LinkTarget
  * @version 1.0.0
@@ -112,7 +112,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 简单的评论过滤：拒绝含有屏蔽词的评论，链接过多的评论标为垃圾
+ * Simple comment filter: rejects comments containing blocked words and marks comments with too many links as spam
  *
  * @package CommentGuard
  * @version 1.0.0
@@ -182,10 +182,10 @@ Trackbacks have a corresponding `trackback` filter used the same way; pingbacks 
 
 ```php
 [
-    'name' => 'photo.png',             // 原始文件名
-    'path' => '/2026/10/12345678.png', // 插件自己用来定位文件的路径
-    'size' => 1024,                     // 字节数
-    'type' => 'png',                    // 扩展名，小写
+    'name' => 'photo.png',             // original file name
+    'path' => '/2026/10/12345678.png', // path the plugin uses to locate the file
+    'size' => 1024,                     // size in bytes
+    'type' => 'png',                    // extension, lowercase
     'mime' => 'image/png',
 ]
 ```
@@ -210,7 +210,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 把附件保存到指定目录，并通过指定的地址访问
+ * Saves attachments to a given directory and serves them from a given URL
  *
  * @package LocalBucket
  * @version 1.0.0
@@ -246,7 +246,7 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * 上传：保存文件，返回文件信息；返回 false 表示失败
+     * Upload: save the file and return its information; return false on failure
      */
     public static function uploadHandle(array $file)
     {
@@ -261,7 +261,7 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * 替换：用新文件覆盖原文件，扩展名必须相同
+     * Replace: overwrite the original file with the new one; the extension must be the same
      */
     public static function modifyHandle(array $content, array $file)
     {
@@ -276,7 +276,7 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * 删除：删除文件，返回是否成功
+     * Delete: delete the file and return whether it succeeded
      */
     public static function deleteHandle(array $content): bool
     {
@@ -284,7 +284,7 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * 地址：返回附件的访问地址
+     * URL: return the attachment's access URL
      */
     public static function attachmentHandle(Config $attachment): string
     {
@@ -307,7 +307,7 @@ class Plugin implements PluginInterface
             return move_uploaded_file($file['tmp_name'], $target);
         }
 
-        // 通过 XML-RPC 上传时没有临时文件，文件内容在 bits 中
+        // Uploads through XML-RPC have no temporary file; the content is in bits
         $bytes = $file['bytes'] ?? $file['bits'] ?? null;
         return $bytes !== null && file_put_contents($target, $bytes) !== false;
     }
@@ -374,7 +374,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 用不带工具栏和预览的纯文本框代替自带的 Markdown 编辑器
+ * Replaces the built-in Markdown editor with a plain text box without toolbar or preview
  *
  * @package PlainEditor
  * @version 1.0.0
@@ -407,12 +407,12 @@ class Plugin implements PluginInterface
 $(document).ready(function () {
     const textarea = $('#text');
 
-    // 内容变化时通知表单，自动保存和离开页面提示依赖这个事件
+    // Notify the form when the content changes; autosave and the leave-page prompt depend on this event
     textarea.on('input', function () {
         textarea.parents('form').trigger('write');
     });
 
-    // 附件面板中点击“插入”时调用，必须由编辑器提供
+    // Called when "Insert" (插入) is clicked in the attachment panel; the editor must provide it
     Typecho.insertFileToEditor = function (file, url, isImage) {
         const el = textarea.get(0);
         const html = isImage ? '![' + file + '](' + url + ')' : '[' + file + '](' + url + ')';
@@ -423,7 +423,7 @@ $(document).ready(function () {
         textarea.trigger('input').focus();
     };
 
-    // 上传完成后自动插入
+    // Insert automatically when the upload finishes
     Typecho.uploadComplete = function (attachment) {
         Typecho.insertFileToEditor(attachment.title, attachment.url, attachment.isImage);
     };
@@ -466,7 +466,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 把每次登录成功和失败写入 PHP 错误日志
+ * Writes every successful and failed login to the PHP error log
  *
  * @package LoginLog
  * @version 1.0.0

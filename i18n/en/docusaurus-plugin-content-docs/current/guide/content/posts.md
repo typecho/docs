@@ -2,7 +2,7 @@
 title: Writing posts
 sidebar_position: 2
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
 ---
 
 # Writing posts
@@ -102,7 +102,7 @@ The default state of the three "Allow" switches for new posts comes from "Allow 
 
 Switch to the "Attachments" panel on the right and drag files onto the "Drop files here" (拖放文件到这里) area, or click "Choose files to upload" (选择文件上传).
 
-- In 1.3.0 you can only select one file at a time (selecting several files at once is a change merged after 1.3.0 and not yet released). Pasting an image directly into the Markdown editor also uploads it.
+- In 1.3.0 you can only select one file at a time (selecting several files at once is a change merged after 1.3.0 and is not in 1.3.0). Pasting an image directly into the Markdown editor also uploads it.
 - Uploaded files appear in the list. **Clicking the file name** inserts it into the editor: images are inserted as Markdown images, other files as links, with the address written as a reference at the end of the content, for example:
 
   ```markdown

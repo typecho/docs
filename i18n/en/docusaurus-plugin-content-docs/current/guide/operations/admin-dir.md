@@ -2,7 +2,7 @@
 title: Custom Admin Path
 sidebar_position: 5
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
 ---
 
 # Custom Admin Path
@@ -52,7 +52,7 @@ Both steps must be done together: if you only change the constant, admin links p
 - **Themes may expose the new path**. For example, the bundled `default` theme shows a "Login" link in the "Other" block of the sidebar (the theme setting "Show miscellaneous" (显示其它杂项)), and that link is the new admin URL. If you do not want it public, untick this item in the theme settings.
 - **When upgrading, replace the directory you named yourself**. When [upgrading](../getting-started/upgrade.md), overwrite `manage-x7/` with the new version's `admin/`: delete `manage-x7` first, then copy `admin` from the new package and rename it to `manage-x7`. Do not put the new `admin/` straight into the site directory, or you will end up with two sets of admin files.
 - **Rules for `/admin/` in the web server or CDN** (no caching, access restrictions and so on) must be changed to the new path as well.
-- Third-party plugins or themes that hard-code `/admin/` stop working after the rename. Typecho's own code does not hard-code the admin path (confirmed by searching the source); plugins and themes need to be checked individually.
+- Third-party plugins or themes that hard-code `/admin/` stop working after the rename. Typecho's own code does not hard-code the admin path; plugins and themes need to be checked individually.
 
 ## Restoring the default
 

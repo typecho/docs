@@ -86,11 +86,11 @@ To back up **all data** (including settings and plugins' own tables), use the da
 **MySQL / MariaDB**:
 
 ```bash
-# 导出（会提示输入密码）
+# Export (prompts for the password)
 mysqldump --single-transaction --default-character-set=utf8mb4 \
   -u typecho -p typecho > typecho-$(date +%Y%m%d).sql
 
-# 导入到一个已创建的空库
+# Import into an empty database you have already created
 mysql --default-character-set=utf8mb4 -u typecho -p typecho < typecho-20261016.sql
 ```
 

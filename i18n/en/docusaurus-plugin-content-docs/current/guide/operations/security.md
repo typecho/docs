@@ -2,7 +2,7 @@
 title: Security Hardening
 sidebar_position: 9
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
 ---
 
 # Security Hardening
@@ -23,7 +23,7 @@ Do not post vulnerability details on the forum, in GitHub Issues or in any other
 
 ## 3. Remove the installer after installation {#remove-installer}
 
-Once installation is complete, `install.php` and the `install/` directory are no longer needed: neither the Typecho runtime nor the admin upgrade program uses them (confirmed by searching the source code).
+Once installation is complete, `install.php` and the `install/` directory are no longer needed: neither the Typecho runtime nor the admin upgrade program uses them.
 
 ```bash
 cd /srv/www/typecho

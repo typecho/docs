@@ -34,10 +34,10 @@ The doc comment (`/** ... */`) at the top of `index.php` is the theme informatio
 ```php
 <?php
 /**
- * 一个简洁的博客主题
+ * A clean blog theme
  *
  * @package Starter
- * @author 你的名字
+ * @author Your Name
  * @version 1.0.0
  * @link https://example.com
  */

@@ -18,9 +18,9 @@ git clone https://github.com/typecho/docs.git
 cd docs
 pnpm install
 
-pnpm start                  # 本地预览中文站，修改后自动刷新
-pnpm start --locale en      # 本地预览英文站
-pnpm build                  # 构建中文和英文两个语言版本，输出到 build/
+pnpm start                  # preview the Chinese site locally; reloads on changes
+pnpm start --locale en      # preview the English site locally
+pnpm build                  # build both the Chinese and English versions into build/
 ```
 
 You must run `pnpm build` once before submitting, and it must:
@@ -34,16 +34,16 @@ The site sets all three link checks to `throw`: broken page links (`onBrokenLink
 
 ```text
 docs/
-├── intro.md          介绍（站点首页，slug: /）
-├── glossary.md       术语表（slug: /glossary）
-├── guide/            使用指南：快速开始、撰写与管理、系统设置、外观与插件、部署与运维、常见问题与求助
-└── develop/          开发文档（develop/index.md 的 slug 为 /develop）
-    ├── theme/        主题开发（含 recipes/ 主题技巧）
-    ├── plugin/       插件开发
-    ├── reference/    参考
-    ├── core/         核心开发
-    └── contributing/ 参与贡献
-i18n/en/docusaurus-plugin-content-docs/current/   英文译文，与 docs/ 逐文件对应
+├── intro.md          introduction (site home page, slug: /)
+├── glossary.md       glossary (slug: /glossary)
+├── guide/            Guide: Getting Started, Writing & Managing, Settings, Themes & Plugins, Deployment & Operations, FAQ & Help
+└── develop/          developer docs (develop/index.md has the slug /develop)
+    ├── theme/        theme development (with recipes/, theme recipes)
+    ├── plugin/       plugin development
+    ├── reference/    reference
+    ├── core/         core development
+    └── contributing/ contributing
+i18n/en/docusaurus-plugin-content-docs/current/   English translations, one file for each file in docs/
 ```
 
 - A page's URL is determined by its file path; for example, the URL of `docs/develop/core/router.md` is `/develop/core/router`;
@@ -141,7 +141,7 @@ This updates `i18n/en/code.json`, `i18n/en/docusaurus-plugin-content-docs/curren
 ### Translation progress
 
 ```bash
-node scripts/i18n-status.mjs     # 或 pnpm i18n:status
+node scripts/i18n-status.mjs     # or pnpm i18n:status
 ```
 
 This lists the English status of every page and calculates the review coverage:

@@ -233,10 +233,10 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 在后台导航栏和前台页脚显示一句问候语
+ * Shows a greeting in the admin navigation bar and the front-end footer
  *
  * @package Greeting
- * @author 你的名字
+ * @author Your Name
  * @version 1.0.0
  * @since 1.3.0
  * @link https://example.com

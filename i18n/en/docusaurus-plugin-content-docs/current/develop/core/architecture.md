@@ -13,18 +13,18 @@ This section is for developers who modify Typecho itself. This page explains wha
 
 ```text
 typecho/
-├── index.php          前台唯一入口
-├── install.php        安装程序（网页与命令行）
-├── config.inc.php     安装时生成的配置文件，不在仓库中
-├── install/           三种数据库的建表 SQL 与安装表单
-├── admin/             后台页面（PHP 模板）与后台静态资源
-├── var/               全部 PHP 类
-│   ├── Typecho/       框架层
-│   ├── Widget/        应用层
-│   ├── Utils/         工具类
-│   └── IXR/           XML-RPC 库
-├── usr/               站点自己的内容：主题、插件、上传文件、语言包
-└── tools/             开发用的构建脚本，不进入发行包
+├── index.php          the single front-end entry point
+├── install.php        installer (web and command line)
+├── config.inc.php     configuration file generated at install time, not in the repository
+├── install/           table creation SQL for the three databases and the install form
+├── admin/             admin pages (PHP templates) and admin static assets
+├── var/               all PHP classes
+│   ├── Typecho/       framework layer
+│   ├── Widget/        application layer
+│   ├── Utils/         utility classes
+│   └── IXR/           XML-RPC library
+├── usr/               the site's own content: themes, plugins, uploads, language packs
+└── tools/             build scripts for development, not in the release package
 ```
 
 ### index.php

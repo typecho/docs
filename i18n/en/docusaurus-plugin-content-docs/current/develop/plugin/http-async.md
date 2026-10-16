@@ -16,7 +16,7 @@ use Typecho\Http\Client;
 
 $client = Client::get();
 if (!$client) {
-    // 服务器没有安装 PHP 的 curl 扩展
+    // PHP's curl extension is not installed on the server
     return;
 }
 
@@ -27,10 +27,10 @@ try {
         ->send('https://api.example.com/search');
 
     $status = $client->getResponseStatus();               // 200
-    $body = $client->getResponseBody();                   // 响应正文
-    $type = $client->getResponseHeader('Content-Type');   // 响应头，名字不区分大小写
+    $body = $client->getResponseBody();                   // response body
+    $type = $client->getResponseHeader('Content-Type');   // response header; names are case-insensitive
 } catch (Client\Exception $e) {
-    // 连接失败、超时等网络错误
+    // network errors such as connection failures and timeouts
 }
 ```
 
@@ -130,7 +130,7 @@ public static function config(Form $form)
 }
 
 /**
- * 异步任务 guestbookNotify：把留言推送到通知地址
+ * Async task guestbookNotify: pushes the message to the notification URL
  */
 public static function notify($id)
 {

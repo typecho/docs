@@ -106,7 +106,7 @@ Theme options are merged into the site settings, so read them with `$this->optio
 <html data-theme="<?php $this->options->colorScheme(); ?>">
 
 <?php if (!empty($this->options->sidebarBlock) && in_array('recent', $this->options->sidebarBlock)): ?>
-    <!-- 显示最新文章 -->
+    <!-- Show recent posts -->
 <?php endif; ?>
 ```
 

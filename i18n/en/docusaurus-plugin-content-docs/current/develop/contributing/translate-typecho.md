@@ -45,8 +45,8 @@ For the rules by which `messages.pot` is generated, see [Development environment
 Without Poedit, you can do the same merge with the gettext command-line tools:
 
 ```bash
-msgmerge --update ja_JP.po messages.pot   # 用模板更新 .po，原文有改动的条目标记为 fuzzy
-msgfmt --check --statistics -o /dev/null ja_JP.po   # 检查格式并统计已翻译、模糊、未翻译的条数
+msgmerge --update ja_JP.po messages.pot   # update the .po from the template; entries whose source text changed are marked fuzzy
+msgfmt --check --statistics -o /dev/null ja_JP.po   # check the format and count translated, fuzzy and untranslated entries
 ```
 
 ### Adding a new language

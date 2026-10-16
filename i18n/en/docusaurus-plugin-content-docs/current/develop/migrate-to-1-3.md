@@ -70,10 +70,10 @@ $result = \Typecho\Plugin::factory('MyPlugin')->beforeOutput($data);
 In 1.3 this magic call (`Typecho\Plugin::__call()`) is marked as deprecated. Use the following instead:
 
 ```php
-// 执行所有回调，返回最后一个回调的返回值
+// Runs every callback and returns the last callback's return value
 $result = \Typecho\Plugin::factory('MyPlugin')->call('beforeOutput', $data);
 
-// 依次把值交给每个回调处理，返回最终的值
+// Passes the value through each callback in turn and returns the final value
 $data = \Typecho\Plugin::factory('MyPlugin')->filter('beforeOutput', $data);
 ```
 

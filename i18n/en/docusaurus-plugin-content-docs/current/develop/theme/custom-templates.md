@@ -33,7 +33,7 @@ $this->need('header.php');
 ```
 
 - The file name is up to you (except `index.php`); put it in the theme root directory.
-- When editing a page, "友情链接" appears in the "Custom template" drop-down on the right; once selected, the page is output with `page-links.php` instead. For what the site owner does, see [Pages: custom templates](../../guide/content/pages.md#template).
+- When editing a page, "友情链接" (Links) appears in the "Custom template" drop-down on the right; once selected, the page is output with `page-links.php` instead. For what the site owner does, see [Pages: custom templates](../../guide/content/pages.md#template).
 - `$this` in the template is the page, so you can call `title()`, `content()`, `comments()` and so on just as in `page.php`.
 - When the site switches to a theme that does not have this file, the page is automatically output by the normal rules (`page.php` and so on).
 
@@ -42,7 +42,7 @@ An example "Archives" page template that lists all posts by month:
 ```php title="usr/themes/starter/page-archives.php"
 <?php
 /**
- * 文章归档
+ * Archives
  *
  * @package custom
  */
@@ -74,12 +74,12 @@ A file whose comment contains `@package index` appears in the "use the [file] te
 ```php title="usr/themes/starter/home.php"
 <?php
 /**
- * 自定义首页
+ * Custom home page
  *
  * @package index
  */
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
-// 1.3.0 中这类首页没有初始化订阅地址，先设置好，否则 header() 会报错
+// In 1.3.0 this kind of home page does not initialize the feed URLs; set them first, or header() throws an error
 $this->setArchiveFeedUrl($this->options->feedUrl);
 $this->setArchiveFeedRssUrl($this->options->feedRssUrl);
 $this->setArchiveFeedAtomUrl($this->options->feedAtomUrl);

@@ -17,7 +17,7 @@ You need PHP 7.4 or later and any supported database (SQLite is the simplest for
 git clone https://github.com/typecho/typecho.git
 cd typecho
 
-# 命令行安装，使用 SQLite
+# Command-line installation with SQLite
 TYPECHO_SITE_URL=http://127.0.0.1:8000 \
 TYPECHO_DB_ADAPTER=Pdo_SQLite \
 TYPECHO_DB_FILE=$PWD/usr/dev.db \
@@ -25,7 +25,7 @@ TYPECHO_USER_NAME=admin \
 TYPECHO_USER_PASSWORD=admin123456 \
 php install.php
 
-# 用 PHP 内置服务器运行
+# Run with PHP's built-in server
 php -S 127.0.0.1:8000
 ```
 
@@ -47,7 +47,7 @@ define('__TYPECHO_DEBUG__', true);
 
 ```bash
 cd tools
-npm ci          # 按 package-lock.json 安装
+npm ci          # install from package-lock.json
 ```
 
 ### npm scripts
@@ -95,7 +95,7 @@ It exits with a non-zero status when it finds any syntax error. Note that it als
 
 ```bash
 cd tools
-make pot        # 等于 php build_pot.php > messages.pot
+make pot        # same as php build_pot.php > messages.pot
 ```
 
 How `build_pot.php` works:

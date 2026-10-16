@@ -36,7 +36,7 @@ The examples below use the `guestbook` table of the [guestbook plugin](./routes-
 ```php
 $db = \Typecho\Db::get();
 
-// 插入，返回新行的主键
+// Insert; returns the primary key of the new row
 $id = $db->query($db->insert('table.guestbook')->rows([
     'author'  => '张三',
     'text'    => '你好',
@@ -44,10 +44,10 @@ $id = $db->query($db->insert('table.guestbook')->rows([
     'created' => time(),
 ]));
 
-// 查询一行，没有结果时返回 null
+// Fetch one row; returns null when there is no result
 $row = $db->fetchRow($db->select()->from('table.guestbook')->where('id = ?', $id));
 
-// 查询多行：指定字段、条件、排序、分页
+// Fetch several rows: columns, conditions, order, pagination
 $rows = $db->fetchAll($db->select('id', 'author', 'created')
     ->from('table.guestbook')
     ->where('created > ?', time() - 86400)
@@ -55,20 +55,20 @@ $rows = $db->fetchAll($db->select('id', 'author', 'created')
     ->order('created', \Typecho\Db::SORT_DESC)
     ->page(1, 20));
 
-// 计数
+// Count
 $count = $db->fetchObject($db->select(['COUNT(id)' => 'num'])->from('table.guestbook'))->num;
 
-// 更新，返回受影响的行数
+// Update; returns the number of affected rows
 $affected = $db->query($db->update('table.guestbook')
     ->rows(['text' => '改过的留言'])
     ->where('id = ?', $id));
 
-// 用表达式更新：在原值上计算
+// Update with an expression: compute from the current value
 $db->query($db->update('table.guestbook')
     ->expression('created', 'created + 60')
     ->where('id = ?', $id));
 
-// 删除，返回删除的行数
+// Delete; returns the number of deleted rows
 $deleted = $db->query($db->delete('table.guestbook')->where('id IN ?', [$id]));
 ```
 

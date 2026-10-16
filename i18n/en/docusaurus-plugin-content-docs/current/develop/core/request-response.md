@@ -44,7 +44,7 @@ The third argument returns, by reference, whether the parameter exists:
 ```php
 $page = $this->request->get('page', 1, $exists);
 if (!$exists) {
-    // 没有提交 page
+    // page was not submitted
 }
 ```
 
@@ -64,9 +64,9 @@ Magic reads on the request object (`$this->request->cid`, `isset($this->request-
 `Widget\Request::filter()` sets filters for the **next** read; the filters are cleared after the read:
 
 ```php
-$cid  = $this->request->filter('int')->get('cid');            // 转为整数
-$slug = $this->request->filter('slug')->get('slug');          // 转为缩略名
-$text = $this->request->filter('trim', 'html')->get('text');  // 依次 trim、htmlspecialchars
+$cid  = $this->request->filter('int')->get('cid');            // to an integer
+$slug = $this->request->filter('slug')->get('slug');          // to a slug
+$text = $this->request->filter('trim', 'html')->get('text');  // trim, then htmlspecialchars
 ```
 
 | Name | Equivalent to |

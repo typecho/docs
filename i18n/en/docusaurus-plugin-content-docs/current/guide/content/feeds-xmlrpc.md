@@ -2,7 +2,7 @@
 title: Feeds and offline clients
 sidebar_position: 11
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
 ---
 
 # Feeds and offline clients
@@ -78,7 +78,7 @@ The `<link rel="EditURI" href=".../action/xmlrpc?rsd">` and wlwmanifest links ou
 :::
 
 :::caution In 1.3.0, editing an existing post from a client creates a new post
-The 1.3.0 XML-RPC edit interface has a known issue: when you modify an existing post with `metaWeblog.editPost`, the original is not changed; instead **a new post is created**, and the original stays as it was. `wp.editPost` and `wp.editPage` use the same code and are affected the same way. The issue is fixed in the code after 1.3.0, but the fix has not been released yet. Until a new version is released, edit published posts in the web admin panel, or after editing in the client, delete the duplicate post in the admin panel.
+The 1.3.0 XML-RPC edit interface has a known issue: when you modify an existing post with `metaWeblog.editPost`, the original is not changed; instead **a new post is created**, and the original stays as it was. `wp.editPost` and `wp.editPage` use the same code and are affected the same way. The issue is fixed in the code after 1.3.0; the 1.3.0 release is still affected. With 1.3.0, edit published posts in the web admin panel, or after editing in the client, delete the duplicate post in the admin panel.
 :::
 
 ### Writing Markdown in a client {#markdown}

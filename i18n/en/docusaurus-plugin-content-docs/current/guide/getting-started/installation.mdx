@@ -2,7 +2,7 @@
 title: Installation
 sidebar_position: 2
 translation: machine
-source_commit: 97eccd0fe4871e7b33f99f7b47436e058e9520d3
+source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
 ---
 
 import Tabs from '@theme/Tabs';
@@ -31,16 +31,16 @@ unzip typecho.zip -d /srv/www/typecho
 `typecho.zip` unpacks straight into the program files, with no outer directory:
 
 ```text
-admin/        后台
-install/      安装程序用到的建表脚本与表单
-usr/          主题、插件、上传文件（uploads）
-var/          程序核心
-index.php     入口
-install.php   安装程序
+admin/        admin panel
+install/      table creation scripts and forms used by the installer
+usr/          themes, plugins, uploaded files (uploads)
+var/          program core
+index.php     entry point
+install.php   installer
 ```
 
 :::caution
-Download a stable release from Releases. The `master` branch contains unreleased changes and is not suitable for production sites.
+Download a stable release from Releases. The `master` branch contains changes that are not in a stable release yet and is not suitable for production sites.
 :::
 
 ## 2. Prepare the database
@@ -152,7 +152,7 @@ The installer also creates a default category, a post "欢迎使用 Typecho" (We
 ## After installation
 
 - **Login address**: the admin panel is at `https://your-domain/admin/`.
-- **URL rewriting**: the installation does not depend on URL rewriting (伪静态). A 404 when you log in to the admin panel or open a post usually means the web server does not pass requests of the form `/index.php/...` to PHP. The nginx, Apache and Caddy configurations are described on the web server configuration page of the "Deployment and operations" chapter, which has not been published yet.
+- **URL rewriting**: the installation does not depend on URL rewriting (伪静态). A 404 when you log in to the admin panel or open a post usually means the web server does not pass requests of the form `/index.php/...` to PHP. For the nginx, Apache and Caddy configurations, see [Web server configuration](../operations/web-server.md).
 - **Configuration file**: `config.inc.php` holds the database connection details; do not make it public.
 
 ## Losing the administrator password after installation {#安装后丢失管理员密码}

@@ -59,13 +59,13 @@ A PHP file in the theme directory whose opening comment contains `@package index
 ```php
 <?php
 /**
- * 自定义首页
+ * Custom home page
  *
  * @package index
  */
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 ?>
-<!-- 首页内容 -->
+<!-- Home page content -->
 ```
 
 After you select it, `frontPage` is saved as `file:home.php` and the front page outputs this file directly. When you change themes, if the front page is set to a template file, it is automatically reset to "Show the latest posts".

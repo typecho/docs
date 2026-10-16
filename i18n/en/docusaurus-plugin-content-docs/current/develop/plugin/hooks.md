@@ -61,11 +61,11 @@ Typecho triggers hooks in classes in two ways, which determine the class the hoo
 Append `_数字` (`_` plus a number) to the hook name to set the priority. Smaller numbers run first; no suffix is the same as `_10`:
 
 ```php
-// 先于其他插件执行
+// runs before other plugins
 \Typecho\Plugin::factory('Widget\Base\Contents')->contentEx_1 = __CLASS__ . '::first';
-// 默认优先级
+// default priority
 \Typecho\Plugin::factory('Widget\Base\Contents')->contentEx = __CLASS__ . '::normal';
-// 最后执行
+// runs last
 \Typecho\Plugin::factory('Widget\Base\Contents')->contentEx_99 = __CLASS__ . '::last';
 ```
 
@@ -90,7 +90,7 @@ Calls all callbacks in turn, passing the parameters as they are. `call()` return
 ```php
 public static function beforeRender(\Widget\Archive $archive)
 {
-    // 每次渲染前台页面前执行
+    // runs before every front-end page is rendered
 }
 ```
 
@@ -147,12 +147,12 @@ When you call a method `$widget->xxx()` that **does not exist** on any widget ob
 In templates, `$this` is `Widget\Archive`, so:
 
 ```php
-// activate() 中注册
+// registered in activate()
 \Typecho\Plugin::factory('Widget\Archive')->callWordCount = __CLASS__ . '::wordCount';
 ```
 
 ```php
-// 模板中调用，回调收到 ($this, [])
+// called in a template; the callback receives ($this, [])
 <?php $this->wordCount(); ?>
 ```
 
@@ -194,7 +194,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 估算文章的字数和阅读时间
+ * Estimates the word count and reading time of a post
  *
  * @package ReadingTime
  * @version 1.0.0
@@ -222,7 +222,7 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * 文章页正文前插入阅读时间
+     * Inserts the reading time before the post body
      */
     public static function prepend(string $content, Contents $widget): string
     {
@@ -275,13 +275,13 @@ The text inserted into the body also appears in the page's `description` meta ta
 A plugin can also provide hooks so that other plugins can extend it. The handle is usually the plugin's class name:
 
 ```php
-// 通知
+// notify
 \Typecho\Plugin::factory(__CLASS__)->call('afterSave', $message);
 
-// 过滤
+// filter
 $html = \Typecho\Plugin::factory(__CLASS__)->filter('render', $html, $message);
 
-// 接管
+// take over
 $result = \Typecho\Plugin::factory(__CLASS__)->trigger($plugged)->call('send', $message);
 if (!$plugged) {
     $result = self::defaultSend($message);
