@@ -1,7 +1,7 @@
 ---
 slug: /develop
 translation: machine
-source_commit: 04d826b23e4274a0c33bf7f26ac8f76553e8edff
+source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
 ---
 
 # Development Overview
@@ -17,8 +17,6 @@ The development documentation is divided by the way you extend Typecho, listed i
 - **Reference**: lookup tables and API listings.
 - **Core Development**: the structure of Typecho itself and how it is developed.
 - **Contributing**: how to submit changes to Typecho and to this documentation.
-
-The documentation is being rewritten. For now only [Contributing](/develop/contributing) is online; the other sections will follow.
 
 ## How to read
 
