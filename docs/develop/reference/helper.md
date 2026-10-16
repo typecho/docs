@@ -7,10 +7,6 @@ sidebar_position: 8
 
 `\Utils\Helper` 是给插件用的一组静态方法：添加路由、Action、后台菜单和面板，读写选项，安排异步任务等。旧代码中的类名 `Helper` 仍然可用（见[旧类名对照表](./class-aliases.md)）。
 
-:::note 本页的生成方式
-方法签名由 `php scripts/api-dump.php <Typecho 源码目录> 'Utils\Helper' --own` 从 Typecho 1.3.0 的 `var/Utils/Helper.php` 生成，共 20 个 public static 方法；分组和说明由本页补写。
-:::
-
 ## 路由
 
 | 方法 | 说明 |

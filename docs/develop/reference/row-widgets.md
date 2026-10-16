@@ -7,10 +7,6 @@ sidebar_position: 3
 
 模板中循环的每一行数据都是一个 Widget 对象：文章和页面是 `Widget\Base\Contents` 的子类，评论是 `Widget\Base\Comments`，分类和标签是 `Widget\Base\Metas`，用户是 `Widget\Base\Users`。本页列出这四类对象可用的方法、魔术属性和数据库字段。
 
-:::note 本页的生成方式
-方法表和魔术属性表由 `php scripts/api-dump.php <Typecho 源码目录> '类名' --own` 从 Typecho 1.3.0 的 `var/Typecho/Widget.php`、`var/Widget/Base/{Contents,Comments,Metas,Users}.php`、`var/Widget/Comments/Archive.php` 生成；字段表取自 `install/sqlite.sql` 的建表语句和各类 `filter()` 方法中补充的字段。说明为空的条目由本页补写。
-:::
-
 ## 读取方式
 
 - **字段和魔术属性**：`$posts->title`、`$posts->permalink` 读取值；魔术属性在第一次读取时计算并缓存。

@@ -7,10 +7,6 @@ sidebar_position: 1
 
 Typecho 1.3.0 中全部的插件钩子。注册回调的方法、三种触发方式的含义见[使用钩子](../plugin/hooks.md)。
 
-:::note 本页的生成方式
-各表由 `php scripts/hook-dump.php <Typecho 源码目录>` 从 Typecho 1.3.0 的 `index.php`、`admin/*.php` 和 `var/` 生成：脚本逐个读取 PHP 语法单元，找出所有 `X::pluginHandle()` 和 `Typecho\Plugin::factory(...)` 调用，再顺着调用链找到 `call()` / `filter()` 的钩子名。共 124 处调用、124 个（句柄, 钩子）组合（文件句柄 21 个，Widget 类钩子 103 个），另有 3 类动态钩子。“说明”类文字由本页补写。
-:::
-
 ## 怎样读这张表
 
 - **句柄**：注册时传给 `Typecho\Plugin::factory()` 的名字。类句柄写成 1.3 的类名（如 `Widget\Base\Contents`）或表中的名字（如 `Widget_Abstract_Contents`）都可以，Typecho 会换算成表中的名字，见[句柄的名字](../plugin/hooks.md#句柄的名字)。

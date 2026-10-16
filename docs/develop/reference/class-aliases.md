@@ -7,10 +7,6 @@ sidebar_position: 11
 
 Typecho 1.2 起改用带命名空间的类名（如 `\Widget\Contents\Post\Recent`），1.3 继续沿用。为 1.3 之前的版本写的主题和插件中常见的下划线类名（如 `Widget_Contents_Post_Recent`）在 1.3 中仍然可以使用：自动加载器会把它们对应到新的类，并用 `class_alias()` 建立别名。迁移步骤见[主题与插件迁移到 1.3](../migrate-to-1-3.md)。
 
-:::note 本页的生成方式
-映射规则取自 Typecho 1.3.0 `var/Typecho/Common.php` 中的 `spl_autoload_register()` 回调，显式别名表取自 `var/Widget/Init.php` 中的 `__TYPECHO_CLASS_ALIASES__`。“旧类名一览”是把 Typecho 1.1（`v1.1-17.10.30-release`）`var/Widget`、`var/Typecho` 下全部 122 个类文件换算成下划线类名，逐个交给 1.3.0 的自动加载器解析得到的结果。
-:::
-
 ## 映射规则
 
 自动加载器按下面的顺序处理一个找不到的类名：

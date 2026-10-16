@@ -7,10 +7,6 @@ sidebar_position: 2
 
 `Widget\Archive` 是前台页面的主对象，模板中的 `$this` 就是它，用法见[主题开发概览](../theme/index.md)。它继承自 `Widget\Base\Contents`，所以除了本页列出的方法，还可以使用[内容对象](./row-widgets.md#contents)的全部方法和属性（`title()`、`content()`、`permalink` 等），以及所有 Widget 共有的 `have()`、`next()`、`to()` 等（见[所有 Widget 共有的成员](./row-widgets.md#widget)）。
 
-:::note 本页的生成方式
-方法表和属性表由 `php scripts/api-dump.php <Typecho 源码目录> 'Widget\Archive' --own` 从 Typecho 1.3.0 的 `var/Widget/Archive.php` 生成：列出该类自己声明的 public 方法（签名、文档注释第一行、`@deprecated` 标记）和 `___` 开头的魔术属性方法。说明为空的条目由本页补写。
-:::
-
 ## 方法与属性的调用方式
 
 - **方法**：`$this->title()` 这类方法大多直接输出（`echo`），返回值为空；签名中带返回类型的（如 `is(): bool`、`getArchiveTitle(): ?string`）返回值，不输出。

@@ -7,10 +7,6 @@ sidebar_position: 10
 
 Typecho 1.3.0 安装后建立 7 张表。表名前加安装时设置的前缀（默认 `typecho_`），在查询构造器中用 `table.contents` 这样的写法代替，见[数据库操作](../plugin/database.md)。
 
-:::note 本页的生成方式
-字段和类型取自 Typecho 1.3.0 的 `install/Mysql.sql`、`install/Pgsql.sql`、`install/SQLite.sql`；取值范围取自写入这些表的 Widget：`var/Widget/Contents/EditTrait.php`、`var/Widget/Contents/Post/Edit.php`、`var/Widget/Upload.php`、`var/Widget/Feedback.php`、`var/Widget/Comments/Edit.php`、`var/Widget/Metas/*/Edit.php`、`var/Widget/User.php`。
-:::
-
 “类型”一栏是 MySQL 中的类型。PostgreSQL 和 SQLite 中整数字段都是不带 `unsigned` 的 `INT` / `int(10)`，自增主键分别是序列（`表名_seq`）和 `INTEGER PRIMARY KEY`；其他差异在表下注明。
 
 | 表 | 内容 |

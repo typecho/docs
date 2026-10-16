@@ -7,10 +7,6 @@ sidebar_position: 6
 
 Typecho 的设置都保存在数据库 `options` 表中，每行一个选项：`name`（选项名）、`user`（`0` 为全站设置，其他值为该用户的个人设置）、`value`（值，统一以字符串保存）。模板和插件中用 `$this->options->选项名` 读取，见 [$this->options](./options.md)。
 
-:::note 本页的生成方式
-选项名和默认值取自 Typecho 1.3.0 `install.php` 中的 `install_get_default_options()`：安装时把这个函数返回的 61 项写入 `options` 表（只把 `installed` 改为 `1`）。所属设置页按 `var/Widget/Options/*.php` 和 `var/Widget/Users/Profile.php` 中保存它们的代码确定。
-:::
-
 ## 类型的写法
 
 表中“类型”一栏说明值的含义；数据库中一律是字符串。

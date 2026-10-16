@@ -7,10 +7,6 @@ sidebar_position: 4
 
 主题侧边栏、导航中常用的几个列表 Widget。用法示例见[在模板中调用 Widget](../theme/widgets.md)；每一行可用的字段和方法见[内容、评论、分类与用户对象](./row-widgets.md)。
 
-:::note 本页的生成方式
-各类的方法表和魔术属性表由 `php scripts/api-dump.php <Typecho 源码目录> '类名' --own` 从 Typecho 1.3.0 生成（只列各类自己声明的成员）；参数及默认值取自各类 `execute()` / `initParameter()` 中的 `setDefault()`，`listCategories()` / `listPages()` 的选项取自它们的 `setDefault()` 和 `var/Widget/Base/TreeViewTrait.php`。
-:::
-
 ## 总览
 
 | 类 | 每一行是 | 参数（默认值） | 取哪些数据 |

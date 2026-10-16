@@ -7,10 +7,6 @@ sidebar_position: 7
 
 主题设置（`themeConfig()`）、预置自定义字段（`themeFields()`）和插件设置（`config()` / `personalConfig()`）都用 `\Typecho\Widget\Helper\Form\Element\` 下的表单元素构建。
 
-:::note 本页的生成方式
-元素列表取自 Typecho 1.3.0 的 `var/Typecho/Widget/Helper/Form/Element/` 目录，方法表由 `php scripts/api-dump.php <Typecho 源码目录> 'Typecho\Widget\Helper\Form\Element' --own` 和 `'Typecho\Validate'` 生成；各元素输出的 HTML 是逐个构造并调用 `render()` 得到的。
-:::
-
 ## 构造参数
 
 ```text

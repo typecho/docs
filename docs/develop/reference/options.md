@@ -7,10 +7,6 @@ sidebar_position: 5
 
 `$this->options` 是 `Widget\Options` 对象，装着站点的全部设置。模板中直接用 `$this->options`；在 `functions.php` 或插件中用 `\Widget\Options::alloc()` 取得同一个对象。
 
-:::note 本页的生成方式
-方法表和魔术属性表由 `php scripts/api-dump.php <Typecho 源码目录> 'Widget\Options' --own` 从 Typecho 1.3.0 的 `var/Widget/Options.php` 生成。说明为空的条目由本页补写。
-:::
-
 ## 值从哪里来
 
 `$this->options->xxx` 依次合并了三处的值：

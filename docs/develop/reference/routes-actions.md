@@ -7,10 +7,6 @@ sidebar_position: 9
 
 Typecho 的前台地址由路由表决定，表单提交和 Ajax 请求由 Action 处理。插件添加路由和 Action 的方法见[路由、Action 与后台面板](../plugin/routes-actions.md)。
 
-:::note 本页的生成方式
-路由表取自 Typecho 1.3.0 `install.php` 中的 `install_get_default_routers()`（安装时写入选项 `routingTable`），占位符取自 `var/Typecho/Router/Parser.php`，Action 表取自 `var/Widget/Action.php` 中的 `$map`，每个 Action 处理的操作取自对应类的 `action()` 方法。
-:::
-
 ## 默认路由
 
 安装后路由表中有 25 条路由，按下表的顺序匹配：
