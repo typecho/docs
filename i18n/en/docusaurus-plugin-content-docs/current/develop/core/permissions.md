@@ -69,7 +69,7 @@ Admin pages do not go through the router. When each page does `include 'common.p
 
 Users whose role is not high enough get a 403 on these pages, and visitors who are not logged in are redirected to the login page. A visitor (`visitor`) can log in, but gets a 403 even on `index.php`.
 
-Menu items the user has no access to are not shown; this is also decided by `pass($role, true)`. Pages also make finer checks internally; for example, `manage-posts.php` shows the "All posts" (所有文章) toggle only to editors and above, and on `write-post.php` only editors and above can choose the "Visibility" (公开度).
+Menu items the user has no access to are not shown; this is also decided by `pass($role, true)`. Pages also make finer checks internally; for example, `manage-posts.php` shows the "All posts" toggle only to editors and above, and on `write-post.php` only editors and above can choose the "Visibility".
 
 ## Actions check permissions themselves
 

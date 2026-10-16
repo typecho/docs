@@ -7,14 +7,14 @@ source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
 
 # Permalinks
 
-"Settings → Permalinks" (设置 → 永久链接, `admin/options-permalink.php`) in the admin panel; only administrators can open it. It determines whether URL rewriting (伪静态) is used, and the URL formats of posts, pages and categories. For the rewrite rules needed on the web server side, see [Web server configuration](../operations/web-server.md).
+"Settings → Permalinks" (`admin/options-permalink.php`) in the admin panel; only administrators can open it. It determines whether URL rewriting is used, and the URL formats of posts, pages and categories. For the rewrite rules needed on the web server side, see [Web server configuration](../operations/web-server.md).
 
 ## Whether to use URL rewriting {#rewrite}
 
 | UI option | `rewrite` value | Generated URL |
 |---|---|---|
-| Disabled (不启用) (default) | `0` | `https://example.com/index.php/archives/1/` |
-| Enabled (启用) | `1` | `https://example.com/archives/1/` |
+| Disabled (default) | `0` | `https://example.com/index.php/archives/1/` |
+| Enabled | `1` | `https://example.com/archives/1/` |
 
 Before enabling it, the web server must already be configured with rewrite rules that hand paths that do not exist to `index.php`.
 
@@ -28,10 +28,10 @@ When you select "Enabled" and save, Typecho first runs a check and saves only if
 
 There are two outcomes:
 
-- **The check fails** (for example, there are no rewrite rules on the server at all): the page shows "URL rewriting check failed, please check your server settings" (重写功能检测失败, 请检查你的服务器设置), an extra checkbox "If you still want to enable this feature, check here" (如果你仍然想启用此功能, 请勾选这里) appears below, and `rewrite` stays 0;
+- **The check fails** (for example, there are no rewrite rules on the server at all): the page shows "URL rewriting check failed, please check your server settings", an extra checkbox "If you still want to enable this feature, check here" appears below, and `rewrite` stays 0;
 - **The check passes** (the rewrite rules are in effect): the setting is saved, and front-end links change to the form without `index.php`.
 
-Under Apache `mod_php`, when the root directory is not writable, the failure message also adds "We detected that you are using an apache server, but the program cannot create an .htaccess file in the root directory… Please adjust your directory permissions, or create an .htaccess file manually." (我们检测到你使用了apache服务器, 但是程序无法在根目录创建.htaccess文件……请调整你的目录权限, 或者手动创建一个.htaccess文件.).
+Under Apache `mod_php`, when the root directory is not writable, the failure message also adds "We detected that you are using an apache server, but the program cannot create an .htaccess file in the root directory… Please adjust your directory permissions, or create an .htaccess file manually.".
 
 Another common reason for the check failing is that the server cannot reach itself through the site URL (internal network, firewall, port mapping in Docker, the site URL's domain not resolving on the server). In these cases the check fails even if the rules are correct.
 
@@ -54,15 +54,15 @@ If your `.htaccess` also contains other rules (hotlink protection, HTTPS redirec
 
 ## Custom post path {#post-pattern}
 
-"Custom post path" (自定义文章路径, `postPattern`) has four presets and one custom definition:
+"Custom post path" (`postPattern`) has four presets and one custom definition:
 
 | UI label | Rule | Example |
 |---|---|---|
-| Default style (默认风格) | `/archives/{cid}/` | `/archives/1/` |
-| WordPress style (wordpress风格) | `/archives/{slug}.html` | `/archives/hello-world.html` |
-| Archive by date (按日期归档) | `/{year}/{month}/{day}/{slug}.html` | `/2026/10/16/hello-world.html` |
-| Archive by category (按分类归档) | `/{category}/{slug}.html` | `/default/hello-world.html` |
-| Custom (个性化定义) | Entered in the text box (`customPattern`) | For example `/{year}/{cid}.html` |
+| Default style | `/archives/{cid}/` | `/archives/1/` |
+| WordPress style | `/archives/{slug}.html` | `/archives/hello-world.html` |
+| Archive by date | `/{year}/{month}/{day}/{slug}.html` | `/2026/10/16/hello-world.html` |
+| Archive by category | `/{category}/{slug}.html` | `/default/hello-world.html` |
+| Custom | Entered in the text box (`customPattern`) | For example `/{year}/{cid}.html` |
 
 Available parameters (the UI description reads: "`{cid}` 日志 ID, `{slug}` 日志缩略名, `{category}` 分类, `{directory}` 多级分类, `{year}` 年, `{month}` 月, `{day}` 日"):
 
@@ -79,17 +79,17 @@ For example, after you save the custom definition `/{year}/{cid}.html`, post URL
 Notes:
 
 - The rule must contain at least one of `{cid}` or `{slug}` to tell posts apart; otherwise several posts get the same URL. The custom definition input does **not** check this.
-- When you save a custom definition, Typecho checks whether it conflicts with existing rules such as those for categories and tags. On a conflict it **still saves**, and only shows the message "The custom link conflicts with existing rules! It may affect parsing efficiency; it is recommended that you assign a different rule." (自定义链接与现有规则存在冲突! 它可能影响解析效率, 建议你重新分配一个规则.). For example, after you save `/tag/{slug}/`, every URL of the form `/tag/某某/` is parsed as a post, and tag pages can no longer be reached. When you see this message, choose a different rule.
-- **Old URLs are not redirected after you change the rule**. For example, after changing from the default style to `/{year}/{cid}.html`, the old `/archives/1/` returns 404. For a site already indexed by search engines or linked from other sites, think it over before changing, or configure redirects for the old URLs on the web server yourself. The UI also warns: "Once you have chosen a link style, do not change it lightly." (一旦你选择了某种链接风格请不要轻易修改它.)
+- When you save a custom definition, Typecho checks whether it conflicts with existing rules such as those for categories and tags. On a conflict it **still saves**, and only shows the message "The custom link conflicts with existing rules! It may affect parsing efficiency; it is recommended that you assign a different rule.". For example, after you save `/tag/{slug}/`, every URL of the form `/tag/某某/` is parsed as a post, and tag pages can no longer be reached. When you see this message, choose a different rule.
+- **Old URLs are not redirected after you change the rule**. For example, after changing from the default style to `/{year}/{cid}.html`, the old `/archives/1/` returns 404. For a site already indexed by search engines or linked from other sites, think it over before changing, or configure redirects for the old URLs on the web server yourself. The UI also warns: "Once you have chosen a link style, do not change it lightly."
 
 ## Page path and category path {#page-category}
 
 | UI label | Field | Default | Available parameters |
 |---|---|---|---|
-| Page path (独立页面路径) | `pagePattern` | `/{slug}.html` | `{cid}` page ID, `{slug}` page slug, `{directory}` multi-level pages |
-| Category path (分类路径) | `categoryPattern` | `/category/{slug}/` | `{mid}` category ID, `{slug}` category slug, `{directory}` multi-level categories |
+| Page path | `pagePattern` | `/{slug}.html` | `{cid}` page ID, `{slug}` page slug, `{directory}` multi-level pages |
+| Category path | `categoryPattern` | `/category/{slug}/` | `{mid}` category ID, `{slug}` category slug, `{directory}` multi-level categories |
 
-- Both must contain at least one parameter. For example, when you change the page path to `/about.html`, the message "The page path does not contain `{cid}` or `{slug}`" (独立页面路径中没有包含 `{cid}` 或者 `{slug}`) appears and none of the settings on the page are saved (`{directory}` is also a valid parameter, although the message does not mention it).
+- Both must contain at least one parameter. For example, when you change the page path to `/about.html`, the message "The page path does not contain `{cid}` or `{slug}`" appears and none of the settings on the page are saved (`{directory}` is also a valid parameter, although the message does not mention it).
 - `{directory}` is for page trees and category trees and generates a multi-level path that includes the parent slugs; when the page path is changed to `/{directory}.html`, the URLs of top-level pages stay the same (such as `/start-page.html`).
 - Category pagination URLs are generated automatically as "category path + `/<page number>/`".
 - The rules for other URLs such as tags, authors, search and date archives cannot be changed in the admin panel.

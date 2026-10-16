@@ -7,7 +7,7 @@ source_commit: 97eccd0fe4871e7b33f99f7b47436e058e9520d3
 
 # Getting help
 
-When the documentation does not answer your question, you can ask for help through the three channels below. The footer of the admin pages (except the login and registration pages) links to two of them: **Support forum** (支持论坛) and **Report a bug** (报告错误).
+When the documentation does not answer your question, you can ask for help through the three channels below. The footer of the admin pages (except the login and registration pages) links to two of them: **Support forum** and **Report a bug**.
 
 | Channel | Address | Good for |
 |---|---|---|

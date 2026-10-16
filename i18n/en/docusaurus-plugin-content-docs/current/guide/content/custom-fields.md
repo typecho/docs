@@ -7,7 +7,7 @@ source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
 
 # Custom fields (editor side)
 
-Custom fields let you attach extra data to a post or a page, such as a subtitle, a cover image URL or a view count; the theme decides how to display them. The hint below the **Custom fields** (自定义字段) panel in the editor, "Custom fields can extend your template features, see the help documentation for usage" (自定义字段可以扩展你的模板功能, 使用方法参见 帮助文档), points to this page.
+Custom fields let you attach extra data to a post or a page, such as a subtitle, a cover image URL or a view count; the theme decides how to display them. The hint below the **Custom fields** panel in the editor, "Custom fields can extend your template features, see the help documentation for usage", points to this page.
 
 This page only covers how to fill them in on the admin panel. Reading fields in a theme template (`$this->fields->字段名`) belongs to the theme part of the developer documentation, and that chapter is still being written.
 
@@ -19,12 +19,12 @@ Each row is one field:
 
 | UI element | Form field | Description |
 |---|---|---|
-| Field name (字段名称) | `fieldNames[]` | Letters, digits and underscores only, must not start with a digit (`^[_a-zA-Z][_a-zA-Z0-9]*$`), case-sensitive |
-| Field type (字段类型) | `fieldTypes[]` | A drop-down with four types, see below |
-| Field value (字段值) | `fieldValues[]` | A multi-line text box |
-| Delete (删除) | | Removes the row after you confirm "Are you sure you want to delete this field?" (确认要删除此字段吗?) |
+| Field name | `fieldNames[]` | Letters, digits and underscores only, must not start with a digit (`^[_a-zA-Z][_a-zA-Z0-9]*$`), case-sensitive |
+| Field type | `fieldTypes[]` | A drop-down with four types, see below |
+| Field value | `fieldValues[]` | A multi-line text box |
+| Delete | | Removes the row after you confirm "Are you sure you want to delete this field?" |
 
-Click **+ Add field** (+添加字段) to add a row. Fields are saved together with **Save draft** (保存草稿) or **Publish** (发布):
+Click **+ Add field** to add a row. Fields are saved together with **Save draft** or **Publish**:
 
 - Rows with an empty field name are ignored; for a name that breaks the rules, the browser warns you immediately, and even if it is submitted, the server discards the row.
 - Delete a row and save, and the field is removed from the post.
@@ -34,10 +34,10 @@ Click **+ Add field** (+添加字段) to add a row. Fields are saved together wi
 
 | Name in the drop-down | Type value | Use | How it is saved | Value read in the template |
 |---|---|---|---|---|
-| String (字符) | `str` | Text, URLs, HTML snippets and so on; the most common | Saved as is in the `str_value` column | string |
-| Integer (整数) | `int` | Counts, sort weights, switches (0 / 1) | Converted with PHP `intval()` and saved in the `int_value` column | integer |
-| Float (小数) | `float` | Ratings, prices, coordinates | Converted with `floatval()` and saved in the `float_value` column | float |
-| JSON structure (JSON 结构) | `json` | Lists, key-value pairs and other structured data | Saved in the `str_value` column after `json_encode()` | the value after `json_decode()` |
+| String | `str` | Text, URLs, HTML snippets and so on; the most common | Saved as is in the `str_value` column | string |
+| Integer | `int` | Counts, sort weights, switches (0 / 1) | Converted with PHP `intval()` and saved in the `int_value` column | integer |
+| Float | `float` | Ratings, prices, coordinates | Converted with `floatval()` and saved in the `float_value` column | float |
+| JSON structure | `json` | Lists, key-value pairs and other structured data | Saved in the `str_value` column after `json_encode()` | the value after `json_decode()` |
 
 Examples of the value you enter and the value read in the template:
 

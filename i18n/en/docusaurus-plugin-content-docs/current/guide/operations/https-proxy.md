@@ -7,7 +7,7 @@ source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
 
 # HTTPS, Reverse Proxies and CDNs
 
-When HTTPS is enabled directly on the web server, you usually need no extra setup: change the site URL in "Settings → General" (设置 → 基本) in the admin panel so that it starts with `https://`.
+When HTTPS is enabled directly on the web server, you usually need no extra setup: change the site URL in "Settings → General" in the admin panel so that it starts with `https://`.
 
 When the site sits **behind a reverse proxy, load balancer or CDN**, PHP sees the request sent by the proxy: the scheme may be `http`, `Host` may be an internal address, and the client IP is the proxy's IP. This page explains how Typecho determines this information, and the four groups of constants that go with it. All constants go in `config.inc.php` in the site root; for the full list see [config.inc.php and constants](./config-file.md).
 

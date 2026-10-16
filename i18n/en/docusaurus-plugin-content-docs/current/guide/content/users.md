@@ -7,7 +7,7 @@ source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
 
 # Users, roles and registration
 
-Typecho uses "user groups" (roles) to control what each account can do. Users are managed in **Manage → Users** (管理 → 用户, `admin/manage-users.php`), which **only administrators** can access.
+Typecho uses "user groups" (roles) to control what each account can do. Users are managed in **Manage → Users** (`admin/manage-users.php`), which **only administrators** can access.
 
 ## The five roles
 
@@ -23,7 +23,7 @@ Roles are cumulative: a higher role has all the permissions of the roles below i
 
 ## Permission table {#permission-table}
 
-The link "See here for the detailed permission table" (具体的权限分配表请参考这里) below the user group on the **Edit user** (编辑用户) page of the admin panel points to this section. ✓ means allowed, ✗ means not allowed.
+The link "See here for the detailed permission table" below the user group on the **Edit user** page of the admin panel points to this section. ✓ means allowed, ✗ means not allowed.
 
 | Action | Administrator | Editor | Contributor | Subscriber | Visitor |
 |---|---|---|---|---|---|
@@ -59,16 +59,16 @@ Additional notes:
 
 ## Adding and editing users
 
-In **Manage → Users**, click **Add** (新增, `user.php`):
+In **Manage → Users**, click **Add** (`user.php`):
 
 | UI name | Field | Description |
 |---|---|---|
-| Username * (用户名) | `name` | The name used to log in; must not duplicate an existing user; cannot be changed after creation |
-| Email address * (邮件地址) | `mail` | The main contact; must not be duplicated; can also be used to log in; the avatar is fetched from Gravatar by this email |
-| Nickname (用户昵称) | `screenName` | The name shown on the front end; the username is used when left empty |
-| Password * / Confirm password * (用户密码 / 用户密码确认) | `password` / `confirm` | At least 6 characters; when editing an existing user, leave empty to keep it unchanged |
-| Homepage URL (个人主页地址) | `url` | Must start with `http://` or `https://` |
-| User group (用户组) | `group` | A drop-down: Subscriber (the default), Contributor, Editor, Administrator |
+| Username * | `name` | The name used to log in; must not duplicate an existing user; cannot be changed after creation |
+| Email address * | `mail` | The main contact; must not be duplicated; can also be used to log in; the avatar is fetched from Gravatar by this email |
+| Nickname | `screenName` | The name shown on the front end; the username is used when left empty |
+| Password * / Confirm password * | `password` / `confirm` | At least 6 characters; when editing an existing user, leave empty to keep it unchanged |
+| Homepage URL | `url` | Must start with `http://` or `https://` |
+| User group | `group` | A drop-down: Subscriber (the default), Contributor, Editor, Administrator |
 
 :::caution Do not clear the "Nickname" when editing a user
 According to the UI hint, an empty nickname should fall back to the username. But in 1.3.0, if you **clear an existing nickname** in "Edit user" or "Profile" and save, the nickname becomes an empty value (PHP also logs an `Undefined array key "name"` warning), and no name is shown in the admin panel or on the front end; leaving it empty when adding a new user does not have this problem. To recover, just fill in the nickname again.
@@ -82,14 +82,14 @@ If an account ends up in the `visitor` group, for example because the database w
 
 ## User list and deletion
 
-The list shows each user's post count, username, nickname, email and user group, and can be filtered by keyword. Check users and delete them from the **Selected items** (选中项) menu (confirm "Are you sure you want to delete these users?" (你确认要删除这些用户吗?)):
+The list shows each user's post count, username, nickname, email and user group, and can be filtered by keyword. Check users and delete them from the **Selected items** menu (confirm "Are you sure you want to delete these users?"):
 
 - **The first user** (the account with the smallest ID, usually the administrator created during installation) and **yourself** are not deleted; they are skipped even if checked;
 - Deleting a user **does not delete or transfer their posts and comments**: the posts remain, and the author column of the admin post list becomes blank. If you want to keep the byline, hand the posts over to someone else before deleting, or change the account to a subscriber instead of deleting it.
 
 ## Open registration {#register}
 
-When "Allow registration" (是否允许注册, `allowRegister`, default "Not allowed") in **Settings → General** (设置 → 基本) is set to "Allowed", a "Register" (用户注册) link appears at the bottom of the login page, and visitors can register themselves at `admin/register.php`:
+When "Allow registration" (`allowRegister`, default "Not allowed") in **Settings → General** is set to "Allowed", a "Register" link appears at the bottom of the login page, and visitors can register themselves at `admin/register.php`:
 
 - The registration form has only two fields, **Username** and **Email**. The username is 2 to 32 characters, the email at most 64 characters, and neither may duplicate an existing user.
 - After registering, the user is logged in automatically and lands on the welcome page, which shows a randomly generated 7-character password once, for example "用户 newbie 已经成功注册, 密码为 q1wVUkl" (user newbie has registered successfully, the password is q1wVUkl). Remind users to note the password and change it in Profile as soon as possible.
@@ -98,7 +98,7 @@ When "Allow registration" (是否允许注册, `allowRegister`, default "Not all
 
 ## Login
 
-- The "Username or email" (用户名或邮箱) field in the login box accepts either.
+- The "Username or email" field in the login box accepts either.
 - An account can stay logged in at only one place at a time; a new login invalidates the previous one.
 - When the password is wrong, the login request deliberately waits about 3 seconds before returning, but there is no account lockout mechanism, see [Security hardening](../operations/security.md).
 - If a password is forgotten, the admin panel has no "Forgot password" feature. An administrator can set a new password for other users in "Edit user"; if the administrator's own password is lost, see [Installation](../getting-started/installation.mdx#安装后丢失管理员密码).

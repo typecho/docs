@@ -21,7 +21,7 @@ Upgrades do not overwrite `usr/`, but that does not mean you can skip backing it
 
 ## The admin "Backup" feature {#builtin}
 
-Since version 1.1, Typecho has built-in backup and restore, so no backup plugin is needed. It is under "Dashboard → Backup" (控制台 → 备份) in the admin panel (`admin/backup.php`), and **only administrators** can use it.
+Since version 1.1, Typecho has built-in backup and restore, so no backup plugin is needed. It is under "Dashboard → Backup" in the admin panel (`admin/backup.php`), and **only administrators** can use it.
 
 ![Backup page](./img/backup.png)
 
@@ -52,7 +52,7 @@ With a large amount of data the export may time out; the page itself suggests "�
 
 ### Restore
 
-"Restore data" (恢复数据) on the right side of the admin "Backup" page offers two methods:
+"Restore data" on the right side of the admin "Backup" page offers two methods:
 
 | Method | How | When to use |
 |---|---|---|

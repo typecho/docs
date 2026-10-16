@@ -13,14 +13,14 @@ When a new version needs to change the database (alter the table structure, migr
 
 The version recorded in the database comes from the option `generator` (with a value such as `Typecho 1.3.0`), and `$options->version` parses the version number out of it. The program's version is the constant `\Typecho\Common::VERSION`.
 
-When an administrator opens any admin page, `admin/common.php` compares the two: if the program version is higher, it redirects to `upgrade.php` (except when visiting `backup.php`, so that a backup can be made first). Other roles are not redirected. `upgrade.php` shows "New version detected" (检测到新版本); clicking "Complete upgrade" (完成升级) sends a POST request to `/action/upgrade`, which `Widget\Upgrade` handles: first `pass('administrator')`, then token validation, and then `upgrade()`.
+When an administrator opens any admin page, `admin/common.php` compares the two: if the program version is higher, it redirects to `upgrade.php` (except when visiting `backup.php`, so that a backup can be made first). Other roles are not redirected. `upgrade.php` shows "New version detected"; clicking "Complete upgrade" sends a POST request to `/action/upgrade`, which `Widget\Upgrade` handles: first `pass('administrator')`, then token validation, and then `upgrade()`.
 
 ## How it runs
 
 `Widget\Upgrade::upgrade()` (`var/Widget/Upgrade.php`):
 
 1. Reads the current version, `$currentVersion = $options->version`;
-2. If it is lower than `Widget\Upgrade::MIN_VERSION` (`'1.1.0'` in 1.3.0), shows "Please upgrade to version 1.1.0 first" (请先升级至版本 1.1.0) and returns without changing anything;
+2. If it is lower than `Widget\Upgrade::MIN_VERSION` (`'1.1.0'` in 1.3.0), shows "Please upgrade to version 1.1.0 first" and returns without changing anything;
 3. Uses reflection to list all methods of `Utils\Upgrade` and processes them one by one **in the order they are declared in the class**:
    1. Gets the version number `1.3.0` from the method name `v1_3_0`;
    2. Skips the method if `$currentVersion` is not lower than this version;
@@ -28,7 +28,7 @@ When an administrator opens any admin page, `admin/common.php` compares the two:
    4. If the method returns a non-empty value, collects it as a message to show after the upgrade;
    5. If the method throws an `Exception`, shows the exception message as an error and **stops immediately**; the remaining methods do not run;
    6. After a method succeeds, updates `generator` to `Typecho <this version>`;
-4. When everything is done, updates `generator` to `Typecho <Common::VERSION>` and shows "Upgrade complete" (升级已经完成), or the collected return values if there are any.
+4. When everything is done, updates `generator` to `Typecho <Common::VERSION>` and shows "Upgrade complete", or the collected return values if there are any.
 
 `$currentVersion` is read once at the start and does not change afterwards, so whether a method is skipped depends only on the version before the upgrade.
 
@@ -158,7 +158,7 @@ Step 4 is the model for batch migration. When you write similar code:
 In a development copy:
 
 1. Change `Common::VERSION` to the new version number and add the corresponding `v<version>` method;
-2. Open the admin panel as an administrator; you are redirected to `upgrade.php`, and the page shows "Upgrade from old version to new version" (从 旧版本 升级到 新版本);
+2. Open the admin panel as an administrator; you are redirected to `upgrade.php`, and the page shows "Upgrade from old version to new version";
 3. Click "Complete upgrade" and check the changes in the database and the value of `generator`.
 
 You can also do it the other way round: change `generator` in the database to a lower version (for example `Typecho 1.2.1`) to trigger the upgrade again. Back up the database before repeating a test so that you can restore the state before the migration.

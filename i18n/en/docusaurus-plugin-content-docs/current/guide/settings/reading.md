@@ -7,22 +7,22 @@ source_commit: 865a40f1e805668ce7e5b8bfd8fa66c9a718b2d1
 
 # Reading Settings
 
-"Settings → Reading" (设置 → 阅读, `admin/options-reading.php`) in the admin panel; only administrators can open it. It determines what the front page shows, how many posts appear per page, how dates are displayed, and whether feeds output full text or summaries.
+"Settings → Reading" (`admin/options-reading.php`) in the admin panel; only administrators can open it. It determines what the front page shows, how many posts appear per page, how dates are displayed, and whether feeds output full text or summaries.
 
 ## Fields at a glance
 
 | UI label | Option name | Default | Description |
 |---|---|---|---|
-| Post date format (文章日期格式) | `postDateFormat` | `Y-m-d` | See [below](#date-format) |
-| Site front page (站点首页) | `frontPage` | `recent` | See [below](#front-page) |
-| Also change the post list path to (同时将文章列表页路径更改为) | `frontArchive`, `archivePattern` | Unchecked, `/blog/` | Appears only when the front page is not "Show the latest posts" |
-| Number of posts in lists (文章列表数目) | `postsListSize` | 10 | The number of posts shown in lists such as "Recent posts" (最新文章) in the sidebar |
-| Posts per page (每页文章数目) | `pageSize` | 5 | The number of posts per page in post lists such as the front page, categories, tags, search and archives |
-| Full-text feed output (聚合全文输出) | `feedFullText` | Full text (`1`) | `0` outputs summaries only, `1` outputs full text; see [Feeds and offline clients](../content/feeds-xmlrpc.md#feeds) |
+| Post date format | `postDateFormat` | `Y-m-d` | See [below](#date-format) |
+| Site front page | `frontPage` | `recent` | See [below](#front-page) |
+| Also change the post list path to | `frontArchive`, `archivePattern` | Unchecked, `/blog/` | Appears only when the front page is not "Show the latest posts" |
+| Number of posts in lists | `postsListSize` | 10 | The number of posts shown in lists such as "Recent posts" in the sidebar |
+| Posts per page | `pageSize` | 5 | The number of posts per page in post lists such as the front page, categories, tags, search and archives |
+| Full-text feed output | `feedFullText` | Full text (`1`) | `0` outputs summaries only, `1` outputs full text; see [Feeds and offline clients](../content/feeds-xmlrpc.md#feeds) |
 
 ## Post date format {#date-format}
 
-"Post date format" (`postDateFormat`) is the default format a theme uses when outputting post dates. It is written with PHP `date()` format characters; the "PHP 日期格式写法" link in the admin description points to this function in the PHP manual. The description also notes: "This format may not take effect in some themes, because theme authors can customize the date format." (在某些主题中这个格式可能不会生效, 因为主题作者可以自定义日期格式.)
+"Post date format" (`postDateFormat`) is the default format a theme uses when outputting post dates. It is written with PHP `date()` format characters; the "PHP 日期格式写法" link in the admin description points to this function in the PHP manual. The description also notes: "This format may not take effect in some themes, because theme authors can customize the date format."
 
 Common formats, using 5:23 pm on 16 October 2026 as an example:
 
@@ -36,7 +36,7 @@ Common formats, using 5:23 pm on 16 October 2026 as an example:
 
 `Y` four-digit year, `m` / `n` month (with / without a leading zero), `d` / `j` day, `H` hour in 24-hour format, `i` minutes; to output a letter literally, put a backslash in front of it. For the full description and more examples, see [Discussion settings: comment date format](./discussion.md#date-format). For example, after you change it to `Y年n月j日`, dates in the default theme's post list are shown as "2026年10月16日".
 
-The format cannot contain special characters such as `<` and `>`; otherwise the message "Please do not use special characters in the date format" (请不要在日期格式中使用特殊字符) appears.
+The format cannot contain special characters such as `<` and `>`; otherwise the message "Please do not use special characters in the date format" appears.
 
 ## Site front page {#front-page}
 
@@ -44,9 +44,9 @@ The format cannot contain special characters such as `<` and `>`; otherwise the 
 
 | UI option | Saved value | Appears when | Front page shows |
 |---|---|---|---|
-| Show the latest posts (显示最新发布的文章) | `recent` | Always | Default; lists posts in reverse chronological order |
-| Use the [page] page as the front page (使用 [页面] 页面作为首页) | `page:<page ID>`, for example `page:2` | At least one published page exists | The content of the selected page |
-| Call the [file] template file directly (直接调用 [文件] 模板文件) | `file:<file name>`, for example `file:home.php` | The current theme has a file declared as a front page template | The output of the selected template file |
+| Show the latest posts | `recent` | Always | Default; lists posts in reverse chronological order |
+| Use the [page] page as the front page | `page:<page ID>`, for example `page:2` | At least one published page exists | The content of the selected page |
+| Call the [file] template file directly | `file:<file name>`, for example `file:home.php` | The current theme has a file declared as a front page template | The output of the selected template file |
 
 ### Using a page as the front page
 
@@ -89,4 +89,4 @@ For example, after you change the path to `/posts/` and save, `/posts/` shows th
 - "Posts per page" (`pageSize`) affects the pagination of all post list pages; after you make it smaller, there are more pages, and the content behind existing `/page/N/` URLs changes.
 - "Number of posts in lists" (`postsListSize`) only affects lists of recent posts such as those in a theme's sidebar.
 
-Both numbers must be integers; otherwise the message "Please enter a number" (请填入一个数字) appears.
+Both numbers must be integers; otherwise the message "Please enter a number" appears.

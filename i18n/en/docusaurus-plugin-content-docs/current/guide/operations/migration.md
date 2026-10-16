@@ -34,12 +34,12 @@ The plugin does **not** import: attachment files, WordPress users, WordPress set
 
 1. Install a new Typecho 1.3 site. The WordPress MySQL database must be reachable from this server; the plugin only supports MySQL (when enabled it checks whether `Mysqli` or `Pdo_Mysql` is available).
 2. Download the `WordpressToTypecho` directory from the plugin repository and put it in `usr/plugins/WordpressToTypecho/`.
-3. Enable it under "Dashboard → Plugins" (控制台 → 插件) in the admin panel, then open the plugin settings and fill in the WordPress database host, port, user name, password, database name and table prefix (default `wp_`).
+3. Enable it under "Dashboard → Plugins" in the admin panel, then open the plugin settings and fill in the WordPress database host, port, user name, password, database name and table prefix (default `wp_`).
 4. Open the new "从 WordPress 导入数据" (Import data from WordPress) item in the "Dashboard" menu and start the import. With a large amount of data it may time out, so raise PHP's `max_execution_time` first.
 5. After the import:
    - Copy WordPress's `wp-content/uploads/` to **the same path** on the new server and make it reachable by the web server, so image URLs in old posts keep working; or replace the URLs in the content in bulk as described [below](#replace-urls);
-   - Under "Settings → Permalinks" (设置 → 永久链接), set the same post URL format as the original site (a custom format is allowed), so search engines and external links keep working;
-   - Refresh the counts under "Manage → Categories" (管理 → 分类) and "Manage → Tags" (管理 → 标签); see [below](#counts);
+   - Under "Settings → Permalinks", set the same post URL format as the original site (a custom format is allowed), so search engines and external links keep working;
+   - Refresh the counts under "Manage → Categories" and "Manage → Tags"; see [below](#counts);
    - Once the import is complete, you can disable and delete the plugin.
 
 ## Importing from Emlog and other software {#others}
@@ -70,10 +70,10 @@ Most of Typecho's links are generated from **the domain currently being accessed
 
 | Location | How to change it |
 |---|---|
-| Site URL (option `siteUrl`) | Log in to the admin panel with the new domain and change it under "Settings → General" (设置 → 基本). If you cannot get into the admin panel, change the database directly; see below |
+| Site URL (option `siteUrl`) | Log in to the admin panel with the new domain and change it under "Settings → General". If you cannot get into the admin panel, change the database directly; see below |
 | Constants in `config.inc.php` | Any of `__TYPECHO_SITE_URL__`, `__TYPECHO_ROOT_URL__`, `__TYPECHO_URL_PREFIX__`, `__TYPECHO_UPLOAD_URL__`, `__TYPECHO_THEME_URL__`, `__TYPECHO_PLUGIN_URL__` that contain the old domain; the `domain` of `__TYPECHO_COOKIE_OPTIONS__`. See [config.inc.php and constants](./config-file.md) |
 | Images and internal links in post content | The content stores the full URL at the time of insertion, so replace them in bulk; see below |
-| Users' homepage URLs | At installation, the administrator's homepage URL is the site URL. Change it under "Manage → Users" (管理 → 用户) or in the profile settings, or change the `url` field of the `typecho_users` table |
+| Users' homepage URLs | At installation, the administrator's homepage URL is the site URL. Change it under "Manage → Users" or in the profile settings, or change the `url` field of the `typecho_users` table |
 | Theme and plugin settings | If you entered full URLs in settings (such as a logo image), check them one by one |
 
 Afterwards, all users need to log in again: the name of the login cookie depends on the site URL, so old cookies stop working once the domain changes.

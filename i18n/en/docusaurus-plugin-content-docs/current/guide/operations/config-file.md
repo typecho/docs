@@ -113,7 +113,7 @@ For details and use cases see [HTTPS, reverse proxies and CDNs](./https-proxy.md
 
 | Constant | Type / default | Effect | Read at |
 |---|---|---|---|
-| `__TYPECHO_REWRITE__` | boolean, undefined | When true, URLs are always generated without `index.php`, regardless of the admin setting "Use URL rewriting" (是否使用地址重写功能); this option and the rewrite check no longer appear on the admin "Permalinks" page. Suitable for environments where the server cannot reach itself and the rewrite check therefore fails. **After defining it, make sure the server's rewrite rules really work**, otherwise every post returns 404 | `var/Widget/Options.php:549`, `var/Widget/Options/Permalink.php:167`, `:204` |
+| `__TYPECHO_REWRITE__` | boolean, undefined | When true, URLs are always generated without `index.php`, regardless of the admin setting "Use URL rewriting"; this option and the rewrite check no longer appear on the admin "Permalinks" page. Suitable for environments where the server cannot reach itself and the rewrite check therefore fails. **After defining it, make sure the server's rewrite rules really work**, otherwise every post returns 404 | `var/Widget/Options.php:549`, `var/Widget/Options/Permalink.php:167`, `:204` |
 | `__TYPECHO_PATHINFO_ENCODING__` | encoding name, undefined | When the path passed by the server is not UTF-8, it is first converted from this encoding to UTF-8 (the source comment says this is for IIS), such as `'GBK'` | `var/Typecho/Request.php:353` |
 
 When `__TYPECHO_REWRITE__` is false (`false`), the admin option is hidden as well; whether rewriting is used is then decided by the existing `rewrite` option in the database.

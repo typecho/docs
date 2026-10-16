@@ -54,7 +54,7 @@ PHP 8.2.x
 ```
 
 :::caution
-As with the web installation, for MySQL and PostgreSQL **the database must be created beforehand**; otherwise you get "Database: "xxx" does not exist, please create it manually and try again" (数据库: "xxx"不存在，请手动创建后重试).
+As with the web installation, for MySQL and PostgreSQL **the database must be created beforehand**; otherwise you get "Database: "xxx" does not exist, please create it manually and try again".
 :::
 
 ## Environment variables {#环境变量}
@@ -65,7 +65,7 @@ The tables below list every environment variable that `install.php` reads in CLI
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `TYPECHO_SITE_URL` | none, **required in practice** | The site URL; written to the option `siteUrl` and also used as the homepage URL of the administrator account. If it is not set, the first two steps run as usual and the installer only exits with "Please enter the site URL" (请填写站点地址) in step 3 |
+| `TYPECHO_SITE_URL` | none, **required in practice** | The site URL; written to the option `siteUrl` and also used as the homepage URL of the administrator account. If it is not set, the first two steps run as usual and the installer only exits with "Please enter the site URL" in step 3 |
 | `TYPECHO_LANG` | `zh_CN` | Written to the option `lang` (the admin interface language), e.g. `en_US`. The interface and the installer output only switch to that language when `usr/langs` contains the matching language pack |
 
 ### Database
@@ -91,10 +91,10 @@ The tables below list every environment variable that `install.php` reads in CLI
 
 | Value | Effect |
 |---|---|
-| `none` | Normal installation; if tables with the same prefix already exist, reports "The installer has detected that the existing tables already exist." (安装程序检查到原有数据表已经存在.) and exits |
+| `none` | Normal installation; if tables with the same prefix already exist, reports "The installer has detected that the existing tables already exist." and exits |
 | `delete` | Drops the 7 tables with the same prefix first and then installs again; **all existing data is lost** |
 | `keep` | Keeps the existing tables: if the existing data is complete, it finishes immediately and exits with 0 (no administrator is created); if the tables exist but the data is incomplete, it goes on with step 3 |
-| `config` | Requires a `config.inc.php` in the site root; if there is none, reports "No manually created configuration file was detected, please check and create it again" (没有检测到您手动创建的配置文件, 请检查后再次创建) and exits |
+| `config` | Requires a `config.inc.php` in the site root; if there is none, reports "No manually created configuration file was detected, please check and create it again" and exits |
 
 Any other value reports `dbNext: 确认您的配置` and exits.
 
@@ -116,7 +116,7 @@ Every run first prints two lines of version information (`Typecho 1.3.0` and `PH
 
 | Situation | Output | Exit code |
 |---|---|---|
-| Installation succeeded | "Installation successful" (安装成功) with the user name and password | `0` |
+| Installation succeeded | "Installation successful" with the user name and password | `0` |
 | `TYPECHO_DB_NEXT=keep` and the existing data is complete | nothing more | `0` |
 | Configuration validation failed | One `field: error message` per line, e.g. `dbUser: 确认您的配置`, `userUrl: 请填写站点地址` | `1` |
 | Environment check failed, cannot connect to the database, database does not exist, tables already exist, etc. | One or more lines of error messages | `1` |
@@ -132,7 +132,7 @@ Note that "already installed" and "installation failed" both exit with `1`; chec
 
 ## Retrying after a partial failure
 
-The CLI installation writes `config.inc.php` and creates the tables during the database step. If step 3 then fails (most commonly because `TYPECHO_SITE_URL` was not set), the site is left with a configuration, tables, but no data. Running it again as is reports "The installer has detected that the existing tables already exist." (安装程序检查到原有数据表已经存在.); add the missing variable and `TYPECHO_DB_NEXT=keep`:
+The CLI installation writes `config.inc.php` and creates the tables during the database step. If step 3 then fails (most commonly because `TYPECHO_SITE_URL` was not set), the site is left with a configuration, tables, but no data. Running it again as is reports "The installer has detected that the existing tables already exist."; add the missing variable and `TYPECHO_DB_NEXT=keep`:
 
 ```bash
 TYPECHO_SITE_URL=https://blog.example.com TYPECHO_DB_NEXT=keep php install.php

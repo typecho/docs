@@ -114,7 +114,7 @@ Some old themes fetch only regular comments like this:
 
 `comments()` has no parameters; the `'comment'` passed in is ignored, and the returned list **includes pings** (trackbacks and pingbacks). There are two ways to show only regular comments:
 
-- The site owner checks "Show only comments, not Pingback and Trackback" (仅显示评论, 不显示 Pingback 和 Trackback) under "Settings → Comments" (设置 → 评论);
+- The site owner checks "Show only comments, not Pingback and Trackback" under "Settings → Comments";
 - The theme filters by `$comments->type`; see [Comment templates](./theme/comments.md#pings) for how.
 
 In addition, `$this->pings()` cannot be used in 1.3.0 (it causes a fatal error); do not use it to fetch pings separately.

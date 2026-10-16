@@ -49,7 +49,7 @@ Both steps must be done together: if you only change the constant, admin links p
 ## After the change
 
 - **The login form's submission URL does not change**. Whatever the admin directory is called, login submits to `/index.php/action/login`; changing the admin path only hides the login page and is no substitute for a strong password.
-- **Themes may expose the new path**. For example, the bundled `default` theme shows a "Login" link in the "Other" block of the sidebar (the theme setting "Show miscellaneous" (显示其它杂项)), and that link is the new admin URL. If you do not want it public, untick this item in the theme settings.
+- **Themes may expose the new path**. For example, the bundled `default` theme shows a "Login" link in the "Other" block of the sidebar (the theme setting "Show miscellaneous"), and that link is the new admin URL. If you do not want it public, untick this item in the theme settings.
 - **When upgrading, replace the directory you named yourself**. When [upgrading](../getting-started/upgrade.md), overwrite `manage-x7/` with the new version's `admin/`: delete `manage-x7` first, then copy `admin` from the new package and rename it to `manage-x7`. Do not put the new `admin/` straight into the site directory, or you will end up with two sets of admin files.
 - **Rules for `/admin/` in the web server or CDN** (no caching, access restrictions and so on) must be changed to the new path as well.
 - Third-party plugins or themes that hard-code `/admin/` stop working after the rename. Typecho's own code does not hard-code the admin path; plugins and themes need to be checked individually.

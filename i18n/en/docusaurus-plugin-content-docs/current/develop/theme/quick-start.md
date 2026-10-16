@@ -269,7 +269,7 @@ function themeConfig($form)
 }
 ```
 
-With `themeConfig()` in place, a "Theme settings" (设置外观) tab appears at the top of "Dashboard → Appearance" in the admin panel, and the saved value is read in templates with `$this->options->footerText`. For details, see [Theme options](./theme-options.md) and [functions.php callbacks](./functions-php.md).
+With `themeConfig()` in place, a "Theme settings" tab appears at the top of "Dashboard → Appearance" in the admin panel, and the saved value is read in templates with `$this->options->footerText`. For details, see [Theme options](./theme-options.md) and [functions.php callbacks](./functions-php.md).
 
 ## style.css
 

@@ -196,15 +196,15 @@ This rewrite only covers `index.php`; other `xxx.php/...` URLs are still rejecte
 
 ## Enabling permalinks in the admin panel
 
-Once the server is configured, go to "Settings → Permalinks" (设置 → 永久链接) in the admin panel, set "Use URL rewriting" (是否使用地址重写功能) to "Enable" (启用) and save. When saving, Typecho sends a test request **from the server itself** to `site URL/action/ajax`, and only allows enabling if the response is correct; under Apache (`mod_php`), if the root directory has no `.htaccess` and is writable, it also writes one automatically.
+Once the server is configured, go to "Settings → Permalinks" in the admin panel, set "Use URL rewriting" to "Enable" and save. When saving, Typecho sends a test request **from the server itself** to `site URL/action/ajax`, and only allows enabling if the response is correct; under Apache (`mod_php`), if the root directory has no `.htaccess` and is writable, it also writes one automatically.
 
-When the check fails, the page shows "Rewrite check failed, please check your server settings" (重写功能检测失败, 请检查你的服务器设置). Common causes:
+When the check fails, the page shows "Rewrite check failed, please check your server settings". Common causes:
 
 | Cause | Fix |
 |---|---|
 | The rewrite rules are not in effect | Check the configuration as described above, and open a post URL (such as `/archives/1/`) by hand to confirm it works |
-| Apache cannot create `.htaccess` in the root directory | The page additionally says "The program cannot create the .htaccess file in the root directory" (程序无法在根目录创建.htaccess文件); create the `.htaccess` above by hand |
-| The server cannot reach its own public address (containers, internal networks, a domain configured only in the local hosts file, CDN origin restrictions, and so on) | After confirming the rules work in a browser, tick "If you still want to enable this feature, check here" (如果你仍然想启用此功能, 请勾选这里) and save; or define `__TYPECHO_REWRITE__` in `config.inc.php`, see [config.inc.php and constants](./config-file.md#rewrite) |
+| Apache cannot create `.htaccess` in the root directory | The page additionally says "The program cannot create the .htaccess file in the root directory"; create the `.htaccess` above by hand |
+| The server cannot reach its own public address (containers, internal networks, a domain configured only in the local hosts file, CDN origin restrictions, and so on) | After confirming the rules work in a browser, tick "If you still want to enable this feature, check here" and save; or define `__TYPECHO_REWRITE__` in `config.inc.php`, see [config.inc.php and constants](./config-file.md#rewrite) |
 
 ## Common errors {#troubleshooting}
 

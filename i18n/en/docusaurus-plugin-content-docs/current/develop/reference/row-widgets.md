@@ -149,7 +149,7 @@ Arguments of the common methods:
 | `tags` | `array` | Gets the tags |
 | `text` | `string` | Raw body text (for Markdown posts, without the leading `<!--markdown-->` marker) |
 | `theId` | `string` | Anchor ID |
-| `title` | `string` | Title; "This content is password protected" (此内容被密码保护) when password protected and not unlocked |
+| `title` | `string` | Title; "This content is password protected" when password protected and not unlocked |
 | `trackbackUrl` | `string` | Trackback URL |
 | `url` | `string` | Same as `permalink` |
 | `year` | `string` | Publish year (four digits) |

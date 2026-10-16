@@ -11,7 +11,7 @@ Typecho ships with three kinds of feeds, RSS 2.0, RSS 1.0 and Atom, plus an XML-
 
 ## Feed URLs {#feeds}
 
-The table below shows the URLs with URL rewriting (伪静态) enabled; without it, add `/index.php` after the site URL, for example `https://example.com/index.php/feed/`.
+The table below shows the URLs with URL rewriting enabled; without it, add `/index.php` after the site URL, for example `https://example.com/index.php/feed/`.
 
 | Content | RSS 2.0 | RSS 1.0 | Atom 1.0 |
 |---|---|---|---|
@@ -30,33 +30,33 @@ The theme's `<head>` outputs three `<link rel="alternate">` tags for the current
 Each feed outputs the latest 10 entries, and includes only posts that meet all of the following:
 
 - public, with the publish date reached (scheduled posts enter only once their time comes);
-- "Allow in feeds" (允许在聚合中出现, `allowFeed`) is checked in the editor;
+- "Allow in feeds" (`allowFeed`) is checked in the editor;
 - no password is set.
 
 Hidden, private and pending-review posts and drafts never appear. See [Visibility and password protection](./visibility.md) for the rules.
 
 ### Full text or excerpt: `feedFullText`
 
-"Full text in feeds" (聚合全文输出, `feedFullText`) in **Settings → Reading** (设置 → 阅读):
+"Full text in feeds" (`feedFullText`) in **Settings → Reading**:
 
 | UI option | Value | Effect |
 |---|---|---|
-| Full text (全文输出) | `1` (default) | The feed contains the full text of posts |
-| Excerpt only (仅输出摘要) | `0` | When a post has the excerpt separator `<!--more-->`, only the part before the separator is output, followed by a `[...]` link to the original post; **posts without a separator are still output in full** |
+| Full text | `1` (default) | The feed contains the full text of posts |
+| Excerpt only | `0` | When a post has the excerpt separator `<!--more-->`, only the part before the separator is output, followed by a `[...]` link to the original post; **posts without a separator are still output in full** |
 
 So after choosing "Excerpt only", you also need to insert the excerpt separator in your posts (the editor toolbar button or <kbd>Ctrl</kbd>+<kbd>M</kbd>), see [Writing posts](./posts.md#markdown).
 
 ## XML-RPC interface {#xmlrpc}
 
-"XMLRPC interface" (XMLRPC 接口, `allowXmlRpc`) in **Settings → General** (设置 → 基本) has three values, and defaults to "On":
+"XMLRPC interface" (`allowXmlRpc`) in **Settings → General** has three values, and defaults to "On":
 
 | UI option | Value | Offline clients | Receive pingbacks | Page output |
 |---|---|---|---|---|
-| Off (关闭) | `0` | Unavailable; the interface URL returns 404 | No | No RSD, wlwmanifest or pingback links |
-| Disable only the Pingback interface (仅关闭 Pingback 接口) | `1` | Available | No; calling `pingback.ping` returns "requested method pingback.ping does not exist" | RSD and wlwmanifest links are output; no pingback link and no `X-Pingback` response header |
-| On (打开) | `2` | Available | Yes | Everything is output; post pages carry the `X-Pingback` response header |
+| Off | `0` | Unavailable; the interface URL returns 404 | No | No RSD, wlwmanifest or pingback links |
+| Disable only the Pingback interface | `1` | Available | No; calling `pingback.ping` returns "requested method pingback.ping does not exist" | RSD and wlwmanifest links are output; no pingback link and no `X-Pingback` response header |
+| On | `2` | Available | Yes | Everything is output; post pages carry the `X-Pingback` response header |
 
-For sites that use no offline client and do not want to receive pingbacks, we recommend "Off", to reduce the entry points for scanning and abuse. Trackbacks do not go through XML-RPC and are not affected by this option; they are controlled by each post's "Allow trackbacks" (允许被引用), see [Managing and moderating comments](./comments.md).
+For sites that use no offline client and do not want to receive pingbacks, we recommend "Off", to reduce the entry points for scanning and abuse. Trackbacks do not go through XML-RPC and are not affected by this option; they are controlled by each post's "Allow trackbacks", see [Managing and moderating comments](./comments.md).
 
 ### Connecting an offline client
 
@@ -83,7 +83,7 @@ The 1.3.0 XML-RPC edit interface has a known issue: when you modify an existing 
 
 ### Writing Markdown in a client {#markdown}
 
-By default, content submitted by a client is saved as HTML, and a client reading a post also gets the converted HTML. If your client itself writes in Markdown, turn on "Use Markdown syntax in the XMLRPC interface" (在 XMLRPC 接口中使用 Markdown 语法, `xmlrpcMarkdown`) in your [Profile](./profile.md#writing): from then on, content submitted with your account is saved as Markdown (with the `<!--markdown-->` marker in the content), and the client gets the Markdown source when reading. This option is set per user.
+By default, content submitted by a client is saved as HTML, and a client reading a post also gets the converted HTML. If your client itself writes in Markdown, turn on "Use Markdown syntax in the XMLRPC interface" (`xmlrpcMarkdown`) in your [Profile](./profile.md#writing): from then on, content submitted with your account is saved as Markdown (with the `<!--markdown-->` marker in the content), and the client gets the Markdown source when reading. This option is set per user.
 
 For new posts, "Allow comments / trackbacks / in feeds" follows "Allow by default" in your Profile.
 

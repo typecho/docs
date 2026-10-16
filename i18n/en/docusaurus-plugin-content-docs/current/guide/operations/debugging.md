@@ -100,8 +100,8 @@ Then reproduce the problem in the browser.
 
 500 errors, blank pages, admin buttons that stop working and similar problems that appear after an upgrade, after enabling a plugin or after switching themes are mostly caused by a plugin or theme. Narrow it down in this order:
 
-1. **Disable all plugins**: in the admin panel, go to "Dashboard → Plugins" (控制台 → 插件) and click "Disable" (禁用) on each one.
-2. **Switch to a bundled theme**: in the admin panel, go to "Dashboard → Appearance" (控制台 → 外观) and enable `default` (or `classic-22`, new in 1.3).
+1. **Disable all plugins**: in the admin panel, go to "Dashboard → Plugins" and click "Disable" on each one.
+2. **Switch to a bundled theme**: in the admin panel, go to "Dashboard → Appearance" and enable `default` (or `classic-22`, new in 1.3).
 3. Once the problem is gone, re-enable the plugins **one at a time**, testing after each, to find the one causing the problem; finally switch back to the original theme and test.
 4. Once found: upgrade that plugin or theme to a version that supports 1.3, contact its author, or stop using it.
 
@@ -141,6 +141,6 @@ While a plugin is enabled, deleting or renaming its directory under `usr/plugins
 | 503 `Error establishing a database connection` | Check the database service and the connection parameters in `config.inc.php`; see [config.inc.php and constants](./config-file.md) |
 | Missing styles, mixed content, sent back to the login page after logging in | [HTTPS, reverse proxies and CDNs](./https-proxy.md) |
 | Uploading attachments fails | Whether `usr/uploads/` is writable, and PHP's `upload_max_filesize`; see [Attachment storage location](./uploads-storage.md) |
-| Wrong times displayed | The time zone under "Settings → General" (设置 → 基本) in the admin panel |
+| Wrong times displayed | The time zone under "Settings → General" in the admin panel |
 
 If you still can't solve it, ask for help with the error messages and logs collected on this page; see [Getting help](../help/getting-help.md).

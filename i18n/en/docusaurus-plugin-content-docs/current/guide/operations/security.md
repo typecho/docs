@@ -76,7 +76,7 @@ The corresponding rules for nginx, Apache and Caddy are in [Web server configura
 
 ## 6. Disable the online theme editor {#theme-editor}
 
-"Dashboard → Appearance → Edit current theme" (控制台 → 外观 → 编辑当前外观) in the admin panel can modify a theme's `.php` files directly. Once an administrator account is stolen, an attacker can use it to execute arbitrary code on the server. If you don't need to edit themes online, disable it in `config.inc.php`:
+"Dashboard → Appearance → Edit current theme" in the admin panel can modify a theme's `.php` files directly. Once an administrator account is stolen, an attacker can use it to execute arbitrary code on the server. If you don't need to edit themes online, disable it in `config.inc.php`:
 
 ```php
 define('__TYPECHO_THEME_WRITEABLE__', false);
@@ -91,8 +91,8 @@ Renaming `/admin/` to something else reduces scans and brute-force attempts agai
 ## 8. Accounts and feature switches
 
 - **Use strong passwords**, and give each administrator their own account instead of sharing one. Typecho waits 3 seconds before responding to a failed login (`var/Widget/Login.php`), but there is no limit on failed attempts and no two-factor authentication. If needed, rate-limit the login URL `/index.php/action/login` on the web server, or use a plugin (Typecho provides the `loginFailure` plugin interface).
-- **Turn off registration when you don't need it**: "Settings → General → Allow registration" (设置 → 基本 → 是否允许注册). With registration open, new users are "subscribers" (`subscriber`) by default and have no write permission.
-- **Turn off XML-RPC when you don't use offline clients**: "Settings → General → XMLRPC interface" (设置 → 基本 → XMLRPC 接口), with the options "Off" (关闭), "Disable only the Pingback interface" (仅关闭 Pingback 接口) and "On" (打开).
+- **Turn off registration when you don't need it**: "Settings → General → Allow registration". With registration open, new users are "subscribers" (`subscriber`) by default and have no write permission.
+- **Turn off XML-RPC when you don't use offline clients**: "Settings → General → XMLRPC interface", with the options "Off", "Disable only the Pingback interface" and "On".
 - **Allow only the attachment types you need**: the allowed upload file types under "Settings → General". Typecho judges only by an extension whitelist; do not add executable types or types that browsers parse as web pages, such as `php`, `phtml`, `phar`, `html` or `htm`, to the custom types. SVG files can also contain scripts, so be careful with them as well.
 
 ## 9. HTTPS and cookies {#https}

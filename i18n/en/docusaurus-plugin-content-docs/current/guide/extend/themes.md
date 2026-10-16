@@ -7,7 +7,7 @@ source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
 
 # Installing and Configuring Themes
 
-A theme (appearance) determines how the front end of your site looks. Themes are managed in the admin panel under "Dashboard → Appearance" (控制台 → 外观, `admin/themes.php`), which only administrators can use.
+A theme (appearance) determines how the front end of your site looks. Themes are managed in the admin panel under "Dashboard → Appearance" (`admin/themes.php`), which only administrators can use.
 
 ## The two bundled themes
 
@@ -20,10 +20,10 @@ Settings of the two themes:
 
 | Theme | UI label | Field | Description |
 |---|---|---|---|
-| default | Site logo URL (站点 LOGO 地址) | `logoUrl` | An image URL, shown before the site title |
-| default | Sidebar display (侧边栏显示) | `sidebarBlock[]` | Checkboxes: show recent posts, show recent replies, show categories, show archives, show other miscellany (all selected by default) |
-| classic-22 | Site logo (网站 Logo) | `logoUrl` | An image URL; displays the logo |
-| classic-22 | Appearance style (外观风格) | `colorSchema` | Auto, light, dark, custom; "If custom is selected, the theme uses the styles from theme.css" (如果选择了自定义，主题将使用 theme.css 的样式) |
+| default | Site logo URL | `logoUrl` | An image URL, shown before the site title |
+| default | Sidebar display | `sidebarBlock[]` | Checkboxes: show recent posts, show recent replies, show categories, show archives, show other miscellany (all selected by default) |
+| classic-22 | Site logo | `logoUrl` | An image URL; displays the logo |
+| classic-22 | Appearance style | `colorSchema` | Auto, light, dark, custom; "If custom is selected, the theme uses the styles from theme.css" |
 
 ## Installing a theme
 
@@ -31,7 +31,7 @@ The admin panel has **no** feature for uploading themes; you need to put the fil
 
 1. Download the theme and extract it to get a directory;
 2. Upload the whole directory into `usr/themes/`, for example `usr/themes/mytheme/`;
-3. Go to "Dashboard → Appearance"; the new theme appears in the "Available themes" (可以使用的外观) list.
+3. Go to "Dashboard → Appearance"; the new theme appears in the "Available themes" list.
 
 For a directory to be recognized as a theme, it must contain at least an `index.php` whose opening comment describes the theme. The name, author, version and description shown in the list all come from this comment:
 
@@ -53,13 +53,13 @@ When you download a theme from GitHub, the extracted directory name often has a 
 
 ## Switching themes
 
-Click "Activate" (启用) next to the theme you want to use in the list; the message "Theme has been changed" (外观已经改变) appears. The theme currently in use has no "Activate" link.
+Click "Activate" next to the theme you want to use in the list; the message "Theme has been changed" appears. The theme currently in use has no "Activate" link.
 
 :::caution Switching themes deletes the previous theme's settings
 When you activate a new theme, **the settings of the previous theme are deleted**, and the new theme's settings revert to their defaults. For example, if you fill in "Site logo URL" in `default`, switch to another theme and then switch back, the logo URL has been cleared. Write down any settings you want to keep before switching.
 :::
 
-In addition, when you switch themes, if "Site front page" (站点首页) is set to "Call a template file directly" (直接调用模板文件), it is automatically reset to "Show the latest posts" (显示最新发布的文章); see [Reading settings](../settings/reading.md#front-page).
+In addition, when you switch themes, if "Site front page" is set to "Call a template file directly", it is automatically reset to "Show the latest posts"; see [Reading settings](../settings/reading.md#front-page).
 
 ### The current theme's directory is missing
 
@@ -73,17 +73,17 @@ Upload the theme again and refresh the page, and the message disappears; if you 
 
 ## Theme settings page {#config}
 
-When a theme defines `themeConfig()` in `functions.php`, a "Theme settings" (设置外观) tab appears at the top of the Appearance page (`admin/options-theme.php`). Fill it in and click "Save settings" (保存设置); the message "Theme settings have been saved" (外观设置已经保存) appears. The settings are stored in the `options` table of the database, in a row named `theme:<theme directory name>`.
+When a theme defines `themeConfig()` in `functions.php`, a "Theme settings" tab appears at the top of the Appearance page (`admin/options-theme.php`). Fill it in and click "Save settings"; the message "Theme settings have been saved" appears. The settings are stored in the `options` table of the database, in a row named `theme:<theme directory name>`.
 
 The meaning of each setting is up to the theme; see the theme's own documentation.
 
 ## Editing theme files online {#editor}
 
-"Edit current theme" (编辑当前外观) at the top of the Appearance page (`admin/theme-editor.php`) lets you modify theme files directly in the browser:
+"Edit current theme" at the top of the Appearance page (`admin/theme-editor.php`) lets you modify theme files directly in the browser:
 
 - The left side lists the `.php`, `.js` and `.css` files in the theme directory (subdirectories are not included);
-- Click a file name to open it, edit it and click "Save file" (保存文件); the message "Changes to file X have been saved" (文件 某某 的更改已经保存) appears. When the file itself is not writable, "This file cannot be written" (此文件无法写入) is shown in place of the button;
-- The "Edit" (编辑) link of other themes in the list lets you edit themes that are not active.
+- Click a file name to open it, edit it and click "Save file"; the message "Changes to file X have been saved" appears. When the file itself is not writable, "This file cannot be written" is shown in place of the button;
+- The "Edit" link of other themes in the list lets you edit themes that are not active.
 
 The editor has no undo, no version history and no syntax checking. A single wrong character in a PHP file such as `functions.php` can make both the front end and the admin panel fail to open, and then the only way to revert it is over FTP / SSH. Back up the file before editing.
 

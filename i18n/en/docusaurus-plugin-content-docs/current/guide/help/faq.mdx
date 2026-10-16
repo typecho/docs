@@ -11,7 +11,7 @@ These are the questions site owners ask most often. Each entry only gives the ca
 
 ## The home page opens, but every post link returns 404 {#404}
 
-Permalinks (URL rewriting) are enabled, but the web server does not pass these URLs to `index.php`. Depending on the server, check nginx's `try_files`, Apache's `mod_rewrite` and `.htaccess`, or Caddy's `php_fastcgi`; a failed rewrite check under **Permalinks** (永久链接) in the admin panel is covered on the same page. See [Web server configuration: all posts return 404](../operations/web-server.md#404-everywhere).
+Permalinks (URL rewriting) are enabled, but the web server does not pass these URLs to `index.php`. Depending on the server, check nginx's `try_files`, Apache's `mod_rewrite` and `.htaccess`, or Caddy's `php_fastcgi`; a failed rewrite check under **Permalinks** in the admin panel is covered on the same page. See [Web server configuration: all posts return 404](../operations/web-server.md#404-everywhere).
 
 If you only get a 404 **when logging in**, the nginx PHP configuration most likely does not support URLs like `/index.php/action/login`; see the next two entries.
 
@@ -33,7 +33,7 @@ Logging in works with the nginx and Caddy configurations given in the documentat
 
 First turn on debug mode or look at the PHP error log to find the actual error, then narrow it down with the "disable all plugins, switch back to the default theme, restore one by one" procedure; if you cannot get into the admin panel, you can disable plugins directly in the database. See [Debugging and troubleshooting](../operations/debugging.md#isolate).
 
-If **Complete upgrade** (完成升级) keeps loading when you upgrade to 1.3.0, it may be the known issue caused by a large number of attachments; see [Upgrading](../getting-started/upgrade.md).
+If **Complete upgrade** keeps loading when you upgrade to 1.3.0, it may be the known issue caused by a large number of attachments; see [Upgrading](../getting-started/upgrade.md).
 
 ## Where are uploaded attachments stored? {#uploads}
 
@@ -45,7 +45,7 @@ For WordPress you can use the WordpressToTypecho plugin from the official plugin
 
 ## How do I back up my site? {#backup}
 
-A full backup consists of three parts: the database (with the database's own export tool), the `usr/` directory, and `config.inc.php`. **Dashboard → Backup** (控制台 → 备份) in the admin panel only exports content, without settings or any files, and cannot replace a full backup. See [Backup and restore](../operations/backup.md).
+A full backup consists of three parts: the database (with the database's own export tool), the `usr/` directory, and `config.inc.php`. **Dashboard → Backup** in the admin panel only exports content, without settings or any files, and cannot replace a full backup. See [Backup and restore](../operations/backup.md).
 
 ## Can I change the admin path `/admin/`? {#admin-path}
 
@@ -57,7 +57,7 @@ Typecho has no "recover password" feature. You can ask another administrator to 
 
 ## The post counts of categories and tags are wrong {#counts}
 
-Post counts are stored in the database and are not recalculated automatically after an import, a restore or a manual database change. In **Manage → Categories** (管理 → 分类) or **Manage → Tags** (管理 → 标签), select all and click **Refresh** (刷新) in the **Selected items** (选中项) menu; after refreshing, only published posts are counted. See [Migrating from other blogs: wrong post counts for categories and tags](../operations/migration.md#counts).
+Post counts are stored in the database and are not recalculated automatically after an import, a restore or a manual database change. In **Manage → Categories** or **Manage → Tags**, select all and click **Refresh** in the **Selected items** menu; after refreshing, only published posts are counted. See [Migrating from other blogs: wrong post counts for categories and tags](../operations/migration.md#counts).
 
 ## More
 

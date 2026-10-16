@@ -52,7 +52,7 @@ The installer lists the database adapters available on the server in the drop-do
 | `Pgsql` | `pgsql` | PostgreSQL |
 
 :::tip
-The URL input boxes in the admin panel (**Site URL** (站点地址) and **Homepage URL** (个人主页地址)) use `idn_to_utf8()` from the `intl` extension to display IDN (internationalized, e.g. Chinese) domain names in their original form. Typecho works without `intl`; such domain names are then shown in their encoded form starting with `xn--`.
+The URL input boxes in the admin panel (**Site URL** and **Homepage URL**) use `idn_to_utf8()` from the `intl` extension to display IDN (internationalized, e.g. Chinese) domain names in their original form. Typecho works without `intl`; such domain names are then shown in their encoded form starting with `xn--`.
 :::
 
 ## Database
@@ -69,7 +69,7 @@ Typecho supports MySQL (including compatible forks such as MariaDB), SQLite and 
 These version numbers **appear only in the README; the program does not check them**: neither the installer nor the database adapters read or compare the database server version. Installing on an older version may "appear to succeed" and then fail during use.
 :::
 
-MySQL uses the `utf8mb4` character set by default (it can store emoji). The installer's note says "the utf8mb4 encoding requires at least MySQL 5.5.3" (选择 utf8mb4 编码至少需要 MySQL 5.5.3 版本).
+MySQL uses the `utf8mb4` character set by default (it can store emoji). The installer's note says "the utf8mb4 encoding requires at least MySQL 5.5.3".
 
 With MySQL or PostgreSQL, **you must create the database manually beforehand**; the installer only creates tables, not the database. SQLite does not need this: the installer creates the database file itself.
 
@@ -79,7 +79,7 @@ Step 1 of the installer checks the `usr/uploads` directory:
 
 - if the directory does not exist, it tries to create it with permissions `0755`;
 - if the directory exists but is not readable and writable, it tries to change it to `0755`;
-- if both fail, it reports the error "The upload directory cannot be written; please manually make the /usr/uploads directory under the installation directory writable and then continue the upgrade" (上传目录无法写入, 请手动将安装目录下的 /usr/uploads 目录的权限设置为可写然后继续升级).
+- if both fail, it reports the error "The upload directory cannot be written; please manually make the /usr/uploads directory under the installation directory writable and then continue the upgrade".
 
 The installer also tries to write `config.inc.php` to the site root. If the root is not writable, the installation does not fail; instead it shows the contents of the configuration file so you can create it manually. See [Installation](./installation.mdx).
 

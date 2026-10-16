@@ -18,14 +18,14 @@ This page only lists what is in the 1.3.0 release. Changes merged on the `master
 | Feature | Description |
 |---|---|
 | Revisions | When you edit and save a post or page that is already published, the changes are saved as a revision (the new content type `revision`); the published content stays unchanged until you publish again |
-| Page tree | A page can have a parent page, forming a multi-level structure. **Manage → Pages** (管理 → 独立页面) shows the number of child pages of each page; click it to open the list of child pages (`manage-pages.php?parent=`). You can also add a child page to a page directly |
+| Page tree | A page can have a parent page, forming a multi-level structure. **Manage → Pages** shows the number of child pages of each page; click it to open the list of child pages (`manage-pages.php?parent=`). You can also add a child page to a page directly |
 | New uploader | Attachment upload uses a new implementation and no longer depends on plupload / moxie (or the Flash file `Moxie.swf` in it). You can drag files onto the upload area; the size limit for a single file comes from PHP's `upload_max_filesize` |
 | New official theme classic-22 | A new theme based on Pico CSS 2, shipped in the package alongside `default`, located at `usr/themes/classic-22` |
 | Save with Ctrl/Cmd+S | In the Markdown editor, press <kbd>Ctrl</kbd>+<kbd>S</kbd> (<kbd>Cmd</kbd>+<kbd>S</kbd> on macOS) to save the draft without clicking a button |
-| Internationalized domain names (IDN) | **Site URL** (站点地址) and **Homepage URL** (个人主页地址) now use URL input boxes; internationalized domain names (e.g. Chinese) stored in their `xn--` encoded form are shown in their original form in the admin panel (requires the PHP `intl` extension) |
-| High-resolution avatars | Avatars can additionally output Gravatar URLs at 2× and 3× size (`srcset`), so they look sharper on high-resolution screens. This is enabled by default in **Manage → Comments** (管理 → 评论) in the admin panel; on the front end the comment list does not enable it by default: the theme has to pass `avatarHighRes => true` to `listComments()`, and neither of the two bundled themes turns it on |
+| Internationalized domain names (IDN) | **Site URL** and **Homepage URL** now use URL input boxes; internationalized domain names (e.g. Chinese) stored in their `xn--` encoded form are shown in their original form in the admin panel (requires the PHP `intl` extension) |
+| High-resolution avatars | Avatars can additionally output Gravatar URLs at 2× and 3× size (`srcset`), so they look sharper on high-resolution screens. This is enabled by default in **Manage → Comments** in the admin panel; on the front end the comment list does not enable it by default: the theme has to pass `avatarHighRes => true` to `listComments()`, and neither of the two bundled themes turns it on |
 | PostgreSQL SSL | PostgreSQL connections can use SSL (`sslmode=require`); just select it during installation |
-| MySQL socket | During installation the **Database host** (数据库地址) can be a Unix socket path, see [Installation](./installation.mdx#使用-mysql-socket) |
+| MySQL socket | During installation the **Database host** can be a Unix socket path, see [Installation](./installation.mdx#使用-mysql-socket) |
 
 ## Higher requirements
 
