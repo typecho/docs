@@ -86,6 +86,19 @@ const config = {
     ],
   ],
 
+  themes: [
+    [
+      '@easyops-cn/docusaurus-search-local',
+      /** @type {import('@easyops-cn/docusaurus-search-local').PluginOptions} */
+      ({
+        hashed: true,
+        language: ['en', 'zh'],
+        docsRouteBasePath: '/',
+        indexBlog: false,
+      }),
+    ],
+  ],
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
@@ -112,6 +125,10 @@ const config = {
           },
           {
             type: 'docsVersion',
+            position: 'right',
+          },
+          {
+            type: 'search',
             position: 'right',
           },
           {
