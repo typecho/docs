@@ -1,0 +1,188 @@
+---
+title: Installation
+sidebar_position: 2
+translation: machine
+source_commit: 97eccd0fe4871e7b33f99f7b47436e058e9520d3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Installation
+
+This page explains how to download Typecho and install it through the browser. Before you start, make sure the server meets the [requirements](./requirements.md). To install in a container, in CI or from a script, see [Command-line and unattended installation](./cli-install.md).
+
+## 1. Get the package
+
+The **Downloads** (资源下载) link in the admin panel footer points to the official download page. The package is available from two sources with identical contents:
+
+| Source | Address |
+|---|---|
+| Official download page | [typecho.org/download](https://typecho.org/download) |
+| GitHub Releases | [github.com/typecho/typecho/releases](https://github.com/typecho/typecho/releases), asset name `typecho.zip` |
+
+On the server you can download the latest stable release directly and unpack it into the site root (`/srv/www/typecho` in the examples below):
+
+```bash
+wget https://github.com/typecho/typecho/releases/latest/download/typecho.zip
+unzip typecho.zip -d /srv/www/typecho
+```
+
+`typecho.zip` unpacks straight into the program files, with no outer directory:
+
+```text
+admin/        后台
+install/      安装程序用到的建表脚本与表单
+usr/          主题、插件、上传文件（uploads）
+var/          程序核心
+index.php     入口
+install.php   安装程序
+```
+
+:::caution
+Download a stable release from Releases. The `master` branch contains unreleased changes and is not suitable for production sites.
+:::
+
+## 2. Prepare the database
+
+| Database | What to prepare beforehand |
+|---|---|
+| MySQL / MariaDB | Create an empty database manually, plus a user that can access it |
+| PostgreSQL | Create an empty database manually, plus a user that can access it |
+| SQLite | Nothing; the installer creates the database file automatically |
+
+The installer only creates tables, not the database. If the database does not exist, step 2 reports **"Database: "xxx" does not exist, please create it manually and try again"** (数据库: "xxx"不存在，请手动创建后重试).
+
+<Tabs groupId="database">
+  <TabItem value="mysql" label="MySQL / MariaDB" default>
+
+```sql
+CREATE DATABASE typecho DEFAULT CHARACTER SET utf8mb4;
+CREATE USER 'typecho'@'localhost' IDENTIFIED BY '请换成你的密码';
+GRANT ALL PRIVILEGES ON typecho.* TO 'typecho'@'localhost';
+```
+
+  </TabItem>
+  <TabItem value="pgsql" label="PostgreSQL">
+
+```sql
+CREATE USER typecho WITH PASSWORD '请换成你的密码';
+CREATE DATABASE typecho OWNER typecho ENCODING 'UTF8';
+```
+
+  </TabItem>
+</Tabs>
+
+## 3. Run the web installer
+
+Open `https://your-domain/install.php` in the browser. The installer has three steps; the `?step=` parameter in the address bar shows the current step:
+
+| Step | Address | Contents |
+|---|---|---|
+| 1 | `install.php` (or `?step=1`) | Welcome page, license, interface language; clicking on checks the environment |
+| 2 | `install.php?step=2` | Choose the database adapter and enter the connection details; writes the configuration file and creates the tables |
+| 3 | `install.php?step=3` | Create the administrator account and write the initial data |
+
+The steps check each other: visiting `?step=3` before the tables exist sends you back to `?step=2`; visiting `?step=2` when the tables already exist sends you on to `?step=3`. Once everything is done, visiting `install.php` again redirects straight to the site's home page.
+
+### Step 1: Welcome and environment check
+
+![Typecho installation](@site/docs/guide/getting-started/img/install-start.png)
+
+If the package contains several language packs, a language drop-down appears in the bottom right corner where you can switch the installer's interface language. After you click <kbd>我准备好了, 开始下一步 »</kbd> (I'm ready, go to the next step »), the installer checks the PHP extensions and the permissions of the `usr/uploads` directory (see [Requirements](./requirements.md)), and moves on to step 2 when they pass.
+
+### Step 2: Database configuration
+
+First choose an adapter in the **Database adapter** (数据库适配器) drop-down; the form switches to the fields of that database.
+
+| Field | MySQL default | PostgreSQL default | Notes |
+|---|---|---|---|
+| Database prefix (数据库前缀) | `typecho_` | `typecho_` | 1–16 letters, digits, underscores or hyphens |
+| Database host (数据库地址) | `localhost` | `localhost` | MySQL accepts a socket path, see below |
+| Database port (数据库端口) | `3306` | `5432` | Under **Advanced options** (高级选项) |
+| Database user name (数据库用户名) | empty (hint `root`) | `postgres` | Required |
+| Database password / database name (数据库密码 / 数据库名) | — | — | Database name is required; the password may be empty |
+| Database charset (数据库编码) | `utf8mb4` (or `utf8`) | Fixed to `utf8`, not shown | For MySQL, under **Advanced options** |
+| Database engine (数据库引擎) | `InnoDB` (or `MyISAM`) | — | MySQL only |
+| Database SSL certificate (数据库 SSL 证书) | empty | — | CA certificate path, MySQL only |
+| Enable SSL server certificate verification (启用 SSL 服务端证书验证) | off | off | MySQL: verification is enabled automatically when a CA certificate is given; PostgreSQL: when enabled, connects with `sslmode=require` |
+
+SQLite has only one field, **Database file path** (数据库文件路径); by default it creates a `.db` file with a random name in the `usr/` directory.
+
+#### Using a MySQL socket {#使用-mysql-socket}
+
+If MySQL listens only on a Unix socket, enter the path of the socket file as the **Database host**, for example:
+
+```text
+/var/run/mysqld/mysqld.sock
+```
+
+Whenever the host contains a `/`, the installer treats it as a socket path: the port is ignored, and both the `Pdo_Mysql` and `Mysqli` adapters connect through the socket.
+
+#### When tables already exist or the configuration file cannot be written
+
+The installer uses a hidden field, `dbNext`, to decide what to do in these situations. When you click <kbd>确认, 开始安装 »</kbd> (Confirm, start installation »), its value is `none`; after one of the messages below appears, the button you click changes it to another value and resubmits the form:
+
+| `dbNext` | When it appears | Effect |
+|---|---|---|
+| `none` | Default | Normal installation; if tables with the same prefix already exist, shows "The installer has detected that the existing tables already exist." (安装程序检查到原有数据表已经存在.) with the two buttons below |
+| `delete` | Click **Delete existing data** (删除原有数据) | Drops the 7 tables with the same prefix and creates them again |
+| `keep` | Click **Use existing data** (使用原有数据) | Keeps the existing tables; if the existing data is complete, the installation ends immediately and the user name and password stay as before; if the tables exist but the data is incomplete, it goes on to step 3 |
+| `config` | Click **Created, continue installation »** (创建完毕, 继续安装 ») | Skips writing the configuration file and reads the `config.inc.php` you created manually instead |
+
+:::danger
+**Delete existing data** drops the 7 tables `comments`, `contents`, `fields`, `metas`, `options`, `relationships` and `users` (with the prefix you entered). This cannot be undone.
+:::
+
+**The configuration file cannot be written**: if the site root is not writable, the installer reports "The installer cannot create the config.inc.php file automatically" (安装程序无法自动创建 config.inc.php 文件) and shows the full contents of the configuration file below. Copy them into a new `config.inc.php` in the site root, then click <kbd>创建完毕, 继续安装 »</kbd>. If the file still does not exist at that point, it reports "No manually created configuration file was detected, please check and create it again" (没有检测到您手动创建的配置文件, 请检查后再次创建).
+
+### Step 3: Create the administrator account
+
+| Field | Notes |
+|---|---|
+| Site URL (网站地址) | Detected automatically; correct it manually if it is wrong |
+| User name (用户名) | Required, at most 32 characters |
+| Password (登录密码) | If left empty, a random 8-character password is generated |
+| Email (邮件地址) | Required, at most 200 characters |
+
+After you click <kbd>继续安装 »</kbd> (Continue installation »), the page shows the user name and password, plus links to the control panel and to the site. **If the password was generated randomly, write it down now**: you cannot view it again once this page is closed.
+
+The installer also creates a default category, a post "欢迎使用 Typecho" (Welcome to Typecho), a page "关于" (About) and a comment. You can edit or delete them freely in the admin panel.
+
+## After installation
+
+- **Login address**: the admin panel is at `https://your-domain/admin/`.
+- **URL rewriting**: the installation does not depend on URL rewriting (伪静态). A 404 when you log in to the admin panel or open a post usually means the web server does not pass requests of the form `/index.php/...` to PHP. The nginx, Apache and Caddy configurations are described on the web server configuration page of the "Deployment and operations" chapter, which has not been published yet.
+- **Configuration file**: `config.inc.php` holds the database connection details; do not make it public.
+
+## Losing the administrator password after installation {#安装后丢失管理员密码}
+
+Typecho has no "recover password" feature. Proceed in this order:
+
+1. **Ask another administrator to reset it**: if the site has other administrators, they can edit your account in **Manage → Users** (管理 → 用户) in the admin panel and set a new password.
+2. **Change the database directly**: at login, if the password stored in the database starts neither with `$P$` nor with `$T$`, Typecho compares it as an MD5 value. So you can set the password field to the MD5 of a new password, log in, and then set the password once more under **Profile** (个人设置) so that it is stored in a more secure way.
+
+First compute the MD5 of the new password:
+
+```bash
+php -r 'echo md5("新密码"), PHP_EOL;'
+```
+
+Then run this with a database tool (adjust the table prefix to yours; `uid = 1` is the administrator created during installation):
+
+```sql
+UPDATE typecho_users SET password = '上一步得到的 32 位 MD5' WHERE uid = 1;
+```
+
+If you do not remember the user name, list all administrators first (`group` is a reserved word: MySQL uses backticks, PostgreSQL and SQLite use double quotes):
+
+```sql
+-- MySQL
+SELECT uid, name, mail FROM typecho_users WHERE `group` = 'administrator';
+-- PostgreSQL / SQLite
+SELECT uid, name, mail FROM typecho_users WHERE "group" = 'administrator';
+```
+
+:::tip
+If the site is still empty, you can also delete `config.inc.php` and the tables and install again. Do not do this once you have content.
+:::
