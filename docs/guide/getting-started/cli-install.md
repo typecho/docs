@@ -140,4 +140,16 @@ TYPECHO_SITE_URL=https://blog.example.com TYPECHO_DB_NEXT=keep php install.php
 
 ## 容器
 
-官方镜像 `joyqi/typecho` 在此基础上封装了自己的启动脚本和环境变量（例如自动安装开关），这些变量由镜像定义，不属于 `install.php`，请以镜像说明页 [hub.docker.com/r/joyqi/typecho](https://hub.docker.com/r/joyqi/typecho) 为准。该镜像没有 `latest` 标签，请使用带版本号的标签，如 `1.3.0-php8.2-apache`。
+官方镜像 `joyqi/typecho` 的启动脚本以 `www-data` 用户运行同一个 `install.php`，并保留全部环境变量。所以 `TYPECHO_SITE_URL`、`TYPECHO_DB_*`、`TYPECHO_USER_*` 就是上面表格里的变量，原样传入即可，含义和取值以本页为准。
+
+镜像自己定义的变量只有五个：
+
+| 变量 | 作用 |
+|---|---|
+| `TYPECHO_INSTALL` | 设为 `1` 时，每次启动都运行一次 `install.php` |
+| `TIMEZONE` | PHP 的 `date.timezone`，默认为空 |
+| `MEMORY_LIMIT` | PHP `memory_limit`，默认 `128m` |
+| `MAX_POST_BODY` | PHP `upload_max_filesize` 和 `post_max_size`，默认 `10m` |
+| `MAX_EXECUTION_TIME` | PHP `max_execution_time`，默认 `30` |
+
+镜像**没有 `latest` 标签**（Docker Hub 上共 70 个标签，已核对），请写明版本，如 `1.3.0-php8.2-apache`。`nightly-*` 标签由 `master` 分支构建，包含未发布的改动，不要用于生产。镜像说明页上有几处已经过时（例如 `TYPECHO_DB_NEXT=force` 是无效值，要用 `delete`），差异和推荐的挂载方式见[容器与云主机部署](../operations/containers.md)。

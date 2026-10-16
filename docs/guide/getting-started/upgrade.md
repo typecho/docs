@@ -129,4 +129,26 @@ curl -fL -o var/Utils/Upgrade.php \
 
 ## 用容器部署的站点
 
-容器中的程序文件来自镜像，升级方式是换用新版本标签的镜像并重建容器，`usr/` 要通过挂载保留；之后同样要登录后台执行第二步。官方镜像 `joyqi/typecho` 没有 `latest` 标签，请使用带版本号的标签（如 `1.3.0-php8.2-apache`）。注意：如果把整个 `/app` 挂成了卷，换镜像并不会更新程序文件，详见[容器与云主机部署](../operations/containers.md#mount-whole-app)。
+官方镜像 `joyqi/typecho` 的 `config.inc.php` 写在 `/app` 根目录，**不在 `/app/usr` 里**；而镜像启动时只把 `/app` 中不存在的程序文件复制进去。这带来两个坑（均已用 1.3.0 镜像实测）：
+
+- 只挂载 `/app/usr`、照常重建容器：`config.inc.php` 随旧容器一起消失，首页跳转到 `/install.php`；
+- 挂载整个 `/app`：换成新标签的镜像后，卷里的程序文件不会更新，站点仍是旧版本。
+
+实测可行的做法（从 `1.2.1-php8.0-apache` 升级到 `1.3.0-php8.2-apache`）：
+
+1. [备份](../operations/backup.md)数据库和挂载在 `/app/usr` 的目录；
+2. 用新标签重建容器，**只挂载 `/app/usr`**，并且传入 `TYPECHO_INSTALL=1`、安装时用过的全部 `TYPECHO_SITE_URL` 和 `TYPECHO_DB_*` 变量，再加上 `TYPECHO_DB_NEXT=keep`：
+
+   ```bash
+   docker run -d --name typecho -p 8080:80 -v /srv/typecho-usr:/app/usr \
+     -e TYPECHO_INSTALL=1 -e TYPECHO_DB_NEXT=keep \
+     -e TYPECHO_SITE_URL=https://blog.example.com \
+     -e TYPECHO_DB_ADAPTER=Pdo_Mysql -e TYPECHO_DB_HOST=db \
+     -e TYPECHO_DB_USER=typecho -e TYPECHO_DB_PASSWORD='数据库密码' -e TYPECHO_DB_DATABASE=typecho \
+     joyqi/typecho:1.3.0-php8.2-apache
+   ```
+
+   `keep` 让安装程序按环境变量重新生成 `config.inc.php`，数据完整时不建表、不改管理员帐号。少了 `keep` 会报“安装程序检查到原有数据表已经存在.”，站点同样跳到安装页。
+3. 用管理员登录后台，会被带到升级页面，执行[第二步](#第二步在后台执行升级)。附件超过 100 个的站点，先按[已知问题](#已知问题附件超过-100-个的站点升级时卡住)用 `docker cp` 把修复后的 `Upgrade.php` 放到容器的 `/app/var/Utils/` 下。
+
+镜像没有 `latest` 标签，请写明版本号；`nightly-*` 标签来自 `master` 分支，不要用于生产。已经挂载了整个 `/app` 的站点见[容器与云主机部署](../operations/containers.md#mount-whole-app)。
