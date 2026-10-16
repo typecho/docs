@@ -30,8 +30,7 @@ function TranslationBanner() {
           description="Shown on a doc page that has no translation for the current locale">
           本页尚未翻译，正在显示中文原文
         </Translate>{' '}
-        {/* TODO: point to /develop/contributing/docs once that page exists (P5). */}
-        <Link to="/develop/contributing">
+        <Link to="/develop/contributing/docs">
           <Translate
             id="theme.docs.translationBanner.helpTranslate"
             description="Link in the untranslated banner to the contributing guide">
