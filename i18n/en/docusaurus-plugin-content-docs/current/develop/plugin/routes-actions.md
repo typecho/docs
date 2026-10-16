@@ -123,7 +123,7 @@ class Plugin implements PluginInterface
 
 `install()` creates the guestbook table; for how to write it, see [Database operations](./database.md#create-table).
 
-## Routes {#路由}
+## Routes {#routes}
 
 ```php
 Helper::addRoute('guestbook', '/guestbook/', Action::class, 'render', 'index');
@@ -272,7 +272,7 @@ A few notes:
 - A notice set with `Notice::alloc()->set()` is shown at the top of the next admin page (front-end themes do not show it);
 - `goBack()` returns to the referring page; `redirect()` redirects to the given URL.
 
-## Admin panels {#后台面板}
+## Admin panels {#admin-panels}
 
 ```php
 Helper::addPanel(3, 'Guestbook/panel.php', _t('留言'), _t('管理留言'), 'administrator');

@@ -11,7 +11,7 @@ All plugin hooks in Typecho 1.3.0. For how to register callbacks and what the th
 
 ## How to read the tables
 
-- **Handle**: the name you pass to `Typecho\Plugin::factory()` when registering. For class handles you can use either the 1.3 class name (such as `Widget\Base\Contents`) or the name in the table (such as `Widget_Abstract_Contents`); Typecho converts it to the name in the table. See [Handle names](../plugin/hooks.md#句柄的名字).
+- **Handle**: the name you pass to `Typecho\Plugin::factory()` when registering. For class handles you can use either the 1.3 class name (such as `Widget\Base\Contents`) or the name in the table (such as `Widget_Abstract_Contents`); Typecho converts it to the name in the table. See [Handle names](../plugin/hooks.md#handle-names).
 - **Hook**: the property name you assign to, for example `Typecho\Plugin::factory('Widget\Archive')->beforeRender = ...`.
 - **Type**:
   - `call`: a notification. The callback receives the arguments in the order of the "Arguments" column; the return value is usually not used;
@@ -396,7 +396,7 @@ Besides the hooks named above, there are three kinds of hooks whose names are bu
 | `___` + property name, such as `___readingTime` | Same as above | When you read a property that does not exist on a widget object, `$widget->readingTime` (it is not a database field and there is no `___readingTime()` method). Type trigger + call: with a callback, its return value is the property value; otherwise the value is `null` | The widget object | `var/Typecho/Widget.php:467` (`Typecho\Widget::__get()`) |
 | The task name passed to `Helper::requestService()` | `Widget_Service` | In the async request `/action/service?do=async`, as each scheduled task runs | The remaining arguments of `requestService()` | `var/Widget/Service.php:283` (`Widget\Service::asyncHandle()`) |
 
-For usage, see [Dynamic hooks](../plugin/hooks.md#动态钩子) and [HTTP Requests and Async Tasks](../plugin/http-async.md).
+For usage, see [Dynamic hooks](../plugin/hooks.md#dynamic-hooks) and [HTTP Requests and Async Tasks](../plugin/http-async.md).
 
 ## Additional notes
 

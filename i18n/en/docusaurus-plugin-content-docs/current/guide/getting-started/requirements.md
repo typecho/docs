@@ -29,7 +29,7 @@ The Typecho 1.3 source code uses syntax that only PHP 7.4 supports (such as type
 
 The official continuous integration runs syntax checks on PHP 7.4, 8.0, 8.1 and 8.2. Newer PHP versions (8.3 and later) are not in the CI matrix, but 1.3 fixes a number of PHP 8.4 / 8.5 deprecation warnings.
 
-## PHP extensions {#php-扩展}
+## PHP extensions {#php-extensions}
 
 Step 1 of the installer checks the extensions below one by one; if any of them is missing, you cannot continue:
 

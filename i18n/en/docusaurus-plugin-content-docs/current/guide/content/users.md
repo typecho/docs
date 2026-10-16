@@ -101,4 +101,4 @@ When "Allow registration" (`allowRegister`, default "Not allowed") in **Settings
 - The "Username or email" field in the login box accepts either.
 - An account can stay logged in at only one place at a time; a new login invalidates the previous one.
 - When the password is wrong, the login request deliberately waits about 3 seconds before returning, but there is no account lockout mechanism, see [Security hardening](../operations/security.md).
-- If a password is forgotten, the admin panel has no "Forgot password" feature. An administrator can set a new password for other users in "Edit user"; if the administrator's own password is lost, see [Installation](../getting-started/installation.mdx#安装后丢失管理员密码).
+- If a password is forgotten, the admin panel has no "Forgot password" feature. An administrator can set a new password for other users in "Edit user"; if the administrator's own password is lost, see [Installation](../getting-started/installation.mdx#lost-admin-password).

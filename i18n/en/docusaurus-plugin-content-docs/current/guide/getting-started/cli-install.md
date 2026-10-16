@@ -57,7 +57,7 @@ PHP 8.2.x
 As with the web installation, for MySQL and PostgreSQL **the database must be created beforehand**; otherwise you get "Database: "xxx" does not exist, please create it manually and try again".
 :::
 
-## Environment variables {#环境变量}
+## Environment variables {#environment-variables}
 
 The tables below list every environment variable that `install.php` reads in CLI mode. "Default" is the value used when the variable is not set.
 
@@ -72,7 +72,7 @@ The tables below list every environment variable that `install.php` reads in CLI
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `TYPECHO_DB_ADAPTER` | The first adapter available on the server | One of `Pdo_Mysql`, `Pdo_SQLite`, `Pdo_Pgsql`, `Mysqli`, `SQLite`, `Pgsql`; it must be usable by the current PHP. For the default order see [Requirements](./requirements.md#php-扩展); when `pdo_mysql` is installed the default is `Pdo_Mysql` |
+| `TYPECHO_DB_ADAPTER` | The first adapter available on the server | One of `Pdo_Mysql`, `Pdo_SQLite`, `Pdo_Pgsql`, `Mysqli`, `SQLite`, `Pgsql`; it must be usable by the current PHP. For the default order see [Requirements](./requirements.md#php-extensions); when `pdo_mysql` is installed the default is `Pdo_Mysql` |
 | `TYPECHO_DB_PREFIX` | `typecho_` | Table prefix, 1–16 letters, digits, underscores or hyphens |
 | `TYPECHO_DB_HOST` | `localhost` | MySQL / PostgreSQL host. For MySQL, a value containing `/` is treated as a Unix socket path and the port is ignored |
 | `TYPECHO_DB_PORT` | MySQL `3306`, PostgreSQL `5432` | Port; must be an integer |

@@ -64,7 +64,7 @@ About `.htaccess` in the Apache variant: `Dockerfile.apache` writes rewrite rule
 | `MEMORY_LIMIT` | `128m` | PHP `memory_limit` |
 | `MAX_POST_BODY` | `10m` | Sets both PHP `upload_max_filesize` and `post_max_size`, that is, the attachment size limit |
 | `MAX_EXECUTION_TIME` | `30` | PHP `max_execution_time` (not listed on the image description page) |
-| `TYPECHO_SITE_URL`, `TYPECHO_DB_*`, `TYPECHO_USER_*`, etc. | see right | Not image variables but `install.php`'s own variables, passed through unchanged; for their meaning and defaults, [Command-line and unattended installation](../getting-started/cli-install.md#环境变量) is authoritative |
+| `TYPECHO_SITE_URL`, `TYPECHO_DB_*`, `TYPECHO_USER_*`, etc. | see right | Not image variables but `install.php`'s own variables, passed through unchanged; for their meaning and defaults, [Command-line and unattended installation](../getting-started/cli-install.md#environment-variables) is authoritative |
 
 The first five are all of the image's own variables.
 

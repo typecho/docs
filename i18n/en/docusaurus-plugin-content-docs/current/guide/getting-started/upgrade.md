@@ -28,7 +28,7 @@ When a new version is released, editors and administrators who open the admin da
 
 Not seeing the notice does not mean there is no new version; you can also check [GitHub Releases](https://github.com/typecho/typecho/releases) directly.
 
-## Can I upgrade directly? {#能否直接升级}
+## Can I upgrade directly? {#direct-upgrade}
 
 The 1.3 upgrade program only supports upgrading from **1.1.0 or later** (`Widget\Upgrade::MIN_VERSION = '1.1.0'`).
 
@@ -83,7 +83,7 @@ The new package's `usr/themes/` contains `classic-22`, the official theme added 
 
 Deleting before copying clears out old files that the new version has removed. If you only overwrite without deleting, old files stay behind in `admin/` and `var/`.
 
-## Step 2: Run the upgrade in the admin panel {#第二步在后台执行升级}
+## Step 2: Run the upgrade in the admin panel {#step-2-run-the-upgrade}
 
 After replacing the files, log in to the admin panel with an **administrator** account. As long as the program version is newer than the version recorded in the database, visiting any admin page takes you to the upgrade page (`admin/upgrade.php`), except the **Backup** page, so that you can make one last backup:
 
@@ -105,7 +105,7 @@ The 1.3.0 upgrade program does the following:
 
 For how each change affects your site, see [What's new and changed in 1.3](./whats-new-1-3.md).
 
-## Known issue: upgrade hangs on sites with more than 100 attachments {#已知问题附件超过-100-个的站点升级时卡住}
+## Known issue: upgrade hangs on sites with more than 100 attachments {#known-issue-attachments}
 
 **Affected**: the 1.3.0 release. On sites with many attachments (100 or more), after you click **Complete upgrade** the page keeps loading until PHP's execution time limit is reached, and the upgrade never finishes.
 
@@ -151,6 +151,6 @@ A working approach (using an upgrade from `1.2.1-php8.0-apache` to `1.3.0-php8.2
    ```
 
    `keep` makes the installer regenerate `config.inc.php` from the environment variables; when the data is complete, it neither creates tables nor changes the administrator account. Without `keep` you get "The installer has detected that the existing tables already exist.", and the site likewise jumps to the installation page.
-3. Log in to the admin panel as an administrator; you are taken to the upgrade page, where you carry out [step 2](#第二步在后台执行升级). On sites with more than 100 attachments, first use `docker cp` to put the fixed `Upgrade.php` into `/app/var/Utils/` in the container, as described under [Known issue](#已知问题附件超过-100-个的站点升级时卡住).
+3. Log in to the admin panel as an administrator; you are taken to the upgrade page, where you carry out [step 2](#step-2-run-the-upgrade). On sites with more than 100 attachments, first use `docker cp` to put the fixed `Upgrade.php` into `/app/var/Utils/` in the container, as described under [Known issue](#known-issue-attachments).
 
 The image has no `latest` tag, so always specify the version; the `nightly-*` tags come from the `master` branch and must not be used in production. For sites that already mount the whole of `/app`, see [Container and cloud host deployment](../operations/containers.md#mount-whole-app).

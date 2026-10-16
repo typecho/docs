@@ -131,7 +131,7 @@ Corresponding to `configHandle()`, you can define `personalConfigHandle(array $s
 
 `Helper::configPlugin('插件名', $settings, true)` writes personal settings. It merges `$settings` into **every** existing `_plugin:插件名` row, which means the personal settings of all users are changed.
 
-## Removing a setting when upgrading a plugin {#插件升级时删除设置项}
+## Removing a setting when upgrading a plugin {#remove-setting-on-upgrade}
 
 In 1.3.0, opening the plugin settings page fills every saved setting back into the form. If a new version of the plugin removes a setting from `config()` while the database still holds it, the settings page returns a 500 error.
 

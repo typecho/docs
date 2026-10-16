@@ -109,7 +109,7 @@ First choose an adapter in the **Database adapter** drop-down; the form switches
 
 SQLite has only one field, **Database file path**; by default it creates a `.db` file with a random name in the `usr/` directory.
 
-#### Using a MySQL socket {#使用-mysql-socket}
+#### Using a MySQL socket {#mysql-socket}
 
 If MySQL listens only on a Unix socket, enter the path of the socket file as the **Database host**, for example:
 
@@ -155,7 +155,7 @@ The installer also creates a default category, a post "欢迎使用 Typecho" (We
 - **URL rewriting**: the installation does not depend on URL rewriting. A 404 when you log in to the admin panel or open a post usually means the web server does not pass requests of the form `/index.php/...` to PHP. For the nginx, Apache and Caddy configurations, see [Web server configuration](../operations/web-server.md).
 - **Configuration file**: `config.inc.php` holds the database connection details; do not make it public.
 
-## Losing the administrator password after installation {#安装后丢失管理员密码}
+## Losing the administrator password after installation {#lost-admin-password}
 
 Typecho has no "recover password" feature. Proceed in this order:
 

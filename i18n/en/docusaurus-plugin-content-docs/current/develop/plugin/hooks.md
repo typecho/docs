@@ -24,10 +24,10 @@ public static function activate()
 ```
 
 - Write the callback as a string `'类名::方法名'` (`'ClassName::methodName'`) or an array `[类名, '方法名']`, pointing to a `public static` method. Callbacks are saved to the database as JSON, so you cannot use closures;
-- Registration runs once when the plugin is activated and is then saved. After you change the registration code, deactivate and reactivate the plugin. See [Plugin structure and lifecycle](./structure.md#启用时发生了什么);
+- Registration runs once when the plugin is activated and is then saved. After you change the registration code, deactivate and reactivate the plugin. See [Plugin structure and lifecycle](./structure.md#on-activation);
 - You can register multiple callbacks on the same hook, and callbacks from different plugins can be registered on the same hook too; they run in order of priority.
 
-## Handle names {#句柄的名字}
+## Handle names {#handle-names}
 
 There are two kinds of handles:
 
@@ -136,7 +136,7 @@ Code before 1.3 triggered hooks by "calling a method that does not exist":
 
 This is equivalent to `->call('bottom', $page)`. This style is deprecated in 1.3. Typecho itself still uses it in two places (`bottom` in `admin/write-page.php` and `import` in `Widget\Backup`); this has no effect on plugins that register callbacks.
 
-## Dynamic hooks {#动态钩子}
+## Dynamic hooks {#dynamic-hooks}
 
 Besides hooks whose names are written in the code, there are three kinds of hooks whose names are built at runtime.
 

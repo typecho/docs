@@ -139,4 +139,4 @@ The fifth argument of `Helper::addPanel()` is the minimum role. When the panel i
 \Utils\Helper::addPanel(3, 'Guestbook/panel.php', '留言', '管理留言', 'editor');
 ```
 
-For a complete example, see [Routes, actions and admin panels](../plugin/routes-actions.md#后台面板). Which roles a plugin's personal settings are aimed at is declared by the plugin itself; see [Plugin settings](../plugin/settings.md).
+For a complete example, see [Routes, actions and admin panels](../plugin/routes-actions.md#admin-panels). Which roles a plugin's personal settings are aimed at is declared by the plugin itself; see [Plugin settings](../plugin/settings.md).

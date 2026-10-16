@@ -13,7 +13,7 @@ Typecho has no maintained official plugin directory; authors publish their plugi
 
 - **Directory name, namespace and `@package` match**: the directory `Guestbook` corresponds to the namespace `TypechoPlugin\Guestbook`; see [Plugin Structure and Lifecycle](./structure.md).
 - **The header comment is complete**: description, `@package`, `@author`, `@version`, `@link`. Update `@version` before each release.
-- **Add `@since`**: write `@since 1.3.0` when you use classes and methods that only exist in 1.3. Unlike themes, Typecho **does** refuse to activate a plugin based on its `@since`: when the current version is lower, clicking "Activate" only produces the message "cannot work properly under this version of Typecho"; see [@since check](./structure.md#since-检查).
+- **Add `@since`**: write `@since 1.3.0` when you use classes and methods that only exist in 1.3. Unlike themes, Typecho **does** refuse to activate a plugin based on its `@since`: when the current version is lower, clicking "Activate" only produces the message "cannot work properly under this version of Typecho"; see [@since check](./structure.md#since-check).
 - **`implements PluginInterface` without a leading backslash**: `use Typecho\Plugin\PluginInterface;` first, otherwise the admin treats the plugin as "plug and play" and does not call `activate()`; see [Header comment](./structure.md#header).
 - **Every PHP file starts with** `if (!defined('__TYPECHO_ROOT_DIR__')) exit;` (admin panel files check `__TYPECHO_ADMIN__`).
 - **`deactivate()` undoes the changes made by `activate()`**: routes, actions, menus and panels are all removed; see [Routes, Actions and Admin Panels](./routes-actions.md).
@@ -60,5 +60,5 @@ When users upgrade a plugin, they usually overwrite the files in the plugin dire
 
 - Hooks newly registered in `activate()`, and newly added routes and panels, do not take effect until the user deactivates and reactivates the plugin. When you have changes like these, state "please deactivate and reactivate the plugin after upgrading" in the upgrade notes. Deactivating clears the plugin settings, so remind users of that too.
 - New settings have no value until the user saves the settings once, so handle defaults when reading them. Reading new personal settings throws an exception until the plugin is reactivated; see [Plugin Settings](./settings.md).
-- When you remove a setting, keep a `Hidden` element with the same name, or the plugin settings page will break; see [Plugin Settings](./settings.md#插件升级时删除设置项).
+- When you remove a setting, keep a `Hidden` element with the same name, or the plugin settings page will break; see [Plugin Settings](./settings.md#remove-setting-on-upgrade).
 - When the table structure changes, check for and add the new columns in code; do not rely only on the table creation statement in `activate()`.

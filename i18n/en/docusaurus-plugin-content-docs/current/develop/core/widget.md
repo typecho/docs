@@ -137,7 +137,7 @@ When you read `$widget->name`, `__get()` looks in this order:
 1. The cached `#name` in the current row;
 2. The widget's `___name()` method (three underscores). The result is cached in `#name` of the current row, and later reads on the same row do not call it again;
 3. The `name` field of the current row;
-4. A value provided by a plugin through the hook `___name` (see [Dynamic hooks](../plugin/hooks.md#动态钩子));
+4. A value provided by a plugin through the hook `___name` (see [Dynamic hooks](../plugin/hooks.md#dynamic-hooks));
 5. If none of these exists, `null` is returned.
 
 The cache lives on the current row; after `next()` moves to the next row, `___name()` is computed again for the new row.

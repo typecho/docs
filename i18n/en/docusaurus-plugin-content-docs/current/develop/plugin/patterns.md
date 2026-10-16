@@ -83,7 +83,7 @@ class Plugin implements PluginInterface
 Key points:
 
 - The excerpt is cut from the **already filtered body**, so the HTML that `excerptEx` receives may already have been processed once by `contentEx`. Your filter function must be safe to run more than once; the example achieves this by skipping links that already have `target=`.
-- The filtered body is also used for the page's `description` meta tag and for feeds. Content inserted before or after the body shows up there too. Content you only want to display on the page is better placed in the theme, or offered to the theme through a [dynamic hook](./hooks.md#动态钩子).
+- The filtered body is also used for the page's `description` meta tag and for feeds. Content inserted before or after the body shows up there too. Content you only want to display on the page is better placed in the theme, or offered to the theme through a [dynamic hook](./hooks.md#dynamic-hooks).
 - `contentEx` applies everywhere a body is output: posts, pages, the home page list, feeds and so on. To handle only one kind of page, check the second argument (the content object) in the callback, e.g. `$widget instanceof \Widget\Archive && $widget->is('single')`.
 
 ## Comment anti-spam: comment on Widget_Feedback {#anti-spam}

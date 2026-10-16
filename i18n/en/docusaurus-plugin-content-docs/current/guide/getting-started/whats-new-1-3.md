@@ -25,7 +25,7 @@ This page only lists what is in the 1.3.0 release. Changes merged on the `master
 | Internationalized domain names (IDN) | **Site URL** and **Homepage URL** now use URL input boxes; internationalized domain names (e.g. Chinese) stored in their `xn--` encoded form are shown in their original form in the admin panel (requires the PHP `intl` extension) |
 | High-resolution avatars | Avatars can additionally output Gravatar URLs at 2× and 3× size (`srcset`), so they look sharper on high-resolution screens. This is enabled by default in **Manage → Comments** in the admin panel; on the front end the comment list does not enable it by default: the theme has to pass `avatarHighRes => true` to `listComments()`, and neither of the two bundled themes turns it on |
 | PostgreSQL SSL | PostgreSQL connections can use SSL (`sslmode=require`); just select it during installation |
-| MySQL socket | During installation the **Database host** can be a Unix socket path, see [Installation](./installation.mdx#使用-mysql-socket) |
+| MySQL socket | During installation the **Database host** can be a Unix socket path, see [Installation](./installation.mdx#mysql-socket) |
 
 ## Higher requirements
 
@@ -46,5 +46,5 @@ The upgrade program handles these changes in the database automatically. But if 
 
 ## Things to watch when upgrading
 
-- 1.3 can only be upgraded to from 1.1.0 or later; for 1.1 sites, upgrading to 1.2.1 first is recommended. See [Upgrading](./upgrade.md#能否直接升级).
-- The 1.3.0 release can hang during the upgrade on sites with more than 100 attachments; for the workaround, see [Upgrading](./upgrade.md#已知问题附件超过-100-个的站点升级时卡住).
+- 1.3 can only be upgraded to from 1.1.0 or later; for 1.1 sites, upgrading to 1.2.1 first is recommended. See [Upgrading](./upgrade.md#direct-upgrade).
+- The 1.3.0 release can hang during the upgrade on sites with more than 100 attachments; for the workaround, see [Upgrading](./upgrade.md#known-issue-attachments).

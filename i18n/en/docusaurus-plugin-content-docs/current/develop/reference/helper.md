@@ -16,7 +16,7 @@ source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
 | `addRoute(string $name, string $url, string $widget, ?string $action = null, ?string $after = null): int` | Add a route. `$name` is the route name; `$url` is the path rule, for placeholders see [Default routes and actions](./routes-actions.md#placeholders); `$widget` is the class that handles the request; `$action` is the method called after the object is created; `$after` is the route to insert after; if omitted or not found, the route goes last. The route name must not duplicate an existing route |
 | `removeRoute(string $name): int` | Remove a route |
 
-Both return the number of rows affected when updating the `routingTable` option. For usage, see [Routes, actions and admin panels](../plugin/routes-actions.md#路由).
+Both return the number of rows affected when updating the `routingTable` option. For usage, see [Routes, actions and admin panels](../plugin/routes-actions.md#routes).
 
 ## Action
 
@@ -37,7 +37,7 @@ The return value is the number of rows affected when updating the `actionTable` 
 | `removePanel(int $index, string $fileName): int` | Remove a panel and return its former position; returns `0` if not found |
 | `url(string $fileName): string` | Full URL of the panel, i.e. `<admin URL>/extending.php?panel=$fileName` |
 
-For usage, see [Routes, actions and admin panels](../plugin/routes-actions.md#后台面板).
+For usage, see [Routes, actions and admin panels](../plugin/routes-actions.md#admin-panels).
 
 ## Options and plugin settings
 

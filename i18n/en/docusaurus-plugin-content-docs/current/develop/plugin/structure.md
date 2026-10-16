@@ -111,7 +111,7 @@ The information shown in the plugin list comes from the **first** doc comment (`
 
 Other tags are ignored. `@dependence`, common in old plugins, is no longer read; put the version requirement in `@since` instead.
 
-### @since check {#since-检查}
+### @since check {#since-check}
 
 The value of `@since` is compared with the current Typecho version using PHP's `version_compare()`. The plugin can be activated only when the current version is **greater than or equal to** `@since`:
 
@@ -173,7 +173,7 @@ public static function filter(array $comment): array
 }
 ```
 
-## What happens on activation {#启用时发生了什么}
+## What happens on activation {#on-activation}
 
 After you click "Activate", Typecho (`Widget\Plugins\Edit::activate()`) does the following in order:
 

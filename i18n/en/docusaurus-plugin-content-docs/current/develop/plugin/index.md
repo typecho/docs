@@ -16,7 +16,7 @@ A plugin is a piece of PHP code placed under `usr/plugins/`. Once you activate i
 | Insert content before or after page output, modify the body, title or excerpt | Filter hooks, such as `contentEx` | [Using hooks](./hooks.md), [Common plugin patterns](./patterns.md#content-filter) |
 | Do something when a post is published, a comment is submitted, or a user logs in | Notification hooks, such as `finishPublish`, `finishComment`, `loginSucceed` | [Hook list](../reference/hooks.md) |
 | Take over a Typecho feature: the editor, attachment storage, Markdown parsing, password verification | trigger hooks, such as `richEditor`, `uploadHandle` | [Common plugin patterns](./patterns.md) |
-| Provide new methods and properties to templates | Dynamic hooks `call<Method>`, `___<prop>` | [Using hooks](./hooks.md#动态钩子) |
+| Provide new methods and properties to templates | Dynamic hooks `call<Method>`, `___<prop>` | [Using hooks](./hooks.md#dynamic-hooks) |
 | Let administrators or users configure the plugin | `config()`, `personalConfig()` | [Plugin settings](./settings.md) |
 | Add front-end pages | Routes | [Routes, actions and admin panels](./routes-actions.md) |
 | Receive form submissions and Ajax requests | Action | Same as above |

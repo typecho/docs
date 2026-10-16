@@ -90,4 +90,4 @@ Before you paste configuration or logs, remove sensitive content such as databas
 已尝试：禁用全部插件后重试，结果相同。站点约有 800 个附件。
 ```
 
-(This example is exactly the known issue described on the [Upgrading](../getting-started/upgrade.md#已知问题附件超过-100-个的站点升级时卡住) page.)
+(This example is exactly the known issue described on the [Upgrading](../getting-started/upgrade.md#known-issue-attachments) page.)
