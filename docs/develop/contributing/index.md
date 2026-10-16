@@ -1,6 +1,5 @@
 ---
 sidebar_position: 2
-slug: /contributing
 ---
 
 # 贡献
