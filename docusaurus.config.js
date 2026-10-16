@@ -6,6 +6,22 @@
 
 import {themes as prismThemes} from 'prism-react-renderer';
 
+// Code themes: keep the token colours, swap the background for the design
+// tokens in src/css/custom.css (--tc-surface) so code blocks sit on the
+// same warm neutral as the rest of the site. See DESIGN.md.
+const codeTheme = {
+  ...prismThemes.github,
+  plain: {...prismThemes.github.plain, backgroundColor: '#F6F6F3'},
+};
+const codeThemeDark = {
+  ...prismThemes.oneDark,
+  plain: {
+    ...prismThemes.oneDark.plain,
+    backgroundColor: '#292D33',
+    textShadow: 'none',
+  },
+};
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Typecho Docs',
@@ -126,6 +142,7 @@ const config = {
           {
             type: 'docsVersion',
             position: 'right',
+            className: 'navbar-version',
           },
           {
             type: 'search',
@@ -147,9 +164,13 @@ const config = {
           },
         ],
       },
+      footer: {
+        style: 'light',
+        copyright: `© ${new Date().getFullYear()} <a href="https://typecho.org">Typecho</a>`,
+      },
       prism: {
-        theme: prismThemes.github,
-        darkTheme: prismThemes.dracula,
+        theme: codeTheme,
+        darkTheme: codeThemeDark,
         additionalLanguages: ['apacheconf', 'nginx', 'php', 'bash'],
       },
     }),
