@@ -72,6 +72,10 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 1.3.0 中首页设为模板文件后，访问首页的分页地址（如 `/page/2/`）返回 500 错误（`Typed property Widget\Archive::$currentPage must not be accessed before initialization`）。模板文件中不要输出指向 `/page/N/` 的分页链接。
 :::
 
+:::caution 模板文件中调用 header() 会报错
+1.3.0 中首页设为模板文件时，Typecho 没有初始化订阅地址，模板（或它引入的 `header.php`）一旦调用 `$this->header()`，首页就会出错（`Typed property Widget\Archive::$archiveFeedUrl must not be accessed before initialization`）。这个问题在 1.3.0 之后的代码中才修复。在模板开头先用 `setArchiveFeedUrl()` 等方法设置好订阅地址即可避免，写法见主题开发中的[首页模板](../../develop/theme/custom-templates.md#首页模板package-index)。
+:::
+
 ### 文章列表页 {#front-archive}
 
 首页改为页面或模板文件后，原来首页上的文章列表就没有地方显示了。勾选“同时将文章列表页路径更改为 [路径]”（`frontArchive`，路径保存在路由表的 `archive` 规则中，默认 `/blog/`），文章列表会出现在这个路径下，分页地址为 `路径/page/N/`。

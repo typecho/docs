@@ -73,10 +73,10 @@ new Element(string $name, ?array $options, $value, ?string $label, ?string $desc
 | `Textarea` | 多行文本框 | 字符串 |
 | `Radio` | 单选按钮 | 选中项的值 |
 | `Select` | 下拉框 | 选中项的值 |
-| `Checkbox` | 复选框，要调用 `multiMode()` | 选中项的值组成的数组 |
+| `Checkbox` | 复选框 | 选中项的值组成的数组 |
 
 - `addRule()` 添加校验规则，例如 `addRule('url', '提示')`、`addRule('required', '提示')`。校验不通过时表单不会保存，并在字段下方显示提示文字。
-- `Checkbox` 必须调用 `multiMode()`，否则只能保存一个值。
+- `multiMode()` 让单选 / 复选的每个选项各占一行显示，只影响排版。
 
 ## 值的存储
 
