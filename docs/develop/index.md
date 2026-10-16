@@ -16,7 +16,7 @@ slug: /develop
 - **核心开发**：Typecho 程序本身的结构与开发方式。
 - **参与贡献**：如何向 Typecho 和本文档提交改动。
 
-文档正在重写中，目前只有[参与贡献](./contributing/index.md)已经上线，其余部分会陆续补齐。
+文档正在重写中，目前已经上线的有[主题开发](./theme/index.md)和[参与贡献](./contributing/index.md)，其余部分会陆续补齐。
 
 ## 如何阅读
 
