@@ -138,7 +138,7 @@ UPDATE typecho_options SET value = 'default' WHERE name = 'theme' AND user = 0;
 
 | 现象 | 先看 |
 |---|---|
-| 所有文章 404、No input file specified、登录时 405 | [Web 服务器配置](./web-server.md#troubleshooting) |
+| 所有文章 404、No input file specified、登录时 404 / 500 / 403 | [Web 服务器配置](./web-server.md#troubleshooting) |
 | 升级后访问后台总是跳到升级页，或“完成升级”一直加载 | [升级](../getting-started/upgrade.md)，特别是附件超过 100 个时的已知问题 |
 | 503 `Error establishing a database connection` | 检查数据库服务和 `config.inc.php` 中的连接参数，见[config.inc.php 与常量](./config-file.md) |
 | 样式丢失、混合内容、登录后又回到登录页 | [HTTPS、反向代理与 CDN](./https-proxy.md) |

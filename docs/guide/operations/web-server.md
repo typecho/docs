@@ -14,7 +14,8 @@ Typecho 的所有动态请求都由网站根目录下的 `index.php` 处理。We
 
 :::info 本页配置的测试情况
 - **Apache 2.4 + PHP-FPM（`mod_proxy_fcgi`）+ `.htaccess`**：已用 Typecho 1.3.0（源码 `v1.3.0-10`）在 PHP 8.5 上实测，首页、文章、分类、独立页面、订阅源、后台登录和保存设置均正常，后台“永久链接”中的重写检测也能通过。
-- **nginx 与 Caddy 2**：写作环境中没有这两个软件，下面的配置**未经实测**，是按 Typecho 源码对请求的要求和这两个软件的通行写法整理的。如果你实测发现问题，欢迎反馈。
+- **nginx 与 Caddy 2**：2026-10-16 把本页的配置**原样**放进容器实测（nginx 1.31.7、Caddy 2.11.7，PHP-FPM 8.2.30，Typecho v1.3.0 正式版，SQLite），只把 PHP-FPM 地址换成了 `容器名:9000`。两份配置**都可以直接使用**：首页、`/archives/1/`、分类页、独立页面、订阅源、后台登录页和静态文件都是 200；登录 POST 302 跳到 `/admin/`；`.db` 文件和上传目录中的 PHP 返回 403；后台“永久链接”的服务器自检也能通过。Caddy 有一个与 PHP 设置相关的例外，见[下文](#caddy-fix-pathinfo)。
+- **没有测过的**：用 unix socket（而不是 TCP 9000）连接 PHP-FPM、Caddy 的自动 HTTPS（测试时站点地址写成了 `http://`）、子目录安装，以及 Debian / Ubuntu 的 `snippets/fastcgi-php.conf`。
 :::
 
 ## Typecho 对服务器的要求
@@ -23,9 +24,9 @@ Typecho 不依赖服务器传入的 `PATH_INFO` 变量，而是用 `REQUEST_URI`
 
 | 要求 | 说明 |
 |---|---|
-| `SCRIPT_FILENAME` 指向真实存在的 `index.php` | 请求 `/index.php/action/login` 时，交给 PHP 的脚本必须是 `/网站根目录/index.php`，而不是不存在的 `/网站根目录/index.php/action/login`。否则 PHP 会报 “No input file specified.” 或 “File not found.” |
+| `SCRIPT_FILENAME` 指向真实存在的 `index.php` | 请求 `/index.php/action/login` 时，交给 PHP 的脚本必须是 `/网站根目录/index.php`，而不是不存在的 `/网站根目录/index.php/action/login`。PHP 默认（`cgi.fix_pathinfo=1`）会自己修正这种路径；设为 `0` 时就会报 “No input file specified.” 或 403 “Access denied.”，见[常见错误](#no-input-file) |
 | `REQUEST_URI` 保留原始地址 | 永久链接转发给 `index.php` 时，`REQUEST_URI` 仍要是用户请求的 `/archives/1/`。nginx 的 `fastcgi_params`、Apache 和 Caddy 默认都是这样 |
-| POST 请求能到达 PHP | 登录、评论、保存设置都是 POST。请求没有交给 PHP、被当作静态文件处理时，nginx 会返回 **405 Not Allowed** |
+| `/index.php/...` 能到达 PHP | 登录、评论、保存设置都是 POST 到 `/index.php/action/...`。这类地址没有交给 PHP 时，登录会失败，实测表现为 404、500 或 403，见[登录失败](#login-fails) |
 
 ## nginx {#nginx}
 
@@ -71,10 +72,12 @@ server {
 
 几处要点：
 
-- **PHP 的 `location` 不能写成 `location ~ \.php$`**。这样写只匹配以 `.php` 结尾的地址，`/index.php/action/login` 匹配不上，会落到 `location /` 或静态文件处理里，表现为登录时 404 或 405。
+- **PHP 的 `location` 最好不要写成 `location ~ \.php$`**。这样写只匹配以 `.php` 结尾的地址，`/index.php/action/login` 会落到 `location /`。如果 `location /` 里有上面的 `try_files ... /index.php$is_args$args` 回落，请求仍会交给 `index.php`，实测登录正常；但没有这个回落（没开永久链接，或写成 `try_files $uri $uri/ =404`）时，登录返回 **404**。
+- 上面的 PHP `location` 在 PHP 的 `cgi.fix_pathinfo` 为默认的 `1` 和加固的 `0` 时都实测可用。
 - `fastcgi_split_path_info` 把 `/index.php/action/login` 拆成脚本 `/index.php` 和路径 `/action/login`，`SCRIPT_FILENAME` 才能指向真实文件。
 - nginx 按出现顺序匹配正则 `location`，两条 `deny` 规则要写在 PHP 的 `location` **之前**。
-- Debian / Ubuntu 的 `fastcgi_params` 不包含 `SCRIPT_FILENAME`，所以上面单独设置了一次。如果你用的是发行版自带的 `snippets/fastcgi-php.conf`，它已经包含 `fastcgi_split_path_info` 和 `PATH_INFO`，不要重复设置。
+- Debian / Ubuntu 的 `fastcgi_params` 不包含 `SCRIPT_FILENAME`，所以上面单独设置了一次。如果你用的是发行版自带的 `snippets/fastcgi-php.conf`，它已经包含 `fastcgi_split_path_info` 和 `PATH_INFO`，不要重复设置（这个文件没有实测）。
+- 不要用旧文档中的 `if (!-e $request_filename) { rewrite ^(.*)$ /index.php$1 last; }` 代替 `try_files`。实测它和 `location ~ \.php$` 一起使用时，`/index.php/action/login` 会被反复重写成 `/index.php/index.php/...`，返回 **500**（日志：`rewrite or internal redirection cycle`）。
 - 网站装在子目录（例如 `/blog/`）时，把 `location /` 改成 `location /blog/`，`try_files` 的最后一项改成 `/blog/index.php$is_args$args`。
 
 改完后用 `nginx -t` 检查语法，再 `nginx -s reload`（或 `systemctl reload nginx`）。
@@ -155,7 +158,45 @@ blog.example.com {
 }
 ```
 
-Caddy 会自动申请 HTTPS 证书。Caddy v1 的 `rewrite { to ... }` 和 `fastcgi / ... php` 写法在 Caddy 2 中已经不存在。
+Caddy 会自动申请 HTTPS 证书（这一点没有实测）。Caddy v1 的 `rewrite { to ... }` 和 `fastcgi / ... php` 写法在 Caddy 2 中已经不存在。上面的配置用 4 个空格缩进，`caddy validate` 会提示 `Caddyfile input is not formatted`，不影响使用。
+
+### PHP 设置了 `cgi.fix_pathinfo=0` 时 {#caddy-fix-pathinfo}
+
+`cgi.fix_pathinfo=0` 是常见的 PHP 加固建议。在 Caddy 下这样设置后，**所有 `/index.php/...` 地址都返回 403 `Access denied.`**，后台无法登录。
+
+原因：`php_fastcgi` 会传 `PATH_TRANSLATED = 网站根目录 + PATH_INFO`，例如请求 `/index.php/action/login` 时是 `/srv/www/typecho/action/login`。`cgi.fix_pathinfo=0` 时 PHP-FPM 把它当作脚本路径，因为它不以 `.php` 结尾，被 `security.limit_extensions` 拒绝。PHP-FPM 日志：
+
+```text
+NOTICE: Access to the script '/srv/www/typecho/action/login' has been denied (see security.limit_extensions)
+```
+
+解决办法：在 `php_fastcgi` 之前加两行，把 `/index.php/...` 在内部重写成 `/index.php`。Caddy 传给 PHP 的 `REQUEST_URI` 仍是原始地址，Typecho 靠它计算路径，所以不受影响：
+
+```caddy
+blog.example.com {
+    root * /srv/www/typecho
+
+    # 禁止下载 SQLite 数据库文件、服务器上的备份文件和上传目录中的 PHP
+    @blocked path_regexp ^/usr/(.+\.db$|backups/|uploads/.*\.php$)
+    respond @blocked 403
+
+    # /index.php/action/login 这类地址直接交给 index.php（兼容 cgi.fix_pathinfo=0）
+    @pathinfo path_regexp ^/index\.php/
+    rewrite @pathinfo /index.php?{query}
+
+    php_fastcgi unix//run/php/php8.2-fpm.sock
+    file_server
+}
+```
+
+实测（Caddy 2.11.7，PHP-FPM 8.2.30）：
+
+| `cgi.fix_pathinfo` | 原配置 | 加了这两行 |
+|---|---|---|
+| `1`（默认） | 全部正常 | 全部正常：首页、文章、分类 200，`/usr/typecho.db` 403，登录 302 到 `/admin/`，后台 200 |
+| `0` | `/index.php/archives/1/`、`/index.php/action/login` 都是 403 `Access denied.`，登录后又回到登录页 | 首页、文章、分类、登录页 200，登录 302 到 `/admin/`，后台 200 |
+
+这条重写只覆盖 `index.php`，其他 `xxx.php/...` 地址仍会被拒绝，Typecho 用不到它们。也可以不改 Caddyfile，而是保持 PHP 默认的 `cgi.fix_pathinfo=1`。
 
 ## 在后台开启永久链接
 
@@ -183,16 +224,28 @@ Caddy 会自动申请 HTTPS 证书。Caddy v1 的 `rewrite { to ... }` 和 `fast
 
 ### No input file specified {#no-input-file}
 
-PHP 收到的脚本路径不存在。
+PHP 收到的脚本路径不存在。本页的 nginx 配置在 `cgi.fix_pathinfo` 为 `1` 和 `0` 时都实测不会出现这个错误。
 
-- nginx：多半是 PHP 的 `location` 缺少 `fastcgi_split_path_info`，或者 `SCRIPT_FILENAME` 写错（例如使用了与 `root` 不一致的路径）。
+- nginx：实测只在 PHP-FPM 设置了 `cgi.fix_pathinfo=0`、**并且** PHP 的 `location` 缺少 `fastcgi_split_path_info` 时出现（默认的 `1` 下 PHP-FPM 会自己修正路径，同样的配置也能用）。这种配置下，`GET /index.php/archives/1/` 显示 “No input file specified.”，而**登录 POST 返回 403 `Access denied.`**，PHP-FPM 日志中有 `Access to the script '.../index.php/action/login' has been denied (see security.limit_extensions)`。两种表现是同一个问题，按上文的写法补上 `fastcgi_split_path_info` 即可。
+- nginx：`SCRIPT_FILENAME` 写错（例如使用了与 `root` 不一致的路径）也会这样。
+- Caddy：同样在 `cgi.fix_pathinfo=0` 时出问题，表现为 403 `Access denied.`，见[上文](#caddy-fix-pathinfo)。
 - nginx 与 PHP-FPM 不在同一台机器或同一个容器里时，`SCRIPT_FILENAME` 必须是 **PHP-FPM 那一侧**能看到的路径，见[容器与云主机部署](./containers.md#fpm)。
 - PHP 设置了 `open_basedir` 且不包含网站目录时，也会出现这个提示。
 - Apache：换用上文的兼容写法 `RewriteRule . /index.php [L]`。
 
-### 登录时 405 Not Allowed {#405}
+### 登录失败：404、500 或 403 {#login-fails}
 
-后台登录表单提交到 `/index.php/action/login`。nginx 返回 405，说明这个 POST 请求没有交给 PHP，而是被当作静态文件处理了。检查 PHP 的 `location` 是否写成了上文的 `location ~ [^/]\.php(/|$)`，而不是只匹配 `.php` 结尾的 `location ~ \.php$`。
+后台登录表单提交到 `/index.php/action/login`。这个地址没有正确交给 `index.php` 时，登录 POST 会失败。用 nginx 1.31.7 实测几种错误写法，看到的是：
+
+| 返回 | 配置 | 处理 |
+|---|---|---|
+| **404** | `location ~ \.php$`，并且 `location /` 没有 `try_files ... /index.php$is_args$args` 回落（写成 `=404`，或者没有 `location /`） | 改用上文的 `location ~ [^/]\.php(/\|$)` |
+| **500** | `location ~ \.php$` 加旧写法 `if (!-e $request_filename) { rewrite ... /index.php$1 last; }`，日志中有 `rewrite or internal redirection cycle` | 改用上文的 `try_files` 和 PHP `location` |
+| **403** `Access denied.` | PHP 设置了 `cgi.fix_pathinfo=0`，nginx 缺少 `fastcgi_split_path_info`；或者 Caddy 搭配 `cgi.fix_pathinfo=0` | 见 [No input file specified](#no-input-file) 和 [Caddy 的修正](#caddy-fix-pathinfo) |
+
+`location ~ \.php$` 本身不一定出错：只要 `location /` 里有 `try_files ... /index.php$is_args$args` 回落，实测登录正常。
+
+本页旧版本说这种情况下 nginx 会返回 **405 Not Allowed**，实测的几种错误写法都没有出现 405。如果你确实遇到了 405，请把 nginx 配置和错误日志发到[支持论坛](https://forum.typecho.org)。
 
 ### 后台能打开，登录后又回到登录页
 

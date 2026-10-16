@@ -15,11 +15,17 @@ sidebar_position: 4
 
 ## 页面显示 “No input file specified.” {#no-input-file}
 
-PHP 收到的脚本路径不存在：通常是 nginx 缺少 `fastcgi_split_path_info` 或 `SCRIPT_FILENAME` 写错，容器里 nginx 和 PHP-FPM 看到的路径不一致，或者 `open_basedir` 限制。见[Web 服务器配置：No input file specified](../operations/web-server.md#no-input-file)。
+PHP 收到的脚本路径不存在：通常是 PHP 设置了 `cgi.fix_pathinfo=0`、nginx 又缺少 `fastcgi_split_path_info`（这时登录还会返回 403 `Access denied.`），或者 `SCRIPT_FILENAME` 写错、容器里 nginx 和 PHP-FPM 看到的路径不一致、`open_basedir` 限制。见[Web 服务器配置：No input file specified](../operations/web-server.md#no-input-file)。
 
-## 登录时 405 Not Allowed {#405}
+## 登录时返回 404、500 或 403 {#login-fails}
 
-登录表单提交到 `/index.php/action/login`，405 说明这个 POST 请求被当作静态文件处理，没有交给 PHP。把 nginx 的 PHP `location` 改成能匹配 `.php/` 后面带路径的写法。见[Web 服务器配置：登录时 405](../operations/web-server.md#405)。
+登录表单提交到 `/index.php/action/login`，这个地址没有正确交给 `index.php` 时登录就会失败。实测中常见的是：
+
+- **404**：nginx 的 PHP `location` 写成了 `location ~ \.php$`，并且 `location /` 里没有 `try_files ... /index.php$is_args$args` 回落；
+- **500**：用了旧的 `if (!-e $request_filename) rewrite` 写法，重写陷入循环；
+- **403 `Access denied.`**：PHP 设置了 `cgi.fix_pathinfo=0`，nginx 缺少 `fastcgi_split_path_info`，或者用的是 Caddy。
+
+文档中给出的 nginx 和 Caddy 配置都实测可以正常登录（Caddy 搭配 `cgi.fix_pathinfo=0` 时要加两行重写）。旧文档说的 405 在实测中没有出现。见[Web 服务器配置：登录失败](../operations/web-server.md#login-fails)。
 
 ## 升级后或启用插件后出现 500 / 空白页 {#500}
 
