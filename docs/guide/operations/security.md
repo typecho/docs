@@ -21,7 +21,7 @@ Typecho 仓库的 `SECURITY.md` 规定：漏洞请发邮件到 **security@typech
 
 ## 3. 安装后删除安装程序 {#remove-installer}
 
-安装完成后，`install.php` 和 `install/` 目录就不再需要了：Typecho 运行时和后台升级程序都不会用到它们（已在源码中检索确认）。
+安装完成后，`install.php` 和 `install/` 目录就不再需要了：Typecho 运行时和后台升级程序都不会用到它们。
 
 ```bash
 cd /srv/www/typecho
