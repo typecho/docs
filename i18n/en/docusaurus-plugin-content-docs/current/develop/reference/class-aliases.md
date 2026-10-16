@@ -7,7 +7,7 @@ source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
 
 # Legacy Class Names
 
-Since 1.2, Typecho uses namespaced class names (such as `\Widget\Contents\Post\Recent`), and 1.3 keeps them. The underscore class names (such as `Widget_Contents_Post_Recent`) common in themes and plugins written for versions before 1.3 still work in 1.3: the autoloader maps them to the new classes and creates aliases with `class_alias()`. For the migration steps, see [Migrating Themes and Plugins to 1.3](/develop/migrate-to-1-3).
+Since 1.2, Typecho uses namespaced class names (such as `\Widget\Contents\Post\Recent`), and 1.3 keeps them. The underscore class names (such as `Widget_Contents_Post_Recent`) common in themes and plugins written for versions before 1.3 still work in 1.3: the autoloader maps them to the new classes and creates aliases with `class_alias()`. For the migration steps, see [Migrating Themes and Plugins to 1.3](../migrate-to-1-3.md).
 
 ## Mapping rules
 
@@ -58,9 +58,9 @@ Of the Typecho 1.1 classes, the following cannot be resolved in 1.3.0:
 | `Typecho_AutoP` | Moved to `\Utils\AutoP`; the old name `AutoP` still works |
 | `Typecho_Db_Adapter_Exception` | Split into `\Typecho\Db\Adapter\ConnectionException` and `\Typecho\Db\Adapter\SQLException` |
 | `Typecho_Http_Client_Adapter`, `Typecho_Http_Client_Adapter_Curl`, `Typecho_Http_Client_Adapter_Socket` | The HTTP client no longer has separate adapters; it is unified as `\Typecho\Http\Client` |
-| `Widget_Comments_Ping` | The corresponding `\Widget\Comments\Ping` causes a fatal error when loaded in 1.3.0 (the return type of `___parentContent()` is incompatible with the parent class), see [Comments Template](/develop/theme/comments#pings) |
+| `Widget_Comments_Ping` | The corresponding `\Widget\Comments\Ping` causes a fatal error when loaded in 1.3.0 (the return type of `___parentContent()` is incompatible with the parent class), see [Comments Template](../theme/comments.md#pings) |
 
-Resolving does not mean the behavior is identical: the class name maps, but method signatures and return values may have changed. See [Migrating Themes and Plugins to 1.3](/develop/migrate-to-1-3).
+Resolving does not mean the behavior is identical: the class name maps, but method signatures and return values may have changed. See [Migrating Themes and Plugins to 1.3](../migrate-to-1-3.md).
 
 ## All old class names
 

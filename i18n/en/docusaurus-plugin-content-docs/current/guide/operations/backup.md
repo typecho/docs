@@ -16,7 +16,7 @@ Back up before upgrading, migrating, switching servers or changing data in bulk.
 | `config.inc.php` | Database connection and custom constants | Copy the file |
 
 :::caution The `usr/` directory needs backing up too
-Upgrades do not overwrite `usr/`, but that does not mean you can skip backing it up: the admin "Backup" feature **contains no files at all**, and attachments, themes and plugins exist only in `usr/`; with SQLite, the whole database is in `usr/` as well. Before upgrading or migrating, back up `usr/` together with the database, as the [Upgrade](/guide/getting-started/upgrade) page requires.
+Upgrades do not overwrite `usr/`, but that does not mean you can skip backing it up: the admin "Backup" feature **contains no files at all**, and attachments, themes and plugins exist only in `usr/`; with SQLite, the whole database is in `usr/` as well. Before upgrading or migrating, back up `usr/` together with the database, as the [Upgrade](../getting-started/upgrade.md) page requires.
 :::
 
 ## The admin "Backup" feature {#builtin}

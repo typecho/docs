@@ -7,7 +7,7 @@ source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
 
 # Translating the Typecho Interface
 
-Typecho's interface text is written in Simplified Chinese in the source code; other languages are provided by language packs. This page is for translators. It explains the structure of the language pack repository, how to translate and update with Poedit, and how to submit your work. For how site owners install and switch language packs, see [Interface language](/guide/extend/languages).
+Typecho's interface text is written in Simplified Chinese in the source code; other languages are provided by language packs. This page is for translators. It explains the structure of the language pack repository, how to translate and update with Poedit, and how to submit your work. For how site owners install and switch language packs, see [Interface language](../../guide/extend/languages.md).
 
 ## The typecho/languages repository
 

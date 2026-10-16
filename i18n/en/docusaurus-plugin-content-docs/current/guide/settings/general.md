@@ -17,8 +17,8 @@ source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
 | Site URL (站点地址) | `siteUrl` | The URL used during installation | The base for generating all permalinks; see [below](#site-url) |
 | Site description (站点描述) | `description` | `Your description here.` | Output as `<meta name="description">` in the page head |
 | Keywords (关键词) | `keywords` | `typecho,php,blog` | Output as `<meta name="keywords">`, separated by ASCII commas |
-| Allow registration (是否允许注册) | `allowRegister` | Not allowed (`0`) | When allowed, visitors can register, and new users become subscribers; see [Users, roles and registration](/guide/content/users#register) |
-| XMLRPC interface (XMLRPC 接口) | `allowXmlRpc` | On (`2`) | `0` off, `1` only the Pingback interface off, `2` on; see [Feeds and offline clients](/guide/content/feeds-xmlrpc#xmlrpc) |
+| Allow registration (是否允许注册) | `allowRegister` | Not allowed (`0`) | When allowed, visitors can register, and new users become subscribers; see [Users, roles and registration](../content/users.md#register) |
+| XMLRPC interface (XMLRPC 接口) | `allowXmlRpc` | On (`2`) | `0` off, `1` only the Pingback interface off, `2` on; see [Feeds and offline clients](../content/feeds-xmlrpc.md#xmlrpc) |
 | Language (语言) | `lang` | `zh_CN` | Shown only when there is a language pack in `usr/langs`; see [Interface language](../extend/languages.md) |
 | Time zone (时区) | `timezone` | Selected during installation | See [below](#timezone) |
 | Allowed upload file types (允许上传的文件类型) | `attachmentTypes` | `@image@` | See [below](#attachment-types) |
@@ -61,7 +61,7 @@ The four checkboxes correspond to four kinds of values in `attachmentTypes`, and
 | Common document files (常用档案文件) (txt doc docx xls xlsx ppt pptx zip rar pdf) | `@doc@` |
 | Other formats (其他格式) + text box (`attachmentTypesOther`) | The extensions in the text box, separated by ASCII commas |
 
-Extensions in "Other formats" are converted to lowercase, and executable types such as `php`, `sh` and `exe` are removed automatically. Also, although the description of "Image files" lists `avif`, 1.3.0 does not actually allow it. For the detailed rules, see [Attachments and file management](/guide/content/attachments#types).
+Extensions in "Other formats" are converted to lowercase, and executable types such as `php`, `sh` and `exe` are removed automatically. Also, although the description of "Image files" lists `avif`, 1.3.0 does not actually allow it. For the detailed rules, see [Attachments and file management](../content/attachments.md#types).
 
 ## Language {#lang}
 

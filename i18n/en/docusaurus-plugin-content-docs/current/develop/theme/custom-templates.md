@@ -33,7 +33,7 @@ $this->need('header.php');
 ```
 
 - The file name is up to you (except `index.php`); put it in the theme root directory.
-- When editing a page, "友情链接" appears in the "Custom template" drop-down on the right; once selected, the page is output with `page-links.php` instead. For what the site owner does, see [Pages: custom templates](/guide/content/pages#template).
+- When editing a page, "友情链接" appears in the "Custom template" drop-down on the right; once selected, the page is output with `page-links.php` instead. For what the site owner does, see [Pages: custom templates](../../guide/content/pages.md#template).
 - `$this` in the template is the page, so you can call `title()`, `content()`, `comments()` and so on just as in `page.php`.
 - When the site switches to a theme that does not have this file, the page is automatically output by the normal rules (`page.php` and so on).
 
@@ -104,7 +104,7 @@ When the site owner selects it, the option is saved as `file:home.php` and the h
 - In 1.3.0 the pagination URLs of this kind of home page (`/page/2/`) return a 500 error, so do not output pagination links in the template;
 - When the theme is switched, this setting automatically reverts to "show the latest posts".
 
-For how the site owner sets this up, see [Reading settings: front page](/guide/settings/reading#front-page).
+For how the site owner sets this up, see [Reading settings: front page](../../guide/settings/reading.md#front-page).
 
 ## A separate template for one category or page
 

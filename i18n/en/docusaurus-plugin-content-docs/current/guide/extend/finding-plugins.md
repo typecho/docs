@@ -9,7 +9,7 @@ source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
 
 Typecho currently has **no maintained official or community directory of plugins / themes**. Plugins and themes are published by their authors individually, mostly on GitHub. This page lists search entry points by need and explains how to tell whether a plugin or theme can be used with 1.3. This page does not recommend or describe specific third-party plugins.
 
-If you cannot find a suitable one, or are not sure which one to use, post a question on the [Typecho forum](https://forum.typecho.org/); see [Getting help](/guide/help/getting-help).
+If you cannot find a suitable one, or are not sure which one to use, post a question on the [Typecho forum](https://forum.typecho.org/); see [Getting help](../help/getting-help.md).
 
 ## Entry points on GitHub
 

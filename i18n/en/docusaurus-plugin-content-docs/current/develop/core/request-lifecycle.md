@@ -47,7 +47,7 @@ The configuration file does three things in order:
 | Step | What it does | Notes |
 |---|---|---|
 | 1 | Sets the friendly exception handler | Only when `__TYPECHO_DEBUG__` is not defined or is false. Exceptions with code 404 go to `Widget\ExceptionHandle`, which renders the current theme as a 404 page (using `404.php` if the theme has one); other exceptions go to `Common::error()`, which shows an error page |
-| 2 | Defines `__TYPECHO_CLASS_ALIASES__` | The legacy class name alias table; see the [legacy class name table](/develop/reference/class-aliases) |
+| 2 | Defines `__TYPECHO_CLASS_ALIASES__` | The legacy class name alias table; see the [legacy class name table](../reference/class-aliases.md) |
 | 3 | `Widget\Options::alloc()` | The first database query; reads all site options |
 | 4 | Loads the language pack | When the `lang` option is not empty and not `zh_CN`, reads `usr/langs/<lang>.mo` (or the directory given by `__TYPECHO_LANG_DIR__`) |
 | 5 | Backup directory | Defines `__TYPECHO_BACKUP_DIR__` as `usr/backups` if it is not defined |
@@ -60,7 +60,7 @@ A few notes:
 
 - Plugin hooks only take effect after step 7, so plugins cannot intervene in the first 6 steps;
 - Step 9 starts a session for **every** request from a logged-in user, including front-end page visits; no session is started for visitors who are not logged in;
-- For how to use the constants, see [Configuration file](/guide/operations/config-file).
+- For how to use the constants, see [Configuration file](../../guide/operations/config-file.md).
 
 ## 4. index.php:begin
 

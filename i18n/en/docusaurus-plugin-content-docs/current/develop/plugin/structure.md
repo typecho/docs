@@ -81,7 +81,7 @@ class Single implements PluginInterface
 }
 ```
 
-The old class naming style `class Name_Plugin implements Typecho_Plugin_Interface` (without a namespace) still works in 1.3; Typecho maps `Name_Plugin` to `\TypechoPlugin\Name\Plugin`. Use the namespace style for new plugins. See [Migrating themes and plugins to 1.3](/develop/migrate-to-1-3).
+The old class naming style `class Name_Plugin implements Typecho_Plugin_Interface` (without a namespace) still works in 1.3; Typecho maps `Name_Plugin` to `\TypechoPlugin\Name\Plugin`. Use the namespace style for new plugins. See [Migrating themes and plugins to 1.3](../migrate-to-1-3.md).
 
 ## Header comment {#header}
 

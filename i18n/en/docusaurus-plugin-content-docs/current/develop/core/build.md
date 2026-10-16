@@ -11,7 +11,7 @@ Typecho's PHP code needs no compilation; it runs as soon as you change it. The o
 
 ## Running a development copy
 
-You need PHP 7.4 or later and any supported database (SQLite is the simplest for local development). For the full list of requirements, see [Requirements](/guide/getting-started/requirements).
+You need PHP 7.4 or later and any supported database (SQLite is the simplest for local development). For the full list of requirements, see [Requirements](../../guide/getting-started/requirements.md).
 
 ```bash
 git clone https://github.com/typecho/typecho.git
@@ -29,7 +29,7 @@ php install.php
 php -S 127.0.0.1:8000
 ```
 
-Running `php -S` directly in the site root (without a router script) is enough: existing files (`admin/*.php`, CSS, images) are served directly, and paths that do not exist are passed to `index.php` in the root, so both front-end URLs and `/action/*` work. For all environment variables of command-line installation, see [Command-line and unattended installation](/guide/getting-started/cli-install).
+Running `php -S` directly in the site root (without a router script) is enough: existing files (`admin/*.php`, CSS, images) are served directly, and paths that do not exist are passed to `index.php` in the root, so both front-end URLs and `/action/*` work. For all environment variables of command-line installation, see [Command-line and unattended installation](../../guide/getting-started/cli-install.md).
 
 During development, turn on debug mode in `config.inc.php` so that errors show the full exception message and stack trace:
 

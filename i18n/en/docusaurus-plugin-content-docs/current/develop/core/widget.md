@@ -7,7 +7,7 @@ source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
 
 # The Widget Component Model
 
-In Typecho, pages, data lists and admin operations are all widgets. This page explains how `Typecho\Widget` (`var/Typecho/Widget.php`) creates and reuses instances, how it stores and iterates over data rows, the rules for magic properties and magic methods, and `Widget\Base` with its interfaces and traits. For how to use widgets in templates, see [Calling widgets in templates](/develop/theme/widgets).
+In Typecho, pages, data lists and admin operations are all widgets. This page explains how `Typecho\Widget` (`var/Typecho/Widget.php`) creates and reuses instances, how it stores and iterates over data rows, the rules for magic properties and magic methods, and `Widget\Base` with its interfaces and traits. For how to use widgets in templates, see [Calling widgets in templates](../theme/widgets.md).
 
 ## What a widget is
 
@@ -137,7 +137,7 @@ When you read `$widget->name`, `__get()` looks in this order:
 1. The cached `#name` in the current row;
 2. The widget's `___name()` method (three underscores). The result is cached in `#name` of the current row, and later reads on the same row do not call it again;
 3. The `name` field of the current row;
-4. A value provided by a plugin through the hook `___name` (see [Dynamic hooks](/develop/plugin/hooks#动态钩子));
+4. A value provided by a plugin through the hook `___name` (see [Dynamic hooks](../plugin/hooks.md#动态钩子));
 5. If none of these exists, `null` is returned.
 
 The cache lives on the current row; after `next()` moves to the next row, `___name()` is computed again for the new row.
@@ -208,7 +208,7 @@ The interfaces they implement:
 | `Typecho\Router\ParamsDelegateInterface` | `getRouterParam(string $key): string` | Contents, Comments, Metas, Users | New in 1.3. Supplies parameters to `Router::url()`; see [Routing](./router.md#params-delegate) |
 | `Widget\ActionInterface` | `action()` | Every widget that can be called through `/action/<name>` | `Widget\Action` only dispatches to classes that implement it |
 
-Names in old code such as `Widget_Abstract_Contents` are aliases of these base classes; see the [legacy class name table](/develop/reference/class-aliases).
+Names in old code such as `Widget_Abstract_Contents` are aliases of these base classes; see the [legacy class name table](../reference/class-aliases.md).
 
 ## Traits added in 1.3
 

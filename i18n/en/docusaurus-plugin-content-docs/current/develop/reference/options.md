@@ -14,7 +14,7 @@ source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
 `$this->options->xxx` merges values from three places, in order:
 
 1. Site-wide settings in the database `options` table with `user = 0`; for names and defaults see [Option names](./option-names.md);
-2. Settings of the current theme (the JSON stored in `theme:<theme directory name>`), which **override site-wide settings of the same name**; see [Theme settings](/develop/theme/theme-options);
+2. Settings of the current theme (the JSON stored in `theme:<theme directory name>`), which **override site-wide settings of the same name**; see [Theme settings](../theme/theme-options.md);
 3. Personal settings of the currently logged-in user (rows with `user = <user ID>`, for example `markdown`, `autoSave`, `defaultAllowComment`), merged only when the user is logged in, overriding the previous two.
 
 There are also the magic properties in the tables below, which Typecho computes, for example various URLs.

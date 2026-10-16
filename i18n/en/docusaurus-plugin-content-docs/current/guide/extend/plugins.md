@@ -32,7 +32,7 @@ A plugin's class name includes its directory name (for example `TypechoPlugin\He
 | Disable | "Disable" (禁用) in the "Enabled plugins" list, then confirm "Are you sure you want to disable plugin X?" (你确认要禁用插件 某某 吗?) | The message "Plugin has been disabled" (插件已经被禁用) appears |
 
 - For plugins with neither enable/disable logic nor settings, the action column shows "Plug and play" (即插即用).
-- A plugin's personal settings (each user's own settings) appear at the bottom of each user's profile page; see [Profile](/guide/content/profile#plugins).
+- A plugin's personal settings (each user's own settings) appear at the bottom of each user's profile page; see [Profile](../content/profile.md#plugins).
 - When a plugin declares a minimum version with `@since` and the current Typecho version is lower, enabling fails with the message "X cannot work properly under this version of typecho" (某某 无法在此版本的typecho下正常工作); an enabled plugin of this kind shows a delete icon next to its name as a warning.
 
 Taking the bundled `HelloWorld` as an example: after it is enabled, the "Hello World" it outputs appears in the top navigation bar of the admin panel; after you change "Say something" (说点什么) on its settings page and save, the new value is stored in the `options` table in a row named `plugin:HelloWorld`.

@@ -11,7 +11,7 @@ Typecho is an ordinary PHP application and can be deployed on any environment th
 
 | Environment | Key points |
 |---|---|
-| VPS / cloud server | Install the web server, PHP and the database yourself, and follow [Requirements](/guide/getting-started/requirements), [Installation](/guide/getting-started/installation) and [Web server configuration](./web-server.md) |
+| VPS / cloud server | Install the web server, PHP and the database yourself, and follow [Requirements](../getting-started/requirements.md), [Installation](../getting-started/installation.mdx) and [Web server configuration](./web-server.md) |
 | Shared hosting | Upload the files and install through the browser. Select PHP 7.4 or later in the hosting control panel; permalinks usually rely on Apache's `.htaccess`, or the panel's URL rewriting ("伪静态") setting (choose the rule for generic PHP applications, or enter the rules from [Web server configuration](./web-server.md#htaccess)) |
 | Containers | Use the official image `joyqi/typecho`, see below |
 
@@ -50,7 +50,7 @@ According to the image's startup script `/usr/bin/init_typecho` (its source is `
 - The site root is `/app`, and the whole of `/app` is declared as a volume (`VOLUME /app`);
 - **`config.inc.php` is written to the root of `/app`, not to `/app/usr`**. If you mount a volume only on `/app/usr`, the configuration file is not in the volume; after the container is removed and recreated it is gone, and the home page redirects with 302 to `/install.php`;
 - The program files are in `/usr/src/typecho` in the image. On **every start** of the container, only the items that **do not exist** in `/app` (`admin`, `install`, `var`, `index.php`, `install.php`, and `usr/themes`, `usr/plugins`, `usr/langs`) are copied from there; existing ones are not overwritten. `usr/uploads` is created if it does not exist;
-- With `TYPECHO_INSTALL=1`, every start runs `php /app/install.php` once as the `www-data` user (`su -p`, environment variables preserved), which is the [command-line installation](/guide/getting-started/cli-install). When the same container restarts, it only prints two lines of version information and the site starts as usual;
+- With `TYPECHO_INSTALL=1`, every start runs `php /app/install.php` once as the `www-data` user (`su -p`, environment variables preserved), which is the [command-line installation](../getting-started/cli-install.md). When the same container restarts, it only prints two lines of version information and the site starts as usual;
 - PHP errors are not shown on the page; they go to standard error, viewable with `docker logs`.
 
 About `.htaccess` in the Apache variant: `Dockerfile.apache` writes rewrite rules to `/app/.htaccess` at build time, but `/app` has already been declared as a volume by then. According to the Docker documentation, changes made to that directory in build steps after the volume is declared may be discarded, and the startup script does not copy `.htaccess` either, so `/app` in the container does not necessarily contain this file. If post pages return 404 after you enable permalinks, create the `.htaccess` from [Web server configuration](./web-server.md#htaccess) under `/app`; the Apache variant uses `mod_php`, so Typecho also tries to write it automatically when you enable permalinks in the admin panel.
@@ -64,7 +64,7 @@ About `.htaccess` in the Apache variant: `Dockerfile.apache` writes rewrite rule
 | `MEMORY_LIMIT` | `128m` | PHP `memory_limit` |
 | `MAX_POST_BODY` | `10m` | Sets both PHP `upload_max_filesize` and `post_max_size`, that is, the attachment size limit |
 | `MAX_EXECUTION_TIME` | `30` | PHP `max_execution_time` (not listed on the image description page) |
-| `TYPECHO_SITE_URL`, `TYPECHO_DB_*`, `TYPECHO_USER_*`, etc. | see right | Not image variables but `install.php`'s own variables, passed through unchanged; for their meaning and defaults, [Command-line and unattended installation](/guide/getting-started/cli-install#环境变量) is authoritative |
+| `TYPECHO_SITE_URL`, `TYPECHO_DB_*`, `TYPECHO_USER_*`, etc. | see right | Not image variables but `install.php`'s own variables, passed through unchanged; for their meaning and defaults, [Command-line and unattended installation](../getting-started/cli-install.md#环境变量) is authoritative |
 
 The first five are all of the image's own variables.
 
@@ -145,7 +145,7 @@ Some notes:
 
 ### The problem with mounting all of `/app` {#mount-whole-app}
 
-You can also mount the whole of `/app` as a named volume, which keeps `config.inc.php` too and makes `keep` unnecessary. The cost: the startup script only copies files that **do not exist** in `/app`, so after switching to a newer image, the old `admin/`, `var/` and so on in the volume are not updated, and **the upgrade never actually happens**. For example, after replacing `1.2.1-php8.0-apache` with `1.3.0-php8.2-apache`, PHP becomes 8.2, but `var/Typecho/Common.php` in the volume still has `VERSION = '1.2.1'` and the page generator still says Typecho 1.2.1. If you choose this approach, before upgrading delete `admin`, `var`, `install`, `index.php` and `install.php` from the volume, start the new image, then complete the upgrade in the admin panel (see [Upgrading](/guide/getting-started/upgrade)).
+You can also mount the whole of `/app` as a named volume, which keeps `config.inc.php` too and makes `keep` unnecessary. The cost: the startup script only copies files that **do not exist** in `/app`, so after switching to a newer image, the old `admin/`, `var/` and so on in the volume are not updated, and **the upgrade never actually happens**. For example, after replacing `1.2.1-php8.0-apache` with `1.3.0-php8.2-apache`, PHP becomes 8.2, but `var/Typecho/Common.php` in the volume still has `VERSION = '1.2.1'` and the page generator still says Typecho 1.2.1. If you choose this approach, before upgrading delete `admin`, `var`, `install`, `index.php` and `install.php` from the volume, start the new image, then complete the upgrade in the admin panel (see [Upgrading](../getting-started/upgrade.md)).
 
 ### Upgrading {#upgrade}
 

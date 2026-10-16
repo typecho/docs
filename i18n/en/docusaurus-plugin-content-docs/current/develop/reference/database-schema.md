@@ -65,7 +65,7 @@ Indexes: unique index on `slug`, regular index on `created`.
 | `private` | Private | Visible only to the author |
 | `waiting` | Pending review | Post submitted by a contributor, waiting for review by an editor or administrator |
 
-"Password protected" is not a status: content with a `password` set still has the `status` `publish`. Drafts are not a status either but are distinguished by `type` (`post_draft`, `page_draft`, `revision`); the `status` of a draft row is usually `publish`. For how each status affects visitors, the author and other users, see [Post Visibility](/guide/content/visibility).
+"Password protected" is not a status: content with a `password` set still has the `status` `publish`. Drafts are not a status either but are distinguished by `type` (`post_draft`, `page_draft`, `revision`); the `status` of a draft row is usually `publish`. For how each status affects visitors, the author and other users, see [Post Visibility](../../guide/content/visibility.md).
 
 ## comments {#comments}
 
@@ -141,7 +141,7 @@ The custom field table in 1.3, one row per field per content item.
 | `int_value` | `int(10)` | `0` | Value for the `int` type, `0` for other types |
 | `float_value` | `float` (`real` in PostgreSQL and SQLite) | `0` | Value for the `float` type, `0` for other types |
 
-Primary key (a unique index in SQLite): `(cid, name)`; indexes: `int_value`, `float_value`. For how to use fields, see [Custom Fields in Templates](/develop/theme/custom-fields).
+Primary key (a unique index in SQLite): `(cid, name)`; indexes: `int_value`, `float_value`. For how to use fields, see [Custom Fields in Templates](../theme/custom-fields.md).
 
 ## users {#users}
 
@@ -156,7 +156,7 @@ Primary key (a unique index in SQLite): `(cid, name)`; indexes: `int_value`, `fl
 | `created` | `int(10) unsigned` | `0` | Registration time |
 | `activated` | `int(10) unsigned` | `0` | Last activity time, updated on every request of a logged-in user |
 | `logged` | `int(10) unsigned` | `0` | Set to the current value of `activated` on each login, i.e. the last activity time during the previous login session |
-| `group` | `varchar(16)` | `'visitor'` | User group: `administrator`, `editor`, `contributor`, `subscriber`, `visitor`, see the [permission table](/guide/content/users#permission-table) |
+| `group` | `varchar(16)` | `'visitor'` | User group: `administrator`, `editor`, `contributor`, `subscriber`, `visitor`, see the [permission table](../../guide/content/users.md#permission-table) |
 | `authCode` | `varchar(64)` | `NULL` | Login credential, regenerated on every login |
 
 Unique indexes: `name`, `mail`.
@@ -175,7 +175,7 @@ Besides the site-wide options in the [option name list](./option-names.md), the 
 
 | `name` | `user` | Contents |
 |---|---|---|
-| `theme:主题目录名` | `0` | Theme settings, see [Theme Settings](/develop/theme/theme-options) |
+| `theme:主题目录名` | `0` | Theme settings, see [Theme Settings](../theme/theme-options.md) |
 | `plugin:插件名` | `0` | Plugin settings, see [Plugin Configuration](../plugin/settings.md) |
 | `_plugin:插件名` | `0` or user ID | Default value of a plugin's personal settings / a specific user's value |
 | Personal setting option names (such as `autoSave`, `markdown`) | User ID | Values a user saves in "Profile", overriding the site-wide option of the same name |

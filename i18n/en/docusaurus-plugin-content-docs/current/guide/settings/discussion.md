@@ -7,7 +7,7 @@ source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
 
 # Discussion Settings
 
-"Settings → Discussion" (设置 → 评论, `admin/options-discussion.php`) in the admin panel; only administrators can open it. These settings apply to every post and page on the site; "Allow comments" (允许评论) and "Allow trackbacks" (允许被引用) for a single item are set in the editor, and comments are moderated in "Manage → Comments" (管理 → 评论); see [Comment management and moderation](/guide/content/comments).
+"Settings → Discussion" (设置 → 评论, `admin/options-discussion.php`) in the admin panel; only administrators can open it. These settings apply to every post and page on the site; "Allow comments" (允许评论) and "Allow trackbacks" (允许被引用) for a single item are set in the editor, and comments are moderated in "Manage → Comments" (管理 → 评论); see [Comment management and moderation](../content/comments.md).
 
 ## Comment date format {#date-format}
 
@@ -73,7 +73,7 @@ This group determines what conditions a visitor's comment must meet when it is s
 The source code keeps one decimal place for the minutes (for example 0.5 minutes = 30 seconds), but the input is a plain number field: entering `0.5` makes the browser report "Please enter a valid value" and the form cannot be submitted. So in the admin panel you can only enter whole minutes.
 :::
 
-For moderation statuses and how to handle them, see [Comment management and moderation](/guide/content/comments).
+For moderation statuses and how to handle them, see [Comment management and moderation](../content/comments.md).
 
 ### Referring page check {#referer}
 

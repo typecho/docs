@@ -7,7 +7,7 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 
 # Custom Fields in Templates
 
-Custom fields are extra data attached to a post or page, such as a subtitle, a cover image or a view count. Authors fill them in in the "Custom fields" panel of the editor (see [Custom fields (editor side)](/guide/content/custom-fields)), and themes read them in templates. A theme can also declare fields in advance so that they appear as a form in the editor.
+Custom fields are extra data attached to a post or page, such as a subtitle, a cover image or a view count. Authors fill them in in the "Custom fields" panel of the editor (see [Custom fields (editor side)](../../guide/content/custom-fields.md)), and themes read them in templates. A theme can also declare fields in advance so that they appear as a form in the editor.
 
 ## Reading fields
 
@@ -29,7 +29,7 @@ On post and page views, or inside a post list loop, use `$this->fields->字段�
 - This works the same inside the loops of other widgets, for example `$posts->fields->cover`.
 
 :::caution "JSON structure" in the editor panel
-In 1.3.0, for a field that the author adds manually in the editor panel with the type "JSON structure", the template reads the raw text string rather than an array (see the [note](/guide/content/custom-fields#types) on the editor-side page). If your theme depends on structured data, either have authors enter the JSON with the "String" type and `json_decode()` it yourself in the template, or have the theme predefine multi-value fields such as checkboxes as described below.
+In 1.3.0, for a field that the author adds manually in the editor panel with the type "JSON structure", the template reads the raw text string rather than an array (see the [note](../../guide/content/custom-fields.md#types) on the editor-side page). If your theme depends on structured data, either have authors enter the JSON with the "String" type and `json_decode()` it yourself in the template, or have the theme predefine multi-value fields such as checkboxes as described below.
 :::
 
 ## Predefined fields

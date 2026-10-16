@@ -299,7 +299,7 @@ body { max-width: 720px; margin: 0 auto; padding: 0 16px; font-family: sans-seri
 
 3. Go to "Theme settings", fill in "Footer text" and save; refresh the front end and the text appears in the footer.
 
-When a template fails, the page may be blank or return 500; turn on debug mode to see the actual error. See [Debugging and troubleshooting](/guide/operations/debugging#debug).
+When a template fails, the page may be blank or return 500; turn on debug mode to see the actual error. See [Debugging and troubleshooting](../../guide/operations/debugging.md#debug).
 
 ## Next steps
 

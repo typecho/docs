@@ -337,7 +337,7 @@ Key points:
 
 `Widget\Upload` also has a few notification hooks: `beforeUpload` / `beforeModify` receive the file info array before it is written to the database, and `upload` / `modify` receive the `Widget\Upload` object after it is written.
 
-If a site owner only wants attachments served through a CDN without changing where they are stored, no plugin is needed; see [Attachment Storage Location](/guide/operations/uploads-storage).
+If a site owner only wants attachments served through a CDN without changing where they are stored, no plugin is needed; see [Attachment Storage Location](../../guide/operations/uploads-storage.md).
 
 ## Replacing the editor: richEditor {#editor}
 
@@ -521,4 +521,4 @@ After activation, every login through the login form and XML-RPC clients leaves 
 [LoginLog] failure name=admin ip=203.0.113.5
 ```
 
-For the log location, see [Debugging and Troubleshooting](/guide/operations/debugging#logs).
+For the log location, see [Debugging and Troubleshooting](../../guide/operations/debugging.md#logs).

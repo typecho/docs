@@ -42,7 +42,7 @@ Do not put development files (SCSS sources, `node_modules`, test scripts and so 
 ## Publishing on GitHub
 
 1. In the repository README, state: the theme name, screenshots, the compatible Typecho and PHP versions, installation (upload to `usr/themes/`, activate under "Dashboard → Appearance"), a description of the theme options, and the license;
-2. Add the topic `typecho-theme` to the repository. It is the most widely used topic for Typecho themes on GitHub, and users search by it as described in [Finding plugins and themes](/guide/extend/finding-plugins);
+2. Add the topic `typecho-theme` to the repository. It is the most widely used topic for Typecho themes on GitHub, and users search by it as described in [Finding plugins and themes](../../guide/extend/finding-plugins.md);
 3. Create a Release for each version, attach the archive packaged as described above, and list the changes in the notes;
 4. Post an introduction of the theme on the [Typecho forum](https://forum.typecho.org/), with the repository URL and screenshots.
 

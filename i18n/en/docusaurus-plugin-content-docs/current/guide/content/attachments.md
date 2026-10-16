@@ -34,7 +34,7 @@ By default, files are stored under `usr/uploads/year/month/` in the site directo
 usr/uploads/2026/10/3396430629.png
 ```
 
-The original file name is only stored in the database and is shown as the attachment's title. The access address is "site URL + this path". Missing directories are created level by level automatically, so `usr/uploads` must be writable by PHP. To change the storage location or serve attachments through a CDN, see [Upload storage location](/guide/operations/uploads-storage).
+The original file name is only stored in the database and is shown as the attachment's title. The access address is "site URL + this path". Missing directories are created level by level automatically, so `usr/uploads` must be writable by PHP. To change the storage location or serve attachments through a CDN, see [Upload storage location](../operations/uploads-storage.md).
 
 ## Allowed file types {#types}
 
@@ -80,7 +80,7 @@ The upload area at the top of the page is for **replacing the file**: upload a n
 
 - Click the delete icon in the editor's "Attachments" panel (confirm "Are you sure you want to delete file X?" (确认要删除文件 某某 吗?)), or tick files under "Manage → Files" and choose "Delete" (删除) (confirm "Are you sure you want to delete these files?" (你确认要删除这些文件吗?)).
 - Deleting removes both the database record and the file on disk. Addresses that reference it in content stop working, and you need to edit the content yourself.
-- If `__TYPECHO_UPLOAD_ROOT_DIR__` is defined in `config.inc.php`, 1.3.0 does not delete the file on disk when an attachment is deleted; see [Upload storage location](/guide/operations/uploads-storage).
+- If `__TYPECHO_UPLOAD_ROOT_DIR__` is defined in `config.inc.php`, 1.3.0 does not delete the file on disk when an attachment is deleted; see [Upload storage location](../operations/uploads-storage.md).
 
 ## Unattached files {#unattached}
 

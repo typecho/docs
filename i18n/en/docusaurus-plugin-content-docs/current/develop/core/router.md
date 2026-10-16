@@ -7,7 +7,7 @@ source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
 
 # Routing
 
-For every front-end URL, the router `Typecho\Router` (`var/Typecho/Router.php`) decides which widget handles it. This page explains the structure of the routing table, how rules are written, how to generate URLs in reverse, and how widgets supply URL parameters through `ParamsDelegateInterface`. For the 25 default routes, see [Default routes and actions](/develop/reference/routes-actions); for a complete example of a plugin adding a route, see [Routes, actions and admin panels](/develop/plugin/routes-actions).
+For every front-end URL, the router `Typecho\Router` (`var/Typecho/Router.php`) decides which widget handles it. This page explains the structure of the routing table, how rules are written, how to generate URLs in reverse, and how widgets supply URL parameters through `ParamsDelegateInterface`. For the 25 default routes, see [Default routes and actions](../reference/routes-actions.md); for a complete example of a plugin adding a route, see [Routes, actions and admin panels](../plugin/routes-actions.md).
 
 ## Routing table
 

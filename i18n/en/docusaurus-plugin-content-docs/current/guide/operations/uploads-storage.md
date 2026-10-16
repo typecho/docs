@@ -82,7 +82,7 @@ To clean up, compare the files on disk with the attachment records in the databa
 Typecho itself only writes attachments to the local file system. To store attachments in object storage you need a plugin: Typecho provides five plugin interfaces on `Widget\Upload`, namely `uploadHandle`, `modifyHandle`, `deleteHandle`, `attachmentHandle` and `attachmentDataHandle`. Once a plugin takes over, uploading, replacing, deleting and URL generation are all handled by the plugin.
 
 - When choosing a plugin, make sure it supports 1.3 and implements the **delete** interface; otherwise files in object storage are not removed when you delete an attachment in the admin panel;
-- Plugin developers can refer to the attachment storage example in [Common plugin patterns](/develop/plugin/patterns#external-storage).
+- Plugin developers can refer to the attachment storage example in [Common plugin patterns](../../develop/plugin/patterns.md#external-storage).
 
 If you only want attachments **served through a CDN** while the files stay on the server, you don't need a plugin; use `__TYPECHO_UPLOAD_URL__` as described above.
 

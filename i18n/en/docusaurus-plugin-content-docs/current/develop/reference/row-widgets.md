@@ -51,7 +51,7 @@ Every row of data you loop over in a template is a widget object: posts and page
 
 - `next()` returns `false` when the loop reaches the end and resets the pointer to the beginning, so you can loop over the same object more than once.
 - `alt('odd', 'even')` outputs its arguments in turn based on the current sequence number; it is commonly used for alternating row styles.
-- `alloc()` caches instances by class name, so a second `alloc()` of the same class returns the first result. When you need several instances, use `allocWithAlias()`; see [Calling Widgets in Templates](/develop/theme/widgets).
+- `alloc()` caches instances by class name, so a second `alloc()` of the same class returns the first result. When you need several instances, use `allocWithAlias()`; see [Calling Widgets in Templates](../theme/widgets.md).
 
 ## Content: Widget\Base\Contents {#contents}
 
@@ -156,9 +156,9 @@ Arguments of the common methods:
 
 - `author` is the author object (a subclass of `Widget\Base\Users`), for example `$posts->author->screenName`, `$posts->author->permalink`.
 - `content`, `excerpt` and `summary` are processed HTML; `plainExcerpt` and `description` are plain text. When password protected and not unlocked, `content` is the password form.
-- `fields` holds the custom fields (`Typecho\Config`); see [Custom Fields in Templates](/develop/theme/custom-fields).
+- `fields` holds the custom fields (`Typecho\Config`); see [Custom Fields in Templates](../theme/custom-fields.md).
 - `hidden` means "password protected and not unlocked by the current visitor", not the "hidden" status.
-- `Contents\Post\Recent` queries only some of the fields (not `text`), so its `content`, `excerpt` and so on are empty. When you need the body, fetch the list with `\Widget\Archive`; see [Calling Widgets in Templates](/develop/theme/widgets).
+- `Contents\Post\Recent` queries only some of the fields (not `text`), so its `content`, `excerpt` and so on are empty. When you need the body, fetch the list with `\Widget\Archive`; see [Calling Widgets in Templates](../theme/widgets.md).
 
 ## Comments: Widget\Base\Comments {#comments}
 
@@ -244,7 +244,7 @@ The list returned by `$this->comments()` also provides:
 | `isTopLevel` | `bool` | Whether the top level has been reached |
 | `parentContent` | `Contents` | Overrides getting the content |
 
-For the options of `listComments()` and the `threadedComments` callback, see [Comment Template](/develop/theme/comments). `levels` is the nesting depth (0 at the top level).
+For the options of `listComments()` and the `threadedComments` callback, see [Comment Template](../theme/comments.md). `levels` is the nesting depth (0 at the top level).
 
 ## Categories and tags: Widget\Base\Metas {#metas}
 

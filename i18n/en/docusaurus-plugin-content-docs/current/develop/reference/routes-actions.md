@@ -41,7 +41,7 @@ After installation the routing table contains 25 routes, matched in the order of
 | `feedback` | `[permalink:string]/[type:alpha]` | `\Widget\Feedback` | `action` | Submitting comments and trackbacks, such as `/archives/1/comment` |
 | `page` | `/[slug].html` | `\Widget\Archive` | `render` | Page |
 
-- You can change the paths of the four routes `post`, `page`, `category` and `category_page` under "Settings → Permalinks", see [Permalink Settings](/guide/settings/permalink);
+- You can change the paths of the four routes `post`, `page`, `category` and `category_page` under "Settings → Permalinks", see [Permalink Settings](../../guide/settings/permalink.md);
 - The `/index.php` prefix in URLs (when URL rewriting is not enabled) is not part of the route path;
 - To generate the URL of a route, use `\Typecho\Router::url('路由名', ['参数' => 值], 前缀)`.
 
@@ -102,4 +102,4 @@ Every action's URL is `/action/名字`, and the `do` route hands it to `\Widget\
 | `users-profile` | `\Widget\Users\Profile` | Profile: `do=` `profile` / `options` / `password` / `personal` (plugins' personal settings) |
 | `backup` | `\Widget\Backup` | Backup: `do=export` exports, `do=import` restores |
 
-Except for `ajax`, `service` and `xmlrpc`, actions check the token parameter `_` in the URL through `$this->security->protect()`, so you cannot call them by building the URL by hand; generate it with `$security->getIndex('/action/名字')`. For the required permissions, see the [permission table](/guide/content/users#permission-table).
+Except for `ajax`, `service` and `xmlrpc`, actions check the token parameter `_` in the URL through `$this->security->protect()`, so you cannot call them by building the URL by hand; generate it with `$security->getIndex('/action/名字')`. For the required permissions, see the [permission table](../../guide/content/users.md#permission-table).

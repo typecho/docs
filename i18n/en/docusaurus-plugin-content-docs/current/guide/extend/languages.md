@@ -21,7 +21,7 @@ Key points:
 
 - The language setting is stored in the `lang` option and **applies to the whole site**: every user sees the admin panel in the same language, and it cannot be set per user.
 - Text in themes and plugins that is output with `_t()` and has a translation in the language pack also changes. For example, after switching to English, "最新文章", "最近回复", "搜索" and so on in the default theme's sidebar become English, while text not included in the language pack stays in Chinese. The front-end language is mainly determined by the theme.
-- When installing from the command line, you can set the language directly with the environment variable `TYPECHO_LANG`; see [Command-line and unattended installation](/guide/getting-started/cli-install).
+- When installing from the command line, you can set the language directly with the environment variable `TYPECHO_LANG`; see [Command-line and unattended installation](../getting-started/cli-install.md).
 
 ### Storing language packs in another directory: `__TYPECHO_LANG_DIR__`
 

@@ -88,7 +88,7 @@ Strings not in the table and any callable can also be used as filters, like `tri
 | `isGet()`, `isPost()`, `isPut()` | The request method |
 | `isAjax()` | Whether the `X-Requested-With: XMLHttpRequest` header is present |
 | `isJson()` | Whether `Content-Type` is `application/json` |
-| `isSecure()` | Whether the request is HTTPS: checks `HTTPS`, port 443, `X-Forwarded-Proto`/`X-Forwarded-Port` passed by a reverse proxy, and the constant `__TYPECHO_SECURE__`; see [HTTPS and reverse proxies](/guide/operations/https-proxy) |
+| `isSecure()` | Whether the request is HTTPS: checks `HTTPS`, port 443, `X-Forwarded-Proto`/`X-Forwarded-Port` passed by a reverse proxy, and the constant `__TYPECHO_SECURE__`; see [HTTPS and reverse proxies](../../guide/operations/https-proxy.md) |
 | `getIp()` | The client IP |
 | `getHeader($key, $default)` | A request header, for example `getHeader('User-Agent')` |
 | `getServer($name, $default)` | A value from `$_SERVER` |

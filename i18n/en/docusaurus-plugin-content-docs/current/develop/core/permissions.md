@@ -7,7 +7,7 @@ source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
 
 # Permission Model
 
-Typecho permissions have only one dimension: the role (user group) a user belongs to. This page explains the role values, how `Widget\User::pass()` decides, the minimum role each admin page requires, and how to check permissions in your own code. For the "role × operation" table from the site owner's point of view, see the [permission table](/guide/content/users#permission-table).
+Typecho permissions have only one dimension: the role (user group) a user belongs to. This page explains the role values, how `Widget\User::pass()` decides, the minimum role each admin page requires, and how to check permissions in your own code. For the "role × operation" table from the site owner's point of view, see the [permission table](../../guide/content/users.md#permission-table).
 
 ## Roles and values
 
@@ -84,7 +84,7 @@ The menu protects only admin **pages**. A form submitted to `/action/<name>` doe
 
 On top of roles there are per-content checks: `Widget\Base\Contents::allow('edit')` is true for "editors and above, or the author of this content". This is how contributors can edit their own posts but not other people's.
 
-Actions also have to validate a token to prevent cross-site requests. This is unrelated to permissions; see [Routes, actions and admin panels](/develop/plugin/routes-actions#action).
+Actions also have to validate a token to prevent cross-site requests. This is unrelated to permissions; see [Routes, actions and admin panels](../plugin/routes-actions.md#action).
 
 ## Checking permissions in your own code
 
@@ -139,4 +139,4 @@ The fifth argument of `Helper::addPanel()` is the minimum role. When the panel i
 \Utils\Helper::addPanel(3, 'Guestbook/panel.php', '留言', '管理留言', 'editor');
 ```
 
-For a complete example, see [Routes, actions and admin panels](/develop/plugin/routes-actions#后台面板). Which roles a plugin's personal settings are aimed at is declared by the plugin itself; see [Plugin settings](/develop/plugin/settings).
+For a complete example, see [Routes, actions and admin panels](../plugin/routes-actions.md#后台面板). Which roles a plugin's personal settings are aimed at is declared by the plugin itself; see [Plugin settings](../plugin/settings.md).

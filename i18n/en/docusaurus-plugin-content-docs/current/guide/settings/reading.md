@@ -18,7 +18,7 @@ source_commit: 865a40f1e805668ce7e5b8bfd8fa66c9a718b2d1
 | Also change the post list path to (同时将文章列表页路径更改为) | `frontArchive`, `archivePattern` | Unchecked, `/blog/` | Appears only when the front page is not "Show the latest posts" |
 | Number of posts in lists (文章列表数目) | `postsListSize` | 10 | The number of posts shown in lists such as "Recent posts" (最新文章) in the sidebar |
 | Posts per page (每页文章数目) | `pageSize` | 5 | The number of posts per page in post lists such as the front page, categories, tags, search and archives |
-| Full-text feed output (聚合全文输出) | `feedFullText` | Full text (`1`) | `0` outputs summaries only, `1` outputs full text; see [Feeds and offline clients](/guide/content/feeds-xmlrpc#feeds) |
+| Full-text feed output (聚合全文输出) | `feedFullText` | Full text (`1`) | `0` outputs summaries only, `1` outputs full text; see [Feeds and offline clients](../content/feeds-xmlrpc.md#feeds) |
 
 ## Post date format {#date-format}
 
@@ -75,7 +75,7 @@ In 1.3.0, once the front page is set to a template file, visiting the front page
 :::
 
 :::caution Calling header() in the template file fails
-In 1.3.0, when the front page is set to a template file, Typecho does not initialize the feed URLs, so as soon as the template (or the `header.php` it includes) calls `$this->header()`, the front page fails (`Typed property Widget\Archive::$archiveFeedUrl must not be accessed before initialization`). This is fixed only in code after 1.3.0. You can avoid it by setting the feed URLs first with methods such as `setArchiveFeedUrl()` at the top of the template; for how, see [Front page template](/develop/theme/custom-templates#home-page-template) in theme development.
+In 1.3.0, when the front page is set to a template file, Typecho does not initialize the feed URLs, so as soon as the template (or the `header.php` it includes) calls `$this->header()`, the front page fails (`Typed property Widget\Archive::$archiveFeedUrl must not be accessed before initialization`). This is fixed only in code after 1.3.0. You can avoid it by setting the feed URLs first with methods such as `setArchiveFeedUrl()` at the top of the template; for how, see [Front page template](../../develop/theme/custom-templates.md#home-page-template) in theme development.
 :::
 
 ### Post list page {#front-archive}

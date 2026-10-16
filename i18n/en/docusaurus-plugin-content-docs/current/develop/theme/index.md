@@ -7,7 +7,7 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 
 # Theme Development Overview
 
-A theme determines how the front end of a Typecho site looks. A theme is a directory under `usr/themes/` that contains a number of PHP template files plus static files such as stylesheets, scripts and images. Site owners switch themes in the admin panel under "Dashboard → Appearance"; for how to do that, see [Installing and configuring themes](/guide/extend/themes) in the Guide.
+A theme determines how the front end of a Typecho site looks. A theme is a directory under `usr/themes/` that contains a number of PHP template files plus static files such as stylesheets, scripts and images. Site owners switch themes in the admin panel under "Dashboard → Appearance"; for how to do that, see [Installing and configuring themes](../../guide/extend/themes.md) in the Guide.
 
 ## `$this` in templates
 
@@ -40,6 +40,6 @@ In a template you can also call other widgets to get additional data, such as th
 
 ## Development tips
 
-- Develop locally or on a test site and turn on debug mode (define `__TYPECHO_DEBUG__` in `config.inc.php`); when a template fails you see the error message and line number directly. See [Debugging and troubleshooting](/guide/operations/debugging#debug).
+- Develop locally or on a test site and turn on debug mode (define `__TYPECHO_DEBUG__` in `config.inc.php`); when a template fails you see the error message and line number directly. See [Debugging and troubleshooting](../../guide/operations/debugging.md#debug).
 - Use `usr/themes/classic-22/`, which ships with Typecho, as a reference. It covers the common template patterns and is small.
 - Themes need the same PHP version as Typecho 1.3: PHP 7.4 or later.

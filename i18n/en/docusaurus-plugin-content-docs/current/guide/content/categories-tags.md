@@ -106,4 +106,4 @@ This is a frequently asked question. The "Posts" count next to categories and ta
 As the source code intends, refreshing tags should also delete tags with a count of 0 that are no longer associated with any content. In 1.3.0, however, the type name queried by this code is written as `tags` (it should be `tag`), so nothing is actually deleted, and tags with a count of 0 still exist after refreshing. Select and delete empty tags manually on the tag page.
 :::
 
-For bulk processing after importing or migrating, see also [Migrating from other blogs](/guide/operations/migration#counts).
+For bulk processing after importing or migrating, see also [Migrating from other blogs](../operations/migration.md#counts).

@@ -10,7 +10,7 @@ source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
 Upgrading Typecho takes two steps: first **replace the program files**, then **run the upgrade program** in the admin panel (which updates the database). This page uses an upgrade from 1.2.x to 1.3.0 as the example.
 
 :::danger Back up first
-The upgrade modifies the database and cannot be rolled back automatically. Before you start, back up the **database** (with the database's own export tool; it contains all settings), the **`usr/` directory** (themes, plugins, attachments; with SQLite the database file is also here by default) and **`config.inc.php`**. The **Backup** (备份) feature in the admin panel only exports content, without settings or files, and cannot replace these three. See [Backup and restore](/guide/operations/backup) for how to do it.
+The upgrade modifies the database and cannot be rolled back automatically. Before you start, back up the **database** (with the database's own export tool; it contains all settings), the **`usr/` directory** (themes, plugins, attachments; with SQLite the database file is also here by default) and **`config.inc.php`**. The **Backup** (备份) feature in the admin panel only exports content, without settings or files, and cannot replace these three. See [Backup and restore](../operations/backup.md) for how to do it.
 :::
 
 ## Where upgrades start: the new version notice on the dashboard
@@ -75,7 +75,7 @@ These 5 items are what you replace:
 | `config.inc.php` | Holds the database connection; the new package does not contain this file |
 | `usr/` | Your themes, plugins and uploaded files |
 
-Sites that deleted `install.php` and `install/` after installation, as recommended in [Security hardening](/guide/operations/security#remove-installer), can skip copying these two items: the upgrade program in the admin panel does not use them.
+Sites that deleted `install.php` and `install/` after installation, as recommended in [Security hardening](../operations/security.md#remove-installer), can skip copying these two items: the upgrade program in the admin panel does not use them.
 
 :::tip About the new theme
 The new package's `usr/themes/` contains `classic-22`, the official theme added in 1.3. To use it, copy just `usr/themes/classic-22` into the site directory. Do not overwrite `usr/themes/default` as a whole, or your changes to the default theme will be lost.
@@ -127,7 +127,7 @@ If you have already hit the hang: replace this file, log in to the admin panel a
 
 - On the **Dashboard** (控制台), check that the version number in the footer is the new version.
 - Check each active plugin and the current theme. 1.3 stores plugin and theme settings as JSON and adjusts some internal classes, so older plugins may need updating.
-- If you get a blank page or a 500 error, first disable plugins and switch back to a bundled theme to narrow it down; see [Debugging and troubleshooting](/guide/operations/debugging#isolate) for the steps.
+- If you get a blank page or a 500 error, first disable plugins and switch back to a bundled theme to narrow it down; see [Debugging and troubleshooting](../operations/debugging.md#isolate) for the steps.
 
 ## Sites deployed with containers
 
@@ -138,7 +138,7 @@ The official image `joyqi/typecho` writes `config.inc.php` to the root of `/app`
 
 A working approach (using an upgrade from `1.2.1-php8.0-apache` to `1.3.0-php8.2-apache` as the example):
 
-1. [Back up](/guide/operations/backup) the database and the directory mounted at `/app/usr`;
+1. [Back up](../operations/backup.md) the database and the directory mounted at `/app/usr`;
 2. Recreate the container with the new tag, **mounting only `/app/usr`**, and pass `TYPECHO_INSTALL=1`, all the `TYPECHO_SITE_URL` and `TYPECHO_DB_*` variables used at installation, plus `TYPECHO_DB_NEXT=keep`:
 
    ```bash
@@ -153,4 +153,4 @@ A working approach (using an upgrade from `1.2.1-php8.0-apache` to `1.3.0-php8.2
    `keep` makes the installer regenerate `config.inc.php` from the environment variables; when the data is complete, it neither creates tables nor changes the administrator account. Without `keep` you get "The installer has detected that the existing tables already exist." (安装程序检查到原有数据表已经存在.), and the site likewise jumps to the installation page.
 3. Log in to the admin panel as an administrator; you are taken to the upgrade page, where you carry out [step 2](#第二步在后台执行升级). On sites with more than 100 attachments, first use `docker cp` to put the fixed `Upgrade.php` into `/app/var/Utils/` in the container, as described under [Known issue](#已知问题附件超过-100-个的站点升级时卡住).
 
-The image has no `latest` tag, so always specify the version; the `nightly-*` tags come from the `master` branch and must not be used in production. For sites that already mount the whole of `/app`, see [Container and cloud host deployment](/guide/operations/containers#mount-whole-app).
+The image has no `latest` tag, so always specify the version; the `nightly-*` tags come from the `master` branch and must not be used in production. For sites that already mount the whole of `/app`, see [Container and cloud host deployment](../operations/containers.md#mount-whole-app).

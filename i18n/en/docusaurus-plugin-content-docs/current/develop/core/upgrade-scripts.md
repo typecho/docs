@@ -7,7 +7,7 @@ source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
 
 # Writing Upgrade Scripts
 
-When a new version needs to change the database (alter the table structure, migrate data, adjust options), write the migration code as a static method of the `Utils\Upgrade` class. This page explains how the upgrade program finds and runs these methods, and what to watch out for when you write them. For the steps a site owner follows to upgrade, see [Upgrading](/guide/getting-started/upgrade).
+When a new version needs to change the database (alter the table structure, migrate data, adjust options), write the migration code as a static method of the `Utils\Upgrade` class. This page explains how the upgrade program finds and runs these methods, and what to watch out for when you write them. For the steps a site owner follows to upgrade, see [Upgrading](../../guide/getting-started/upgrade.md).
 
 ## When it runs
 
@@ -71,7 +71,7 @@ Rules:
 - **Declare methods in ascending version order.** The execution order is the declaration order: if `v9_9_9` is written before `v9_0_0`, `v9_9_9` runs first, then `v9_0_0` still runs (it is higher than the version before the upgrade), and the `$options->version` it sees is already `9.9.9`;
 - Do not put any other methods in `Utils\Upgrade`, including private helper methods. Reflection lists every method, and a method whose name does not match `v<version>` causes a PHP warning (`Undefined array key 1`). Put helper code in another class;
 - A method runs whenever its version is higher than the version in the database, regardless of `Common::VERSION`. Do not add methods for the next version ahead of time;
-- Write table names as `table.<name>`; the adapter replaces them with the real, prefixed table names. To stay compatible with all three databases, MySQL, PostgreSQL and SQLite, build queries with `Db\Query` as far as possible and do not write SQL specific to one database; see [Database operations](/develop/plugin/database).
+- Write table names as `table.<name>`; the adapter replaces them with the real, prefixed table names. To stay compatible with all three databases, MySQL, PostgreSQL and SQLite, build queries with `Db\Query` as far as possible and do not write SQL specific to one database; see [Database operations](../plugin/database.md).
 
 ## Example: v1_3_0
 

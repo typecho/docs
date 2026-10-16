@@ -60,8 +60,8 @@ For usage, see [Routes, actions and admin panels](../plugin/routes-actions.md#�
 |---|---|
 | `security(): Security` | Returns `\Widget\Security::alloc()`, used to generate and verify URLs with tokens |
 | `widgetById(string $table, int $pkId): ?Widget` | Fetch one row by primary key and return the corresponding base widget: `contents` → `\Widget\Base\Contents`, `comments` → `\Widget\Base\Comments`, `metas` → `\Widget\Base\Metas`, `users` → `\Widget\Base\Users`. Other table names return `null`; if the row does not exist, an empty widget is returned (`have()` is `false`) |
-| `lang(string $domain)` | Load an additional language file. It looks for the file under `var/Utils/`, so it is not suitable for themes and plugins; see [Theme and plugin internationalization](/develop/i18n) |
-| `replyLink(string $theId, int $coid, string $word = 'Reply', string $formId = 'respond', int $style = 2)` | Output an old-style comment "Reply" link; it outputs only when threaded comments are enabled. New themes should use `$comments->reply()`; see [Comment template](/develop/theme/comments) |
+| `lang(string $domain)` | Load an additional language file. It looks for the file under `var/Utils/`, so it is not suitable for themes and plugins; see [Theme and plugin internationalization](../i18n.md) |
+| `replyLink(string $theId, int $coid, string $word = 'Reply', string $formId = 'respond', int $style = 2)` | Output an old-style comment "Reply" link; it outputs only when threaded comments are enabled. New themes should use `$comments->reply()`; see [Comment template](../theme/comments.md) |
 | `cancelCommentReplyLink(string $word = 'Cancel', string $formId = 'respond')` | Output an old-style "Cancel reply" link; it outputs only when threaded comments are enabled |
 | `threadedCommentsScript()` | Output the script needed by the two links above; it outputs only when threaded comments are enabled |
 

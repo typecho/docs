@@ -7,7 +7,7 @@ source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
 
 # Admin overview
 
-By default the admin panel is at `site URL/admin/` (you can rename it; see [Custom admin path](/guide/operations/admin-dir)). The top navigation has four menus: **Dashboard (控制台), Write (撰写), Manage (管理), Settings (设置)**. Every item has a minimum role, and menu items your role is not allowed to use are not shown; if you open such a page by typing its address directly, you get "Forbidden" (禁止访问, HTTP 403).
+By default the admin panel is at `site URL/admin/` (you can rename it; see [Custom admin path](../operations/admin-dir.md)). The top navigation has four menus: **Dashboard (控制台), Write (撰写), Manage (管理), Settings (设置)**. Every item has a minimum role, and menu items your role is not allowed to use are not shown; if you open such a page by typing its address directly, you get "Forbidden" (禁止访问, HTTP 403).
 
 ## Menu map
 
@@ -19,7 +19,7 @@ From highest to lowest, the roles are: administrator > editor > contributor > su
 | | Profile (个人设置) | `profile.php` | subscriber | See [Profile](./profile.md) |
 | | Plugins (插件) | `plugins.php` | administrator | Plugin management; plugin settings pages (`options-plugin.php?config=`) are not in the menu |
 | | Appearance (外观) | `themes.php` | administrator | Theme management; "Edit current theme" (编辑当前外观, `theme-editor.php`) and "Theme settings" (设置外观, `options-theme.php`) are not in the menu |
-| | Backup (备份) | `backup.php` | administrator | See [Backup and restore](/guide/operations/backup) |
+| | Backup (备份) | `backup.php` | administrator | See [Backup and restore](../operations/backup.md) |
 | Write | Write Post (撰写文章) | `write-post.php` | contributor | See [Writing posts](./posts.md) |
 | | Create Page (创建页面) | `write-page.php` | editor | See [Pages](./pages.md) |
 | Manage | Posts (文章) | `manage-posts.php` | contributor | Contributors only see their own posts |

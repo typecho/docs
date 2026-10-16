@@ -115,7 +115,7 @@ public static function personalConfig(Form $form)
 }
 ```
 
-The user groups from lowest to highest are `subscriber`, `contributor`, `editor`, `administrator`. See the [permission table](/guide/content/users#permission-table).
+The user groups from lowest to highest are `subscriber`, `contributor`, `editor`, `administrator`. See the [permission table](../../guide/content/users.md#permission-table).
 
 To read the personal settings of the currently logged-in user:
 

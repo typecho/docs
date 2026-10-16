@@ -89,10 +89,10 @@ Published themes and plugins make heavy use of legacy class names written with u
 
 - The autoloader maps `Typecho_Foo_Bar` to `\Typecho\Foo\Bar` and `Widget_Foo` to `\Widget\Foo`, so classes that follow the mechanical rule need no extra handling;
 - Classes whose old and new names cannot be mapped mechanically are listed in `__TYPECHO_CLASS_ALIASES__` in `var/Widget/Init.php`. **When you move or rename a class in this table, update its entry in the table**; when you move a class that follows the mechanical rule elsewhere, add a new entry for its old name;
-- Plugin hook handles are also determined by the legacy class names: the hook handle in `Widget\Base\Contents` is `Widget_Abstract_Contents`. If you rename or move a class that provides hooks without keeping an alias, all hooks that plugins registered on the old handle stop working; see [Using hooks](/develop/plugin/hooks);
+- Plugin hook handles are also determined by the legacy class names: the hook handle in `Widget\Base\Contents` is `Widget_Abstract_Contents`. If you rename or move a class that provides hooks without keeping an alias, all hooks that plugins registered on the old handle stop working; see [Using hooks](../plugin/hooks.md);
 - When you add a public class that plugins may use directly, consider whether it needs an alias.
 
-For the mapping, see the [legacy class name table](/develop/reference/class-aliases).
+For the mapping, see the [legacy class name table](../reference/class-aliases.md).
 
 ## Deprecate instead of deleting
 

@@ -7,7 +7,7 @@ source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
 
 # Widget\Archive
 
-`Widget\Archive` is the main object of front-end pages: `$this` in a template is this object. For usage, see [Theme Development Overview](/develop/theme). It extends `Widget\Base\Contents`, so besides the methods listed on this page you can also use all methods and properties of [content objects](./row-widgets.md#contents) (`title()`, `content()`, `permalink` and so on), plus `have()`, `next()`, `to()` and the other members shared by all widgets (see [Members shared by all widgets](./row-widgets.md#widget)).
+`Widget\Archive` is the main object of front-end pages: `$this` in a template is this object. For usage, see [Theme Development Overview](../theme/index.md). It extends `Widget\Base\Contents`, so besides the methods listed on this page you can also use all methods and properties of [content objects](./row-widgets.md#contents) (`title()`, `content()`, `permalink` and so on), plus `have()`, `next()`, `to()` and the other members shared by all widgets (see [Members shared by all widgets](./row-widgets.md#widget)).
 
 ## How methods and properties are called
 
@@ -33,7 +33,7 @@ source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
 | `getArchiveKeywords(): ?string` | Returns the archive keywords (post tags, category names, etc.) |
 | `getArchiveSlug(): ?string` | Returns the archive slug. Calling it on the home page throws an error, see above |
 | `getArchiveTitle(): ?string` | Returns the archive title; `null` on the home page |
-| `getArchiveType(): ?string` | Returns the page type; for possible values see [Page Context and is()](/develop/theme/context) |
+| `getArchiveType(): ?string` | Returns the page type; for possible values see [Page Context and is()](../theme/context.md) |
 | `getArchiveUrl(): ?string` | Returns the URL of the current page |
 | `getCountSql(): ?Query` | Returns the query object used to count the list |
 | `getCurrentPage(): int` | Returns the current page number |
@@ -82,8 +82,8 @@ The ones you use most in templates are `is()`, `need()`, `header()`, `footer()`,
 A few things to note:
 
 - `getTotal()` and `getTotalPage()` depend on the list query and **can only be called on list pages** (home, category, tag, search, archive); calling them on a post or page throws `Typed property Widget\Archive::$countSql must not be accessed before initialization`.
-- The home page has no archive slug. Calling `getArchiveSlug()` or `is('index', '…')` on the home page throws a similar error; see [Page Context and is()](/develop/theme/context).
-- `pings()` causes a fatal error in 1.3.0 and cannot be used. For an alternative, see [Comment Template](/develop/theme/comments#pings).
+- The home page has no archive slug. Calling `getArchiveSlug()` or `is('index', '…')` on the home page throws a similar error; see [Page Context and is()](../theme/context.md).
+- `pings()` causes a fatal error in 1.3.0 and cannot be used. For an alternative, see [Comment Template](../theme/comments.md#pings).
 - The methods marked "Deprecated", `getDescription()`, `getKeywords()`, `getFeedUrl()`, `getFeedRssUrl()` and `getFeedAtomUrl()`, are old names for `getArchiveDescription()` and the like; use the latter in new code.
 - The `$template` argument of `pageNav()` can be an array or a query string. The available keys and their defaults are: `wrapTag` (`ol`), `wrapClass` (`page-navigator`), `itemTag` (`li`), `textTag` (`span`), `currentClass` (`current`), `prevClass` (`prev`), `nextClass` (`next`). `classic-22` uses `['wrapTag' => 'ul', 'itemTag' => 'li']`. Nothing is output when the total does not exceed the number of posts per page.
 

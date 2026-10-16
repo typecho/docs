@@ -18,7 +18,7 @@ Typecho does not store avatar images. Avatars in the admin panel and on the fron
 - To change your avatar, register on gravatar.com with the same email and upload an avatar; clicking the avatar on the Profile page (tooltip "Change avatar on Gravatar" (在 Gravatar 上修改头像)) also opens Gravatar;
 - If you change your email address, the avatar changes with it; when the email has no avatar on Gravatar, the default grey silhouette is shown;
 - The avatar URL is the Gravatar URL plus the MD5 of the email (trimmed and lowercased); when the site uses HTTPS, `https://secure.gravatar.com` is used, otherwise `http://www.gravatar.com`;
-- When Gravatar is slow to reach from mainland China, you can switch to a mirror with the `__TYPECHO_GRAVATAR_PREFIX__` constant, see [Configuration file](/guide/operations/config-file).
+- When Gravatar is slow to reach from mainland China, you can switch to a mirror with the `__TYPECHO_GRAVATAR_PREFIX__` constant, see [Configuration file](../operations/config-file.md).
 
 ## Personal information
 

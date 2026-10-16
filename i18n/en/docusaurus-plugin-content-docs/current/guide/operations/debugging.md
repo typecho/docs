@@ -137,10 +137,10 @@ While a plugin is enabled, deleting or renaming its directory under `usr/plugins
 | Symptom | Look at first |
 |---|---|
 | All posts 404, No input file specified, 404 / 500 / 403 on login | [Web server configuration](./web-server.md#troubleshooting) |
-| After an upgrade, the admin panel always redirects to the upgrade page, or "完成升级" (Complete upgrade) keeps loading | [Upgrade](/guide/getting-started/upgrade), especially the known issue with more than 100 attachments |
+| After an upgrade, the admin panel always redirects to the upgrade page, or "完成升级" (Complete upgrade) keeps loading | [Upgrade](../getting-started/upgrade.md), especially the known issue with more than 100 attachments |
 | 503 `Error establishing a database connection` | Check the database service and the connection parameters in `config.inc.php`; see [config.inc.php and constants](./config-file.md) |
 | Missing styles, mixed content, sent back to the login page after logging in | [HTTPS, reverse proxies and CDNs](./https-proxy.md) |
 | Uploading attachments fails | Whether `usr/uploads/` is writable, and PHP's `upload_max_filesize`; see [Attachment storage location](./uploads-storage.md) |
 | Wrong times displayed | The time zone under "Settings → General" (设置 → 基本) in the admin panel |
 
-If you still can't solve it, ask for help with the error messages and logs collected on this page; see [Getting help](/guide/help/getting-help).
+If you still can't solve it, ask for help with the error messages and logs collected on this page; see [Getting help](../help/getting-help.md).

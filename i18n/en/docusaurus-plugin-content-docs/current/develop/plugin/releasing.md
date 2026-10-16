@@ -22,7 +22,7 @@ Typecho has no maintained official plugin directory; authors publish their plugi
 
 ## Language packs
 
-Translations of a plugin's interface text go under `lang/` in the plugin directory and are released with the plugin. For how to generate the translation template, compile `.mo` files and load them in a plugin, see [Theme and Plugin Internationalization](/develop/i18n).
+Translations of a plugin's interface text go under `lang/` in the plugin directory and are released with the plugin. For how to generate the translation template, compile `.mo` files and load them in a plugin, see [Theme and Plugin Internationalization](../i18n.md).
 
 ## Packaging
 
@@ -50,7 +50,7 @@ For a single-file plugin (`usr/plugins/Name.php`), just release that one file.
 ## Releasing on GitHub
 
 1. In the repository's README, state: the plugin name, what it does, the compatible Typecho and PHP versions, required PHP extensions, how to install it (upload to `usr/plugins/` and activate it under "Dashboard → Plugins"), what the settings do, and the license.
-2. Add the topic `typecho-plugin` to the repository. It is the most widely used topic for Typecho plugins on GitHub, and users search by it in [Finding Plugins and Themes](/guide/extend/finding-plugins).
+2. Add the topic `typecho-plugin` to the repository. It is the most widely used topic for Typecho plugins on GitHub, and users search by it in [Finding Plugins and Themes](../../guide/extend/finding-plugins.md).
 3. Create a Release for each version, attach the archive packaged as described above, and list the changes in the notes.
 4. Post an introduction of the plugin on the [Typecho forum](https://forum.typecho.org/) with the repository URL.
 

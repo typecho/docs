@@ -54,7 +54,7 @@ References you will often look up while writing plugins:
 - [Form elements](../reference/form-elements.md), [$this->options](../reference/options.md);
 - [Legacy class name mapping](../reference/class-aliases.md): use it when reading old plugin code.
 
-To migrate a plugin from an older version, see [Migrating themes and plugins to 1.3](/develop/migrate-to-1-3). To translate a plugin's interface, see [Internationalizing themes and plugins](/develop/i18n).
+To migrate a plugin from an older version, see [Migrating themes and plugins to 1.3](../migrate-to-1-3.md). To translate a plugin's interface, see [Internationalizing themes and plugins](../i18n.md).
 
 ## Development environment
 
@@ -64,7 +64,7 @@ While developing plugins, turn on debug mode in `config.inc.php` so that you see
 define('__TYPECHO_DEBUG__', true);
 ```
 
-See [Debugging and troubleshooting](/guide/operations/debugging#debug). Also keep in mind:
+See [Debugging and troubleshooting](../../guide/operations/debugging.md#debug). Also keep in mind:
 
 - If you change the registration code in `activate()`, you must deactivate and then reactivate the plugin in the admin panel for the change to take effect;
 - If the server has PHP's OPcache enabled, changes to files may take a few seconds to take effect.

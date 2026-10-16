@@ -88,6 +88,6 @@ CSS, scripts and images in a theme must be referenced by full URL. `$this->optio
   <?php echo $this->options->themeUrl('style.css', 'classic-22'); ?>
   ```
 
-- To serve the theme's static files from a CDN, define `__TYPECHO_THEME_URL__` in `config.inc.php`; see [Configuration file](/guide/operations/config-file).
+- To serve the theme's static files from a CDN, define `__TYPECHO_THEME_URL__` in `config.inc.php`; see [Configuration file](../../guide/operations/config-file.md).
 
 Likewise, `$this->options->siteUrl('path')` outputs a path under the site URL, and `$this->options->adminUrl()` outputs the admin panel URL.

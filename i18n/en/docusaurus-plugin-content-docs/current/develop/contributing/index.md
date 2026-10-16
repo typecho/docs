@@ -15,7 +15,7 @@ Everyone who takes part in the Typecho community (issues, pull requests, the for
 
 ## Reporting issues
 
-When you open a new issue in [GitHub Issues](https://github.com/typecho/typecho/issues), you can choose from three templates: "Report a bug" (上报 BUG), "Suggest an improvement" (提改进建议) and "Propose a new feature" (新功能提议). When reporting a bug, follow the template and give clear reproduction steps and environment information. Ask usage questions on the forum at [forum.typecho.org](https://forum.typecho.org/); for all the help channels, see [Getting help](/guide/help/getting-help).
+When you open a new issue in [GitHub Issues](https://github.com/typecho/typecho/issues), you can choose from three templates: "Report a bug" (上报 BUG), "Suggest an improvement" (提改进建议) and "Propose a new feature" (新功能提议). When reporting a bug, follow the template and give clear reproduction steps and environment information. Ask usage questions on the forum at [forum.typecho.org](https://forum.typecho.org/); for all the help channels, see [Getting help](../../guide/help/getting-help.md).
 
 Do **not** file security vulnerabilities as public issues; see [Reporting security vulnerabilities](#security) below.
 
@@ -68,7 +68,7 @@ The development and official `typecho.zip` are packed the same way: they contain
 
 The repository's `SECURITY.md` specifies that security vulnerabilities are reported by email to **`security@typecho.org`**.
 
-Do not disclose vulnerability details in GitHub Issues, on the forum or anywhere else in public. In the email, give the affected versions, the type of vulnerability, the steps to reproduce and the possible impact, so that the maintainers can confirm and fix it. For security advice for site owners, see [Security hardening](/guide/operations/security).
+Do not disclose vulnerability details in GitHub Issues, on the forum or anywhere else in public. In the email, give the affected versions, the type of vulnerability, the steps to reproduce and the possible impact, so that the maintainers can confirm and fix it. For security advice for site owners, see [Security hardening](../../guide/operations/security.md).
 
 ## Contributors
 

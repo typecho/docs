@@ -7,7 +7,7 @@ source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
 
 # List Widgets
 
-These are the list widgets you commonly use in theme sidebars and navigation. For usage examples, see [Calling widgets in templates](/develop/theme/widgets); for the fields and methods available on each row, see [Content, comment, category and user objects](./row-widgets.md).
+These are the list widgets you commonly use in theme sidebars and navigation. For usage examples, see [Calling widgets in templates](../theme/widgets.md); for the fields and methods available on each row, see [Content, comment, category and user objects](./row-widgets.md).
 
 ## Overview
 
@@ -124,7 +124,7 @@ function treeViewCategoriesCallback($categories, $options)
 Once you define the callback, subcategories are no longer output automatically; if you need them, read `$categories->children` (the array of subcategories) in the callback and output them yourself.
 
 :::caution Known issue with listPages() in 1.3.0
-`Contents\Page\Rows::listPages()` passes its arguments in the wrong order when it calls an internal method. As a result, each item's classes get names like `treeViewPagesCallback-level-0` and `treeViewPagesCallback-parent` (instead of `page-level-0`), the `current` parameter produces no highlight, and a `treeViewPagesCallback()` defined in `functions.php` is never called. When you need to control the output of the page list, loop over it yourself with `->to($pages)`; see [Page context and is()](/develop/theme/context#common-patterns).
+`Contents\Page\Rows::listPages()` passes its arguments in the wrong order when it calls an internal method. As a result, each item's classes get names like `treeViewPagesCallback-level-0` and `treeViewPagesCallback-parent` (instead of `page-level-0`), the `current` parameter produces no highlight, and a `treeViewPagesCallback()` defined in `functions.php` is never called. When you need to control the output of the page list, loop over it yourself with `->to($pages)`; see [Page context and is()](../theme/context.md#common-patterns).
 :::
 
 ## Contents\Post\Date
@@ -142,7 +142,7 @@ Fields of each row: `year`, `month`, `day`, `date` (the text formatted with `for
 | `execute()` | Entry function |
 | `split(...$args)` | Output a string according to the split count |
 
-The arguments of `split(...$args)` are integer thresholds. It outputs the first number greater than the tag's post count, or `0` if none is greater; for usage see [Tag cloud](/develop/theme/recipes/tag-cloud). `sort` accepts field names such as `count`, `name` and `mid`.
+The arguments of `split(...$args)` are integer thresholds. It outputs the first number greater than the tag's post count, or `0` if none is greater; for usage see [Tag cloud](../theme/recipes/tag-cloud.md). `sort` accepts field names such as `count`, `name` and `mid`.
 
 ## Stat
 

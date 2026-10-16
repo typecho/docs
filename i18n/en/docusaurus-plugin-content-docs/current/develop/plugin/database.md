@@ -212,7 +212,7 @@ Here `dropTable` is a setting the plugin adds in `config()` (for example a `Radi
 
 ## Using Typecho's own tables
 
-To read posts, comments and other data, prefer Typecho's widgets (see [Calling widgets in templates](/develop/theme/widgets)); they handle permissions, statuses and various formats. When you really need to query directly, note:
+To read posts, comments and other data, prefer Typecho's widgets (see [Calling widgets in templates](../theme/widgets.md)); they handle permissions, statuses and various formats. When you really need to query directly, note:
 
 - The `contents` table mixes posts, pages, attachments, drafts and revisions, distinguished by `type` and `status`; for the values, see [Database schema](../reference/database-schema.md#contents);
 - When you modify the `contents`, `comments` or `metas` tables directly, the counters Typecho maintains (`commentsNum`, `count`) are not updated automatically.

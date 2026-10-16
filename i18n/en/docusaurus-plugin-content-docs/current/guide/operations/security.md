@@ -11,7 +11,7 @@ This page lists the security settings worth applying after deploying Typecho, in
 
 ## 1. Upgrade promptly {#upgrade}
 
-This is the most effective measure. When a new version is released, the admin dashboard shows a "官方最新版本是 …" (the latest official version is …) notice; you can also follow [GitHub Releases](https://github.com/typecho/typecho/releases). For the upgrade steps, see [Upgrade](/guide/getting-started/upgrade).
+This is the most effective measure. When a new version is released, the admin dashboard shows a "官方最新版本是 …" (the latest official version is …) notice; you can also follow [GitHub Releases](https://github.com/typecho/typecho/releases). For the upgrade steps, see [Upgrade](../getting-started/upgrade.md).
 
 Themes and plugins need updating too. Avoid plugins that have gone unmaintained for a long time and do not state support for 1.3 whenever you can.
 
@@ -32,7 +32,7 @@ rm -rf install.php install/
 
 After the site is installed, visiting `install.php` redirects straight to the home page and cannot reinstall. Removing it guards against accidents: the installer decides "already installed or not" based on the configuration file and the database tables (`install_check()` in `install.php`). If the tables are deleted by mistake or the database is emptied, it considers the site not installed, and a visitor could use it to recreate the tables in your database and create an administrator.
 
-When you [upgrade](/guide/getting-started/upgrade), the new release package brings these two items back; simply don't copy them.
+When you [upgrade](../getting-started/upgrade.md), the new release package brings these two items back; simply don't copy them.
 
 ## 4. File permissions {#permissions}
 

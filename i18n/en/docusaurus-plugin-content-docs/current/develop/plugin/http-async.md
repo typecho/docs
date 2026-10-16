@@ -99,7 +99,7 @@ Typecho builds the `/action/service` URL from the site URL (the `index` option).
 define('__TYPECHO_SERVICE_URL__', 'http://127.0.0.1');
 ```
 
-Typecho uses its scheme, host and port in place of the corresponding parts of the site URL. It is also used for sending trackbacks; see [config.inc.php and constants](/guide/operations/config-file).
+Typecho uses its scheme, host and port in place of the corresponding parts of the site URL. It is also used for sending trackbacks; see [config.inc.php and constants](../../guide/operations/config-file.md).
 
 ## Example: new message notifications
 
