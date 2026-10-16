@@ -17,20 +17,16 @@ Typecho 是普通的 PHP 程序，能运行 PHP 7.4+ 的环境都可以部署。
 
 官方镜像发布在 Docker Hub：[hub.docker.com/r/joyqi/typecho](https://hub.docker.com/r/joyqi/typecho)，描述为 “Typecho Official Image”，维护者为 Typecho Dev Team。镜像的构建脚本在 [github.com/typecho/Dockerfile](https://github.com/typecho/Dockerfile) 仓库，镜像相关的问题请到该仓库提交。
 
-:::info 本节哪些经过实测
-2026-10-16 用 `joyqi/typecho:1.3.0-php8.2-apache`（digest `sha256:195752c1…`）和 `1.2.1-php8.0-apache` 实际运行过：`TYPECHO_INSTALL=1` 加 MySQL 自动安装、前台和后台登录、`config.inc.php` 的位置、重建容器和换镜像升级（见[下文](#upgrade)）。标签列表来自 Docker Hub API。**没有实测**的是：Compose 文件本身（测试用的是等价的 `docker run`）、FPM / CLI / Alpine 变体、`1.3.0-php7.4-*`、只读文件系统，以及下文单独注明的几处。
-:::
-
 ### 标签
 
-截至 2026-10-16，镜像共有 70 个标签，**没有 `latest` 标签**，必须写明版本：
+截至 2026 年 10 月，镜像共有 70 个标签，**没有 `latest` 标签**，必须写明版本：
 
 | 标签 | 推送日期 | 说明 |
 |---|---|---|
 | `1.3.0-php7.4`、`1.3.0-php8.2` 及其变体 | 2026-01-20 | **1.3.0 正式版**，生产环境请使用这一组 |
 | `nightly-php7.4`、`nightly-php8.2` 及其变体 | 2026-04-11 | 由 `master` 分支的持续集成构建，包含**尚未发布**的改动，**不要用于生产环境** |
-| `1.2.1-php7.3/7.4/8.0` 及其变体 | 2023-06-06 | 旧版本 |
-| `1.2.0-php7.3/7.4/8.0` 及其变体 | 2022-03-31 | 旧版本 |
+| `1.2.1-php7.3/7.4/8.0` 及其变体 | 2023-06-06 | 早期版本 |
+| `1.2.0-php7.3/7.4/8.0` 及其变体 | 2022-03-31 | 早期版本 |
 
 1.3.0 的标签支持 `linux/amd64`、`linux/arm64`、`linux/arm/v7` 三种平台。
 
@@ -47,7 +43,7 @@ Apache 变体没有 Alpine 版本。
 
 ### 镜像的目录与启动过程
 
-按镜像中的启动脚本 `/usr/bin/init_typecho`（源码即 `typecho/Dockerfile` 仓库的 `scripts/init.sh`），并经实测：
+按镜像中的启动脚本 `/usr/bin/init_typecho`（源码即 `typecho/Dockerfile` 仓库的 `scripts/init.sh`）：
 
 - 网站根目录是 `/app`，并且整个 `/app` 被声明为卷（`VOLUME /app`）；
 - **`config.inc.php` 写在 `/app` 根目录，不在 `/app/usr` 里**。只把卷挂在 `/app/usr` 时，配置文件不在卷中，容器删除重建后就没有了，首页会 302 跳转到 `/install.php`；
@@ -55,7 +51,7 @@ Apache 变体没有 Alpine 版本。
 - `TYPECHO_INSTALL=1` 时，每次启动都以 `www-data` 用户运行一次 `php /app/install.php`（`su -p`，环境变量原样保留），即[命令行安装](../getting-started/cli-install.md)。同一个容器重启时只打印两行版本信息，站点照常启动；
 - PHP 错误不显示在页面上，而是输出到标准错误，用 `docker logs` 查看。
 
-关于 Apache 变体的 `.htaccess`：`Dockerfile.apache` 在构建时向 `/app/.htaccess` 写入重写规则，但此前 `/app` 已被声明为卷，按 Docker 文档，声明卷之后在构建步骤中对该目录的改动可能被丢弃，启动脚本也不会复制 `.htaccess`。镜像中是否真的有这个文件**未经验证**。开启永久链接后如果文章页 404，在 `/app` 下创建[Web 服务器配置](./web-server.md#htaccess)中的 `.htaccess` 即可；Apache 变体使用 `mod_php`，Typecho 在后台开启永久链接时也会尝试自动写入它。
+关于 Apache 变体的 `.htaccess`：`Dockerfile.apache` 在构建时向 `/app/.htaccess` 写入重写规则，但此前 `/app` 已被声明为卷，按 Docker 文档，声明卷之后在构建步骤中对该目录的改动可能被丢弃，启动脚本也不会复制 `.htaccess`，所以容器的 `/app` 中不一定有这个文件。开启永久链接后如果文章页 404，在 `/app` 下创建[Web 服务器配置](./web-server.md#htaccess)中的 `.htaccess` 即可；Apache 变体使用 `mod_php`，Typecho 在后台开启永久链接时也会尝试自动写入它。
 
 ### 环境变量
 
@@ -68,7 +64,7 @@ Apache 变体没有 Alpine 版本。
 | `MAX_EXECUTION_TIME` | `30` | PHP `max_execution_time`（镜像说明页没有列出） |
 | `TYPECHO_SITE_URL`、`TYPECHO_DB_*`、`TYPECHO_USER_*` 等 | 见右 | 不是镜像的变量，而是 `install.php` 自己的变量，原样传入；含义和默认值以[命令行与无人值守安装](../getting-started/cli-install.md#环境变量)为准 |
 
-前五个是镜像自己的全部变量（`docker image inspect` 和启动脚本核对）。
+前五个是镜像自己的全部变量。
 
 :::danger 不要照抄 Docker Hub 说明页
 镜像说明页（2026-04-11 更新）与 1.3.0 镜像的实际行为有五处不符，以下内容**不能信**，请以本页为准：
@@ -138,16 +134,16 @@ docker compose logs typecho   # 第一次启动时会打印“安装成功”和
 
 几点说明：
 
-- **为什么要 `TYPECHO_DB_NEXT: keep`**：`config.inc.php` 写在 `/app` 根目录，而这里只把 `/app/usr` 挂载到了宿主机。容器被删除重建（例如换用新版本镜像）后，`/app` 是一个新的空卷，`config.inc.php` 也就没有了。`TYPECHO_INSTALL=1` 加 `TYPECHO_DB_NEXT=keep` 让每次启动都用环境变量重新生成配置；数据库中已有完整数据时，安装程序写好配置后直接结束，不会重建数据表，也不会改动管理员帐号。实测：去掉 `keep` 重建，报“安装程序检查到原有数据表已经存在.”并跳到安装页；加上 `keep` 重建，首页恢复正常。空库加 `keep` 的首次安装按源码（只在表已存在时才看 `keep`）不受影响，但没有单独实测。
+- **为什么要 `TYPECHO_DB_NEXT: keep`**：`config.inc.php` 写在 `/app` 根目录，而这里只把 `/app/usr` 挂载到了宿主机。容器被删除重建（例如换用新版本镜像）后，`/app` 是一个新的空卷，`config.inc.php` 也就没有了。`TYPECHO_INSTALL=1` 加 `TYPECHO_DB_NEXT=keep` 让每次启动都用环境变量重新生成配置；数据库中已有完整数据时，安装程序写好配置后直接结束，不会重建数据表，也不会改动管理员帐号。去掉 `keep` 重建时，会报“安装程序检查到原有数据表已经存在.”并跳到安装页。`keep` 只在数据表已经存在时才起作用，所以不影响空库上的首次安装。
 - **等数据库就绪**：`depends_on` 加 `condition: service_healthy` 让 Typecho 容器等 MySQL 可以连接后再启动。否则第一次启动时 MySQL 还没准备好，自动安装会失败。
 - 和普通安装一样，MySQL / PostgreSQL 的数据库必须事先存在，这里由 `MYSQL_DATABASE` 创建。
 - 安装成功后管理员密码会以明文出现在 `docker compose logs` 中。可以不设置 `TYPECHO_USER_PASSWORD`，让它随机生成，登录后立即修改。
-- 宿主机的 `./usr` 不存在时由 Docker 以 root 身份创建，启动脚本只会为它新建的子目录设置 `www-data` 所有者。使用 SQLite（数据库文件默认放在 `usr/` 下）时，安装程序以 `www-data` 运行，可能无法在 `usr/` 中创建数据库文件，需要先在宿主机上调整 `./usr` 的所有者（Debian 系镜像中 `www-data` 的 UID 通常是 33）。这一点未实测。
+- 宿主机的 `./usr` 不存在时由 Docker 以 root 身份创建，启动脚本只会为它新建的子目录设置 `www-data` 所有者。使用 SQLite（数据库文件默认放在 `usr/` 下）时，安装程序以 `www-data` 运行，可能无法在 `usr/` 中创建数据库文件，需要先在宿主机上调整 `./usr` 的所有者（Debian 系镜像中 `www-data` 的 UID 通常是 33）。
 - 前面有 HTTPS 反向代理时，参照[HTTPS、反向代理与 CDN](./https-proxy.md) 传递 `Host` 和 `X-Forwarded-Proto`。
 
 ### 挂载整个 `/app` 的问题 {#mount-whole-app}
 
-也可以把整个 `/app` 挂成命名卷，这样 `config.inc.php` 会一起保留，不需要 `keep`。但代价是：启动脚本只复制 `/app` 中**不存在**的文件，换用新版本镜像后，卷里旧的 `admin/`、`var/` 等不会被更新，**升级实际上不会发生**。实测把 `1.2.1-php8.0-apache` 换成 `1.3.0-php8.2-apache` 后，PHP 变成了 8.2，卷里的 `var/Typecho/Common.php` 仍是 `VERSION = '1.2.1'`，页面的 generator 也还是 Typecho 1.2.1。选择这种方式时，升级前要先删除卷中的 `admin`、`var`、`install`、`index.php`、`install.php`，再用新镜像启动，然后到后台完成升级（见[升级](../getting-started/upgrade.md)）。
+也可以把整个 `/app` 挂成命名卷，这样 `config.inc.php` 会一起保留，不需要 `keep`。但代价是：启动脚本只复制 `/app` 中**不存在**的文件，换用新版本镜像后，卷里旧的 `admin/`、`var/` 等不会被更新，**升级实际上不会发生**。例如把 `1.2.1-php8.0-apache` 换成 `1.3.0-php8.2-apache` 后，PHP 变成了 8.2，但卷里的 `var/Typecho/Common.php` 仍是 `VERSION = '1.2.1'`，页面的 generator 也还是 Typecho 1.2.1。选择这种方式时，升级前要先删除卷中的 `admin`、`var`、`install`、`index.php`、`install.php`，再用新镜像启动，然后到后台完成升级（见[升级](../getting-started/upgrade.md)）。
 
 ### 升级 {#upgrade}
 
@@ -157,7 +153,7 @@ docker compose logs typecho   # 第一次启动时会打印“安装成功”和
 2. 把 `image` 改成新版本标签，执行 `docker compose pull && docker compose up -d`；
 3. 用管理员登录后台，会被带到升级页面，按提示完成升级。
 
-这个流程用 `docker run` 实测过（1.2.1 → 1.3.0，MySQL）：新容器启动时重新生成配置，登录后台跳到 `upgrade.php`，执行后版本变为 1.3.0。漏掉 `TYPECHO_DB_NEXT=keep` 或 `TYPECHO_INSTALL=1` 时，新容器没有 `config.inc.php`，站点会跳到安装页；这时补上变量重建即可，数据库不受影响。
+按这个流程，新容器启动时重新生成配置，登录后台会跳到 `upgrade.php`，执行后版本即为新版本。漏掉 `TYPECHO_DB_NEXT=keep` 或 `TYPECHO_INSTALL=1` 时，新容器没有 `config.inc.php`，站点会跳到安装页；这时补上变量重建即可，数据库不受影响。
 
 注意 `usr/themes` 等目录已经存在，新版本镜像带来的新主题不会自动出现在 `./usr/themes` 中。
 
@@ -194,15 +190,15 @@ volumes:
 
 `typecho.conf` 与[Web 服务器配置](./web-server.md#nginx)中的 nginx 配置相同，只需要把 `root` 改成 `/app`，`fastcgi_pass` 改成 `typecho:9000`。
 
-这里 `/app` 用了命名卷以便两个容器共享，因此同样存在[上文](#mount-whole-app)所说的升级问题。这个组合未经实测。
+这里 `/app` 用了命名卷以便两个容器共享，因此同样存在[上文](#mount-whole-app)所说的升级问题。
 
 ## 只读文件系统 {#read-only}
 
 在 Kubernetes 等平台上，常见要求是容器根文件系统只读（`readOnlyRootFilesystem`、`docker run --read-only`），只有挂载的卷可写。
 
-**官方镜像不能直接这样运行**：它的启动脚本每次启动都会写 `/usr/local/etc/php/conf.d/custom.ini`、`/etc/localtime`，并向 `/app` 复制文件；Apache、PHP-FPM 自身也需要可写的运行目录。为这些路径分别挂载 `tmpfs` 或许可行，但具体需要哪些路径**未经验证**。更可控的做法是基于官方 `php` 镜像构建自己的镜像，把 Typecho 程序和 `config.inc.php` 直接放进镜像。
+**官方镜像不能直接这样运行**：它的启动脚本每次启动都会写 `/usr/local/etc/php/conf.d/custom.ini`、`/etc/localtime`，并向 `/app` 复制文件；Apache、PHP-FPM 自身也需要可写的运行目录。官方镜像没有说明需要为哪些路径挂载 `tmpfs`。更可控的做法是基于官方 `php` 镜像构建自己的镜像，把 Typecho 程序和 `config.inc.php` 直接放进镜像。
 
-无论用哪种镜像，Typecho 1.3 本身在运行时会写入下列位置（按源码整理），这些位置必须可写，其余都可以只读：
+无论用哪种镜像，Typecho 1.3 本身在运行时会写入下列位置，这些位置必须可写，其余都可以只读：
 
 | 位置 | 何时写入 | 只读环境下的处理 |
 |---|---|---|

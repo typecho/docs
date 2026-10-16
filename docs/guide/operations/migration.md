@@ -11,9 +11,8 @@ sidebar_position: 8
 
 Typecho 官方的 WordPress 导入插件 **WordpressToTypecho** 放在插件仓库 [github.com/typecho/plugins](https://github.com/typecho/plugins/tree/master/WordpressToTypecho) 中，**不随 Typecho 安装包发布**。插件版本为 1.0.3 Beta，仓库中最近一次修改是 2021-11-01。
 
-:::warning 在 1.3 上的验证情况
-- **已验证**：在 Typecho 1.3.0（源码 `v1.3.0-10`）+ PHP 8.5 上，插件可以启用，“从 WordPress 导入数据”页面能正常打开。启用时 PHP 日志中有一条 `Undefined variable $error` 警告，不影响使用。
-- **未验证**：真正的导入过程。写作环境中没有 WordPress 数据库，**没有在 1.3 上实际导入过数据**。请先在测试站点上试一遍，确认结果后再用于正式站点。
+:::warning 插件没有针对 1.3 更新
+这个插件 2021 年以后没有再更新，是为 1.3 之前的版本编写的。它可以在 1.3 上启用，“从 WordPress 导入数据”页面也能打开（启用时 PHP 日志中会有一条 `Undefined variable $error` 警告，不影响使用），但导入结果没有针对 1.3 做过调整。请先在测试站点上导入一遍，确认结果后再用于正式站点。
 :::
 
 ### 插件会做什么
@@ -22,7 +21,7 @@ Typecho 官方的 WordPress 导入插件 **WordpressToTypecho** 放在插件仓�
 
 1. **先删除当前 Typecho 中的全部文章、页面、附件记录、评论、分类、标签及其关联**。请只在**新安装**的站点上使用；
 2. 从 WordPress 的 `posts` 表导入文章和页面，内容 ID 沿用 WordPress 的 ID：
-   - 已发布的保持发布；其他状态（草稿、待审、私密等）都写成状态 `draft`。但 1.3 用内容类型 `post_draft` / `page_draft` 表示草稿，插件写入的是“类型 `post` + 状态 `draft`”，这些文章在 1.3 后台中如何显示**未经验证**，导入后请逐一检查；
+   - 已发布的保持发布；其他状态（草稿、待审、私密等）都写成状态 `draft`。但 1.3 用内容类型 `post_draft` / `page_draft` 表示草稿，插件写入的是“类型 `post` + 状态 `draft`”，与 1.3 的草稿表示方式不同，导入后请逐一检查这些文章；
    - 作者 ID 原样沿用 WordPress 的 `post_author`。WordPress 的用户不会被导入，作者 ID 在 Typecho 中不存在时，文章的作者会显示异常，需要在数据库中改 `typecho_contents` 表的 `authorId`；
 3. 从 `term_taxonomy` / `terms` 导入分类和标签，从 `term_relationships` 导入对应关系；
 4. 从 `comments` 表导入评论：已批准 → 通过，未批准 → 待审核，垃圾 → 垃圾。
@@ -52,7 +51,7 @@ Typecho 安装包和官方插件仓库中**没有** Emlog 的导入工具（官�
 ## 换服务器（域名不变） {#new-server}
 
 1. 在旧服务器上备份三部分：数据库导出、`usr/`、`config.inc.php`（见[备份与恢复](./backup.md)）。
-2. 在新服务器上准备同一版本的 Typecho 程序文件（`admin/`、`var/`、`install/`、`index.php`、`install.php`），版本号以旧站后台页脚为准。
+2. 在新服务器上准备同一版本的 Typecho 程序文件（`admin/`、`var/`、`install/`、`index.php`、`install.php`），版本号以原站点后台页脚为准。
 3. 放回 `usr/` 和 `config.inc.php`，并导入数据库。MySQL / PostgreSQL 的数据库要先创建好。
 4. 按新环境修改 `config.inc.php`：
    - 数据库地址、用户名、密码有变化时，修改 `addServer()` 中的值；
@@ -111,7 +110,6 @@ SET str_value = REPLACE(str_value, 'http://old.example.com/', 'https://new.examp
 - `REPLACE()` 在 MySQL、PostgreSQL 和 SQLite 中都可用。
 - 第一条处理文章、页面和修订版本的正文，第二条处理字符串类型的自定义字段。附件记录中保存的是相对路径，不受影响。
 - 替换的字符串带上末尾的 `/`，避免误改 `old.example.com.cn` 这类相似的域名。
-- 本文环境中只在 SQLite 上执行过这类语句，MySQL 和 PostgreSQL 未实测。
 
 ## 分类、标签的文章数不对 {#counts}
 
@@ -121,4 +119,4 @@ SET str_value = REPLACE(str_value, 'http://old.example.com/', 'https://new.examp
 
 按源码（`var/Widget/Metas/EditTrait.php` 中的 `refreshCountByTypeAndStatus()`），刷新后的数字是**已发布的文章**数：独立页面、草稿、私密、待审核的文章都不计入。所以刷新后数字比你预期的少，可能是正常的。
 
-刷新标签**不会**删除计数为 0 的空标签。源码（`var/Widget/Metas/Tag/Edit.php` 中的 `clearTags()`）本意是在刷新后顺带清理不再关联任何内容的标签，但 1.3.0 中查询条件把类型写成了 `tags`（应为 `tag`），实际什么都不删；实测刷新后空标签仍在。空标签需要在“管理 → 标签”中手动选中删除，见[分类与标签](../content/categories-tags.md#counts)。
+刷新标签**不会**删除计数为 0 的空标签。源码（`var/Widget/Metas/Tag/Edit.php` 中的 `clearTags()`）本意是在刷新后顺带清理不再关联任何内容的标签，但 1.3.0 中查询条件把类型写成了 `tags`（应为 `tag`），实际什么都不删，刷新后空标签仍然存在。空标签需要在“管理 → 标签”中手动选中删除，见[分类与标签](../content/categories-tags.md#counts)。

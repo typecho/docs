@@ -9,10 +9,6 @@ sidebar_position: 2
 
 站点放在**反向代理、负载均衡或 CDN 后面**时，PHP 看到的是代理发来的请求：协议可能是 `http`，`Host` 可能是内网地址，客户端 IP 是代理的 IP。本页说明 Typecho 如何判断这些信息，以及对应的四组常量。常量都写在网站根目录的 `config.inc.php` 中，完整列表见[config.inc.php 与常量](./config-file.md)。
 
-:::info 测试情况
-本页关于 `X-Forwarded-Proto`、`__TYPECHO_SECURE__`、`__TYPECHO_SITE_URL__`、`__TYPECHO_DYNAMIC_SITE_URL__`、`__TYPECHO_ROOT_URL__`、`__TYPECHO_URL_PREFIX__` 的行为，已在 Typecho 1.3.0（源码 `v1.3.0-10`）+ Apache + PHP-FPM（PHP 8.5）上用 `curl` 模拟代理请求头实测。没有在真实的 CDN 或负载均衡后面测试；`__TYPECHO_IP_SOURCE__` 与 `__TYPECHO_COOKIE_OPTIONS__` 只按源码核对，未实测。
-:::
-
 ## Typecho 如何生成链接
 
 先弄清这一点，后面的问题都容易理解。Typecho 里有两个“地址”：
@@ -88,7 +84,7 @@ define('__TYPECHO_DYNAMIC_SITE_URL__', true);
 **代理后面优先用 `__TYPECHO_URL_PREFIX__`**。原因是：打开文章时，Typecho 会比较“文章的永久链接”和“当前请求的地址”，域名或路径不一致就 301 跳转到永久链接（`var/Widget/Archive.php`）。
 
 - 用 `__TYPECHO_URL_PREFIX__` 时，两边使用同一个前缀，不会多出跳转；
-- 用 `__TYPECHO_ROOT_URL__` 而代理传给 PHP 的 `Host` 是另一个值时，每次打开文章都会 301 到 `__TYPECHO_ROOT_URL__` 的域名；这个跳转经过代理后又以原来的 `Host` 到达 PHP，于是形成**重定向循环**（实测：根地址设为 `https://blog.example.com`、以 `Host: 127.0.0.1:8081` 请求 `/archives/1/`，返回 301；改用 `__TYPECHO_URL_PREFIX__` 后返回 200）。
+- 用 `__TYPECHO_ROOT_URL__` 而代理传给 PHP 的 `Host` 是另一个值时，每次打开文章都会 301 到 `__TYPECHO_ROOT_URL__` 的域名；这个跳转经过代理后又以原来的 `Host` 到达 PHP，于是形成**重定向循环**。例如根地址设为 `https://blog.example.com`，而 PHP 收到的 `Host` 是内网地址时，请求 `/archives/1/` 总是返回 301；改用 `__TYPECHO_URL_PREFIX__` 后正常返回 200。
 
 `__TYPECHO_URL_PREFIX__` 不会让 Typecho 认为请求是 HTTPS，站点地址的 `http` → `https` 自动替换仍依赖上一节的判断。
 

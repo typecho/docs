@@ -7,10 +7,6 @@ sidebar_position: 3
 
 独立页面适合“关于”“友情链接”“留言板”这类不按时间排列的内容。在“撰写 → 创建页面”（`admin/write-page.php`）新建，在“管理 → 独立页面”（`manage-pages.php`）管理。**编辑及以上角色**才能创建和管理页面，贡献者看不到这两个菜单。
 
-:::info 测试情况
-本页内容已在 Typecho 1.3.0 + Apache + PHP-FPM（PHP 8.5）+ SQLite 上实际操作过：在“关于”下新建子页面，设置页面顺序、自定义模板和缩略名，前台按 `/links.html` 访问并确认使用了所选模板。拖动排序只核对了源码（`admin/manage-pages.php`、`var/Widget/Contents/Page/Edit.php`），没有实际拖动。
-:::
-
 ## 页面与文章的区别
 
 | | 文章 | 独立页面 |
@@ -38,7 +34,7 @@ sidebar_position: 3
 | 公开度 | `visibility` | 公开、隐藏。隐藏的页面不出现在主题的页面列表里，但知道地址仍可以访问 |
 | 权限控制 | `allowComment`、`allowPing`、`allowFeed` | 同文章 |
 
-**网址缩略名**决定页面地址。默认规则是 `/{slug}.html`，例如缩略名 `links` 对应 `/links.html`；不填时自动生成：新建时取标题中的英文字母、数字（用 `-` 连接），标题里没有这些字符（例如纯中文标题）就用页面 ID（按 `var/Widget/Base/Contents.php` 的 `applySlug()`，未逐一实测）。页面地址的规则在“设置 → 永久链接”的“独立页面路径”中修改，可用参数有 `{cid}`、`{slug}`、`{directory}`，其中 `{directory}` 是包含所有父页面缩略名的多级路径，适合页面树。
+**网址缩略名**决定页面地址。默认规则是 `/{slug}.html`，例如缩略名 `links` 对应 `/links.html`；不填时自动生成：新建时取标题中的英文字母、数字（用 `-` 连接），标题里没有这些字符（例如纯中文标题）就用页面 ID（`var/Widget/Base/Contents.php` 的 `applySlug()`）。页面地址的规则在“设置 → 永久链接”的“独立页面路径”中修改，可用参数有 `{cid}`、`{slug}`、`{directory}`，其中 `{directory}` 是包含所有父页面缩略名的多级路径，适合页面树。
 
 ## 页面树 {#tree}
 

@@ -7,10 +7,6 @@ sidebar_position: 2
 
 插件为 Typecho 增加功能，例如代码高亮、站点地图、评论通知。插件管理在后台“控制台 → 插件”（`admin/plugins.php`），只有管理员能使用。安装包自带一个示例插件 `HelloWorld`。
 
-:::info 测试情况
-本页在 Typecho 1.3.0 + Apache + PHP-FPM（PHP 8.5）+ SQLite 上实测：启用、设置、禁用 `HelloWorld`；启用一个只带个人设置的测试插件；把插件目录改成 `HelloWorld-master` 后启用；删除已启用插件的目录（分别测试注册了钩子和没有注册钩子的插件）。对照的源码是 `admin/plugins.php`、`var/Widget/Plugins/Edit.php`、`var/Widget/Plugins/Rows.php` 和 `var/Typecho/Plugin.php`。
-:::
-
 ## 安装插件
 
 后台**没有**上传插件的功能，需要自己把文件放到服务器上：
@@ -22,7 +18,7 @@ sidebar_position: 2
 列表中的名称、描述、版本、作者都取自 `Plugin.php` 开头的注释（`@package`、`@version`、`@author`、`@link` 等）。也有少数插件是单个文件，直接放成 `usr/plugins/插件名.php`。
 
 :::caution 目录名必须与插件名一致
-插件的类名中包含它的目录名（例如 `TypechoPlugin\HelloWorld\Plugin`），**目录名不对就无法启用**。从 GitHub 下载的压缩包解压后目录常带 `-main`、`-master` 后缀，必须改回插件作者要求的名字。实测把 `HelloWorld` 目录改名为 `HelloWorld-master` 后，列表中仍显示为“HelloWorld”，点击“启用”却得到 500 错误页（插件没有被启用，其他页面不受影响）。
+插件的类名中包含它的目录名（例如 `TypechoPlugin\HelloWorld\Plugin`），**目录名不对就无法启用**。从 GitHub 下载的压缩包解压后目录常带 `-main`、`-master` 后缀，必须改回插件作者要求的名字。例如 `HelloWorld` 目录被命名为 `HelloWorld-master` 时，列表中仍显示为“HelloWorld”，点击“启用”却得到 500 错误页（插件没有被启用，其他页面不受影响）。
 :::
 
 ## 启用、设置与禁用
@@ -37,10 +33,10 @@ sidebar_position: 2
 - 插件的个人设置（每个用户自己的设置）出现在各用户的个人设置页底部，见[个人设置](../content/profile.md#plugins)。
 - 插件声明了 `@since` 最低版本、而当前 Typecho 版本更低时，启用会失败并提示“某某 无法在此版本的typecho下正常工作”；已启用的这类插件名称旁会显示一个删除图标作为警告。
 
-实测启用 `HelloWorld` 后，后台顶部导航栏出现了它输出的“Hello World”；在设置页中修改“说点什么”并保存后，新值写入了 `options` 表中名为 `plugin:HelloWorld` 的一行。
+以自带的 `HelloWorld` 为例：启用后，后台顶部导航栏出现它输出的“Hello World”；在设置页中修改“说点什么”并保存后，新值保存在 `options` 表中名为 `plugin:HelloWorld` 的一行。
 
 :::caution 禁用会清除插件设置
-禁用插件时，它的全站设置和所有用户的个人设置都会从数据库中删除。实测禁用 `HelloWorld` 后，`options` 表中的 `plugin:HelloWorld` 一行被删除；再次启用时，设置恢复为默认值。只是想暂时停用、又不想丢设置的话，先记下设置内容。
+禁用插件时，它的全站设置和所有用户的个人设置都会从数据库中删除（例如 `options` 表中的 `plugin:HelloWorld` 一行），再次启用时设置恢复为默认值。只是想暂时停用、又不想丢设置的话，先记下设置内容。
 :::
 
 ## 插件导致 500 错误时 {#500}
@@ -54,7 +50,7 @@ sidebar_position: 2
 :::danger 删除已启用插件的目录可能让整个后台 500
 很多人遇到问题时的第一反应是删掉插件目录，但对**已启用**的插件这样做，结果取决于插件是否注册了钩子：
 
-- 插件注册了钩子（绝大多数插件都会）：实测删除已启用的 `HelloWorld` 目录后，控制台、插件管理、撰写文章等**所有后台页面都返回 500**，连进入插件页面禁用它都做不到；
+- 插件注册了钩子（绝大多数插件都会，包括自带的 `HelloWorld`）：删除已启用插件的目录后，控制台、插件管理、撰写文章等**所有后台页面都返回 500**，连进入插件页面禁用它都做不到；
 - 插件没有注册任何钩子：后台正常，插件列表中这一行显示“此插件文件已经损坏或者被不安全移除, 强烈建议你禁用它”，可以直接点“禁用”。
 
 如果已经删了目录、后台 500：把插件目录原样放回去，到后台禁用后再删除；或者按[调试与排错](../operations/debugging.md#isolate)在数据库中重置插件列表。

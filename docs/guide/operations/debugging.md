@@ -7,10 +7,6 @@ sidebar_position: 10
 
 本页介绍出现 500 错误、空白页、功能失灵时的排查方法：先看错误信息，再用“禁用插件 + 切回默认主题”缩小范围。
 
-:::info 测试情况
-本页中错误页、`__TYPECHO_DEBUG__`、`__TYPECHO_EXCEPTION_FILE__` 的行为，以及通过数据库禁用插件、切换主题的方法，都已在 Typecho 1.3.0（源码 `v1.3.0-10`）+ Apache + PHP-FPM（PHP 8.5）+ SQLite 上实测。SQL 语句未在 MySQL 和 PostgreSQL 上执行过，但只用了三者共有的语法。
-:::
-
 ## Typecho 的错误页
 
 默认情况下，Typecho 捕获到未处理的异常时，会显示一个只有状态码和简短说明的错误页（`var/Typecho/Common.php` 中的 `error()`），不显示具体原因。数据库错误的信息会被统一替换，以免泄露数据库细节：
@@ -45,7 +41,7 @@ Stack trace:
 注意：
 
 - 调试模式只影响**异常**的显示。PHP 的警告、提示（Warning、Notice、Deprecated）是否显示在页面上，由 PHP 的 `display_errors` 决定，与这个常量无关。
-- 调试模式下出错的页面返回的状态码是 **200**，而不是 500（实测）。
+- 调试模式下出错的页面返回的状态码是 **200**，而不是 500。
 - 调用栈会暴露服务器路径、类名等信息，**查完问题立即删除这一行**，不要在正式站点上长期开启。
 
 ## 自定义错误页 `__TYPECHO_EXCEPTION_FILE__` {#exception-file}
@@ -111,7 +107,7 @@ tail -f /var/log/nginx/error.log /var/log/php8.2-fpm.log
 
 ### 后台进不去时：通过数据库操作
 
-如果错误导致后台也打不开，可以直接改数据库中的选项（表前缀以 `config.inc.php` 为准，默认 `typecho_`）。**先备份数据库**。
+如果错误导致后台也打不开，可以直接改数据库中的选项（表前缀以 `config.inc.php` 为准，默认 `typecho_`）。**先备份数据库**。下面的语句只用了 MySQL、PostgreSQL 和 SQLite 都支持的语法。
 
 **一次禁用全部插件**（与新安装站点的初始值相同）：
 
@@ -131,7 +127,7 @@ UPDATE typecho_options SET value = 'default' WHERE name = 'theme' AND user = 0;
 ```
 
 :::warning 不要只删除插件目录
-插件处于启用状态时，直接删除或重命名 `usr/plugins/` 下它的目录，并不会禁用它：Typecho 仍会去调用这个插件挂接的接口，相关页面会变成 500（实测：启用自带的 `HelloWorld` 插件后移走它的目录，后台页面返回 500）。请用后台禁用，或按上面的 SQL 操作。
+插件处于启用状态时，直接删除或重命名 `usr/plugins/` 下它的目录，并不会禁用它：Typecho 仍会去调用这个插件挂接的接口，相关页面会变成 500。例如启用自带的 `HelloWorld` 插件后移走它的目录，所有后台页面都会返回 500。请用后台禁用，或按上面的 SQL 操作。
 :::
 
 ## 常见问题速查

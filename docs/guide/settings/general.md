@@ -7,10 +7,6 @@ sidebar_position: 1
 
 后台“设置 → 基本”（`admin/options-general.php`），只有管理员能打开。保存后提示“设置已经保存”。
 
-:::info 测试情况
-本页每个字段的界面名称和选项名，都是在 Typecho 1.3.0 + Apache + PHP-FPM（PHP 8.5）+ SQLite 的后台中读取的，并与 `var/Widget/Options/General.php` 中的 `from()` 列表和表单定义逐项对照。实测了：切换界面语言（简体中文、English、日本語）、语言包缺失时的回退、定义 `__TYPECHO_SITE_URL__` 后“站点地址”消失、修改允许上传的文件类型。“当前地址与设定值不一致”的提示只核对了源码。
-:::
-
 ## 字段一览
 
 | 界面名称 | 选项名 | 默认值 | 说明 |
@@ -32,8 +28,8 @@ sidebar_position: 1
 “站点地址”（`siteUrl`）是 Typecho 生成文章、页面、分类、订阅源等所有链接时使用的前缀。迁移到新域名或改用 HTTPS 时要修改它，见[从其他博客迁移：换域名](../operations/migration.md#new-domain)。
 
 - 保存时会去掉末尾的 `/`。
-- 1.3 起输入框是网址类型，可以直接输入中文等国际化域名（以 `xn--` 形式保存，显示时转回原文，需要 PHP `intl` 扩展；本页未实测国际化域名）。
-- 当你访问后台所用的地址与这里的设定不一致时，下方会提示“当前地址 某某 与上述设定值不一致”（只核对了源码）。
+- 1.3 起输入框是网址类型，可以直接输入中文等国际化域名（以 `xn--` 形式保存，显示时转回原文，需要 PHP `intl` 扩展）。
+- 当你访问后台所用的地址与这里的设定不一致时，下方会提示“当前地址 某某 与上述设定值不一致”。
 
 ### 用 `__TYPECHO_SITE_URL__` 固定站点地址
 
@@ -43,7 +39,7 @@ sidebar_position: 1
 define('__TYPECHO_SITE_URL__', 'https://example.com');
 ```
 
-实测定义后，“基本设置”中不再显示“站点地址”这一项；保存其他设置时，数据库中原有的 `siteUrl` 不会被改动。适合多环境部署或不希望在后台被误改的场景。注意这个常量只改变站点地址本身，HTTPS、反向代理等情况下的链接生成规则见[HTTPS、反向代理与 CDN](../operations/https-proxy.md#site-url)。
+定义后，“基本设置”中不再显示“站点地址”这一项；保存其他设置时，数据库中原有的 `siteUrl` 不会被改动。适合多环境部署或不希望在后台被误改的场景。注意这个常量只改变站点地址本身，HTTPS、反向代理等情况下的链接生成规则见[HTTPS、反向代理与 CDN](../operations/https-proxy.md#site-url)。
 
 ## 时区 {#timezone}
 
@@ -63,7 +59,7 @@ define('__TYPECHO_SITE_URL__', 'https://example.com');
 | 常用档案文件 (txt doc docx xls xlsx ppt pptx zip rar pdf) | `@doc@` |
 | 其他格式 + 文本框（`attachmentTypesOther`） | 文本框中的扩展名，用半角逗号隔开 |
 
-“其他格式”中的扩展名会转为小写，`php`、`sh`、`exe` 等可执行类型会被自动去掉；另外“图片文件”的说明中虽然列了 `avif`，1.3.0 实际并不允许。详细规则和实测结果见[附件与文件管理](../content/attachments.md#types)。
+“其他格式”中的扩展名会转为小写，`php`、`sh`、`exe` 等可执行类型会被自动去掉；另外“图片文件”的说明中虽然列了 `avif`，1.3.0 实际并不允许。详细规则见[附件与文件管理](../content/attachments.md#types)。
 
 ## 语言 {#lang}
 

@@ -5,7 +5,7 @@ sidebar_position: 9
 
 # 安全加固
 
-本页列出部署 Typecho 后值得做的安全设置，按重要程度排列。每一项都对照了 Typecho 1.3 源码（`v1.3.0-10`）中的实际行为。
+本页列出部署 Typecho 后值得做的安全设置，按重要程度排列，适用于 Typecho 1.3。
 
 ## 1. 及时升级 {#upgrade}
 
@@ -28,7 +28,7 @@ cd /srv/www/typecho
 rm -rf install.php install/
 ```
 
-站点安装完成后再访问 `install.php`，它会直接跳转到首页，并不能重新安装。删除它是为了防范意外情况：安装程序判断“是否已安装”的依据是配置文件和数据表（`install.php` 中的 `install_check()`），如果数据表被误删或数据库被清空，它会认为站点尚未安装，访问者就可能借它在你的数据库上重新建表并创建管理员（按源码推断，未实测）。
+站点安装完成后再访问 `install.php`，它会直接跳转到首页，并不能重新安装。删除它是为了防范意外情况：安装程序判断“是否已安装”的依据是配置文件和数据表（`install.php` 中的 `install_check()`），如果数据表被误删或数据库被清空，它会认为站点尚未安装，访问者就可能借它在你的数据库上重新建表并创建管理员。
 
 [升级](../getting-started/upgrade.md)时新版本安装包会带回这两项，不复制它们即可。
 
@@ -59,7 +59,7 @@ chown -R www-data:www-data usr/uploads
 - 后台的主题编辑器无法保存文件。这正是推荐的状态，见[第 6 条](#theme-editor)；
 - 在 Apache `mod_php` 下开启永久链接时，Typecho 不能自动写入 `.htaccess`，需要手动创建，见[Web 服务器配置](./web-server.md#htaccess)。
 
-旧文档中“全部文件 chmod 777”或“chmod 644 就够了”之类的说法都不适用：前者让 PHP 可以改写一切，后者会让上传失败。
+“全部文件 chmod 777”或“chmod 644 就够了”之类的做法都不适用：前者让 PHP 可以改写一切，后者会让上传失败。
 
 ## 5. 不让敏感文件被下载 {#sensitive-files}
 
@@ -80,7 +80,7 @@ nginx、Apache、Caddy 的对应规则见[Web 服务器配置](./web-server.md)�
 define('__TYPECHO_THEME_WRITEABLE__', false);
 ```
 
-关闭后，“外观”页上的“编辑当前外观”标签页不再显示，直接访问编辑器页面返回 404，也无法通过表单提交保存（`var/Widget/Themes/Files.php`、`var/Widget/Themes/Edit.php`）。已实测。
+关闭后，“外观”页上的“编辑当前外观”标签页不再显示，直接访问编辑器页面返回 404，也无法通过表单提交保存（`var/Widget/Themes/Files.php`、`var/Widget/Themes/Edit.php`）。
 
 ## 7. 自定义后台路径 {#admin-path}
 

@@ -15,7 +15,7 @@ Typecho 目前**没有仍在维护的官方或社区插件 / 主题目录**。�
 - 主题：GitHub topic [`typecho-theme`](https://github.com/topics/typecho-theme)
 - 关键字搜索：[搜索 “typecho plugin”，按最近更新排序](https://github.com/search?q=typecho+plugin&type=repositories&s=updated&o=desc)、[搜索 “typecho theme”，按最近更新排序](https://github.com/search?q=typecho+theme&type=repositories&s=updated&o=desc)
 
-并不是所有作者都会给仓库加 topic，topic 页面只是一部分；关键字搜索覆盖面更大，但结果也更杂。2026 年 10 月查询时，`typecho-plugin` 和 `typecho-theme` 两个 topic 下各有不到 200 个仓库。
+并不是所有作者都会给仓库加 topic，topic 页面只是一部分；关键字搜索覆盖面更大，但结果也更杂。
 
 ## 按需求搜索
 
@@ -32,11 +32,11 @@ Typecho 目前**没有仍在维护的官方或社区插件 / 主题目录**。�
 
 ## 判断是否适用于 1.3
 
-Typecho 1.3 需要 PHP 7.4 及以上，内部代码也改用了命名空间。为旧版本（1.1、1.2 甚至更早）写的插件和主题不一定能在 1.3 上正常工作。安装前看这几点：
+Typecho 1.3 需要 PHP 7.4 及以上，内部代码也改用了命名空间。为 1.3 之前的版本（1.1、1.2 甚至更早）写的插件和主题不一定能在 1.3 上正常工作。安装前看这几点：
 
 1. **最近更新时间**：仓库在 1.3.0 发布（2026 年 1 月）之后还有提交、或者 README / 发布说明里提到 1.3，最可靠。很多年没有更新的项目要做好不能用的准备。
 2. **声明的最低版本**：插件 `Plugin.php`、主题 `index.php` 开头的注释中如果写了 `@since 1.3.0` 之类的版本号，表示作者声明它需要这个版本以上。Typecho 启用插件时会检查 `@since`，当前版本更低时拒绝启用。没有写 `@since` 的不会被检查，并不代表兼容。
-3. **代码写法**：1.3 的写法是带命名空间的类，例如插件类为 `namespace TypechoPlugin\插件名;`、`class Plugin implements PluginInterface`，使用 `\Widget\Options`、`\Typecho\Widget\Helper\Form` 这样的类名。只用 `Typecho_Widget`、`Widget_Abstract_Contents` 这类下划线旧类名的，是为旧版本写的，能否运行要实际试过才知道。
+3. **代码写法**：1.3 的写法是带命名空间的类，例如插件类为 `namespace TypechoPlugin\插件名;`、`class Plugin implements PluginInterface`，使用 `\Widget\Options`、`\Typecho\Widget\Helper\Form` 这样的类名。只用 `Typecho_Widget`、`Widget_Abstract_Contents` 这类下划线旧类名的，是为 1.3 之前的版本写的，能否运行要实际试过才知道。
 4. **Issue 区**：搜索 “1.3” 或 “PHP 8”，看看有没有人报告兼容问题。
 
 试用新插件或主题时：

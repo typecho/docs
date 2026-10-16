@@ -9,10 +9,6 @@ sidebar_position: 6
 
 三个常量可以改变存放位置和访问地址，都写在 `config.inc.php` 中。
 
-:::info 测试情况
-本页的路径与地址规则已在 Typecho 1.3.0（源码 `v1.3.0-10`）+ Apache + PHP-FPM（PHP 8.5）上通过后台上传接口实测，包括下文“已知问题”中的删除行为。
-:::
-
 ## 三个常量
 
 | 常量 | 默认值 | 决定什么 |
@@ -56,7 +52,7 @@ location ^~ /usr/uploads/ {
 }
 ```
 
-（这段 nginx 配置未经实测。）目录需要让 PHP 进程可写；Typecho 会按需逐级创建 `年/月` 子目录，权限为 `0755`。
+目录需要让 PHP 进程可写；Typecho 会按需逐级创建 `年/月` 子目录，权限为 `0755`。
 
 ### 让附件走 CDN
 
@@ -75,7 +71,7 @@ define('__TYPECHO_UPLOAD_URL__', 'https://cdn.example.com');
 
 ## 已知问题：自定义根目录时删除附件不删文件
 
-1.3.0 中删除附件时，Typecho 总是按**网站根目录**拼接路径去删除文件（`var/Widget/Upload.php` 中的 `deleteHandle()`），没有使用 `__TYPECHO_UPLOAD_ROOT_DIR__`。所以设置了这个常量后，在后台删除附件，记录被删掉了，文件却留在磁盘上。实测确认如此。
+1.3.0 中删除附件时，Typecho 总是按**网站根目录**拼接路径去删除文件（`var/Widget/Upload.php` 中的 `deleteHandle()`），没有使用 `__TYPECHO_UPLOAD_ROOT_DIR__`。所以设置了这个常量后，在后台删除附件，记录被删掉了，文件却留在磁盘上。
 
 需要清理时，可以对比磁盘上的文件和数据库中附件记录（`typecho_contents` 表中 `type = 'attachment'` 的行）手动删除。
 

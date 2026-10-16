@@ -19,13 +19,13 @@ PHP 收到的脚本路径不存在：通常是 PHP 设置了 `cgi.fix_pathinfo=0
 
 ## 登录时返回 404、500 或 403 {#login-fails}
 
-登录表单提交到 `/index.php/action/login`，这个地址没有正确交给 `index.php` 时登录就会失败。实测中常见的是：
+登录表单提交到 `/index.php/action/login`，这个地址没有正确交给 `index.php` 时登录就会失败。常见的情况是：
 
 - **404**：nginx 的 PHP `location` 写成了 `location ~ \.php$`，并且 `location /` 里没有 `try_files ... /index.php$is_args$args` 回落；
 - **500**：用了旧的 `if (!-e $request_filename) rewrite` 写法，重写陷入循环；
 - **403 `Access denied.`**：PHP 设置了 `cgi.fix_pathinfo=0`，nginx 缺少 `fastcgi_split_path_info`，或者用的是 Caddy。
 
-文档中给出的 nginx 和 Caddy 配置都实测可以正常登录（Caddy 搭配 `cgi.fix_pathinfo=0` 时要加两行重写）。旧文档说的 405 在实测中没有出现。见[Web 服务器配置：登录失败](../operations/web-server.md#login-fails)。
+按文档中给出的 nginx 和 Caddy 配置都可以正常登录（Caddy 搭配 `cgi.fix_pathinfo=0` 时要加两行重写）。上述错误写法都不会返回 405。见[Web 服务器配置：登录失败](../operations/web-server.md#login-fails)。
 
 ## 升级后或启用插件后出现 500 / 空白页 {#500}
 
@@ -39,7 +39,7 @@ PHP 收到的脚本路径不存在：通常是 PHP 设置了 `cgi.fix_pathinfo=0
 
 ## 如何从 WordPress / Emlog 迁移过来？ {#migrate}
 
-WordPress 可以用官方插件仓库中的 WordpressToTypecho 插件导入文章、页面、分类、标签和评论，但它会先清空现有内容，并且尚未在 1.3 上做过完整的导入测试；Emlog 没有官方导入工具。见[从其他博客迁移](../operations/migration.md)。
+WordPress 可以用官方插件仓库中的 WordpressToTypecho 插件导入文章、页面、分类、标签和评论，但它会先清空现有内容，而且 2021 年以后没有再更新，没有针对 1.3 调整过，请先在测试站点上试用；Emlog 没有官方导入工具。见[从其他博客迁移](../operations/migration.md)。
 
 ## 如何备份站点？ {#backup}
 

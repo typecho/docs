@@ -129,12 +129,12 @@ curl -fL -o var/Utils/Upgrade.php \
 
 ## 用容器部署的站点
 
-官方镜像 `joyqi/typecho` 的 `config.inc.php` 写在 `/app` 根目录，**不在 `/app/usr` 里**；而镜像启动时只把 `/app` 中不存在的程序文件复制进去。这带来两个坑（均已用 1.3.0 镜像实测）：
+官方镜像 `joyqi/typecho` 的 `config.inc.php` 写在 `/app` 根目录，**不在 `/app/usr` 里**；而镜像启动时只把 `/app` 中不存在的程序文件复制进去。这带来两个坑：
 
 - 只挂载 `/app/usr`、照常重建容器：`config.inc.php` 随旧容器一起消失，首页跳转到 `/install.php`；
-- 挂载整个 `/app`：换成新标签的镜像后，卷里的程序文件不会更新，站点仍是旧版本。
+- 挂载整个 `/app`：换成新标签的镜像后，卷里的程序文件不会更新，站点仍停留在升级前的版本。
 
-实测可行的做法（从 `1.2.1-php8.0-apache` 升级到 `1.3.0-php8.2-apache`）：
+可行的做法（以从 `1.2.1-php8.0-apache` 升级到 `1.3.0-php8.2-apache` 为例）：
 
 1. [备份](../operations/backup.md)数据库和挂载在 `/app/usr` 的目录；
 2. 用新标签重建容器，**只挂载 `/app/usr`**，并且传入 `TYPECHO_INSTALL=1`、安装时用过的全部 `TYPECHO_SITE_URL` 和 `TYPECHO_DB_*` 变量，再加上 `TYPECHO_DB_NEXT=keep`：

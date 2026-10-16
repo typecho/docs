@@ -7,10 +7,6 @@ sidebar_position: 11
 
 Typecho 自带 RSS 2.0、RSS 1.0 和 Atom 三种订阅源（Feed），以及一个 XML-RPC 接口，供离线写作客户端（MetaWeblog 等协议）发布和管理文章，也用于接收 Pingback。
 
-:::info 测试情况
-本页内容已在 Typecho 1.3.0 + Apache + PHP-FPM（PHP 8.5）+ SQLite 上实测：用 `curl` 请求了下文列出的各个订阅地址，检查内容类型和条目；把 `allowXmlRpc` 依次设为 0、1、2，检查接口、`pingback.ping`、`X-Pingback` 响应头和页面头部链接；用原始 XML 请求调用了 `blogger.getUsersBlogs`、`metaWeblog.newPost` 和 `metaWeblog.editPost`。**没有用真实的桌面或手机客户端测试**，客户端的具体设置界面以各客户端为准。
-:::
-
 ## 订阅源地址 {#feeds}
 
 下表是开启地址重写（伪静态）时的地址；没开启时在站点地址后加 `/index.php`，例如 `https://example.com/index.php/feed/`。
@@ -23,7 +19,7 @@ Typecho 自带 RSS 2.0、RSS 1.0 和 Atom 三种订阅源（Feed），以及一�
 | 某个标签 | `/feed/tag/标签缩略名/` | `/feed/rss/tag/标签缩略名/` | `/feed/atom/tag/标签缩略名/` |
 | 某篇文章的评论 | `/feed/archives/文章ID/` | `/feed/rss/archives/文章ID/` | `/feed/atom/archives/文章ID/` |
 
-规律是：在任意页面地址前加 `/feed`（RSS 2.0）、`/feed/rss`（RSS 1.0）或 `/feed/atom`（Atom），就得到这个页面的订阅源，作者页、日期归档也一样。实测三种格式分别返回 `application/rss+xml`、`application/rdf+xml`、`application/atom+xml`。
+规律是：在任意页面地址前加 `/feed`（RSS 2.0）、`/feed/rss`（RSS 1.0）或 `/feed/atom`（Atom），就得到这个页面的订阅源，作者页、日期归档也一样。三种格式分别返回 `application/rss+xml`、`application/rdf+xml`、`application/atom+xml`。
 
 主题的 `<head>` 中会输出当前页面对应的三条 `<link rel="alternate">`，浏览器和阅读器可以自动发现。
 
@@ -73,14 +69,14 @@ Typecho 自带 RSS 2.0、RSS 1.0 和 Atom 三种订阅源（Feed），以及一�
 
 - 账号至少要是**贡献者**；贡献者通过客户端发布的文章同样进入待审核。管理页面、分类、作者列表的方法需要编辑，`wp.getOptions` / `wp.setOptions` 需要管理员。
 - 通过 XML-RPC 登录不会让你在浏览器中的后台登录失效。
-- 客户端上传的图片同样受“允许上传的文件类型”限制，见[附件与文件管理](./attachments.md#types)（未实测）。
+- 客户端上传的图片同样受“允许上传的文件类型”限制，见[附件与文件管理](./attachments.md#types)。
 
 :::caution 1.3.0 中自动发现失效，请手动填写接口地址
-页面头部输出的 `<link rel="EditURI" href=".../action/xmlrpc?rsd">` 和 wlwmanifest 链接，在 1.3.0 中实际不可用：实测请求 `?rsd` 和 `?wlw` 返回的是 XML-RPC 的解析错误，而 `?rsd=1`、`?wlw=1` 才能得到正确的 RSD 和清单（原因是空值参数被当作不存在）。依赖“输入网址自动检测”的客户端可能因此识别失败，请直接填写上表中的接口地址。
+页面头部输出的 `<link rel="EditURI" href=".../action/xmlrpc?rsd">` 和 wlwmanifest 链接，在 1.3.0 中实际不可用：请求 `?rsd` 和 `?wlw` 返回的是 XML-RPC 的解析错误，而 `?rsd=1`、`?wlw=1` 才能得到正确的 RSD 和清单（原因是空值参数被当作不存在）。依赖“输入网址自动检测”的客户端可能因此识别失败，请直接填写上表中的接口地址。
 :::
 
 :::caution 1.3.0 中通过客户端编辑旧文章会新建文章
-1.3.0 的 XML-RPC 编辑接口有一个已知问题：用 `metaWeblog.editPost` 修改已有文章时，不会改动原文，而是**另外新建一篇**。实测对文章 16 调用 `editPost` 后，原文不变，并多出了文章 17。`wp.editPost`、`wp.editPage` 使用同一段代码，受同样影响。这个问题已在 1.3.0 之后的代码中修复，但尚未发布。在新版本发布之前，修改已发布的文章请到网页后台进行，或者在客户端修改后到后台删除重复的文章。
+1.3.0 的 XML-RPC 编辑接口有一个已知问题：用 `metaWeblog.editPost` 修改已有文章时，不会改动原文，而是**另外新建一篇**，原文保持不变。`wp.editPost`、`wp.editPage` 使用同一段代码，受同样影响。这个问题已在 1.3.0 之后的代码中修复，但尚未发布。在新版本发布之前，修改已发布的文章请到网页后台进行，或者在客户端修改后到后台删除重复的文章。
 :::
 
 ### 在客户端中写 Markdown {#markdown}
@@ -91,4 +87,4 @@ Typecho 自带 RSS 2.0、RSS 1.0 和 Atom 三种订阅源（Feed），以及一�
 
 ### PHP 8.4 及以上版本
 
-Typecho 使用的 XML-RPC 库在 PHP 8.4、8.5 上会产生“Deprecated”提示。实测在 PHP 8.5 上打开 `display_errors` 时，这些提示被直接输出到 XML 响应的前面，客户端会因为响应不是合法的 XML 而报错。生产环境请保持 `display_errors = Off`（PHP 的默认生产配置就是如此），提示会只写入日志。
+Typecho 使用的 XML-RPC 库在 PHP 8.4、8.5 上会产生“Deprecated”提示。打开 `display_errors` 时，这些提示被直接输出到 XML 响应的前面，客户端会因为响应不是合法的 XML 而报错。生产环境请保持 `display_errors = Off`（PHP 的默认生产配置就是如此），提示会只写入日志。
