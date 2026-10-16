@@ -80,7 +80,7 @@ define('__TYPECHO_UPLOAD_URL__', 'https://cdn.example.com');
 Typecho 本身只会把附件写到本地文件系统。需要把附件存到对象存储时，要用插件：Typecho 在 `Widget\Upload` 上提供了 `uploadHandle`、`modifyHandle`、`deleteHandle`、`attachmentHandle`、`attachmentDataHandle` 五个插件接口，插件接管后，上传、替换、删除和生成地址都由插件完成。
 
 - 选插件时，确认它支持 1.3、并且实现了**删除**接口，否则后台删除附件时对象存储上的文件不会被删除；
-- 插件开发者可以参考开发文档中的插件章节（编写中）。
+- 插件开发者可以参考[常见插件模式](../../develop/plugin/patterns.md#external-storage)中的附件存储示例。
 
 只想让附件**通过 CDN 访问**、文件仍放在服务器上时，不需要插件，用上文的 `__TYPECHO_UPLOAD_URL__` 即可。
 
