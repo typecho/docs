@@ -1,0 +1,46 @@
+---
+title: Breadcrumb Navigation
+sidebar_position: 2
+translation: machine
+source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+---
+
+# Breadcrumb Navigation
+
+**Problem**: show location navigation such as "Home » Tech » Post title" at the top of the page.
+
+**Solution**: add the following after `</header>` in `header.php` (or in any template):
+
+```php
+<nav class="breadcrumbs">
+    <a href="<?php $this->options->siteUrl(); ?>"><?php _e('首页'); ?></a>
+    <?php if ($this->is('post')): ?>
+        &raquo; <?php $this->category(' / '); ?>
+        &raquo; <?php $this->title(); ?>
+    <?php elseif (!$this->is('index')): ?>
+        &raquo; <?php $this->archiveTitle([
+            'category' => _t('分类 %s'),
+            'search'   => _t('搜索 %s'),
+            'tag'      => _t('标签 %s'),
+            'author'   => _t('作者 %s'),
+        ], '', ''); ?>
+    <?php endif; ?>
+</nav>
+```
+
+**Result**:
+
+| Page | Output |
+|---|---|
+| Home page | Home |
+| Post | Home » Tech » Post title (when the post has several categories they are separated by ` / `, and each category is a link) |
+| Page | Home » Page title |
+| Category, tag, search, author | Home » Category Tech |
+| Date archive | Home » October 2026 |
+| 404 | Home » Page not found |
+
+**How it works**:
+
+- `$this->is('post')` is true only on post pages; there, `$this->category(' / ')` outputs links to the categories the post belongs to. When the second argument is `false`, only the category names are output, without links.
+- Every other page that is not the home page has an archive title, which is output directly with `archiveTitle()`; the format in the array is chosen by page type.
+- The home page is detected with `$this->is('index')`, and nothing is appended. When a page is used as the home page, `is('index')` is true as well.
