@@ -75,7 +75,7 @@ In 1.3.0, once the front page is set to a template file, visiting the front page
 :::
 
 :::caution Calling header() in the template file fails
-In 1.3.0, when the front page is set to a template file, Typecho does not initialize the feed URLs, so as soon as the template (or the `header.php` it includes) calls `$this->header()`, the front page fails (`Typed property Widget\Archive::$archiveFeedUrl must not be accessed before initialization`). This is fixed only in code after 1.3.0. You can avoid it by setting the feed URLs first with methods such as `setArchiveFeedUrl()` at the top of the template; for how, see [Front page template](/develop/theme/custom-templates#首页模板package-index) in theme development.
+In 1.3.0, when the front page is set to a template file, Typecho does not initialize the feed URLs, so as soon as the template (or the `header.php` it includes) calls `$this->header()`, the front page fails (`Typed property Widget\Archive::$archiveFeedUrl must not be accessed before initialization`). This is fixed only in code after 1.3.0. You can avoid it by setting the feed URLs first with methods such as `setArchiveFeedUrl()` at the top of the template; for how, see [Front page template](/develop/theme/custom-templates#home-page-template) in theme development.
 :::
 
 ### Post list page {#front-archive}

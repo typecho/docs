@@ -124,7 +124,7 @@ function treeViewCategoriesCallback($categories, $options)
 Once you define the callback, subcategories are no longer output automatically; if you need them, read `$categories->children` (the array of subcategories) in the callback and output them yourself.
 
 :::caution Known issue with listPages() in 1.3.0
-`Contents\Page\Rows::listPages()` passes its arguments in the wrong order when it calls an internal method. As a result, each item's classes get names like `treeViewPagesCallback-level-0` and `treeViewPagesCallback-parent` (instead of `page-level-0`), the `current` parameter produces no highlight, and a `treeViewPagesCallback()` defined in `functions.php` is never called. When you need to control the output of the page list, loop over it yourself with `->to($pages)`; see [Page context and is()](/develop/theme/context#常见写法).
+`Contents\Page\Rows::listPages()` passes its arguments in the wrong order when it calls an internal method. As a result, each item's classes get names like `treeViewPagesCallback-level-0` and `treeViewPagesCallback-parent` (instead of `page-level-0`), the `current` parameter produces no highlight, and a `treeViewPagesCallback()` defined in `functions.php` is never called. When you need to control the output of the page list, loop over it yourself with `->to($pages)`; see [Page context and is()](/develop/theme/context#common-patterns).
 :::
 
 ## Contents\Post\Date
