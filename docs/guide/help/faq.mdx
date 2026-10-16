@@ -1,31 +1,59 @@
 ---
+title: 常见问题
 sidebar_position: 4
 ---
 
 # 常见问题
 
-Docusaurus is a **static-site-generator** (also called **[Jamstack](https://jamstack.org/)**).
+这里收集了站长最常问的问题。每条只给出原因和方向，具体步骤请点链接查看。没有找到答案时，请看[获取帮助](./getting-help.md)。
 
-It builds your site as simple **static HTML, JavaScript and CSS files**.
+## 首页能打开，点任何文章链接都是 404 {#404}
 
-## Build your site
+开启了永久链接（地址重写），但 Web 服务器没有把这些地址转给 `index.php`。按服务器类型检查 nginx 的 `try_files`、Apache 的 `mod_rewrite` 与 `.htaccess`、Caddy 的 `php_fastcgi`；后台“永久链接”中的重写检测失败也在同一页说明。见[Web 服务器配置：所有文章 404](../operations/web-server.md#404-everywhere)。
 
-Build your site **for production**:
+如果是**登录时**才 404，多半是 nginx 的 PHP 配置不支持 `/index.php/action/login` 这样的地址，见下面两条。
 
-```bash
-npm run build
-```
+## 页面显示 “No input file specified.” {#no-input-file}
 
-The static files are generated in the `build` folder.
+PHP 收到的脚本路径不存在：通常是 nginx 缺少 `fastcgi_split_path_info` 或 `SCRIPT_FILENAME` 写错，容器里 nginx 和 PHP-FPM 看到的路径不一致，或者 `open_basedir` 限制。见[Web 服务器配置：No input file specified](../operations/web-server.md#no-input-file)。
 
-## Deploy your site
+## 登录时 405 Not Allowed {#405}
 
-Test your production build locally:
+登录表单提交到 `/index.php/action/login`，405 说明这个 POST 请求被当作静态文件处理，没有交给 PHP。把 nginx 的 PHP `location` 改成能匹配 `.php/` 后面带路径的写法。见[Web 服务器配置：登录时 405](../operations/web-server.md#405)。
 
-```bash
-npm run serve
-```
+## 升级后或启用插件后出现 500 / 空白页 {#500}
 
-The `build` folder is now served at [http://localhost:3000/](http://localhost:3000/).
+先打开调试模式或查看 PHP 错误日志找到具体错误，再按“禁用全部插件、切回默认主题、逐个恢复”的流程定位；后台进不去时可以直接在数据库中禁用插件。见[调试与排错](../operations/debugging.md#isolate)。
 
-You can now deploy the `build` folder **almost anywhere** easily, **for free** or very small cost (read the **[Deployment Guide](https://docusaurus.io/docs/deployment)**).
+升级到 1.3.0 时如果“完成升级”一直加载，可能是附件较多导致的已知问题，见[升级](../getting-started/upgrade.md)。
+
+## 上传的附件存在哪里？ {#uploads}
+
+默认在网站目录的 `usr/uploads/年/月/` 下，数据库中只记录相对路径。可以用 `__TYPECHO_UPLOAD_ROOT_DIR__` 等常量把文件放到别处、用 `__TYPECHO_UPLOAD_URL__` 让附件走 CDN；要存到对象存储需要插件。见[附件存储位置](../operations/uploads-storage.md)。
+
+## 如何从 WordPress / Emlog 迁移过来？ {#migrate}
+
+WordPress 可以用官方插件仓库中的 WordpressToTypecho 插件导入文章、页面、分类、标签和评论，但它会先清空现有内容，并且尚未在 1.3 上做过完整的导入测试；Emlog 没有官方导入工具。见[从其他博客迁移](../operations/migration.md)。
+
+## 如何备份站点？ {#backup}
+
+完整备份包括三部分：数据库（用数据库自带的导出工具）、`usr/` 目录、`config.inc.php`。后台“控制台 → 备份”只导出内容，不含设置和任何文件，不能代替完整备份。见[备份与恢复](../operations/backup.md)。
+
+## 能不能把后台地址 `/admin/` 改掉？ {#admin-path}
+
+可以：修改 `config.inc.php` 中的 `__TYPECHO_ADMIN_DIR__`，并把 `admin` 目录重命名为同样的名字，两步缺一不可。见[自定义后台路径](../operations/admin-dir.md)。
+
+## 忘记了管理员密码 {#lost-password}
+
+Typecho 没有“找回密码”功能。可以请其他管理员在后台重置，或者直接在数据库中把密码字段改成新密码的 MD5，登录后再重新设置一次。见[安装：安装后丢失管理员密码](../getting-started/installation.mdx#安装后丢失管理员密码)。
+
+## 分类、标签显示的文章数不对 {#counts}
+
+文章数保存在数据库中，导入、恢复或手动改库后不会自动重算。在“管理 → 分类”或“管理 → 标签”中全选，从“选中项”菜单点击“刷新”即可；刷新后只统计已发布的文章。见[从其他博客迁移：分类、标签的文章数不对](../operations/migration.md#counts)。
+
+## 更多
+
+- 站点在 HTTPS、反向代理或 CDN 后面，出现样式丢失、混合内容、重定向循环、登录后又回到登录页：见[HTTPS、反向代理与 CDN](../operations/https-proxy.md)。
+- 用 Docker 部署：见[容器与云主机部署](../operations/containers.md)。
+- `config.inc.php` 中能设置哪些常量：见[config.inc.php 与常量](../operations/config-file.md)。
+- 加固站点安全：见[安全加固](../operations/security.md)。

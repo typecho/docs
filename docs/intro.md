@@ -13,7 +13,7 @@ Type，有打字的意思，博客这个东西，正是一个让我们通过打�
 
 ## 关于文档
 
-本文档分别面向使用者和开发者，面向使用者的部分介绍本程序基本的操作方法，面向开发者的部分介绍对主题和插件的开发。如果你在使用中存在文档里解决不了的问题，请至[社区](https://github.com/typecho/typecho/discussions)参与讨论。如果发现文档中出现了任何错误，请向我们[及时反馈](https://github.com/typecho/docs/issues)。
+本文档分别面向使用者和开发者，面向使用者的部分介绍本程序基本的操作方法，面向开发者的部分介绍对主题和插件的开发。如果你在使用中遇到文档里解决不了的问题，可以到[支持论坛 forum.typecho.org](https://forum.typecho.org) 提问；确认是程序 Bug 时，请到 [GitHub Issues](https://github.com/typecho/typecho/issues) 报告；也可以关注 Telegram 频道 [t.me/typechodev](https://t.me/typechodev)。如何选择渠道、怎样描述问题，见[获取帮助](./guide/help/getting-help.md)。如果发现文档中出现了任何错误，请向我们[及时反馈](https://github.com/typecho/docs/issues)。
 
 作为一个开源软件，我们的文档也是开源构建的，点击任意页面左下方的 **编辑此页** 按钮，就可以找到此文档页面的源代码地址。我们欢迎大家帮助我们一起完善文档，造福更多的用户。
 
