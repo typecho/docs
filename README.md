@@ -1,71 +1,61 @@
-# Typecho 文档
+# Typecho Documentation
 
-> **English summary.** This repository is the source of the official Typecho documentation at
-> [docs.typecho.org](https://docs.typecho.org), built with Docusaurus 3.10.2. It documents Typecho 1.3.
-> Chinese is the source language and is served at `/`; the English documentation lives at `/en/`
-> and is translated from the Chinese. Content is written in `docs/` first; translations go under `i18n/en/`.
-> Run `pnpm install && pnpm start` (Node.js >= 20) to preview; see “翻译” below before translating a page.
+This repository is the source of the official Typecho documentation site, [docs.typecho.org](https://docs.typecho.org), built with Docusaurus 3.10.2. Chinese is the source language and is served at `/`; English is served at `/en/` and is translated from the Chinese. The site documents Typecho 1.3 across four layers: installation and operations, using the admin, theme development, and plugin and core development.
 
-本仓库是 Typecho 官方文档站 [docs.typecho.org](https://docs.typecho.org) 的源文件，使用 Docusaurus 3.10.2 构建。中文是源语言，位于 `/`；英文位于 `/en/`，由中文翻译而来。文档覆盖 Typecho 1.3 的四个层次：安装与运维、后台使用、主题开发、插件与核心开发。
+## Quick start
 
-## 快速开始
+Requires Node.js >= 20 and pnpm.
 
-需要 Node.js >= 20 和 pnpm。
-
-| 命令 | 作用 |
+| Command | What it does |
 |---|---|
-| `pnpm install` | 安装依赖 |
-| `pnpm start` | 启动本地开发服务器（默认中文；预览英文用 `pnpm start --locale en`） |
-| `pnpm build` | 构建中英文静态站点到 `build/` |
-| `pnpm serve` | 在本地预览 `build/` 的构建结果 |
-| `pnpm i18n:status` | 输出每页英文翻译状态与覆盖率 |
+| `pnpm install` | Install dependencies |
+| `pnpm start` | Start the dev server (Chinese by default; use `pnpm start --locale en` to preview English) |
+| `pnpm build` | Build the Chinese and English static site into `build/` |
+| `pnpm serve` | Serve the contents of `build/` locally |
+| `pnpm i18n:status` | Report the English translation status of every page and the coverage |
 
-## 目录结构
+## Repository layout
 
-| 路径 | 内容 |
+| Path | Contents |
 |---|---|
-| `docs/` | 中文源文件，也是唯一写作内容的地方。`guide/` 为使用指南，`develop/` 为开发文档 |
-| `i18n/en/docusaurus-plugin-content-docs/current/` | 英文译文，每个中文页对应一个文件，相对路径与 `docs/` 中相同 |
-| `src/css/custom.css` | 站点设计 token（颜色、字体、间距） |
-| `scripts/` | 维护者工具，见 [scripts/README.md](scripts/README.md) |
-| [OUTLINE.md](OUTLINE.md) | 信息架构（页面树、目录布局）与写作规则 |
+| `docs/` | The Chinese source, and the only place content is written. `guide/` holds the user guide, `develop/` the developer docs |
+| `i18n/en/docusaurus-plugin-content-docs/current/` | English translations: one file per Chinese page, at the same relative path as in `docs/` |
+| `src/css/custom.css` | The site's design tokens (colors, fonts, spacing) |
+| `scripts/` | Maintainer tooling; see [scripts/README.md](scripts/README.md) |
+| [OUTLINE.md](OUTLINE.md) | The information architecture (page tree, directory layout) and the writing rules |
 
-## 写作规则
+## Writing rules
 
-修改或新增页面时：
+When you fix or add a page:
 
-- 只陈述产品事实。不写测试状态或验证过程（“实测”“未验证”、测试环境、测试日期等）。
-- 不提旧文档站，也不提页面的旧版本。
-- 已知问题直接写成关于产品的陈述，例如“1.3.0 中……”。
-- 术语以 [docs/glossary.md](docs/glossary.md) 为准；新术语先加入术语表再使用。
-- 写下任何类名、选项、钩子或路径之前，先在 Typecho 源码中核对。
-- 文件名用英文 kebab-case；URL 由路径生成，一般不写 `slug`。
-- `pnpm build` 必须退出码为 0 且没有警告；断链和断锚点会直接导致构建失败。
+- State product facts only. Do not write about test status or how something was verified (test environments, test dates, "not verified", and so on).
+- Do not refer to the old documentation site or to earlier versions of a page.
+- Write known issues as statements about the product, for example "In 1.3.0, ...".
+- Follow the terminology in [docs/glossary.md](docs/glossary.md). Add a new term to the glossary before using it.
+- Check every class, option, hook and path against the Typecho source before you write it.
+- Name files in English kebab-case. URLs come from the file path, so leave out `slug` unless the page needs one.
+- `pnpm build` must exit 0 with no warnings. Broken links and broken anchors fail the build.
 
-## 翻译
+## Translating
 
-中文永远是源。英文页放在 `i18n/en/docusaurus-plugin-content-docs/current/<与 docs/ 相同的路径>`。
+Chinese is always the source. An English page lives at `i18n/en/docusaurus-plugin-content-docs/current/<same path as in docs/>`.
 
-| 规则 | 说明 |
+| Rule | Details |
 |---|---|
-| 先有中文 | 只存在于 `i18n/` 下、没有对应中文源文件的页面会被 Docusaurus 忽略 |
-| Front matter 整体替换 | 译文的 front matter 会**整体替换**源文件的 front matter：`slug`、`sidebar_position`、`id` 必须逐字复制，否则构建会失败；只翻译 `title`、`description`、`sidebar_label` 的值 |
-| `translation: machine` | 机器翻译、尚未人工校对的初稿加上此键；人工校对完成后删除 |
-| `source_commit` | 最后一次修改该中文文件的提交 sha：`git log -1 --format=%H -- docs/<path>` |
-| 代码不翻译 | 代码块、类名、选项名、钩子名原样保留；术语按 [docs/glossary.md](docs/glossary.md) |
-| 链接 | 相对链接和锚点与中文保持一致；目标页还没有英文版时，改用路由路径（如 `/develop/contributing`） |
+| Chinese first | A page that exists only under `i18n/`, with no Chinese source file, is ignored by Docusaurus |
+| Front matter is replaced | A translated file **replaces** the source front matter entirely. Copy `slug`, `sidebar_position` and `id` verbatim or the build breaks; translate only the values of `title`, `description` and `sidebar_label` |
+| `translation: machine` | Add this to an unreviewed machine-translated draft; delete it once a human has reviewed the page |
+| `source_commit` | The sha of the last commit that touched the Chinese file: `git log -1 --format=%H -- docs/<path>` |
+| Code stays as is | Keep code blocks, class names, option names and hook names unchanged; translate terms as listed in [docs/glossary.md](docs/glossary.md) |
+| Links | Keep relative links and anchors the same as in the Chinese page. If the target page has no English version yet, link to its route instead (for example `/develop/contributing`) |
 
-逐页翻译的提示词模板见 [scripts/translation-prompt.md](scripts/translation-prompt.md)。运行 `pnpm i18n:status` 查看每页状态（`missing` / `machine` / `reviewed` / `stale`）和覆盖率；`stale` 表示中文在 `source_commit` 之后又有改动，需要同步译文。
+Use the per-page prompt in [scripts/translation-prompt.md](scripts/translation-prompt.md). Run `pnpm i18n:status` for the coverage report: each page is `missing`, `machine`, `reviewed` or `stale`, where `stale` means the Chinese page has changed since its `source_commit` and the translation needs updating.
 
-## 部署
+## Where to ask
 
-本仓库目前没有配置部署。`pnpm build` 会在 `build/` 生成静态站点，可以用任何静态托管服务提供。
-
-## 求助与反馈
-
-| 渠道 | 用途 |
+| Channel | Use it for |
 |---|---|
-| [typecho.org](https://typecho.org) | Typecho 官网 |
-| [forum.typecho.org](https://forum.typecho.org) | 使用与开发问题讨论 |
-| [GitHub issues（文档）](https://github.com/typecho/docs/issues) | 文档错误、缺失内容、翻译问题 |
-| [GitHub issues（Typecho）](https://github.com/typecho/typecho/issues) | Typecho 本身的 bug 与功能建议 |
+| [typecho.org](https://typecho.org) | The Typecho website |
+| [forum.typecho.org](https://forum.typecho.org) | Questions about using or developing for Typecho |
+| [GitHub issues (docs)](https://github.com/typecho/docs/issues) | Errors, missing content or translation problems in the documentation |
+| [GitHub issues (Typecho)](https://github.com/typecho/typecho/issues) | Bugs and feature requests for Typecho itself |
