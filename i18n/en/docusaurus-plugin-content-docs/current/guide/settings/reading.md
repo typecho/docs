@@ -2,12 +2,12 @@
 title: Reading Settings
 sidebar_position: 3
 translation: machine
-source_commit: 865a40f1e805668ce7e5b8bfd8fa66c9a718b2d1
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 # Reading Settings
 
-"Settings → Reading" (`admin/options-reading.php`) in the admin panel; only administrators can open it. It determines what the front page shows, how many posts appear per page, how dates are displayed, and whether feeds output full text or summaries.
+"Settings → Read" (`admin/options-reading.php`) in the admin panel; only administrators can open it. It determines what the front page shows, how many posts appear per page, how dates are displayed, and whether feeds output full text or summaries.
 
 ## Fields at a glance
 

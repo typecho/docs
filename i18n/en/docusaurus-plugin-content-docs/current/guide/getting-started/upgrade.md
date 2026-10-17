@@ -2,7 +2,7 @@
 title: Upgrading
 sidebar_position: 4
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 # Upgrading
@@ -34,15 +34,35 @@ The 1.3 upgrade program only supports upgrading from **1.1.0 or later** (`Widget
 
 | Current version | Upgrade path |
 |---|---|
-| 1.2.x | Upgrade directly to 1.3.0 |
-| 1.1.x | **Upgrading to 1.2.1 first and then to 1.3.0 is recommended** (reason below) |
-| Before 1.1.0 (0.x, 1.0) | You must upgrade to 1.2.1 first and then to 1.3.0. Running the 1.3 upgrade program directly reports "Please upgrade to version 1.1.0 first" |
+| 1.2.x | Upgrade directly to 1.3.0. If the site was upgraded to 1.2 from 1.1, first check the two table columns described below |
+| 1.1.x | **Make the two table structure changes below by hand first, then upgrade to 1.3.0** |
+| Before 1.1.0 (0.x, 1.0) | Upgrade to 1.1 with the 1.1 upgrade program first, then follow the 1.1.x route. Running the 1.3 upgrade program directly reports "Please upgrade to version 1.1.0 first" |
 
-**Why 1.1 should go through 1.2.1**: 1.3 removed all historical upgrade scripts of 1.2.1 and earlier, keeping only the single step for 1.3.0 itself. A 1.1 site's version number passes the `MIN_VERSION` check, but the two table structure changes in 1.2.1 (`comments.agent` changed to `varchar(511)`, `comments.url` changed to `varchar(255)`) no longer exist in 1.3, so these two columns are not modified when 1.1 upgrades directly to 1.3. Upgrading once with 1.2.1 first fills that gap.
+**Why 1.1 needs the table changes made by hand**: 1.3 removed all historical upgrade scripts, keeping only the single step for 1.3.0 itself. A 1.1 site's version number passes the `MIN_VERSION` check, but the two table structure changes from 1.2 (`comments.agent` changed to `varchar(511)`, `comments.url` changed to `varchar(255)`) no longer exist in 1.3, so these two columns are not modified when 1.1 upgrades directly to 1.3.
 
-Download the 1.2.1 package from the [v1.2.1 page on GitHub Releases](https://github.com/typecho/typecho/releases/tag/v1.2.1) (asset `typecho.zip`); the upgrade steps are the same as on this page.
+Upgrading once with 1.2.0 or 1.2.1 first does not fill the gap either: when those versions' upgrade programs pick historical scripts by version number, they stop at the first (oldest) script, so an upgrade from 1.1 runs none of the historical scripts, yet still sets the version number to 1.2.x. A 1.2.x site that was upgraded from 1.1 may therefore lack these two changes as well.
+
+After backing up the database, use a database client to check the length of these two columns in the `comments` table (the default `typecho_` prefix is used below). If they are not `511` and `255`, run:
+
+```sql
+-- MySQL / MariaDB
+ALTER TABLE `typecho_comments` MODIFY COLUMN `agent` varchar(511);
+ALTER TABLE `typecho_comments` MODIFY COLUMN `url` varchar(255);
+
+-- PostgreSQL
+ALTER TABLE "typecho_comments" ALTER COLUMN "agent" TYPE varchar(511);
+ALTER TABLE "typecho_comments" ALTER COLUMN "url" TYPE varchar(255);
+```
+
+SQLite does not limit the length of `varchar` columns, so no change is needed there.
+
+For 1.0 and earlier, upgrade with the 1.1 package first ([v1.1-17.10.30-release on GitHub Releases](https://github.com/typecho/typecho/releases/tag/v1.1-17.10.30-release)); its upgrade program runs all the historical scripts.
 
 ## Step 1: Replace the program files
+
+:::caution Check the PHP version first
+1.3 requires PHP 7.4 or later. Before replacing any files, make sure the PHP **used by the web server** is 7.4 or later and has the required extensions (see [Requirements](./requirements.md)). If you replace the files on PHP 7.2 or 7.3, neither the site nor the admin upgrade page can run. The PHP shown by `php -v` on the command line may not be the one the web server uses.
+:::
 
 1. Download the new package and unpack it into a temporary directory:
 
@@ -78,7 +98,13 @@ These 5 items are what you replace:
 Sites that deleted `install.php` and `install/` after installation, as recommended in [Security hardening](../operations/security.md#remove-installer), can skip copying these two items: the upgrade program in the admin panel does not use them.
 
 :::tip About the new theme
-The new package's `usr/themes/` contains `classic-22`, the official theme added in 1.3. To use it, copy just `usr/themes/classic-22` into the site directory. Do not overwrite `usr/themes/default` as a whole, or your changes to the default theme will be lost.
+The new package's `usr/themes/` contains `classic-22`, the official theme added in 1.3. To use it, copy just that directory into the site's `usr/themes/`, then enable it under "Console → Appearance":
+
+```bash
+cp -R /tmp/typecho-new/usr/themes/classic-22 /srv/www/typecho/usr/themes/
+```
+
+ Do not overwrite `usr/themes/default` as a whole, or your changes to the default theme will be lost.
 :::
 
 Deleting before copying clears out old files that the new version has removed. If you only overwrite without deleting, old files stay behind in `admin/` and `var/`.
@@ -105,9 +131,9 @@ The 1.3.0 upgrade program does the following:
 
 For how each change affects your site, see [What's new and changed in 1.3](./whats-new-1-3.md).
 
-## Known issue: upgrade hangs on sites with more than 100 attachments {#known-issue-attachments}
+## Known issue: upgrade can hang on sites with 100 or more attachments {#known-issue-attachments}
 
-**Affected**: the 1.3.0 release. On sites with many attachments (100 or more), after you click **Complete upgrade** the page keeps loading until PHP's execution time limit is reached, and the upgrade never finishes.
+**Affected**: the 1.3.0 release, on sites with 100 or more attachments. After you click **Complete upgrade** the page keeps loading until PHP's execution time limit is reached, and the upgrade never finishes. This happens only when a batch of 100 attachments that the upgrade program reads contains **none that need converting**; the most common case is clicking **Complete upgrade** again after an earlier attempt timed out partway and some attachments were already converted. A large number of attachments does not by itself cause the hang.
 
 **Cause**: the upgrade program converts attachment data in batches of 100, but only advances its read position when it meets an attachment in the old format that needs converting. If 100 attachments in a row need no conversion (for example because they are already JSON), the read position stops moving, the same batch is read over and over, and the loop never ends.
 
@@ -136,21 +162,19 @@ The official image `joyqi/typecho` writes `config.inc.php` to the root of `/app`
 - Mount only `/app/usr` and recreate the container as usual: `config.inc.php` disappears with the old container, and the home page redirects to `/install.php`;
 - Mount the whole of `/app`: after switching to an image with a new tag, the program files in the volume are not updated, and the site stays on the pre-upgrade version.
 
-A working approach (using an upgrade from `1.2.1-php8.0-apache` to `1.3.0-php8.2-apache` as the example):
+A working approach (using a [Compose deployment](../operations/containers.md#upgrade) upgraded from `1.2.1-php8.0-apache` to `1.3.0-php8.2-apache` as the example):
 
 1. [Back up](../operations/backup.md) the database and the directory mounted at `/app/usr`;
-2. Recreate the container with the new tag, **mounting only `/app/usr`**, and pass `TYPECHO_INSTALL=1`, all the `TYPECHO_SITE_URL` and `TYPECHO_DB_*` variables used at installation, plus `TYPECHO_DB_NEXT=keep`:
+2. Make sure `compose.yaml` **mounts only `/app/usr`** and keeps `TYPECHO_INSTALL=1`, all the `TYPECHO_SITE_URL` and `TYPECHO_DB_*` variables used at installation, and `TYPECHO_DB_NEXT=keep`; change `image` to the new tag and recreate the container:
 
    ```bash
-   docker run -d --name typecho -p 8080:80 -v /srv/typecho-usr:/app/usr \
-     -e TYPECHO_INSTALL=1 -e TYPECHO_DB_NEXT=keep \
-     -e TYPECHO_SITE_URL=https://blog.example.com \
-     -e TYPECHO_DB_ADAPTER=Pdo_Mysql -e TYPECHO_DB_HOST=db \
-     -e TYPECHO_DB_USER=typecho -e TYPECHO_DB_PASSWORD='your-db-password' -e TYPECHO_DB_DATABASE=typecho \
-     joyqi/typecho:1.3.0-php8.2-apache
+   docker compose pull
+   docker compose up -d
    ```
 
+   If you start the container on its own with `docker run`, pass the same variables and use `--network` to join the network the database is on; otherwise a service name in `TYPECHO_DB_HOST` (such as `db`) cannot be resolved.
+
    `keep` makes the installer regenerate `config.inc.php` from the environment variables; when the data is complete, it neither creates tables nor changes the administrator account. Without `keep` you get "The installer has detected that the existing tables already exist.", and the site likewise jumps to the installation page.
-3. Log in to the admin panel as an administrator; you are taken to the upgrade page, where you carry out [step 2](#step-2-run-the-upgrade). On sites with more than 100 attachments, first use `docker cp` to put the fixed `Upgrade.php` into `/app/var/Utils/` in the container, as described under [Known issue](#known-issue-attachments).
+3. Log in to the admin panel as an administrator; you are taken to the upgrade page, where you carry out [step 2](#step-2-run-the-upgrade). On sites with 100 or more attachments, first use `docker cp` to put the fixed `Upgrade.php` into `/app/var/Utils/` in the container, as described under [Known issue](#known-issue-attachments).
 
 The image has no `latest` tag, so always specify the version; the `nightly-*` tags come from the `master` branch and must not be used in production. For sites that already mount the whole of `/app`, see [Container and cloud host deployment](../operations/containers.md#mount-whole-app).

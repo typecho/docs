@@ -2,12 +2,12 @@
 title: Installing and Configuring Plugins
 sidebar_position: 2
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 # Installing and Configuring Plugins
 
-Plugins add features to Typecho, such as code highlighting, sitemaps and comment notifications. Plugins are managed in the admin panel under "Dashboard → Plugins" (`admin/plugins.php`), which only administrators can use. The installation package includes an example plugin, `HelloWorld`.
+Plugins add features to Typecho, such as code highlighting, sitemaps and comment notifications. Plugins are managed in the admin panel under "Console → Plugins" (`admin/plugins.php`), which only administrators can use. The installation package includes an example plugin, `HelloWorld`.
 
 ## Installing a plugin
 
@@ -15,7 +15,7 @@ The admin panel has **no** feature for uploading plugins; you need to put the fi
 
 1. Download the plugin and extract it;
 2. Upload the plugin directory into `usr/plugins/`, for example `usr/plugins/HelloWorld/`; the directory must contain `Plugin.php`;
-3. Go to "Dashboard → Plugins"; it appears in the "Disabled plugins" list.
+3. Go to "Console → Plugins"; it appears in the "Disabled plugins" list.
 
 The name, description, version and author shown in the list all come from the comment at the top of `Plugin.php` (`@package`, `@version`, `@author`, `@link` and so on). A few plugins are a single file, placed directly as `usr/plugins/<plugin name>.php`.
 
@@ -45,17 +45,17 @@ When you disable a plugin, its site-wide settings and all users' personal settin
 
 A faulty plugin is one of the most common reasons for a sudden 500 in the admin panel or on the front end. To troubleshoot:
 
-1. **Think back to which plugin you most recently enabled or updated**, and disable it in "Dashboard → Plugins";
-2. If the admin panel can no longer be opened, you cannot disable it from the UI. In that case **do not simply delete the plugin directory** (see the warning below); instead disable it through the database as described in [Debugging and troubleshooting: disabling plugins and switching back to the default theme](../operations/debugging.md#isolate);
+1. **Think back to which plugin you most recently enabled or updated**, and disable it in "Console → Plugins";
+2. If the admin panel can no longer be opened, you cannot disable it from the UI. In that case **do not simply delete the plugin directory** (see the warning below); instead disable it through the database as described in [Debugging and troubleshooting: disabling plugins and switching back to the default theme](../operations/debugging.md#isolate). Disabling it this way does not delete its settings, but when you enable the plugin again later, its default values overwrite saved settings with the same names; so first back up the `plugin:<plugin name>` and `_plugin:<plugin name>` rows in the `options` table, and restore the settings from the backup after enabling it;
 3. Turn on debug mode to see the actual error, see [Debugging and troubleshooting](../operations/debugging.md#debug), then contact the plugin author or ask for help on the forum.
 
 :::danger Deleting the directory of an enabled plugin can make the whole admin panel return 500
-Many people's first reaction to a problem is to delete the plugin directory, but doing this to an **enabled** plugin has a result that depends on whether the plugin registers hooks:
+Many people's first reaction to a problem is to delete the plugin directory, but doing this to an **enabled** plugin has a result that depends on which hooks the plugin attaches its callbacks to:
 
-- The plugin registers hooks (the vast majority do, including the bundled `HelloWorld`): after you delete the directory of the enabled plugin, **every admin page returns 500**, including the dashboard, plugin management and post writing, so you cannot even open the plugins page to disable it;
-- The plugin registers no hooks: the admin panel works normally, and the plugin's row in the list shows "This plugin file has been damaged or removed unsafely; it is strongly recommended that you disable it"; you can click "Disable" directly.
+- When a page reaches a hook registered by the plugin, the plugin's code cannot be found and the page returns 500. If the plugin is attached to a hook that runs on every admin page (for example, the bundled `HelloWorld` is attached to the admin navigation bar), **every admin page returns 500**, including the dashboard, plugin management and post writing, so you cannot even open the plugins page to disable it;
+- A plugin attached only to front-end or other hooks breaks only the pages that reach those hooks after its directory is deleted. If the plugin management page opens, the plugin's row in the list shows "This plugin file has been damaged or removed unsafely; it is strongly recommended that you disable it"; you can click "Disable" directly.
 
-If you have already deleted the directory and the admin panel returns 500: put the plugin directory back exactly as it was, disable the plugin in the admin panel, and then delete it; or reset the plugin list in the database as described in [Debugging and troubleshooting](../operations/debugging.md#isolate).
+If you have already deleted the directory and the admin panel returns 500: put the plugin directory back exactly as it was, disable the plugin in the admin panel, and then delete it; if the plugin management page cannot be used and the directory cannot be recovered, reset the plugin list in the database as described in [Debugging and troubleshooting](../operations/debugging.md#isolate).
 :::
 
 The correct order for uninstalling is: **first disable the plugin in the admin panel, then delete its directory under `usr/plugins/`**.

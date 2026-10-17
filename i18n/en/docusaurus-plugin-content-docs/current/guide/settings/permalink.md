@@ -2,12 +2,12 @@
 title: Permalinks
 sidebar_position: 4
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 # Permalinks
 
-"Settings → Permalinks" (`admin/options-permalink.php`) in the admin panel; only administrators can open it. It determines whether URL rewriting is used, and the URL formats of posts, pages and categories. For the rewrite rules needed on the web server side, see [Web server configuration](../operations/web-server.md).
+"Settings → Permalink" (`admin/options-permalink.php`) in the admin panel; only administrators can open it. It determines whether URL rewriting is used, and the URL formats of posts, pages and categories. For the rewrite rules needed on the web server side, see [Web server configuration](../operations/web-server.md).
 
 ## Whether to use URL rewriting {#rewrite}
 

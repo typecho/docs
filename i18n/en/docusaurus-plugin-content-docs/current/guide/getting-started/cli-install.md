@@ -2,7 +2,7 @@
 title: Command-line and unattended installation
 sidebar_position: 3
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 # Command-line and unattended installation
@@ -17,14 +17,17 @@ When `install.php` detects that it is running under the CLI, it skips the web in
 
 ## Quick examples
 
-SQLite, with the minimum configuration:
+Run the installation as the account the web server runs PHP under (for example `www-data`). The installer's environment check only tests whether the account running the command can write; if you install as root or another account, `usr/uploads`, the SQLite database file and its directory end up owned by that account, and later web uploads and database writes can fail. If switching accounts is impractical, change the owner of these paths to the web server's account after installation.
+
+SQLite, with the minimum configuration. Put the database file outside the site directory, and create its directory beforehand so that the web server's account can write to it (a `.db` file under `usr/` can be downloaded directly; see [Security hardening](../operations/security.md#sensitive-files)):
 
 ```bash
 cd /srv/www/typecho
-TYPECHO_SITE_URL=https://blog.example.com \
-TYPECHO_DB_ADAPTER=Pdo_SQLite \
-TYPECHO_DB_FILE=site.db \
-php install.php
+sudo -u www-data env \
+  TYPECHO_SITE_URL=https://blog.example.com \
+  TYPECHO_DB_ADAPTER=Pdo_SQLite \
+  TYPECHO_DB_FILE=/srv/data/typecho/site.db \
+  php install.php
 ```
 
 MySQL:
@@ -73,7 +76,7 @@ The tables below list every environment variable that `install.php` reads in CLI
 | Variable | Default | Purpose |
 |---|---|---|
 | `TYPECHO_DB_ADAPTER` | The first adapter available on the server | One of `Pdo_Mysql`, `Pdo_SQLite`, `Pdo_Pgsql`, `Mysqli`, `SQLite`, `Pgsql`; it must be usable by the current PHP. For the default order see [Requirements](./requirements.md#php-extensions); when `pdo_mysql` is installed the default is `Pdo_Mysql` |
-| `TYPECHO_DB_PREFIX` | `typecho_` | Table prefix, 1–16 letters, digits, underscores or hyphens |
+| `TYPECHO_DB_PREFIX` | `typecho_` | Table prefix. The installer accepts 1–16 letters, digits, underscores or hyphens, but on SQLite a prefix containing a hyphen or starting with a digit fails to create the tables; start with a letter or underscore and use only letters, digits and underscores |
 | `TYPECHO_DB_HOST` | `localhost` | MySQL / PostgreSQL host. For MySQL, a value containing `/` is treated as a Unix socket path and the port is ignored |
 | `TYPECHO_DB_PORT` | MySQL `3306`, PostgreSQL `5432` | Port; must be an integer |
 | `TYPECHO_DB_USER` | none | Required for MySQL / PostgreSQL |
@@ -92,7 +95,7 @@ The tables below list every environment variable that `install.php` reads in CLI
 | Value | Effect |
 |---|---|
 | `none` | Normal installation; if tables with the same prefix already exist, reports "The installer has detected that the existing tables already exist." and exits |
-| `delete` | Drops the 7 tables with the same prefix first and then installs again; **all existing data is lost** |
+| `delete` | Drops the 7 tables with the same prefix first and then installs again; **all existing data is lost**. On PostgreSQL: dropping the tables does not drop the sequences created at installation, so the new tables cannot be created and the installation cannot complete; to reinstall on PostgreSQL, use a newly created empty database instead |
 | `keep` | Keeps the existing tables: if the existing data is complete, it finishes immediately and exits with 0 (no administrator is created); if the tables exist but the data is incomplete, it goes on with step 3 |
 | `config` | Requires a `config.inc.php` in the site root; if there is none, reports "No manually created configuration file was detected, please check and create it again" and exits |
 
@@ -132,13 +135,20 @@ Note that "already installed" and "installation failed" both exit with `1`; chec
 
 ## Retrying after a partial failure
 
-The CLI installation writes `config.inc.php` and creates the tables during the database step. If step 3 then fails (most commonly because `TYPECHO_SITE_URL` was not set), the site is left with a configuration, tables, but no data. Running it again as is reports "The installer has detected that the existing tables already exist."; add the missing variable and `TYPECHO_DB_NEXT=keep`:
+The CLI installation writes `config.inc.php` and creates the tables during the database step. If step 3 then fails (most commonly because `TYPECHO_SITE_URL` was not set), the site is left with a configuration, tables, but no data. Running it again as is reports "The installer has detected that the existing tables already exist.". Rerun it with **all the environment variables from the first installation** (adapter, table prefix, `TYPECHO_DB_*` and so on), adding the missing variable and `TYPECHO_DB_NEXT=keep`. For MySQL:
 
 ```bash
-TYPECHO_SITE_URL=https://blog.example.com TYPECHO_DB_NEXT=keep php install.php
+TYPECHO_SITE_URL=https://blog.example.com \
+TYPECHO_DB_ADAPTER=Pdo_Mysql \
+TYPECHO_DB_HOST=127.0.0.1 \
+TYPECHO_DB_USER=typecho \
+TYPECHO_DB_PASSWORD='your-db-password' \
+TYPECHO_DB_DATABASE=typecho \
+TYPECHO_DB_NEXT=keep \
+php install.php
 ```
 
-When `config.inc.php` already exists in the site root, the installer uses the database connection in it and does not reconnect according to `TYPECHO_DB_HOST` and the other variables.
+If the variables you set with `export` the first time are still in the current shell, adding only the missing variable and `TYPECHO_DB_NEXT=keep` also works. The installer validates these variables first (for MySQL / PostgreSQL, a missing `TYPECHO_DB_USER` or `TYPECHO_DB_DATABASE` makes it exit with an error), and the table prefix also comes from the variable, falling back to `typecho_` when unset. Only after validation passes, if `config.inc.php` already exists in the site root, does the installer use the database connection in it instead of reconnecting according to `TYPECHO_DB_HOST` and the other variables.
 
 ## Containers
 

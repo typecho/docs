@@ -2,12 +2,12 @@
 title: Discussion Settings
 sidebar_position: 2
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 # Discussion Settings
 
-"Settings → Discussion" (`admin/options-discussion.php`) in the admin panel; only administrators can open it. These settings apply to every post and page on the site; "Allow comments" and "Allow trackbacks" for a single item are set in the editor, and comments are moderated in "Manage → Comments"; see [Comment management and moderation](../content/comments.md).
+"Settings → Comments" (`admin/options-discussion.php`) in the admin panel; only administrators can open it. These settings apply to every post and page on the site; "Allow comments" and "Allow trackbacks" for a single item are set in the editor, and comments are moderated in "Manage → Comments"; see [Comment management and moderation](../content/comments.md).
 
 ## Comment date format {#date-format}
 
@@ -44,7 +44,7 @@ This group of checkboxes determines how comments are displayed on the front end.
 | Automatically link commenter names to their homepage | `commentsShowUrl` | On | When a commenter has entered a URL, their name links to it |
 | Use the nofollow attribute on commenter homepage links | `commentsUrlNofollow` | On | The links above carry `rel="nofollow"` |
 | Enable Gravatar avatars, showing avatars rated up to [drop-down] | `commentsAvatar`; the drop-down is `commentsAvatarRating` | On, `G` | Commenter avatars are fetched from Gravatar by email address; the rating can be `G` (general), `PG` (13 and over), `R` (adults 17 and over) or `X` (restricted), and avatars rated above the selected rating are not shown |
-| Enable pagination, showing [number] comments per page, with [first page / last page] shown by default | `commentsPageBreak`; the number is `commentsPageSize`, the drop-down is `commentsPageDisplay` | Off, 20, last page | Comment pagination. When `commentsPageDisplay` is `last`, opening a post shows the last page (the newest comments) by default; when it is `first`, the first page is shown |
+| Enable pagination, showing [number] comments per page, with [first page / last page] shown by default | `commentsPageBreak`; the number is `commentsPageSize`, the drop-down is `commentsPageDisplay` | Off, 20, last page | Comment pagination. When `commentsPageDisplay` is `last`, opening a post shows the last page by default; when it is `first`, the first page is shown. First and last follow the comment order set below: with older comments first, the last page holds the newest comments; with newer comments first, choose the first page to show the newest comments by default |
 | Enable comment replies, with [number] as the maximum reply depth per comment | `commentsThreaded`; the number is `commentsMaxNestingLevels` | On, 5 | Nested replies; see below |
 | Show [newer / older] comments first | `commentsOrder` | Older (`ASC`) | `DESC` newer comments first, `ASC` older comments first |
 
@@ -60,7 +60,7 @@ This group determines what conditions a visitor's comment must meet when it is s
 
 | UI label | Option name | Default | Effect |
 |---|---|---|---|
-| All comments must be moderated | `commentsRequireModeration` | Off | New comments go to "Pending" |
+| All comments must be moderated | `commentsRequireModeration` | Off | New comments go to "Pending". Comments by the post's author, editors and administrators are not affected and are approved directly; to test this setting, log out and comment as a visitor |
 | The commenter must have a previously approved comment | `commentsWhitelist` | Off | A comment is approved directly only if the same name and email have had an approved comment before; otherwise it is pending. Takes effect only when the previous option is off |
 | Email is required | `commentsRequireMail` | On | Commenters who are not logged in must enter an email; otherwise the message "An email address is required" appears |
 | URL is required | `commentsRequireUrl` | Off | Commenters who are not logged in must enter a homepage; otherwise the message "A homepage is required" appears |

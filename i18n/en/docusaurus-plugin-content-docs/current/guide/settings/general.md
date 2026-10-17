@@ -2,32 +2,32 @@
 title: General Settings
 sidebar_position: 1
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 # General Settings
 
-"Settings → General" (`admin/options-general.php`) in the admin panel; only administrators can open it. After saving, the message "Settings have been saved" appears.
+"Settings → Basic" (`admin/options-general.php`) in the admin panel; only administrators can open it. After saving, the message "Settings have been saved" appears.
 
 ## Fields at a glance
 
 | UI label | Option name | Default | Description |
 |---|---|---|---|
 | Site name | `title` | Entered during installation | Shown in the page title and in the admin panel; required |
-| Site URL | `siteUrl` | The URL used during installation | The base for generating all permalinks; see [below](#site-url) |
+| Site URL | `siteUrl` | The URL used during installation | Prefix for the home page link and for theme and plugin static files and attachment URLs; see [below](#site-url) |
 | Site description | `description` | `Your description here.` | Output as `<meta name="description">` in the page head |
 | Keywords | `keywords` | `typecho,php,blog` | Output as `<meta name="keywords">`, separated by ASCII commas |
 | Allow registration | `allowRegister` | Not allowed (`0`) | When allowed, visitors can register, and new users become subscribers; see [Users, roles and registration](../content/users.md#register) |
 | XMLRPC interface | `allowXmlRpc` | On (`2`) | `0` off, `1` only the Pingback interface off, `2` on; see [Feeds and offline clients](../content/feeds-xmlrpc.md#xmlrpc) |
 | Language | `lang` | `zh_CN` | Shown only when there is a language pack in `usr/langs`; see [Interface language](../extend/languages.md) |
-| Time zone | `timezone` | Selected during installation | See [below](#timezone) |
+| Time zone | `timezone` | GMT +8 (`28800`) | The installer offers no time zone choice; change it to your own time zone after installation. See [below](#timezone) |
 | Allowed upload file types | `attachmentTypes` | `@image@` | See [below](#attachment-types) |
 
 The site name, site description and keywords cannot contain special characters such as `<` and `>`; otherwise the message "Please do not use special characters in …" appears.
 
 ## Site URL {#site-url}
 
-"Site URL" (`siteUrl`) is the prefix Typecho uses when generating every link: posts, pages, categories, feeds and so on. Change it when you move to a new domain or switch to HTTPS; see [Migrating from other blogs: changing the domain](../operations/migration.md#new-domain).
+"Site URL" (`siteUrl`) is used for the home page link and for the URLs of theme and plugin static files (CSS, JS, images) and attachments. Permalinks of posts, pages, categories, feeds and so on do **not** use it; they use the root URL of the current request, so changing this field alone does not fix permalinks with the wrong domain or scheme; see [HTTPS, reverse proxies and CDNs: domain and scheme of permalinks](../operations/https-proxy.md#root-url). You also need to change it when you move to a new domain or switch to HTTPS; see [Migrating from other blogs: changing the domain](../operations/migration.md#new-domain).
 
 - A trailing `/` is removed when saving.
 - Since 1.3 the input is a URL field, and you can enter internationalized domain names such as Chinese ones directly (stored in `xn--` form and converted back when displayed; this requires the PHP `intl` extension).
@@ -45,9 +45,9 @@ Once it is defined, "General settings" no longer shows the "Site URL" field, and
 
 ## Time zone {#timezone}
 
-The value of "Time zone" (`timezone`) is the offset from Greenwich Mean Time in **seconds**; for example "Beijing time: Hong Kong, Singapore, Vietnam (GMT +8)" (the labels are in Chinese) is stored as `28800`. It determines the times displayed in the admin panel and on the front end, and which time zone the "Publish date" is interpreted in when you write a post.
+The value of "Time zone" (`timezone`) is the offset from Greenwich Mean Time in **seconds**; for example "Chinese Standard Time, Australian Western Standard Time, Irkutsk Standard Time (GMT +8)" is stored as `28800`. It determines the times displayed in the admin panel and on the front end, and which time zone the "Publish date" is interpreted in when you write a post.
 
-- The drop-down only has 25 **whole-hour** time zones from GMT -12 to GMT +12; there are no half-hour zones (for example India's +5:30), and daylight saving time is not handled automatically. The entry "New Delhi time: Pakistan, Maldives (GMT +5)" in the list actually has an offset of +5 hours, which does not match New Delhi's +5:30.
+- The drop-down only has 25 **whole-hour** time zones from GMT -12 to GMT +12; there are no half-hour zones (for example India's +5:30), and daylight saving time is not handled automatically. In the Simplified Chinese interface, the +5 entry is labeled "新德里时间 巴基斯坦,马尔代夫 (GMT +5)" (New Delhi time), but its offset is +5 hours, which does not match New Delhi's +5:30.
 - Changing the time zone does not change times already saved, only how they are displayed: everything in the database is stored as timestamps.
 
 ## Allowed upload file types {#attachment-types}
