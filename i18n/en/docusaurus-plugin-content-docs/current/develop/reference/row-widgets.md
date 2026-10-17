@@ -2,7 +2,7 @@
 title: Content, Comment, Category and User Objects
 sidebar_position: 3
 translation: machine
-source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # Content, Comment, Category and User Objects
@@ -29,9 +29,9 @@ Every row of data you loop over in a template is a widget object: posts and page
 | `static destory(string $alias)` | **Deprecated**. Releases the widget |
 | `static destroy(?string $alias = null)` | Releases the widget |
 | `execute()` | execute function. |
-| `have(): bool` | Returns whether the stack is non-empty |
+| `have(): bool` | Whether there is data: `true` when the stack is non-empty, `false` when it is empty |
 | `next()` | Returns the value of each row in the stack |
-| `on(bool $condition)` | Triggers on post |
+| `on(bool $condition)` | Returns the object itself when the condition is true and an empty object that does nothing when it is false, so that the following method is called conditionally, for example `$this->on($this->is('post'))->title()`. It has nothing to do with events |
 | `parse(string $template)` | Formats and parses all data in the stack |
 | `push(array $value)` | Pushes a row's values onto the stack |
 | `pushAll(array $values)` | Pushes all rows' values onto the stack |

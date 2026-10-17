@@ -2,7 +2,7 @@
 title: List Widgets
 sidebar_position: 4
 translation: machine
-source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # List Widgets
@@ -17,7 +17,7 @@ These are the list widgets you commonly use in theme sidebars and navigation. Fo
 | `\Widget\Comments\Recent` | comment | `pageSize` (the "Comment list size" in Discussion settings), `parentId` (`0`), `ignoreAuthor` (`false`) | Approved comments, by ID descending; excludes trackbacks and pingbacks when "Show comments only" is on |
 | `\Widget\Metas\Category\Rows` | category | `ignore` (`0`), `current` (`0`) | All categories, in category tree and sort order |
 | `\Widget\Contents\Page\Rows` | page | `ignore` (`0`), `current` (`0`) | Published pages whose publish time has passed, in page tree and "page order"; excludes the page set as the front page |
-| `\Widget\Contents\Post\Date` | time period | `type` (`month`), `format` (`Y-m`), `limit` (`0`) | Published posts grouped by year / month / day |
+| `\Widget\Contents\Post\Date` | time period | `type` (`month`), `format` (`Y-m`), `limit` (`0`) | Published posts grouped by their date formatted with `format` |
 | `\Widget\Metas\Tag\Cloud` | tag | `sort` (`count`), `desc` (`true`), `ignoreZeroCount` (`false`), `limit` (`0`) | All tags |
 | `\Widget\Stat` | none (a single object) | Request parameters `cid`, `uid` (used only by the `current…` series) | Various counts |
 
@@ -29,7 +29,28 @@ You pass parameters as the first argument of `alloc()`, either as a query string
 |---|---|
 | `execute()` | Execute function |
 
-Only the fields `cid`, `title`, `slug`, `created`, `modified`, `type`, `status`, `commentsNum`, `allow*`, `template`, `password`, `authorId` and `parent` are queried. **The body is not included**, so `content()` and `excerpt()` output nothing. When you need recent posts with excerpts, use `\Widget\Archive::allocWithAlias('recent', 'pageSize=5&type=index')`. Password-protected posts are listed too; for visitors who have not unlocked them, the title shows as "This content is password protected".
+Only the fields `cid`, `title`, `slug`, `created`, `modified`, `type`, `status`, `commentsNum`, `allow*`, `template`, `password`, `authorId` and `parent` are queried. **The body is not included**, so `content()` and `excerpt()` output nothing. Password-protected posts are listed too; for visitors who have not unlocked them, the title shows as "This content is password protected".
+
+When you need recent posts with excerpts, use `\Widget\Contents\From` to run a query that selects all fields, with the same conditions as `Recent`:
+
+```php
+$db = \Typecho\Db::get();
+\Widget\Contents\From::allocWithAlias('recent-excerpts', [
+    'query' => $db->select()->from('table.contents')
+        ->where('type = ?', 'post')
+        ->where('status = ?', 'publish')
+        ->where('created < ?', $this->options->time)
+        ->order('created', \Typecho\Db::SORT_DESC)
+        ->limit(5),
+])->to($recent);
+
+while ($recent->next()) {
+    $recent->title();
+    $recent->excerpt(100);
+}
+```
+
+Do not use `\Widget\Archive` for this: it changes the meaning of `type=index` according to the "front page" setting, and paginates with the current request's `page` parameter, so on page 2 it does not return the latest posts.
 
 ## Comments\Recent
 
@@ -134,6 +155,14 @@ Once you define the callback, subcategories are no longer output automatically; 
 | `execute()` | Initialization function |
 
 Fields of each row: `year`, `month`, `day`, `date` (the text formatted with `format`), `count` (the number of posts in this period), `permalink` (the archive URL).
+
+`format` is both the displayed text and the grouping key: posts whose formatted dates are the same form one group. `type` only decides which archive route `permalink` uses (`year`, `month` or `day`). Set the two together:
+
+| By year | By month | By day |
+|---|---|---|
+| `type=year&format=Y` | `type=month&format=Y-m` | `type=day&format=Y-m-d` |
+
+Changing only `type=year` and keeping `format=Y-m` still groups by month, and the groups of the same year all point to the same yearly URL; `format=F` (the month name only) merges the same month of different years into one group. For other display styles, format each row's `year`, `month` and `day` yourself.
 
 ## Metas\Tag\Cloud
 

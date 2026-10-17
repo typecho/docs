@@ -2,7 +2,7 @@
 title: Form Elements
 sidebar_position: 7
 translation: machine
-source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # Form Elements
@@ -84,7 +84,6 @@ Available rule names (methods of `Typecho\Validate`):
 
 | Method | Description |
 |---|---|
-| `addRule(string $key, $rule, string $message): Validate` | Add a validation rule |
 | `static alpha(string $str): bool` | Alpha |
 | `static alphaDash(string $str): bool` | Alpha-numeric with underscores and dashes |
 | `static alphaNumeric(string $str): bool` | Alpha-numeric |
@@ -97,8 +96,6 @@ Available rule names (methods of `Typecho\Validate`):
 | `static minLength(string $str, int $length): bool` | Minimum length |
 | `static regexp(string $str, string $pattern): bool` | Regular expression check |
 | `required(): bool` | Whether it is empty |
-| `run(array $data, ?array $rules = null): array` | Run the Validator |
-| `setBreak()` | Set break mode |
 | `static url(string $str): bool` | Check whether it is a URL |
 | `static xssCheck(string $str): bool` | Check a string for XSS |
 
@@ -108,7 +105,7 @@ Available rule names (methods of `Typecho\Validate`):
 | `email` | — | `addRule('email', 'Invalid email address')` |
 | `url` | — | `addRule('url', 'Invalid URL')` |
 | `isInteger` / `isFloat` | — | `addRule('isInteger', 'Enter an integer')` |
-| `minLength` / `maxLength` | length | `addRule('maxLength', 'At most 20 characters', 20)` |
+| `minLength` / `maxLength` | length | `addRule('maxLength', 'At most 20 characters', 21)`: `maxLength` requires the length to be **less than** the argument, so "at most 20 characters" needs `21` |
 | `alpha` / `alphaNumeric` / `alphaDash` | — | Allows only letters / letters and digits / letters, digits, underscores and dashes |
 | `enum` | Array of allowed values | `addRule('enum', 'Invalid value', ['a', 'b'])` |
 | `regexp` | Regular expression | `addRule('regexp', 'Invalid format', '/^#[0-9a-f]{6}$/i')` |

@@ -2,7 +2,7 @@
 title: Migrating Themes and Plugins to 1.3
 sidebar_position: 2
 translation: machine
-source_commit: 865a40f1e805668ce7e5b8bfd8fa66c9a718b2d1
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # Migrating Themes and Plugins to 1.3
@@ -125,4 +125,4 @@ In addition, `$this->pings()` cannot be used in 1.3.0 (it causes a fatal error);
 - The option `commentsRequireURL` has been renamed `commentsRequireUrl`;
 - Feeds are now output by `\Widget\Feed` and comment pagination is handled by `\Widget\CommentPage`; plugins that take over these outputs need checking;
 - Custom form elements: in 1.3.0 `Textarea` and `Select` must be given a title argument; see [Form elements](./reference/form-elements.md);
-- With `__TYPECHO_DEBUG__` set, visit the front end and the admin panel page by page; deprecation notices and type errors under PHP 8 are displayed directly.
+- Add `define('__TYPECHO_DEBUG__', true);` to `config.inc.php` and visit the front end and the admin panel page by page: uncaught exceptions and type errors are shown with detailed error information. This constant does not change PHP's error-reporting settings; to see deprecation notices, also set `error_reporting = E_ALL` and `display_errors = On` in your local development environment (or check the PHP error log).

@@ -2,7 +2,7 @@
 title: Request Lifecycle
 sidebar_position: 2
 translation: machine
-source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # Request Lifecycle
@@ -101,7 +101,7 @@ For the structure of the routing table, the rule syntax and reverse URL generati
 Runs only when `dispatch()` returns normally. `end` does **not** run in any of these cases:
 
 - A 404 page or an error page is shown (the exception handler ends by calling `exit`);
-- The widget calls a response method such as `redirect()`, `goBack()` or `throwJson()`; these methods `exit` right after output; see [Request, Response and common utilities](./request-response.md#response). Every `/action/*` request ends in one of these methods, so `end` does not run for them either.
+- The widget calls a response method such as `redirect()`, `goBack()` or `throwJson()`; these methods `exit` right after output; see [Request, Response and common utilities](./request-response.md#response). Most `/action/*` requests end in one of these methods, so `end` does not run for them; but when an action returns normally (for example a GET request to `/action/upload`, which only sets status 403 and returns), `end` runs as usual.
 
 If you need to do something at the end of every request, you cannot rely on `index.php:end` alone.
 
@@ -182,4 +182,4 @@ class Plugin implements PluginInterface
 }
 ```
 
-After enabling it, visit the home page, a post, a URL that does not exist and an action; only the first two requests show both `begin` and `end` in the log. `Router::$current` is the name of the last matched route.
+After enabling it, visit the home page, a post and a URL that does not exist, then click **Logout** in the admin panel (`/action/logout`, which ends with a redirect); only the first two requests show both `begin` and `end` in the log. `Router::$current` is the name of the last matched route.

@@ -2,7 +2,7 @@
 title: Permission Model
 sidebar_position: 5
 translation: machine
-source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # Permission Model
@@ -128,7 +128,7 @@ if ($user->hasLogin()) {
 }
 ```
 
-To check "is this the author of the content", compare the content's `authorId` with `$user->uid`, or simply use the content object's `allow('edit')`.
+To check "is this the author of the content", first make sure the user is logged in, then compare the two: `(int) $content->authorId === (int) $user->uid`. To check "may this user edit this content", use the content object's `allow('edit')`; it also returns `true` for editors and administrators who are not the author, so it cannot be used to check authorship.
 
 ### Admin panels of plugins
 

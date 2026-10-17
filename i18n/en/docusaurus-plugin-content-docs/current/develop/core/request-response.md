@@ -2,7 +2,7 @@
 title: Request, Response and Common Utilities
 sidebar_position: 6
 translation: machine
-source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # Request, Response and Common Utilities
@@ -37,7 +37,7 @@ Looks for the first value that exists, in this order:
 So when names clash, GET takes precedence over POST. Two further rules:
 
 - An empty string is treated as non-existent, and `$default` is returned;
-- When the type of the value does not match the type of `$default`, `$default` is returned: if the default is not an array, a submitted array (`a[]=1`) is ignored; if the default is an array, a submitted string is ignored. This prevents an array from being used as a string.
+- When one of the value and `$default` is an array and the other is not, `$default` is returned: if the default is not an array, a submitted array (`a[]=1`) is ignored; if the default is an array, a submitted string is ignored. This prevents an array from being used as a string. Only array versus non-array is checked; the value is not converted to or validated against the default's type: `get('page', 1)` reads the string `"2"`. When you need an integer, use `filter('int')->get('page', 1)`, and still check the range yourself.
 
 The third argument returns, by reference, whether the parameter exists:
 
@@ -85,7 +85,7 @@ Strings not in the table and any callable can also be used as filters, like `tri
 
 | Method | Returns |
 |---|---|
-| `isGet()`, `isPost()`, `isPut()` | The request method |
+| `isGet()`, `isPost()`, `isPut()` | Whether the request is a GET, POST or PUT request (`bool`). Read the name of the request method with `getServer('REQUEST_METHOD')` |
 | `isAjax()` | Whether the `X-Requested-With: XMLHttpRequest` header is present |
 | `isJson()` | Whether `Content-Type` is `application/json` |
 | `isSecure()` | Whether the request is HTTPS: checks `HTTPS`, port 443, `X-Forwarded-Proto`/`X-Forwarded-Port` passed by a reverse proxy, and the constant `__TYPECHO_SECURE__`; see [HTTPS and reverse proxies](../../guide/operations/https-proxy.md) |
@@ -136,7 +136,7 @@ $this->response->goBack();
 
 `Widget\Notice` stores the notice in a cookie; a script on the next admin page (`admin/common-js.php`) displays it and deletes the cookie. `goBack('?saved=1#done')` on the referring URL `…/options-general.php?x=1` gives `…/options-general.php?x=1&saved=1#done`.
 
-`throwFinish()` is different from the methods above: it sends the existing output to the client and ends the connection (calling `fastcgi_finish_request()` under PHP-FPM), but the script keeps running; it is used for time-consuming work after the response.
+`throwFinish()` is different from the methods above: it ends the response but lets the script keep running; it is used for time-consuming work after the response. Its behavior depends on how PHP runs: under PHP-FPM it calls `fastcgi_finish_request()` and the existing output is sent to the client; where `fastcgi_finish_request()` is not available (such as Apache's mod_php or the PHP built-in server), it discards the contents of the current output buffer and sends only the headers and an empty body.
 
 A widget created in a sandbox (see [The widget component model](./widget.md#sandbox)) neither outputs anything nor `exit`s when it calls these methods; only that widget's execution is aborted.
 
