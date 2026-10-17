@@ -325,17 +325,5 @@
   "theme.blog.author.noPosts": {
     "message": "This author has not written any posts yet.",
     "description": "The text for authors with 0 blog post"
-  },
-  "theme.docs.translationBanner.untranslated": {
-    "message": "This page has not been translated yet; showing the Chinese original.",
-    "description": "Shown on a doc page that has no translation for the current locale"
-  },
-  "theme.docs.translationBanner.helpTranslate": {
-    "message": "Help translate",
-    "description": "Link in the untranslated banner to the contributing guide"
-  },
-  "theme.docs.translationBanner.machine": {
-    "message": "This page was machine-translated and has not been reviewed yet.",
-    "description": "Shown on a doc page whose translation is machine-generated and not yet reviewed"
   }
 }

@@ -94,7 +94,7 @@ Chinese is the only source text; the English version is translated from it and l
 
 English translations go under `i18n/en/docusaurus-plugin-content-docs/current/` at the same relative path as the Chinese file; for example, the translation of `docs/develop/core/router.md` is `i18n/en/docusaurus-plugin-content-docs/current/develop/core/router.md`. You cannot create a page that exists only in English without a Chinese source file; such a page is not included.
 
-A page that has no English translation yet shows the Chinese original on the English site, with a "This page has not been translated yet" notice at the top; the link in the notice points to this page.
+A page that has no English translation yet shows the Chinese original on the English site.
 
 ### Translation workflow
 
@@ -105,7 +105,7 @@ A page that has no English translation yet shows the Chinese original on the Eng
    ```
 
 2. Generate an English first draft with the prompt template `scripts/translation-prompt.md` in the repository: fill in the source file path, the commit hash from the previous step and the page body, and hand it to machine translation. The template contains the front matter rules, the content rules and the full glossary;
-3. Save the result at the corresponding `i18n/en/...` path. A machine translation carries two keys at the end of its front matter, and the page shows a "Machine translated, not yet reviewed" notice at the top:
+3. Save the result at the corresponding `i18n/en/...` path. A machine translation carries two keys at the end of its front matter to track its translation status:
 
    ```yaml
    translation: machine

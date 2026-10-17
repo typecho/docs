@@ -11,6 +11,8 @@ Maintainer tools for this documentation site. Nothing here is published on the s
 
 `<typecho-root>` is a Typecho checkout at the documented version (the reference pages were built from `v1.3.0`; identifiers were checked against `v1.3.0-10-g56f4c6f`). Both PHP scripts only read the source.
 
+`i18n-status.mjs` tracks translation status using the `translation: machine` and `source_commit` front matter. Keep these fields for maintainer reporting; translation status is not displayed to site readers.
+
 ## Regenerating the reference pages (docs/develop/reference/)
 
 Script output gives the raw tables; the grouping, the 说明 column where the doc comment is empty, and all prose are written by hand. When regenerating, diff the script output against the page and carry over only real API changes.

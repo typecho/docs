@@ -732,7 +732,7 @@ a code {
   border-top: 0;
 }
 
-/* ---- Admonitions + i18n banner ---------------------------------------- */
+/* ---- Admonitions ----------------------------------------------------- */
 
 .alert {
   --ifm-alert-foreground-color: var(--tc-text);
@@ -799,33 +799,6 @@ a code {
 
 [data-theme='dark'] .theme-admonition code {
   background: rgb(0 0 0 / 0.2);
-}
-
-/* Translation banner (src/theme/DocItem/Content): the same family as the
-   admonitions, but slimmer — it is page metadata, not content. */
-[data-i18n-banner] {
-  margin-bottom: var(--tc-space-6) !important;
-  padding: var(--tc-space-2) var(--tc-space-3);
-  color: var(--tc-alert-title);
-  font-size: var(--tc-text-md);
-  line-height: 1.6;
-}
-
-[data-i18n-banner]::before {
-  content: '';
-  display: inline-block;
-  width: 0.375rem;
-  height: 0.375rem;
-  margin-right: var(--tc-space-2);
-  border-radius: 50%;
-  background: currentColor;
-  vertical-align: 0.15em;
-}
-
-[data-i18n-banner] a {
-  margin-left: var(--tc-space-1);
-  font-weight: 500;
-  white-space: nowrap;
 }
 
 /* ---- Pagination + doc footer ------------------------------------------ */

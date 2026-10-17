@@ -92,7 +92,7 @@ sidebar_position: 3
 
 英文译文放在 `i18n/en/docusaurus-plugin-content-docs/current/` 下与中文相同的相对路径，例如 `docs/develop/core/router.md` 的译文是 `i18n/en/docusaurus-plugin-content-docs/current/develop/core/router.md`。不能新建只有英文、没有中文源文件的页面，这样的页面不会被收录。
 
-还没有英文译文的页面，在英文站中显示中文原文，页面顶部有“本页尚未翻译”的提示，提示中的链接指向本页。
+还没有英文译文的页面，在英文站中显示中文原文。
 
 ### 翻译流程
 
@@ -103,7 +103,7 @@ sidebar_position: 3
    ```
 
 2. 用仓库中的提示词模板 `scripts/translation-prompt.md` 生成英文初稿：把源文件路径、上一步的提交哈希和页面正文填入模板，交给机器翻译。模板中包含 front matter 规则、内容规则和完整的术语表；
-3. 把结果保存到对应的 `i18n/en/...` 路径。机器翻译的译文在 front matter 末尾带有两个键，页面顶部显示“机器翻译，尚未校对”的提示：
+3. 把结果保存到对应的 `i18n/en/...` 路径。机器翻译的译文在 front matter 末尾带有两个键，用于跟踪翻译状态：
 
    ```yaml
    translation: machine

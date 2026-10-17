@@ -89,10 +89,6 @@ is 16px with line-height 1.75; CJK text needs more leading than Latin.
   first h2 after the title has no line.
 - **Admonitions.** Tinted background, 1px tinted border and a 3px left bar in
   the title colour. The title is 13px and weight 600, never uppercase.
-- **Translation banner** (`[data-i18n-banner]`, from
-  `src/theme/DocItem/Content`). It is the same family as the admonitions but
-  one size smaller: a single line with a status dot and an inline link. It is
-  metadata, not content.
 - **Focus.** `:focus-visible` gives a 2px accent outline with a 2px offset
   everywhere. Do not remove outlines.
 - **Code themes** are set in `docusaurus.config.js`: Prism `github` (light)
@@ -127,6 +123,5 @@ These values are computed from the rendered pages in headless Chrome.
 | Muted text (TOC, breadcrumbs, edit link) | `#6B6B66` / `#fff` **5.36** | `#9A9A94` / `#202328` **5.57** |
 | Links | `#467B96` / `#fff` **4.63** | `#6DA1BB` / `#202328` **5.60** |
 | Active sidebar item | `#3c6a81` / `#EDF2F5` 5.21 | `#8FB8CC` / `#263440` 6.01 |
-| Link in admonition / banner | `#3c6a81` / `#FFF9E8` 5.59 | `#8FB8CC` / `#2B2820` 6.93 |
-| Banner text | `#7A5D2A` / `#FFF9E8` 5.83 | `#DCC48C` / `#2B2820` 8.63 |
+| Link in admonition | `#3c6a81` / `#FFF9E8` 5.59 | `#8FB8CC` / `#2B2820` 6.93 |
 | Inline code | `#444` / `#F0F0EC` 8.52 | `#D4D4CF` / `#30353C` 8.30 |
