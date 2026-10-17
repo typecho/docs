@@ -11,7 +11,7 @@ This page lists the security settings worth applying after deploying Typecho, in
 
 ## 1. Upgrade promptly {#upgrade}
 
-This is the most effective measure. When a new version is released, the admin dashboard shows a "官方最新版本是 …" (the latest official version is …) notice; you can also follow [GitHub Releases](https://github.com/typecho/typecho/releases). For the upgrade steps, see [Upgrade](../getting-started/upgrade.md).
+This is the most effective measure. When a new version is released, the admin dashboard shows a "The latest official version is …" notice; you can also follow [GitHub Releases](https://github.com/typecho/typecho/releases). For the upgrade steps, see [Upgrade](../getting-started/upgrade.md).
 
 Themes and plugins need updating too. Avoid plugins that have gone unmaintained for a long time and do not state support for 1.3 whenever you can.
 

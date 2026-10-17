@@ -15,7 +15,7 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 <?php $this->related(5)->to($relatedPosts); ?>
 <?php if ($relatedPosts->have()): ?>
     <section class="related">
-        <h3><?php _e('相关文章'); ?></h3>
+        <h3><?php _e('Related posts'); ?></h3>
         <ul>
             <?php while ($relatedPosts->next()): ?>
                 <li><a href="<?php $relatedPosts->permalink(); ?>"><?php $relatedPosts->title(); ?></a></li>

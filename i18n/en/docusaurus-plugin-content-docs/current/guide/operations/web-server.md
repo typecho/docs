@@ -154,7 +154,7 @@ blog.example.com {
 }
 ```
 
-Caddy obtains HTTPS certificates automatically. The Caddy v1 forms `rewrite { to ... }` and `fastcgi / ... php` no longer exist in Caddy 2. The configuration above is indented with 4 spaces, so `caddy validate` reports `Caddyfile input is not formatted`; this does not affect how it works.
+The Caddy v1 forms `rewrite { to ... }` and `fastcgi / ... php` no longer exist in Caddy 2. The configuration above is indented with 4 spaces, so `caddy validate` reports `Caddyfile input is not formatted`; this does not affect how it works.
 
 ### When PHP sets `cgi.fix_pathinfo=0` {#caddy-fix-pathinfo}
 

@@ -38,8 +38,8 @@ $db = \Typecho\Db::get();
 
 // Insert; returns the primary key of the new row
 $id = $db->query($db->insert('table.guestbook')->rows([
-    'author'  => '张三',
-    'text'    => '你好',
+    'author'  => 'Alice',
+    'text'    => 'Hello',
     'ip'      => '127.0.0.1',
     'created' => time(),
 ]));
@@ -60,7 +60,7 @@ $count = $db->fetchObject($db->select(['COUNT(id)' => 'num'])->from('table.guest
 
 // Update; returns the number of affected rows
 $affected = $db->query($db->update('table.guestbook')
-    ->rows(['text' => '改过的留言'])
+    ->rows(['text' => 'Edited message'])
     ->where('id = ?', $id));
 
 // Update with an expression: compute from the current value

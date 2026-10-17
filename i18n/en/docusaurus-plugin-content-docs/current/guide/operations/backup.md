@@ -27,7 +27,7 @@ Since version 1.1, Typecho has built-in backup and restore, so no backup plugin 
 
 ### What is included and what is not
 
-The page says: "此备份操作仅包含**内容数据**, 并不会涉及任何**设置信息**" (this backup includes only **content data** and does not cover any **settings**). According to `var/Widget/Backup.php`, the backup file contains these 6 tables:
+The page says: "This backup includes only **content data** and does not cover any **settings**". According to `var/Widget/Backup.php`, the backup file contains these 6 tables:
 
 | Table | Contents |
 |---|---|
@@ -46,9 +46,9 @@ The page says: "此备份操作仅包含**内容数据**, 并不会涉及任何*
 
 ### Export
 
-Click <kbd>开始备份 »</kbd> (Start backup) and the browser downloads a `.dat` file named like `20261016_blog.example.com_6ad1dbcfc14a1.dat` (date, site domain, random string). This is Typecho's own binary format, with a `%TYPECHO_BACKUP_0001%` marker at both the start and the end of the file. It can only be imported with Typecho's "Restore data" feature, not with database tools.
+Click <kbd>Start backup »</kbd> and the browser downloads a `.dat` file named like `20261016_blog.example.com_6ad1dbcfc14a1.dat` (date, site domain, random string). This is Typecho's own binary format, with a `%TYPECHO_BACKUP_0001%` marker at both the start and the end of the file. It can only be imported with Typecho's "Restore data" feature, not with database tools.
 
-With a large amount of data the export may time out; the page itself suggests "直接使用数据库提供的备份工具备份数据" (back up the data directly with the backup tools provided by the database) in that case.
+With a large amount of data the export may time out; the page itself suggests "back up the data directly with the backup tools provided by the database" in that case.
 
 ### Restore
 
@@ -56,24 +56,24 @@ With a large amount of data the export may time out; the page itself suggests "�
 
 | Method | How | When to use |
 |---|---|---|
-| Upload | Choose a local `.dat` file and click <kbd>上传并恢复 »</kbd> (Upload and restore) | When the file is small. Size is limited by PHP's `upload_max_filesize` and `post_max_size` |
-| From the server | Put the `.dat` file in the backup directory on the server, select it in the drop-down and click <kbd>选择并恢复 »</kbd> (Select and restore) | When the file is large or uploads are restricted |
+| Upload | Choose a local `.dat` file and click <kbd>Upload and restore »</kbd> | When the file is small. Size is limited by PHP's `upload_max_filesize` and `post_max_size` |
+| From the server | Put the `.dat` file in the backup directory on the server, select it in the drop-down and click <kbd>Select and restore »</kbd> | When the file is large or uploads are restricted |
 
-The backup directory defaults to `usr/backups` (create it yourself if it does not exist). You can change it to another absolute path with the `__TYPECHO_BACKUP_DIR__` constant; the hint on the page, "将备份文件手动上传至服务器的 … 目录下后, 这里会出现文件选项" (after you manually upload backup files to the … directory on the server, they appear as options here), shows the actual path. Only files with the `.dat` extension appear in the list.
+The backup directory defaults to `usr/backups` (create it yourself if it does not exist). You can change it to another absolute path with the `__TYPECHO_BACKUP_DIR__` constant; the hint on the page, "After you manually upload backup files to the … directory on the server, they appear as options here", shows the actual path. Only files with the `.dat` extension appear in the list.
 
 ```php title="config.inc.php"
 define('__TYPECHO_BACKUP_DIR__', '/data/typecho-backups');
 ```
 
 :::danger Restoring wipes existing content
-The confirmation dialog says "恢复操作将清除所有现有数据" (the restore will clear all existing data): for every table that appears in the backup file, Typecho first **empties** that table and then writes the data from the backup. Export your current data before restoring.
+The confirmation dialog says "The restore will clear all existing data": for every table that appears in the backup file, Typecho first **empties** that table and then writes the data from the backup. Export your current data before restoring.
 :::
 
 During a restore, Typecho also:
 
 - Logs the current browser in again as the first administrator account in the backup (because the `users` table has been replaced), so after the restore you may be a different administrator;
 - Resets the auto-increment sequences of the tables on PostgreSQL;
-- Shows "数据恢复完成" (data restore complete) on success.
+- Shows "Data restore complete" on success.
 
 Because settings are not in the backup, after restoring a backup to a **freshly installed** site you still need to set up the site information, permalinks, theme and plugins again.
 
@@ -106,7 +106,7 @@ pg_restore -U typecho -h localhost -d typecho --clean typecho-20261016.dump
 **SQLite**: the database is a single file; its path is the `'file'` value in `config.inc.php`. If you copy it directly, preferably pause writes first (for example by temporarily taking the site offline), or use the online backup command of `sqlite3`:
 
 ```bash
-sqlite3 /srv/www/typecho/usr/站点数据库.db ".backup '/backup/typecho.db'"
+sqlite3 /srv/www/typecho/usr/<database file>.db ".backup '/backup/typecho.db'"
 ```
 
 ## File-level backup {#files}

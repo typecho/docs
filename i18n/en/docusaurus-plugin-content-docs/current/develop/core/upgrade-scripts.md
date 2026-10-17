@@ -59,7 +59,7 @@ class Upgrade
             ->where('name = ? AND user = 0', 'someOption'));
 
         // Optional: return a message shown to the administrator after the upgrade
-        return _t('已重置 someOption');
+        return _t('someOption has been reset');
     }
 }
 ```

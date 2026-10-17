@@ -42,7 +42,7 @@ try {
 | `setData($data, $method = 'POST')` | Request body, as an array or a string; also sets the method to POST (or the method given as the second argument) |
 | `setJson($data, $method = 'POST')` | Encodes `$data` as JSON for the request body and sets `Content-Type: application/json` |
 | `setMultipart(bool $multipart)` | Which encoding to use when `setData()` receives an array; see below |
-| `setFiles(array $files, $method = 'POST')` | Uploads files, `['字段名' => '本地路径']`, sent as `multipart/form-data`; can be combined with array fields from `setData()` |
+| `setFiles(array $files, $method = 'POST')` | Uploads files, `['field' => '/local/path']`, sent as `multipart/form-data`; can be combined with array fields from `setData()` |
 | `setMethod($method)` | Request method; you can use the constants `Client::METHOD_GET`, `METHOD_POST`, `METHOD_PUT`, `METHOD_DELETE` |
 | `setHeader($key, $value)` | Request header |
 | `setCookie($key, $value)` | Cookie |
@@ -61,7 +61,7 @@ Behavior to watch out for:
 
   ```php
   $client->setMultipart(false)
-      ->setData(['name' => '张三', 'text' => '你好'])
+      ->setData(['name' => 'Alice', 'text' => 'Hello'])
       ->send('https://api.example.com/messages');
   ```
 
@@ -77,7 +77,7 @@ Calling external services slows pages down: when a visitor submits a message and
 
 How it works:
 
-1. `requestService('任务名', 参数...)` only records the task.
+1. `requestService('taskName', ...$params)` only records the task.
 2. When the current request ends, Typecho sends a POST request to the site's own `/action/service?do=async`, carrying all recorded tasks and a token valid for a few seconds (timeout 2 seconds).
 3. That request verifies the token, **immediately finishes its response**, and then, in the background, triggers one by one the hooks on `Widget_Service` named after each task, passing the arguments to the callbacks.
 
@@ -124,8 +124,8 @@ Replace the empty `config()` with the code below and add a `notify()` method:
 ```php
 public static function config(Form $form)
 {
-    $webhook = new Text('webhook', null, '', _t('通知地址'), _t('有新留言时向这个地址 POST 一个 JSON，留空则不通知'));
-    $webhook->addRule('url', _t('请填写一个合法的 URL'));
+    $webhook = new Text('webhook', null, '', _t('Notification URL'), _t('POST a JSON payload to this URL when a new message arrives; leave empty to disable'));
+    $webhook->addRule('url', _t('Enter a valid URL'));
     $form->addInput($webhook);
 }
 
@@ -181,5 +181,5 @@ POST /hook
 User-Agent: Typecho 1.3.0
 Content-Type: application/json
 
-{"author":"李四","text":"异步通知测试","created":1792159301}
+{"author":"Bob","text":"Async notification test","created":1792159301}
 ```

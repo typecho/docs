@@ -82,7 +82,7 @@ The time after "Saved" is shown in a form like `16:50:08 PM`: a 24-hour time fol
 ## Categories and tags
 
 - **Categories**: tick one or more. A new post has the default category ticked in advance; if you untick everything, the post is still filed under the default category when saved. For adding and removing categories and setting the default category, see [Categories and tags](./categories-tags.md).
-- **Tags**: type a tag name and press the ASCII comma `,` or Enter to turn it into a tag chip. Existing tags are suggested as you type; for a tag that does not exist, the hint "This tag does not exist, press Enter to create it" appears, and the tag is created automatically on save. Typing a full-width comma "，" in the input does not split the tag, but the server treats "，" as a separator when saving.
+- **Tags**: type a tag name and press the ASCII comma `,` or Enter to turn it into a tag chip. Existing tags are suggested as you type; for a tag that does not exist, the hint "This tag does not exist, press Enter to create it" appears, and the tag is created automatically on save. Typing a full-width comma (U+FF0C, used in Chinese text) in the input does not split the tag, but the server treats it as a separator when saving.
 
 ## Advanced options
 
@@ -102,7 +102,7 @@ The default state of the three "Allow" switches for new posts comes from "Allow 
 
 Switch to the "Attachments" panel on the right and drag files onto the "Drop files here" area, or click "Choose files to upload".
 
-- In 1.3.0 you can only select one file at a time (selecting several files at once is a change merged after 1.3.0 and is not in 1.3.0). Pasting an image directly into the Markdown editor also uploads it.
+- In 1.3.0 you can only select one file at a time (selecting several files at once is a change merged after 1.3.0 and is not in 1.3.0).
 - Uploaded files appear in the list. **Clicking the file name** inserts it into the editor: images are inserted as Markdown images, other files as links, with the address written as a reference at the end of the content, for example:
 
   ```markdown

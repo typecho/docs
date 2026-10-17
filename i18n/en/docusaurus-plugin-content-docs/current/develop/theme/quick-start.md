@@ -50,10 +50,10 @@ $this->need('header.php');
 <main>
     <?php if (!$this->is('index')): ?>
         <h1><?php $this->archiveTitle([
-            'category' => _t('分类 %s 下的文章'),
-            'search'   => _t('包含关键字 %s 的文章'),
-            'tag'      => _t('标签 %s 下的文章'),
-            'author'   => _t('%s 发布的文章'),
+            'category' => _t('Posts in category %s'),
+            'search'   => _t('Posts containing %s'),
+            'tag'      => _t('Posts tagged %s'),
+            'author'   => _t('Posts by %s'),
         ], '', ''); ?></h1>
     <?php endif; ?>
 
@@ -64,16 +64,16 @@ $this->need('header.php');
                 <p class="meta">
                     <?php $this->date(); ?> ·
                     <?php $this->category(', '); ?> ·
-                    <a href="<?php $this->permalink(); ?>#comments"><?php $this->commentsNum(_t('暂无评论'), _t('1 条评论'), _t('%d 条评论')); ?></a>
+                    <a href="<?php $this->permalink(); ?>#comments"><?php $this->commentsNum(_t('No comments yet'), _t('1 comment'), _t('%d comments')); ?></a>
                 </p>
-                <?php $this->content(_t('阅读全文')); ?>
+                <?php $this->content(_t('Read more')); ?>
             </article>
         <?php endwhile; ?>
     <?php else: ?>
-        <p><?php _e('没有找到内容'); ?></p>
+        <p><?php _e('Nothing found'); ?></p>
     <?php endif; ?>
 
-    <?php $this->pageNav('&laquo; ' . _t('前一页'), _t('后一页') . ' &raquo;'); ?>
+    <?php $this->pageNav('&laquo; ' . _t('Previous'), _t('Next') . ' &raquo;'); ?>
 </main>
 <?php $this->need('footer.php'); ?>
 ```
@@ -85,7 +85,7 @@ Section by section:
 - `$this->need('header.php')` includes another file from the same theme directory; `$this` stays the same inside the included file.
 - `$this->is('index')` checks whether the current page is the home page; when it is not, `archiveTitle()` outputs a heading such as "Posts in category Tech". The array keys are page types; `%s` in the values is replaced with the category name, search keyword and so on; the last two arguments are the prefix and suffix.
 - `while ($this->next())` takes out the posts of the current page one by one; inside the loop, `$this->title()`, `$this->permalink()` and so on all refer to the current post. When there are no posts, `$this->have()` is false.
-- `$this->content(_t('阅读全文'))` outputs the body; when the post contains `<!--more-->`, the list shows only the part before the separator, followed by a "Read more" link.
+- `$this->content(_t('Read more'))` outputs the body; when the post contains `<!--more-->`, the list shows only the part before the separator, followed by a "Read more" link.
 - `$this->pageNav()` outputs pagination; the number of posts per page is set by "Posts per page" under "Settings → Reading".
 
 ## header.php
@@ -105,14 +105,14 @@ Section by section:
 <header class="site-header">
     <a class="site-title" href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title(); ?></a>
     <nav>
-        <a href="<?php $this->options->siteUrl(); ?>"><?php _e('首页'); ?></a>
+        <a href="<?php $this->options->siteUrl(); ?>"><?php _e('Home'); ?></a>
         <?php \Widget\Contents\Page\Rows::alloc()->to($pages); ?>
         <?php while ($pages->next()): ?>
             <a href="<?php $pages->permalink(); ?>"><?php $pages->title(); ?></a>
         <?php endwhile; ?>
     </nav>
     <form method="post" action="<?php $this->options->siteUrl(); ?>">
-        <input type="search" name="s" placeholder="<?php _e('搜索'); ?>">
+        <input type="search" name="s" placeholder="<?php _e('Search'); ?>">
     </form>
 </header>
 ```
@@ -122,7 +122,7 @@ Section by section:
 - `$this->options->themeUrl('style.css')` outputs the full URL of a file in the theme directory; use it to load stylesheets and scripts.
 - `$this->header()` must be placed inside `<head>`: it outputs the description, keywords, feed, Pingback and other tags, as well as the scripts needed for comment replies and anti-spam. You can suppress some of these items; see [Header output: header()](./header.md).
 - `\Widget\Contents\Page\Rows::alloc()->to($pages)` fetches all pages into `$pages` to build the navigation menu. For other ways of fetching data in a template, see [Calling widgets in templates](./widgets.md).
-- The search form submits the keyword under the name `s` to the site URL, and Typecho redirects to `/search/关键字/`.
+- The search form submits the keyword under the name `s` to the site URL, and Typecho redirects to `/search/<keyword>/`.
 
 ## footer.php
 
@@ -159,12 +159,12 @@ Posts use `post.php`:
             <?php $this->author(); ?> · <?php $this->date(); ?> · <?php $this->category(', '); ?>
         </p>
         <?php $this->content(); ?>
-        <p class="tags"><?php _e('标签'); ?>：<?php $this->tags(', ', true, _t('无')); ?></p>
+        <p class="tags"><?php _e('Tags'); ?>: <?php $this->tags(', ', true, _t('None')); ?></p>
     </article>
 
     <nav class="post-nav">
-        <span><?php $this->thePrev('&laquo; %s', _t('没有了')); ?></span>
-        <span><?php $this->theNext('%s &raquo;', _t('没有了')); ?></span>
+        <span><?php $this->thePrev('&laquo; %s', _t('None')); ?></span>
+        <span><?php $this->theNext('%s &raquo;', _t('None')); ?></span>
     </nav>
 
     <?php $this->need('comments.php'); ?>
@@ -173,7 +173,7 @@ Posts use `post.php`:
 ```
 
 - On a post page `$this` is the post itself, so no `while` loop is needed.
-- `$this->tags(', ', true, _t('无'))` outputs the tags as links separated by commas, and outputs "None" when there are no tags.
+- `$this->tags(', ', true, _t('None'))` outputs the tags as links separated by commas, and outputs "None" when there are no tags.
 - `thePrev()` / `theNext()` output links to the previous and next post; `%s` is the title, and the second argument is the text shown when there is none.
 
 ## page.php
@@ -201,29 +201,29 @@ Pages use `page.php`. Its structure is the same as a post page, except that it n
 <section id="comments">
     <?php $this->comments()->to($comments); ?>
     <?php if ($comments->have()): ?>
-        <h2><?php $this->commentsNum(_t('暂无评论'), _t('1 条评论'), _t('%d 条评论')); ?></h2>
+        <h2><?php $this->commentsNum(_t('No comments yet'), _t('1 comment'), _t('%d comments')); ?></h2>
         <?php $comments->listComments(); ?>
-        <?php $comments->pageNav('&laquo; ' . _t('前一页'), _t('后一页') . ' &raquo;'); ?>
+        <?php $comments->pageNav('&laquo; ' . _t('Previous'), _t('Next') . ' &raquo;'); ?>
     <?php endif; ?>
 
     <?php if ($this->allow('comment')): ?>
         <div id="<?php $this->respondId(); ?>">
             <?php $comments->cancelReply(); ?>
-            <h3><?php _e('发表评论'); ?></h3>
+            <h3><?php _e('Leave a comment'); ?></h3>
             <form method="post" action="<?php $this->commentUrl(); ?>">
                 <?php if ($this->user->hasLogin()): ?>
-                    <p><?php _e('登录身份'); ?>：<?php $this->user->screenName(); ?></p>
+                    <p><?php _e('Logged in as'); ?>: <?php $this->user->screenName(); ?></p>
                 <?php else: ?>
-                    <p><input type="text" name="author" placeholder="<?php _e('称呼'); ?>" value="<?php $this->remember('author'); ?>" required></p>
-                    <p><input type="email" name="mail" placeholder="<?php _e('邮箱'); ?>" value="<?php $this->remember('mail'); ?>"<?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>></p>
-                    <p><input type="url" name="url" placeholder="<?php _e('网站'); ?>" value="<?php $this->remember('url'); ?>"<?php if ($this->options->commentsRequireUrl): ?> required<?php endif; ?>></p>
+                    <p><input type="text" name="author" placeholder="<?php _e('Name'); ?>" value="<?php $this->remember('author'); ?>" required></p>
+                    <p><input type="email" name="mail" placeholder="<?php _e('Email'); ?>" value="<?php $this->remember('mail'); ?>"<?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>></p>
+                    <p><input type="url" name="url" placeholder="<?php _e('Website'); ?>" value="<?php $this->remember('url'); ?>"<?php if ($this->options->commentsRequireUrl): ?> required<?php endif; ?>></p>
                 <?php endif; ?>
                 <p><textarea name="text" rows="5" required></textarea></p>
-                <p><button type="submit"><?php _e('提交评论'); ?></button></p>
+                <p><button type="submit"><?php _e('Submit comment'); ?></button></p>
             </form>
         </div>
     <?php else: ?>
-        <p><?php _e('评论已关闭'); ?></p>
+        <p><?php _e('Comments are closed'); ?></p>
     <?php endif; ?>
 </section>
 ```
@@ -243,7 +243,7 @@ For the complete way of writing a comment template, see [Comment templates](./co
 <?php $this->need('header.php'); ?>
 <main>
     <h1>404</h1>
-    <p><?php _e('页面没找到'); ?>。<a href="<?php $this->options->siteUrl(); ?>"><?php _e('返回首页'); ?></a></p>
+    <p><?php _e('Page not found'); ?>. <a href="<?php $this->options->siteUrl(); ?>"><?php _e('Back to home'); ?></a></p>
 </main>
 <?php $this->need('footer.php'); ?>
 ```
@@ -262,8 +262,8 @@ function themeConfig($form)
         'footerText',
         null,
         null,
-        _t('页脚文字'),
-        _t('显示在每个页面底部，可以留空')
+        _t('Footer text'),
+        _t('Shown at the bottom of every page; can be left empty')
     );
     $form->addInput($footerText);
 }

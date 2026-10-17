@@ -13,10 +13,10 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 
 ```php
 <title><?php $this->archiveTitle([
-    'category' => _t('分类 %s 下的文章'),
-    'search'   => _t('包含关键字 %s 的文章'),
-    'tag'      => _t('标签 %s 下的文章'),
-    'author'   => _t('%s 发布的文章'),
+    'category' => _t('Posts in category %s'),
+    'search'   => _t('Posts containing %s'),
+    'tag'      => _t('Posts tagged %s'),
+    'author'   => _t('Posts by %s'),
 ], '', ' - '); ?><?php $this->options->title(); ?><?php if ($this->is('index')): ?> - <?php $this->options->description(); ?><?php endif; ?></title>
 ```
 

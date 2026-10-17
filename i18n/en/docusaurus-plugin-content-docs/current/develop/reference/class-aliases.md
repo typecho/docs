@@ -15,7 +15,7 @@ The autoloader handles a class name it cannot find in the following order:
 
 1. **Explicit aliases**: if the class name is in the alias table below, it maps directly to the new class in the table.
 2. **Underscore class names starting with `Typecho_`, `Widget_` or `IXR_`**: `_` is replaced with `\`, for example `Widget_Contents_Post_Recent` → `\Widget\Contents\Post\Recent`, `Typecho_Widget_Helper_Form_Element_Text` → `\Typecho\Widget\Helper\Form\Element\Text`.
-3. **Other class names containing underscores** are treated as plugin classes: `插件名_类名` → `\TypechoPlugin\插件名\类名`, in the file `usr/plugins/插件名/类名.php`. For example, `HelloWorld_Plugin` in an old-style plugin maps to `\TypechoPlugin\HelloWorld\Plugin`.
+3. **Other class names containing underscores** are treated as plugin classes: `PluginName_ClassName` → `\TypechoPlugin\PluginName\ClassName`, in the file `usr/plugins/PluginName/ClassName.php`. For example, `HelloWorld_Plugin` in an old-style plugin maps to `\TypechoPlugin\HelloWorld\Plugin`.
 4. In the other direction, new namespaced class names also get an underscore alias automatically, so the old and new forms point to the same class, and `instanceof` checks and inheritance work interchangeably.
 
 Plugin hook handle names are normalized in the same way: `\Typecho\Plugin::factory('Widget\Archive')` and `factory('Widget_Archive')` are the same handle; classes in the explicit alias table use the old name as the handle name (for example, the handle of `\Widget\Base\Contents` is `Widget_Abstract_Contents`).

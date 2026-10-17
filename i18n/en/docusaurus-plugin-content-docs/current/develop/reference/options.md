@@ -49,7 +49,7 @@ Calling a method with the name of any option outputs its value directly (this is
 - `siteUrl($path)`, `index($path)`, `themeUrl($path)` and `pluginUrl($path)` **output** the assembled URL directly; `themeUrl($path, $theme)` with the second argument instead **returns** the URL of a file in another theme's directory.
 - The difference between `index($path)` and `siteUrl($path)`: when URL rewriting is off, `index` includes `index.php` (`https://example.com/index.php/archives/1/`), so use it to build links to pages; `siteUrl` is always the site root URL, suitable for static files.
 - For `adminUrl($path, $return = false)` and `adminStaticUrl($type, $file, $return = false)`, the method returns the value when the last argument is `true` and outputs it otherwise.
-- `plugin($pluginName)` returns a plugin's site-wide settings (`Typecho\Config`), for example `$this->options->plugin('HelloWorld')->word`. If the plugin is **not enabled or has no settings**, it throws `Typecho\Plugin\Exception` ("插件 X 的配置信息没有找到", the configuration of plugin X was not found); you can wrap the read in `try`. `personalPlugin($pluginName)` returns the current user's personal plugin settings.
+- `plugin($pluginName)` returns a plugin's site-wide settings (`Typecho\Config`), for example `$this->options->plugin('HelloWorld')->word`. If the plugin is **not enabled or has no settings**, it throws `Typecho\Plugin\Exception` ("the configuration of plugin X was not found"); you can wrap the read in `try`. `personalPlugin($pluginName)` returns the current user's personal plugin settings.
 - `themeFile($theme, $file)` and `pluginDir($plugin)` return absolute paths on the server.
 
 ## Magic properties

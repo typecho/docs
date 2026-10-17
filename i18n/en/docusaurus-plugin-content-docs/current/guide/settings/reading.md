@@ -22,19 +22,19 @@ source_commit: 865a40f1e805668ce7e5b8bfd8fa66c9a718b2d1
 
 ## Post date format {#date-format}
 
-"Post date format" (`postDateFormat`) is the default format a theme uses when outputting post dates. It is written with PHP `date()` format characters; the "PHP 日期格式写法" link in the admin description points to this function in the PHP manual. The description also notes: "This format may not take effect in some themes, because theme authors can customize the date format."
+"Post date format" (`postDateFormat`) is the default format a theme uses when outputting post dates. It is written with PHP `date()` format characters; the "PHP date format" link in the admin description points to this function in the PHP manual. The description also notes: "This format may not take effect in some themes, because theme authors can customize the date format."
 
 Common formats, using 5:23 pm on 16 October 2026 as an example:
 
 | Format | Output |
 |---|---|
 | `Y-m-d` (default) | 2026-10-16 |
-| `Y年n月j日` | 2026年10月16日 |
-| `Y年m月d日 H:i` | 2026年10月16日 17:23 |
+| `D, j M Y` | Fri, 16 Oct 2026 |
+| `l, F j, Y g:i a` | Friday, October 16, 2026 5:23 pm |
 | `M j, Y` | Oct 16, 2026 |
 | `D, d M Y` | Fri, 16 Oct 2026 |
 
-`Y` four-digit year, `m` / `n` month (with / without a leading zero), `d` / `j` day, `H` hour in 24-hour format, `i` minutes; to output a letter literally, put a backslash in front of it. For the full description and more examples, see [Discussion settings: comment date format](./discussion.md#date-format). For example, after you change it to `Y年n月j日`, dates in the default theme's post list are shown as "2026年10月16日".
+`Y` four-digit year, `m` / `n` month (with / without a leading zero), `d` / `j` day, `H` hour in 24-hour format, `i` minutes; to output a letter literally, put a backslash in front of it. For the full description and more examples, see [Discussion settings: comment date format](./discussion.md#date-format). For example, after you change it to `F j, Y`, dates in the default theme's post list are shown as "October 16, 2026".
 
 The format cannot contain special characters such as `<` and `>`; otherwise the message "Please do not use special characters in the date format" appears.
 

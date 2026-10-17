@@ -39,9 +39,9 @@ Note that step 2 uses a **subdirectory**: `category/tech.php` lives in the `cate
 | Search | `/search/typecho/` | `search` | keyword | `search.php`, `archive.php` |
 | 404 | any URL that does not exist | `archive` | `404` | `404.php`, otherwise `archive/404.php`, `archive.php` |
 
-- The slug of a post is the **post ID**, not its URL slug, so a template for one particular post must be named `post/文章ID.php` (the post ID followed by `.php`);
+- The slug of a post is the **post ID**, not its URL slug, so a template for one particular post must be named `post/<post ID>.php`;
 - The slug of a date archive is its granularity; `date/year.php`, `date/month.php` and `date/day.php` correspond to yearly, monthly and daily archives;
-- When a page is used as the home page, the home page looks up templates as that page (`page/缩略名.php`, `page.php` ...).
+- When a page is used as the home page, the home page looks up templates as that page (`page/<slug>.php`, `page.php` ...).
 
 ## Example
 
@@ -69,7 +69,7 @@ post.php
 
 ## Included files
 
-Shared parts such as `header.php`, `footer.php` and `comments.php` take no part in the lookup; templates include them themselves with `$this->need('文件名')`:
+Shared parts such as `header.php`, `footer.php` and `comments.php` take no part in the lookup; templates include them themselves with `$this->need('file.php')`:
 
 ```php
 <?php $this->need('header.php'); ?>
@@ -83,7 +83,7 @@ When different pages differ only slightly, you do not need to split them into se
 
 ```php
 <?php if ($this->is('category', 'tech')): ?>
-    <p>这里是技术分类</p>
+    <p>This is the Tech category</p>
 <?php endif; ?>
 ```
 

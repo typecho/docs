@@ -25,7 +25,7 @@ The "Type" column in the tables describes what the value means; in the database 
 | Option name | Type | Settings page | Default | Description |
 |---|---|---|---|---|
 | `theme` | string | [Appearance](../../guide/extend/themes.md) | `default` | Directory name of the current theme |
-| `theme:default` | JSON | Appearance → Theme settings | `{"logoUrl":"","sidebarBlock":[…5 项]}` | Settings of the `default` theme; for other themes it is `theme:<directory name>`, created on activation and deleted on switching away |
+| `theme:default` | JSON | Appearance → Theme settings | `{"logoUrl":"","sidebarBlock":[…5 items]}` | Settings of the `default` theme; for other themes it is `theme:<directory name>`, created on activation and deleted on switching away |
 | `timezone` | int | [General](../../guide/settings/general.md) | `28800` | Time zone, as the offset from GMT in seconds |
 | `lang` | string | [General](../../guide/settings/general.md) | `zh_CN` (a command-line install can set it with `TYPECHO_LANG`) | Interface language, `zh_CN` or a language pack file name |
 | `charset` | string | none | `UTF-8` | Page encoding |

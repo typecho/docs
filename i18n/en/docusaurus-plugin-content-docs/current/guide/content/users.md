@@ -92,7 +92,7 @@ The list shows each user's post count, username, nickname, email and user group,
 When "Allow registration" (`allowRegister`, default "Not allowed") in **Settings → General** is set to "Allowed", a "Register" link appears at the bottom of the login page, and visitors can register themselves at `admin/register.php`:
 
 - The registration form has only two fields, **Username** and **Email**. The username is 2 to 32 characters, the email at most 64 characters, and neither may duplicate an existing user.
-- After registering, the user is logged in automatically and lands on the welcome page, which shows a randomly generated 7-character password once, for example "用户 newbie 已经成功注册, 密码为 q1wVUkl" (user newbie has registered successfully, the password is q1wVUkl). Remind users to note the password and change it in Profile as soon as possible.
+- After registering, the user is logged in automatically and lands on the welcome page, which shows a randomly generated 7-character password once, for example "User newbie has registered successfully, the password is q1wVUkl". Remind users to note the password and change it in Profile as soon as possible.
 - The role of new users is always **Subscriber**, with no write permission; an administrator must promote them manually.
 - Typecho sends no email and does not verify the email address during registration.
 

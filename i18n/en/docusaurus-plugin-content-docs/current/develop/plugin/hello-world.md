@@ -38,7 +38,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 class Plugin implements PluginInterface
 {
     /**
-     * 激活插件方法,如果激活失败,直接抛出异常
+     * Activates the plugin; throws an exception if activation fails
      */
     public static function activate()
     {
@@ -46,26 +46,26 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * 禁用插件方法,如果禁用失败,直接抛出异常
+     * Deactivates the plugin; throws an exception if deactivation fails
      */
     public static function deactivate()
     {
     }
 
     /**
-     * 获取插件配置面板
+     * Builds the plugin settings panel
      *
-     * @param Form $form 配置面板
+     * @param Form $form Settings panel
      */
     public static function config(Form $form)
     {
-        /** 分类名称 */
-        $name = new Text('word', null, 'Hello World', _t('说点什么'));
+        /** Text to show */
+        $name = new Text('word', null, 'Hello World', _t('Say something'));
         $form->addInput($name);
     }
 
     /**
-     * 个人用户的配置面板
+     * Personal settings panel for each user
      *
      * @param Form $form
      */
@@ -74,7 +74,7 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * 插件实现方法
+     * Plugin implementation
      *
      * @access public
      * @return void
@@ -94,7 +94,7 @@ class Plugin implements PluginInterface
 namespace TypechoPlugin\HelloWorld;
 ```
 
-The plugin class must live in the `TypechoPlugin\插件名` namespace, where `插件名` (the plugin name) is the directory name under `usr/plugins/`, here `HelloWorld`, with the same case. Typecho uses this convention to find and autoload the `\TypechoPlugin\HelloWorld\Plugin` class in `usr/plugins/HelloWorld/Plugin.php`. See [Plugin structure and lifecycle](./structure.md).
+The plugin class must live in the `TypechoPlugin\<plugin name>` namespace, where `<plugin name>` is the directory name under `usr/plugins/`, here `HelloWorld`, with the same case. Typecho uses this convention to find and autoload the `\TypechoPlugin\HelloWorld\Plugin` class in `usr/plugins/HelloWorld/Plugin.php`. See [Plugin structure and lifecycle](./structure.md).
 
 ### Lines 5–8: importing the classes you use
 
@@ -158,7 +158,7 @@ It sits on the right side of the admin top navigation bar, just before the link 
 Two things to note:
 
 - `activate()` **runs only once, on activation**. Typecho saves the callbacks registered here to the database (the `plugins` option), and every later request reads them from the database without calling `activate()` again. So after you change the registration code in `activate()`, you must deactivate and then reactivate the plugin for the change to take effect.
-- Write callbacks as a string `'类名::方法名'` (`'ClassName::methodName'`) or an array `[类名, '方法名']`, not as closures: callbacks are saved to the database as JSON.
+- Write callbacks as a string `'ClassName::methodName'` or an array `[ClassName, 'methodName']`, not as closures: callbacks are saved to the database as JSON.
 
 For everything about hooks, see [Using hooks](./hooks.md). For all hooks Typecho provides, see the [Hook list](../reference/hooks.md).
 
@@ -171,8 +171,8 @@ Called when the plugin is deactivated. HelloWorld has nothing to clean up, so th
 ```php
 public static function config(Form $form)
 {
-    /** 分类名称 */
-    $name = new Text('word', null, 'Hello World', _t('说点什么'));
+    /** Text to show */
+    $name = new Text('word', null, 'Hello World', _t('Say something'));
     $form->addInput($name);
 }
 ```
@@ -182,7 +182,7 @@ When `config()` adds form elements to `$form`, the admin panel shows a "Settings
 - `'word'`: the name of the setting, read later with `->word`;
 - `null`: the list of options, not needed for a text box;
 - `'Hello World'`: the default value. When the plugin is activated, Typecho stores the default values of all settings in the database;
-- `_t('说点什么')`: the label shown in front of the text box.
+- `_t('Say something')`: the label shown in front of the text box.
 
 For the available form elements, see [Form elements](../reference/form-elements.md).
 
@@ -255,7 +255,7 @@ class Plugin implements PluginInterface
 
     public static function config(Form $form)
     {
-        $word = new Text('word', null, '你好，Typecho', _t('问候语'));
+        $word = new Text('word', null, 'Hello, Typecho', _t('Greeting'));
         $form->addInput($word);
     }
 
@@ -289,10 +289,10 @@ Compared with HelloWorld, there are three changes:
 ### 3. Activate and check
 
 1. Go to "Dashboard → Plugins" in the admin panel. `Greeting` appears in the list of deactivated plugins, showing the description, version and author from the header comment. Click "Activate".
-2. The page shows the notice "插件已经被启用" (plugin activated), and `Greeting` moves to the list of activated plugins, followed by two links, "Settings" and "Deactivate".
-3. A green "你好，Typecho" appears on the right side of the admin top navigation bar.
+2. The page shows the notice "Plugin activated", and `Greeting` moves to the list of activated plugins, followed by two links, "Settings" and "Deactivate".
+3. A green "Hello, Typecho" appears on the right side of the admin top navigation bar.
 4. Open the site's home page. The same text appears at the bottom of the page.
-5. Click "Settings", change the greeting to some other text and save. The page shows the notice "插件设置已经保存" (plugin settings saved). Both the navigation bar and the front-end footer now show the new text.
+5. Click "Settings", change the greeting to some other text and save. The page shows the notice "Plugin settings saved". Both the navigation bar and the front-end footer now show the new text.
 
 If the navigation bar does not change after activation, check in order: whether the namespace is `TypechoPlugin\Greeting`, whether the directory name is `Greeting`, and whether `implements` is followed by `PluginInterface`. After changing `activate()`, deactivate and reactivate the plugin.
 

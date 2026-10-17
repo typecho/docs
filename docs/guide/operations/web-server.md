@@ -152,7 +152,7 @@ blog.example.com {
 }
 ```
 
-Caddy 会自动申请 HTTPS 证书。Caddy v1 的 `rewrite { to ... }` 和 `fastcgi / ... php` 写法在 Caddy 2 中已经不存在。上面的配置用 4 个空格缩进，`caddy validate` 会提示 `Caddyfile input is not formatted`，不影响使用。
+Caddy v1 的 `rewrite { to ... }` 和 `fastcgi / ... php` 写法在 Caddy 2 中已经不存在。上面的配置用 4 个空格缩进，`caddy validate` 会提示 `Caddyfile input is not formatted`，不影响使用。
 
 ### PHP 设置了 `cgi.fix_pathinfo=0` 时 {#caddy-fix-pathinfo}
 

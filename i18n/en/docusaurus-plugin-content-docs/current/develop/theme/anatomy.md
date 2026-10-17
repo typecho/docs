@@ -9,7 +9,7 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 
 ## Directory
 
-A theme is a directory under `usr/themes/`. **The directory name is the theme's identifier**: the current theme stored in the site settings (the `theme` option) is the directory name, and theme options are saved in an option named `theme:目录名` (`theme:` followed by the directory name). Do not rename the directory after release, or the theme options site owners have already saved will no longer match.
+A theme is a directory under `usr/themes/`. **The directory name is the theme's identifier**: the current theme stored in the site settings (the `theme` option) is the directory name, and theme options are saved in an option named `theme:<directory>` (`theme:` followed by the directory name). Do not rename the directory after release, or the theme options site owners have already saved will no longer match.
 
 The only required file is `index.php`; the admin panel recognizes a theme by "the directory contains `index.php`". Common files:
 
@@ -69,7 +69,7 @@ Add this line at the top of every template file:
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 ```
 
-`__TYPECHO_ROOT_DIR__` is only defined when the code runs through Typecho's entry point (`index.php`). When someone requests `usr/themes/你的主题/post.php` directly in a browser, this line makes the file exit immediately instead of printing errors because `$this` does not exist.
+`__TYPECHO_ROOT_DIR__` is only defined when the code runs through Typecho's entry point (`index.php`). When someone requests `usr/themes/your-theme/post.php` directly in a browser, this line makes the file exit immediately instead of printing errors because `$this` does not exist.
 
 ## Loading static files: themeUrl()
 

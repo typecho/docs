@@ -29,7 +29,7 @@ You pass parameters as the first argument of `alloc()`, either as a query string
 |---|---|
 | `execute()` | Execute function |
 
-Only the fields `cid`, `title`, `slug`, `created`, `modified`, `type`, `status`, `commentsNum`, `allow*`, `template`, `password`, `authorId` and `parent` are queried. **The body is not included**, so `content()` and `excerpt()` output nothing. When you need recent posts with excerpts, use `\Widget\Archive::allocWithAlias('recent', 'pageSize=5&type=index')`. Password-protected posts are listed too; for visitors who have not unlocked them, the title shows as "此内容被密码保护" (this content is password protected).
+Only the fields `cid`, `title`, `slug`, `created`, `modified`, `type`, `status`, `commentsNum`, `allow*`, `template`, `password`, `authorId` and `parent` are queried. **The body is not included**, so `content()` and `excerpt()` output nothing. When you need recent posts with excerpts, use `\Widget\Archive::allocWithAlias('recent', 'pageSize=5&type=index')`. Password-protected posts are listed too; for visitors who have not unlocked them, the title shows as "This content is password protected".
 
 ## Comments\Recent
 

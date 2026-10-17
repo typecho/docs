@@ -36,7 +36,7 @@ Before you ask, these steps often reveal the cause directly, and they also make 
 
 ## How to describe the problem
 
-A problem that can be solved quickly is one that others can **reproduce**. The bug template on GitHub ("上报 BUG", Report a bug) asks for the parts below; when you ask on the forum, following the same structure is recommended:
+A problem that can be solved quickly is one that others can **reproduce**. The bug template on GitHub ("Report a bug") asks for the parts below; when you ask on the forum, following the same structure is recommended:
 
 | Part | What to write |
 |---|---|
@@ -70,24 +70,24 @@ Before you paste configuration or logs, remove sensitive content such as databas
 ### Example
 
 ```text
-描述：升级到 1.3.0 后，点击“完成升级”页面一直加载，最终 504。
+Description: after upgrading to 1.3.0, clicking "Complete upgrade" keeps the page loading, and it ends with a 504.
 
-复现方式：
-1. 从 1.2.1 替换 admin/ var/ install/ index.php install.php
-2. 管理员登录后台，被带到升级页
-3. 点击“完成升级”，页面持续加载约 60 秒后返回 504
+Steps to reproduce:
+1. Replace admin/ var/ install/ index.php install.php from 1.2.1
+2. Log in to the admin panel as an administrator; you are taken to the upgrade page
+3. Click "Complete upgrade"; the page keeps loading for about 60 seconds, then returns 504
 
-期望的结果：显示“升级已经完成”
+Expected result: "The upgrade has been completed" is shown
 
-平台：
-- 操作系统版本：Debian 12
-- Apache/Nginx 版本：nginx 1.22.1
-- 数据库版本：MariaDB 10.11.6
-- PHP 版本：PHP 8.2.20
-- Typecho 版本：1.2.1 → 1.3.0
-- 浏览器版本：Firefox 131
+Platform:
+- OS version: Debian 12
+- Apache/Nginx version: nginx 1.22.1
+- Database version: MariaDB 10.11.6
+- PHP version: PHP 8.2.20
+- Typecho version: 1.2.1 → 1.3.0
+- Browser version: Firefox 131
 
-已尝试：禁用全部插件后重试，结果相同。站点约有 800 个附件。
+Already tried: disabled all plugins and retried, same result. The site has about 800 attachments.
 ```
 
 (This example is exactly the known issue described on the [Upgrading](../getting-started/upgrade.md#known-issue-attachments) page.)

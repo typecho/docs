@@ -48,7 +48,7 @@ When a visitor opens a password-protected post:
 
 - the page returns HTTP 403, the title is shown as "This content is password protected", and in place of the content there is a "Please enter the password to access" form;
 - entering a wrong password returns 403 and "Sorry, the password you entered is incorrect";
-- after the correct password is entered, the browser receives a session cookie named `protectPassword_文章ID`; until the browser is closed, visiting this post again does not require the password, and the post also shows its real title and content in list pages;
+- after the correct password is entered, the browser receives a session cookie named `protectPassword_<post ID>`; until the browser is closed, visiting this post again does not require the password, and the post also shows its real title and content in list pages;
 - until the post is unlocked, the visitor cannot comment on it (the comment form is not shown).
 
 People who see the content **without entering the password**: the post's author, and all editors and administrators (when logged in). A contributor visiting someone else's password-protected post still has to enter the password.

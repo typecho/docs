@@ -14,7 +14,7 @@ This page covers three kinds of migration: importing content from WordPress or o
 Typecho's official WordPress import plugin, **WordpressToTypecho**, lives in the plugin repository [github.com/typecho/plugins](https://github.com/typecho/plugins/tree/master/WordpressToTypecho) and is **not shipped with the Typecho release package**. The plugin version is 1.0.3 Beta, and the last change in the repository was on 2021-11-01.
 
 :::warning The plugin has not been updated for 1.3
-This plugin has not been updated since 2021 and was written for versions before 1.3. It can be enabled on 1.3, and the "从 WordPress 导入数据" (Import data from WordPress) page opens (enabling it logs an `Undefined variable $error` warning in the PHP log, which does not affect use), but the import results have not been adjusted for 1.3. Run the import on a test site first and check the results before using it on your production site.
+This plugin has not been updated since 2021 and was written for versions before 1.3. It can be enabled on 1.3, and the "Import data from WordPress" page opens (enabling it logs an `Undefined variable $error` warning in the PHP log, which does not affect use), but the import results have not been adjusted for 1.3. Run the import on a test site first and check the results before using it on your production site.
 :::
 
 ### What the plugin does
@@ -35,7 +35,7 @@ The plugin does **not** import: attachment files, WordPress users, WordPress set
 1. Install a new Typecho 1.3 site. The WordPress MySQL database must be reachable from this server; the plugin only supports MySQL (when enabled it checks whether `Mysqli` or `Pdo_Mysql` is available).
 2. Download the `WordpressToTypecho` directory from the plugin repository and put it in `usr/plugins/WordpressToTypecho/`.
 3. Enable it under "Dashboard → Plugins" in the admin panel, then open the plugin settings and fill in the WordPress database host, port, user name, password, database name and table prefix (default `wp_`).
-4. Open the new "从 WordPress 导入数据" (Import data from WordPress) item in the "Dashboard" menu and start the import. With a large amount of data it may time out, so raise PHP's `max_execution_time` first.
+4. Open the new "Import data from WordPress" item in the "Dashboard" menu and start the import. With a large amount of data it may time out, so raise PHP's `max_execution_time` first.
 5. After the import:
    - Copy WordPress's `wp-content/uploads/` to **the same path** on the new server and make it reachable by the web server, so image URLs in old posts keep working; or replace the URLs in the content in bulk as described [below](#replace-urls);
    - Under "Settings → Permalinks", set the same post URL format as the original site (a custom format is allowed), so search engines and external links keep working;
@@ -117,7 +117,7 @@ SET str_value = REPLACE(str_value, 'http://old.example.com/', 'https://new.examp
 
 After importing data, restoring a backup or editing the database by hand, the post counts shown next to categories and tags may be wrong. This number is stored in the `count` field of the `metas` table and is not recalculated automatically.
 
-**How to refresh**: in the admin panel, go to "Manage → Categories" (or "Manage → Tags"), check the items to refresh (you can click the checkbox in the table header to select all), and click "刷新" (Refresh) in the "选中项" (Selected items) drop-down menu. With many categories this may take a while.
+**How to refresh**: in the admin panel, go to "Manage → Categories" (or "Manage → Tags"), check the items to refresh (you can click the checkbox in the table header to select all), and click "Refresh" in the "Selected items" drop-down menu. With many categories this may take a while.
 
 According to the source (`refreshCountByTypeAndStatus()` in `var/Widget/Metas/EditTrait.php`), the refreshed number is the count of **published posts**: pages, drafts, and private or pending posts are not counted. So a refreshed number lower than you expected may be correct.
 

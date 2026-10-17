@@ -15,7 +15,7 @@ Everyone who takes part in the Typecho community (issues, pull requests, the for
 
 ## Reporting issues
 
-When you open a new issue in [GitHub Issues](https://github.com/typecho/typecho/issues), you can choose from three templates: "Report a bug" (上报 BUG), "Suggest an improvement" (提改进建议) and "Propose a new feature" (新功能提议). When reporting a bug, follow the template and give clear reproduction steps and environment information. Ask usage questions on the forum at [forum.typecho.org](https://forum.typecho.org/); for all the help channels, see [Getting help](../../guide/help/getting-help.md).
+When you open a new issue in [GitHub Issues](https://github.com/typecho/typecho/issues), you can choose from three templates: "Report a bug", "Suggest an improvement" and "Propose a new feature". When reporting a bug, follow the template and give clear reproduction steps and environment information. Ask usage questions on the forum at [forum.typecho.org](https://forum.typecho.org/); for all the help channels, see [Getting help](../../guide/help/getting-help.md).
 
 Do **not** file security vulnerabilities as public issues; see [Reporting security vulnerabilities](#security) below.
 

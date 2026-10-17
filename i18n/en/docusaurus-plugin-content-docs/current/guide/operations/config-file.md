@@ -163,5 +163,3 @@ $db->addServer([/* primary connection parameters */], \Typecho\Db::WRITE);
 $db->addServer([/* read-only replica connection parameters */], \Typecho\Db::READ);
 \Typecho\Db::set($db);
 ```
-
-This is only a capability provided by `Typecho\Db`; Typecho does not handle replication lag: data just written may temporarily be missing from the read-only replica, so use it with care.

@@ -58,7 +58,7 @@ Every page starts with front matter:
 
 ```yaml
 ---
-title: 路由
+title: Routing
 sidebar_position: 3
 ---
 ```
@@ -69,7 +69,7 @@ sidebar_position: 3
 | `sidebar_position` | The page's position within its category, starting at 1 |
 | `slug` | **Do not set it.** The URL is generated from the file path; only a few pages, such as `intro.md`, `glossary.md` and `develop/index.md`, have a `slug` |
 
-The first line of the body is a level-1 heading identical to `title`. When a heading needs to be linked from other pages, give it a fixed English anchor, for example `## 权限分配表 {#permission-table}`, so that the Chinese and English pages have the same anchor and links do not break because of translation.
+The first line of the body is a level-1 heading identical to `title`. When a heading needs to be linked from other pages, give it a fixed English anchor, for example `## Permission table {#permission-table}`, so that the Chinese and English pages have the same anchor and links do not break because of translation.
 
 ## Writing rules
 
@@ -84,7 +84,7 @@ Other conventions:
 - The body text is in Simplified Chinese; class names, method names, option names, hook names, file paths and commands go in inline code or code blocks and are kept as they are;
 - Every code identifier, option name, hook, constant and path that appears on a page must have been checked against the Typecho 1.3 source code; changes that exist only on the development branch after 1.3.0 are not written up as features;
 - Terms follow the [glossary](/glossary); add a new term to the glossary before using it;
-- Link between pages with relative paths to `.md` files, for example `[路由](../core/router.md)`.
+- Link between pages with relative paths to `.md` files, for example `[Routing](../core/router.md)`.
 
 ## English translation
 
@@ -109,7 +109,7 @@ A page that has no English translation yet shows the Chinese original on the Eng
 
    ```yaml
    translation: machine
-   source_commit: <中文源文件的提交哈希>
+   source_commit: <commit hash of the Chinese source file>
    ```
 
 4. Human review: check that terms, code and links are correct and that the English reads well. When the review is done, delete the `translation: machine` line; if the Chinese page has changed in the meantime, update `source_commit` as well;

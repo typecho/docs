@@ -21,24 +21,24 @@ function themeConfig($form)
         'logoUrl',
         null,
         null,
-        _t('LOGO 地址'),
-        _t('填写图片地址，留空则显示站点名称')
+        _t('Logo URL'),
+        _t('Image URL; leave empty to show the site name')
     );
-    $form->addInput($logoUrl->addRule('url', _t('请填写一个合法的URL地址')));
+    $form->addInput($logoUrl->addRule('url', _t('Enter a valid URL')));
 
     $colorScheme = new \Typecho\Widget\Helper\Form\Element\Select(
         'colorScheme',
-        ['auto' => _t('跟随系统'), 'light' => _t('浅色'), 'dark' => _t('深色')],
+        ['auto' => _t('Follow system'), 'light' => _t('Light'), 'dark' => _t('Dark')],
         'auto',
-        _t('配色')
+        _t('Color scheme')
     );
     $form->addInput($colorScheme);
 
     $sidebarBlock = new \Typecho\Widget\Helper\Form\Element\Checkbox(
         'sidebarBlock',
-        ['recent' => _t('最新文章'), 'comments' => _t('最近回复'), 'categories' => _t('分类')],
+        ['recent' => _t('Latest posts'), 'comments' => _t('Recent comments'), 'categories' => _t('Categories')],
         ['recent', 'categories'],
-        _t('侧边栏显示')
+        _t('Sidebar blocks')
     );
     $form->addInput($sidebarBlock->multiMode());
 
@@ -46,8 +46,8 @@ function themeConfig($form)
         'footerText',
         null,
         null,
-        _t('页脚文字'),
-        _t('显示在每个页面底部，可以使用 HTML')
+        _t('Footer text'),
+        _t('Shown at the bottom of every page; HTML is allowed')
     );
     $form->addInput($footerText);
 }
@@ -62,7 +62,7 @@ new Element(string $name, ?array $options, $value, ?string $label, ?string $desc
 | Argument | Description |
 |---|---|
 | `$name` | The field name, which is also the name used to read it in templates |
-| `$options` | An array of options `值 => 显示文字` (value => label), for `Radio`, `Checkbox` and `Select`; pass `null` for text elements |
+| `$options` | An array of options `value => label`, for `Radio`, `Checkbox` and `Select`; pass `null` for text elements |
 | `$value` | The default value; for `Checkbox`, an array of the values checked by default |
 | `$label` | The field title |
 | `$description` | The description below the field; may be left empty |
@@ -77,12 +77,12 @@ Common elements:
 | `Select` | Drop-down | the value of the selected option |
 | `Checkbox` | Checkboxes | an array of the values of the checked options |
 
-- `addRule()` adds a validation rule, for example `addRule('url', '提示')` or `addRule('required', '提示')`. When validation fails, the form is not saved and the message is shown below the field.
+- `addRule()` adds a validation rule, for example `addRule('url', 'Message')` or `addRule('required', 'Message')`. When validation fails, the form is not saved and the message is shown below the field.
 - `multiMode()` puts each option of a radio / checkbox group on its own line; it only affects layout.
 
 ## How values are stored
 
-When the site owner clicks "Save settings", the values of all fields are saved as JSON in the row named `theme:主题目录名` (`theme:` followed by the theme directory name) of the `options` table in the database, for example:
+When the site owner clicks "Save settings", the values of all fields are saved as JSON in the row named `theme:<directory>` (`theme:` followed by the theme directory name) of the `options` table in the database, for example:
 
 ```text
 theme:starter  {"logoUrl":"https://example.com/logo.png","colorScheme":"auto","sidebarBlock":["recent","categories"],"footerText":""}
@@ -94,7 +94,7 @@ theme:starter  {"logoUrl":"https://example.com/logo.png","colorScheme":"auto","s
 
 ## Reading them in templates
 
-Theme options are merged into the site settings, so read them with `$this->options->字段名` (the field name):
+Theme options are merged into the site settings, so read them with `$this->options->fieldName`:
 
 ```php
 <?php if ($this->options->logoUrl): ?>
@@ -120,4 +120,4 @@ Theme options **override** site settings of the same name. For example, if a the
 
 ## Handling saving yourself: themeConfigHandle
 
-When `themeConfigHandle(array $settings, bool $isInit)` is defined, Typecho no longer writes the settings to `theme:主题目录名` but calls this function instead; see [functions.php callbacks](./functions-php.md#themeconfig-and-themeconfighandle).
+When `themeConfigHandle(array $settings, bool $isInit)` is defined, Typecho no longer writes the settings to `theme:<directory>` but calls this function instead; see [functions.php callbacks](./functions-php.md#themeconfig-and-themeconfighandle).

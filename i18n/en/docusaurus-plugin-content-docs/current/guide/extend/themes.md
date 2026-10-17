@@ -65,9 +65,7 @@ In addition, when you switch themes, if "Site front page" is set to "Call a temp
 
 If the current theme's directory is deleted or renamed, the front end **automatically falls back to the `default` theme** (so do not delete the `default` theme), and the top of the Appearance page shows:
 
-> 检测到您之前使用的 "某某" 外观文件不存在，您可以重新上传此外观或者启用其他外观。
-
-(The theme files of "X" that you used before were not found; you can upload this theme again or activate another theme.)
+> The theme files of "X" that you used before were not found; you can upload this theme again or activate another theme.
 
 Upload the theme again and refresh the page, and the message disappears; if you activate another theme instead, the previous theme's settings data is deleted.
 

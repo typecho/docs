@@ -7,7 +7,7 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 
 # Calling Widgets in Templates
 
-`$this` in a template holds only the content the current page needs. Other data, such as the latest posts, the category list or archives for a sidebar, is provided by other widgets. In a template, get a widget with `类名::alloc()` (the class name followed by `::alloc()`), then loop over it or output it directly.
+`$this` in a template holds only the content the current page needs. Other data, such as the latest posts, the category list or archives for a sidebar, is provided by other widgets. In a template, get a widget with `ClassName::alloc()`, then loop over it or output it directly.
 
 ## Basic usage
 
@@ -22,7 +22,7 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 
 - The first argument of `alloc()` is the **parameters**, written either as a query string `'pageSize=5&ignoreAuthor=1'` or as an array `['pageSize' => 5]`;
 - `->to($recent)` puts the widget into a variable; then loop with `next()`, and inside the loop use it the same way as `$this`;
-- When you only need to output the items one by one, you can use `parse()` instead of a loop; `{字段名}` (a field name in braces) is replaced with the corresponding value:
+- When you only need to output the items one by one, you can use `parse()` instead of a loop; `{field}` (a field name in braces) is replaced with the corresponding value:
 
   ```php
   <ul>
@@ -46,7 +46,7 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 |---|---|---|
 | `pageSize` | "Number of posts in lists" in the reading settings | Number of posts |
 
-Only published posts whose publish time has arrived are included. Password-protected posts are listed too; visitors who have not unlocked them see the title "此内容被密码保护" (this content is password protected).
+Only published posts whose publish time has arrived are included. Password-protected posts are listed too; visitors who have not unlocked them see the title "This content is password protected".
 
 ### Latest comments: `\Widget\Comments\Recent`
 
@@ -54,7 +54,7 @@ Only published posts whose publish time has arrived are included. Password-prote
 <?php \Widget\Comments\Recent::alloc('pageSize=5&ignoreAuthor=1')->to($comments); ?>
 <ul>
     <?php while ($comments->next()): ?>
-        <li><a href="<?php $comments->permalink(); ?>"><?php $comments->author(false); ?></a>：<?php $comments->excerpt(30, '...'); ?></li>
+        <li><a href="<?php $comments->permalink(); ?>"><?php $comments->author(false); ?></a>: <?php $comments->excerpt(30, '...'); ?></li>
     <?php endwhile; ?>
 </ul>
 ```
@@ -100,7 +100,7 @@ The options of `listPages()` are the same as those of `listCategories()`. For lo
 
 ```php
 <ul>
-    <?php \Widget\Contents\Post\Date::alloc('type=month&format=Y年m月')->parse('<li><a href="{permalink}">{date}</a> ({count})</li>'); ?>
+    <?php \Widget\Contents\Post\Date::alloc('type=month&format=F Y')->parse('<li><a href="{permalink}">{date}</a> ({count})</li>'); ?>
 </ul>
 ```
 
@@ -117,10 +117,10 @@ Fields available in `parse()`: `{permalink}`, `{date}`, `{count}` (number of pos
 ```php
 <?php \Widget\Stat::alloc()->to($stat); ?>
 <p>
-    <?php _e('文章'); ?> <?php $stat->publishedPostsNum(); ?> ·
-    <?php _e('评论'); ?> <?php $stat->publishedCommentsNum(); ?> ·
-    <?php _e('分类'); ?> <?php $stat->categoriesNum(); ?> ·
-    <?php _e('标签'); ?> <?php $stat->tagsNum(); ?>
+    <?php _e('Posts'); ?> <?php $stat->publishedPostsNum(); ?> ·
+    <?php _e('Comments'); ?> <?php $stat->publishedCommentsNum(); ?> ·
+    <?php _e('Categories'); ?> <?php $stat->categoriesNum(); ?> ·
+    <?php _e('Tags'); ?> <?php $stat->tagsNum(); ?>
 </p>
 ```
 

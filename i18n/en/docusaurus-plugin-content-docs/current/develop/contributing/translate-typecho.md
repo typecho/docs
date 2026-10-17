@@ -78,19 +78,19 @@ Commit the changed `.po` files (without any `.mo`) to your fork, then open a pul
 
 1.3.0 changed `http://` to `https://` in some interface messages that contain links, and changed the wording of some of them as well. gettext matches on the full text of `msgid`, while these entries in the existing `.po` files still have the old source text, so the two do not match and these messages are shown as the Chinese source text in every language:
 
-| Location | Source text in 1.3.0 (excerpt) |
+| Location | Source text in 1.3.0 (English gloss; the link it contains) |
 |---|---|
-| Footer of every admin page | `由 <a href="https://typecho.org">%s</a> 强力驱动, 版本 %s` |
-| Editor → Custom fields | `…使用方法参见 <a href="https://docs.typecho.org/help/custom-fields">帮助文档</a>` |
-| Settings → Comments → Comment date format | `具体写法请参考 <a href="https://www.php.net/manual/zh/function.date.php">PHP 日期格式写法</a>.` |
-| Settings → Comments | `对评论者个人主页链接使用 <a href="https://en.wikipedia.org/wiki/Nofollow">nofollow 属性</a>` |
-| Settings → Comments | `启用 <a href="https://gravatar.com">Gravatar</a> 头像服务, 最高显示评级为 %s 的头像` |
-| Settings → Reading → Post date format | `请参考 <a href="https://www.php.net/manual/zh/function.date.php">PHP 日期格式写法</a>.` |
-| Edit user → User group | `具体的权限分配表请<a href="https://docs.typecho.org/develop/acl">参考这里</a>.` |
-| Edit user, Profile → Homepage URL | `此用户的个人主页地址, 请用 <code>https://</code> 开头.` |
+| Footer of every admin page | "Powered by %s, version %s"; `<a href="https://typecho.org">%s</a>` |
+| Editor → Custom fields | "…for usage see the help documentation"; `<a href="https://docs.typecho.org/help/custom-fields">` |
+| Settings → Comments → Comment date format | "For the syntax, see PHP date format."; `<a href="https://www.php.net/manual/zh/function.date.php">` |
+| Settings → Comments | "Use the nofollow attribute on commenters' homepage links"; `<a href="https://en.wikipedia.org/wiki/Nofollow">` |
+| Settings → Comments | "Enable the Gravatar avatar service, showing avatars rated up to %s"; `<a href="https://gravatar.com">Gravatar</a>` |
+| Settings → Reading → Post date format | "See PHP date format."; `<a href="https://www.php.net/manual/zh/function.date.php">` |
+| Edit user → User group | "For the full permission table, see here."; `<a href="https://docs.typecho.org/develop/acl">` |
+| Edit user, Profile → Homepage URL | "This user's homepage URL; start it with https://."; `<code>https://</code>` |
 | Profile → Writing settings | Two descriptions containing `<a href="https://daringfireball.net/projects/markdown/">Markdown</a>` |
-| Installer | `Typecho 基于 <a href="https://www.gnu.org/copyleft/gpl.html">GPL</a> 协议发布…` |
-| Default theme footer | `由 <a href="https://typecho.org">Typecho</a> 强力驱动` |
+| Installer | "Typecho is released under the GPL…"; `<a href="https://www.gnu.org/copyleft/gpl.html">GPL</a>` |
+| Default theme footer | "Powered by Typecho"; `<a href="https://typecho.org">Typecho</a>` |
 | `classic-22` theme footer | `Powered by <a href="https://typecho.org">Typecho</a>` |
 
 The fix: update the `.po` file from the current `messages.pot` as described above. These entries appear as fuzzy entries whose translations are still the old versions with `http://` links. Change the links in the translations to `https://` to match the source text (and update the wording where it changed), remove the fuzzy mark, and then submit a pull request.

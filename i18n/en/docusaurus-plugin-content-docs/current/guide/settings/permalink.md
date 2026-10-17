@@ -64,7 +64,7 @@ If your `.htaccess` also contains other rules (hotlink protection, HTTPS redirec
 | Archive by category | `/{category}/{slug}.html` | `/default/hello-world.html` |
 | Custom | Entered in the text box (`customPattern`) | For example `/{year}/{cid}.html` |
 
-Available parameters (the UI description reads: "`{cid}` 日志 ID, `{slug}` 日志缩略名, `{category}` 分类, `{directory}` 多级分类, `{year}` 年, `{month}` 月, `{day}` 日"):
+Available parameters (the UI description reads: "`{cid}` post ID, `{slug}` post slug, `{category}` category, `{directory}` multi-level category, `{year}` year, `{month}` month, `{day}` day"):
 
 | Parameter | Meaning |
 |---|---|
@@ -79,7 +79,7 @@ For example, after you save the custom definition `/{year}/{cid}.html`, post URL
 Notes:
 
 - The rule must contain at least one of `{cid}` or `{slug}` to tell posts apart; otherwise several posts get the same URL. The custom definition input does **not** check this.
-- When you save a custom definition, Typecho checks whether it conflicts with existing rules such as those for categories and tags. On a conflict it **still saves**, and only shows the message "The custom link conflicts with existing rules! It may affect parsing efficiency; it is recommended that you assign a different rule.". For example, after you save `/tag/{slug}/`, every URL of the form `/tag/某某/` is parsed as a post, and tag pages can no longer be reached. When you see this message, choose a different rule.
+- When you save a custom definition, Typecho checks whether it conflicts with existing rules such as those for categories and tags. On a conflict it **still saves**, and only shows the message "The custom link conflicts with existing rules! It may affect parsing efficiency; it is recommended that you assign a different rule.". For example, after you save `/tag/{slug}/`, every URL of the form `/tag/<anything>/` is parsed as a post, and tag pages can no longer be reached. When you see this message, choose a different rule.
 - **Old URLs are not redirected after you change the rule**. For example, after changing from the default style to `/{year}/{cid}.html`, the old `/archives/1/` returns 404. For a site already indexed by search engines or linked from other sites, think it over before changing, or configure redirects for the old URLs on the web server yourself. The UI also warns: "Once you have chosen a link style, do not change it lightly."
 
 ## Page path and category path {#page-category}

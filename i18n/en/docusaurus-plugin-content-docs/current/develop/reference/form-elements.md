@@ -71,11 +71,11 @@ The ones you commonly use:
 ## addRule(): validation rules
 
 ```php
-$logoUrl = new \Typecho\Widget\Helper\Form\Element\Text('logoUrl', null, null, _t('LOGO 地址'));
-$form->addInput($logoUrl->addRule('url', _t('请填写一个合法的URL地址')));
+$logoUrl = new \Typecho\Widget\Helper\Form\Element\Text('logoUrl', null, null, _t('Logo URL'));
+$form->addInput($logoUrl->addRule('url', _t('Enter a valid URL')));
 
-$count = new \Typecho\Widget\Helper\Form\Element\Text('count', null, '5', _t('显示数量'));
-$form->addInput($count->addRule('required', _t('必须填写'))->addRule('isInteger', _t('请填入一个数字')));
+$count = new \Typecho\Widget\Helper\Form\Element\Text('count', null, '5', _t('Number to show'));
+$form->addInput($count->addRule('required', _t('Required'))->addRule('isInteger', _t('Enter a number')));
 ```
 
 `addRule($rule, $message, ...$params)`: the first argument is the rule, the second is the message shown when validation fails, and any further arguments are passed to the rule. On save, the rules are checked one by one in the order you added them; the message of the first failing rule is shown below the field, and the form is not saved.
@@ -104,14 +104,14 @@ Available rule names (methods of `Typecho\Validate`):
 
 | Rule | Extra arguments | Example |
 |---|---|---|
-| `required` | — | `addRule('required', '必须填写')` |
-| `email` | — | `addRule('email', '邮箱格式错误')` |
-| `url` | — | `addRule('url', '网址格式错误')` |
-| `isInteger` / `isFloat` | — | `addRule('isInteger', '请填入整数')` |
-| `minLength` / `maxLength` | length | `addRule('maxLength', '最多 20 个字', 20)` |
+| `required` | — | `addRule('required', 'Required')` |
+| `email` | — | `addRule('email', 'Invalid email address')` |
+| `url` | — | `addRule('url', 'Invalid URL')` |
+| `isInteger` / `isFloat` | — | `addRule('isInteger', 'Enter an integer')` |
+| `minLength` / `maxLength` | length | `addRule('maxLength', 'At most 20 characters', 20)` |
 | `alpha` / `alphaNumeric` / `alphaDash` | — | Allows only letters / letters and digits / letters, digits, underscores and dashes |
-| `enum` | Array of allowed values | `addRule('enum', '取值不正确', ['a', 'b'])` |
-| `regexp` | Regular expression | `addRule('regexp', '格式不正确', '/^#[0-9a-f]{6}$/i')` |
+| `enum` | Array of allowed values | `addRule('enum', 'Invalid value', ['a', 'b'])` |
+| `regexp` | Regular expression | `addRule('regexp', 'Invalid format', '/^#[0-9a-f]{6}$/i')` |
 | `xssCheck` | — | Rejects characters such as `<` and `>` that could be used for XSS |
 | `confirm` | Name of another field | Requires the value to equal that of another field |
 
@@ -119,10 +119,10 @@ Available rule names (methods of `Typecho\Validate`):
 - A rule can also be any callable. It receives the field value (and any extra arguments) and returns `true` to pass:
 
   ```php
-  $color = new \Typecho\Widget\Helper\Form\Element\Text('color', null, '#336699', _t('主色'));
+  $color = new \Typecho\Widget\Helper\Form\Element\Text('color', null, '#336699', _t('Primary color'));
   $form->addInput($color->addRule(function ($value) {
       return (bool) preg_match('/^#[0-9a-f]{6}$/i', $value);
-  }, _t('请填写 #RRGGBB 格式的颜色')));
+  }, _t('Enter a color in #RRGGBB format')));
   ```
 
 - A string rule name is first tried as a PHP function name; only if no function with that name exists is the `Typecho\Validate` method used. So do not use a string with the same name as a built-in PHP function as a rule.

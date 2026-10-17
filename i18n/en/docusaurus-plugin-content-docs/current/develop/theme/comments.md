@@ -16,33 +16,33 @@ Comments usually live in a separate `comments.php`, which `post.php` and `page.p
 <section id="comments">
     <?php $this->comments()->to($comments); ?>
     <?php if ($comments->have()): ?>
-        <h2><?php $this->commentsNum(_t('暂无评论'), _t('1 条评论'), _t('%d 条评论')); ?></h2>
+        <h2><?php $this->commentsNum(_t('No comments yet'), _t('1 comment'), _t('%d comments')); ?></h2>
         <?php $comments->listComments([
             'avatarSize'    => 48,
             'defaultAvatar' => 'identicon',
             'dateFormat'    => 'Y-m-d H:i',
         ]); ?>
-        <?php $comments->pageNav('&laquo; ' . _t('前一页'), _t('后一页') . ' &raquo;'); ?>
+        <?php $comments->pageNav('&laquo; ' . _t('Previous'), _t('Next') . ' &raquo;'); ?>
     <?php endif; ?>
 
     <?php if ($this->allow('comment')): ?>
         <div id="<?php $this->respondId(); ?>">
             <?php $comments->cancelReply(); ?>
-            <h3><?php _e('发表评论'); ?></h3>
+            <h3><?php _e('Leave a comment'); ?></h3>
             <form method="post" action="<?php $this->commentUrl(); ?>">
                 <?php if ($this->user->hasLogin()): ?>
-                    <p><?php _e('登录身份'); ?>：<?php $this->user->screenName(); ?></p>
+                    <p><?php _e('Logged in as'); ?>: <?php $this->user->screenName(); ?></p>
                 <?php else: ?>
-                    <p><input type="text" name="author" placeholder="<?php _e('称呼'); ?>" value="<?php $this->remember('author'); ?>" required></p>
-                    <p><input type="email" name="mail" placeholder="<?php _e('邮箱'); ?>" value="<?php $this->remember('mail'); ?>"<?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>></p>
-                    <p><input type="url" name="url" placeholder="<?php _e('网站'); ?>" value="<?php $this->remember('url'); ?>"<?php if ($this->options->commentsRequireUrl): ?> required<?php endif; ?>></p>
+                    <p><input type="text" name="author" placeholder="<?php _e('Name'); ?>" value="<?php $this->remember('author'); ?>" required></p>
+                    <p><input type="email" name="mail" placeholder="<?php _e('Email'); ?>" value="<?php $this->remember('mail'); ?>"<?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>></p>
+                    <p><input type="url" name="url" placeholder="<?php _e('Website'); ?>" value="<?php $this->remember('url'); ?>"<?php if ($this->options->commentsRequireUrl): ?> required<?php endif; ?>></p>
                 <?php endif; ?>
                 <p><textarea name="text" rows="5" required></textarea></p>
-                <p><button type="submit"><?php _e('提交评论'); ?></button></p>
+                <p><button type="submit"><?php _e('Submit comment'); ?></button></p>
             </form>
         </div>
     <?php else: ?>
-        <p><?php _e('评论已关闭'); ?></p>
+        <p><?php _e('Comments are closed'); ?></p>
     <?php endif; ?>
 </section>
 ```
@@ -54,9 +54,9 @@ Comments usually live in a separate `comments.php`, which `post.php` and `page.p
 - `$comments->have()`: whether there are any comments;
 - `$comments->listComments($options)`: outputs the whole comment list according to the threading, pagination and ordering settings under "Settings → Comments";
 - `$comments->pageNav()`: comment pagination; it only has content when comment pagination is enabled;
-- `$this->commentsNum('0 条', '1 条', '%d 条')`: outputs the comment count; the three arguments are used for 0, 1 and more comments respectively.
+- `$this->commentsNum('0 comments', '1 comment', '%d comments')`: outputs the comment count; the three arguments are used for 0, 1 and more comments respectively.
 
-The list includes **ordinary comments and trackbacks/pingbacks** (Trackback, Pingback): their `type` is `trackback` or `pingback` respectively, and `comment` for ordinary comments. When the site owner has checked "Show only comments, not Pingbacks and Trackbacks" under "Settings → Comments", the list contains only ordinary comments. Only approved comments are shown; a comment a visitor has just submitted and that is still awaiting moderation is also shown to that visitor, with the notice "您的评论正等待审核!" (your comment is awaiting moderation).
+The list includes **ordinary comments and trackbacks/pingbacks** (Trackback, Pingback): their `type` is `trackback` or `pingback` respectively, and `comment` for ordinary comments. When the site owner has checked "Show only comments, not Pingbacks and Trackbacks" under "Settings → Comments", the list contains only ordinary comments. Only approved comments are shown; a comment a visitor has just submitted and that is still awaiting moderation is also shown to that visitor, with the notice "Your comment is awaiting moderation!".
 
 ### Options of listComments()
 
@@ -69,13 +69,13 @@ You can pass an array, or a query string such as `'avatarSize=48&dateFormat=Y-m-
 | `beforeAuthor` / `afterAuthor` | empty | HTML before and after the commenter's name |
 | `beforeDate` / `afterDate` | empty | HTML before and after the date |
 | `dateFormat` | "Comment date format" in the comment settings | The date format, in PHP `date()` syntax |
-| `replyWord` | `回复` | The text of the reply link |
-| `commentStatus` | `您的评论正等待审核!` | The notice for comments awaiting moderation |
+| `replyWord` | "Reply" (Chinese source string, translated by the language pack) | The text of the reply link |
+| `commentStatus` | "Your comment is awaiting moderation!" (Chinese source string, translated by the language pack) | The notice for comments awaiting moderation |
 | `avatarSize` | `32` | Avatar size (pixels) |
 | `defaultAvatar` | `null` | The default image when the email address has no Gravatar, for example `mm`, `identicon`, `retro` |
 | `avatarHighRes` | `false` | When `true`, the avatar also outputs a `srcset` with 2x and 3x sizes |
 
-In the default output each comment is an `<li id="comment-评论ID" class="comment-body ...">` (`comment-` followed by the comment ID); the class includes `comment-parent` / `comment-child`, `comment-odd` / `comment-even`, `comment-by-author` (comments by the post author), `comment-by-user` (comments by other logged-in users) and so on, which you can use directly for styling.
+In the default output each comment is an `<li id="comment-<comment ID>" class="comment-body ...">` (`comment-` followed by the comment ID); the class includes `comment-parent` / `comment-child`, `comment-odd` / `comment-even`, `comment-by-author` (comments by the post author), `comment-by-user` (comments by other logged-in users) and so on, which you can use directly for styling.
 
 ## Customizing each comment: the threadedComments callback {#callback}
 
@@ -109,14 +109,14 @@ function threadedComments($comments, $options)
 
 ## Reply and cancel reply
 
-- `$comments->reply('回复')`: outputs the "Reply" link. It is output only when "Enable comment replies" is on, the comment has not reached the maximum reply depth, and the post allows comments.
-- `$comments->cancelReply('取消回复')`: outputs the "Cancel reply" link, which is normally hidden and appears after "Reply" is clicked.
+- `$comments->reply('Reply')`: outputs the "Reply" link. It is output only when "Enable comment replies" is on, the comment has not reached the maximum reply depth, and the post allows comments.
+- `$comments->cancelReply('Cancel reply')`: outputs the "Cancel reply" link, which is normally hidden and appears after "Reply" is clicked.
 
 When "Reply" is clicked, the script output by `$this->header()` moves the element whose `id` is `$this->respondId()` (the wrapper of the comment form) below the comment being replied to, and adds a hidden field named `parent` to the form. Therefore:
 
 - `header.php` must call `$this->header()`, and must not suppress `commentReply` (see [Header output: header()](./header.md));
 - The `id` of the form's wrapper element must be `$this->respondId()`;
-- When JavaScript is disabled in the browser, the "Reply" link opens the page with `?replyTo=评论ID` (`?replyTo=` followed by the comment ID), and `$this->commentUrl()` then carries the parent comment parameter, so replying works as well.
+- When JavaScript is disabled in the browser, the "Reply" link opens the page with `?replyTo=<comment ID>`, and `$this->commentUrl()` then carries the parent comment parameter, so replying works as well.
 
 ## The comment form
 
@@ -157,11 +157,11 @@ function threadedComments($comments, $options)
 <?php $this->comments()->to($comments); ?>
 <?php $comments->listComments(); ?>
 
-<h3><?php _e('引用'); ?></h3>
+<h3><?php _e('Trackbacks'); ?></h3>
 <ul class="ping-list">
     <?php while ($comments->next()): ?>
         <?php if ('comment' !== $comments->type): ?>
-            <li><?php $comments->author(); ?>：<?php $comments->excerpt(60); ?></li>
+            <li><?php $comments->author(); ?>: <?php $comments->excerpt(60); ?></li>
         <?php endif; ?>
     <?php endwhile; ?>
 </ul>

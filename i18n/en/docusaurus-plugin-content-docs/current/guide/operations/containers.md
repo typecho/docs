@@ -71,7 +71,7 @@ The first five are all of the image's own variables.
 :::danger Do not copy the Docker Hub description page
 The image description page (updated 2026-04-11) differs from the actual behaviour of the 1.3.0 image in five places. **Do not trust** the following; this page is authoritative:
 
-1. **`TYPECHO_DB_NEXT=force`**: rejected, with the output `dbNext: 确认您的配置`. The only valid values are `none`, `delete`, `keep` and `config`; to drop the tables and reinstall, use `delete`.
+1. **`TYPECHO_DB_NEXT=force`**: rejected, with the output `dbNext: Please check your configuration`. The only valid values are `none`, `delete`, `keep` and `config`; to drop the tables and reinstall, use `delete`.
 2. **Tag list and examples**: they list tags that no longer exist, such as `nightly-php7.3` and `nightly-php8.0`, and the examples use `nightly-php7.4`. For the actual tags see [above](#tags).
 3. **`TIMEZONE` defaults to `UTC`**: in the image it is actually empty, in which case `date.timezone` is not written and PHP's default is used.
 4. **`TYPECHO_DB_FILE` is required for SQLite**: it is not required; when unset, a random file name is generated under `usr/`.
@@ -98,10 +98,10 @@ services:
       TYPECHO_DB_ADAPTER: Pdo_Mysql
       TYPECHO_DB_HOST: db
       TYPECHO_DB_USER: typecho
-      TYPECHO_DB_PASSWORD: 请换成数据库密码
+      TYPECHO_DB_PASSWORD: change-this-db-password
       TYPECHO_DB_DATABASE: typecho
       TYPECHO_USER_NAME: admin
-      TYPECHO_USER_PASSWORD: 请换成管理员密码
+      TYPECHO_USER_PASSWORD: change-this-admin-password
       TYPECHO_USER_MAIL: admin@example.com
       TIMEZONE: Asia/Shanghai
     volumes:
@@ -116,7 +116,7 @@ services:
     environment:
       MYSQL_DATABASE: typecho
       MYSQL_USER: typecho
-      MYSQL_PASSWORD: 请换成数据库密码
+      MYSQL_PASSWORD: change-this-db-password
       MYSQL_RANDOM_ROOT_PASSWORD: "1"
     volumes:
       - db:/var/lib/mysql
@@ -131,7 +131,7 @@ volumes:
 
 ```bash
 docker compose up -d
-docker compose logs typecho   # on first start, prints "安装成功" (installation succeeded) and the admin account
+docker compose logs typecho   # on first start, prints "Installation successful" and the admin account
 ```
 
 Some notes:
@@ -163,7 +163,7 @@ Note that directories such as `usr/themes` already exist, so new themes shipped 
 
 The FPM variant runs only PHP-FPM; static files and URL rewriting are handled by a separate nginx container. The key points: **both containers must see the same `/app`**, and the `SCRIPT_FILENAME` nginx passes to PHP-FPM must be the path **inside the FPM container**; otherwise you get "No input file specified." or "File not found.".
 
-```yaml title="compose.yaml（片段）"
+```yaml title="compose.yaml (excerpt)"
 services:
   typecho:
     image: joyqi/typecho:1.3.0-php8.2-fpm

@@ -18,13 +18,13 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
         <?php if ($this->getArchiveDescription()): ?>
             <p><?php echo htmlspecialchars($this->getArchiveDescription()); ?></p>
         <?php else: ?>
-            <p><?php _e('这个分类还没有描述'); ?></p>
+            <p><?php _e('This category has no description yet'); ?></p>
         <?php endif; ?>
     </header>
 <?php endif; ?>
 ```
 
-**Result**: when you visit `/category/tech/`, the description of the "Tech" category appears below the heading; when the description is empty, "这个分类还没有描述" (this category has no description yet) is shown. Other pages do not output this block.
+**Result**: when you visit `/category/tech/`, the description of the "Tech" category appears below the heading; when the description is empty, "This category has no description yet" is shown. Other pages do not output this block.
 
 **How it works**:
 

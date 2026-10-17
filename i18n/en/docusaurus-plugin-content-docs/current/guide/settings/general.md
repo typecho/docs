@@ -45,9 +45,9 @@ Once it is defined, "General settings" no longer shows the "Site URL" field, and
 
 ## Time zone {#timezone}
 
-The value of "Time zone" (`timezone`) is the offset from Greenwich Mean Time in **seconds**; for example "北京时间 香港,新加坡,越南 (GMT +8)" is stored as `28800`. It determines the times displayed in the admin panel and on the front end, and which time zone the "Publish date" is interpreted in when you write a post.
+The value of "Time zone" (`timezone`) is the offset from Greenwich Mean Time in **seconds**; for example "Beijing time: Hong Kong, Singapore, Vietnam (GMT +8)" (the labels are in Chinese) is stored as `28800`. It determines the times displayed in the admin panel and on the front end, and which time zone the "Publish date" is interpreted in when you write a post.
 
-- The drop-down only has 25 **whole-hour** time zones from GMT -12 to GMT +12; there are no half-hour zones (for example India's +5:30), and daylight saving time is not handled automatically. The entry "新德里时间 巴基斯坦,马尔代夫 (GMT +5)" in the list actually has an offset of +5 hours, which does not match New Delhi's +5:30.
+- The drop-down only has 25 **whole-hour** time zones from GMT -12 to GMT +12; there are no half-hour zones (for example India's +5:30), and daylight saving time is not handled automatically. The entry "New Delhi time: Pakistan, Maldives (GMT +5)" in the list actually has an offset of +5 hours, which does not match New Delhi's +5:30.
 - Changing the time zone does not change times already saved, only how they are displayed: everything in the database is stored as timestamps.
 
 ## Allowed upload file types {#attachment-types}
@@ -65,6 +65,6 @@ Extensions in "Other formats" are converted to lowercase, and executable types s
 
 ## Language {#lang}
 
-The "Language" drop-down appears only when `usr/langs` (or the directory specified by `__TYPECHO_LANG_DIR__`) contains at least one `.mo` language pack. Its options are "简体中文" plus the language name each language pack declares, for example `English` and `日本語`. After switching, the whole admin panel and the text in themes that uses `_t()` change, **for all users**; there is no per-user language.
+The "Language" drop-down appears only when `usr/langs` (or the directory specified by `__TYPECHO_LANG_DIR__`) contains at least one `.mo` language pack. Its options are Simplified Chinese (the built-in language) plus the language name each language pack declares, for example `English`. After switching, the whole admin panel and the text in themes that uses `_t()` change, **for all users**; there is no per-user language.
 
 For installing language packs and the behavior when a language pack is missing, see [Interface language](../extend/languages.md).

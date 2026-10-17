@@ -45,7 +45,7 @@ Click a category name to edit it; click the external-link icon next to the name 
 
 ### Default category {#default}
 
-After installation there is one category named "默认分类" (Default category, slug `default`). The default category:
+After installation there is one category named "Default category" (slug `default`). The default category:
 
 - is ticked in advance when you write a new post;
 - receives any post saved without a category selected.
@@ -76,7 +76,7 @@ The "Merge into" drop-down only lists categories at the level of the current lis
 
 | UI name | Field | Description |
 |---|---|---|
-| Tag name * | `name` | "This is the name of the tag as shown on the site. Chinese can be used, such as "地球"." |
+| Tag name * | `name` | "This is the name of the tag as shown on the site. Chinese can be used, such as …" (the example in the hint is a Chinese word meaning "Earth") |
 | Tag slug | `slug` | When left empty, the tag name is used |
 
 | Action | Result |

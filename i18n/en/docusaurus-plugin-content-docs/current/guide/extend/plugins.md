@@ -28,7 +28,7 @@ A plugin's class name includes its directory name (for example `TypechoPlugin\He
 | Action | Where | Result |
 |---|---|---|
 | Enable | "Enable" in the "Disabled plugins" list | The message "Plugin has been enabled" appears and the plugin moves to the "Enabled plugins" list; the plugin's settings are saved once with their default values |
-| Configure | "Settings" in the "Enabled plugins" list (shown only when the plugin provides settings) | Opens "Configure plugin &lt;plugin name&gt;" (`options-plugin.php?config=插件名`); after saving, the message "Plugin settings have been saved" appears |
+| Configure | "Settings" in the "Enabled plugins" list (shown only when the plugin provides settings) | Opens "Configure plugin &lt;plugin name&gt;" (`options-plugin.php?config=<plugin name>`); after saving, the message "Plugin settings have been saved" appears |
 | Disable | "Disable" in the "Enabled plugins" list, then confirm "Are you sure you want to disable plugin X?" | The message "Plugin has been disabled" appears |
 
 - For plugins with neither enable/disable logic nor settings, the action column shows "Plug and play".

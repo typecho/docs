@@ -17,10 +17,10 @@ The upgrade modifies the database and cannot be rolled back automatically. Befor
 
 When a new version is released, editors and administrators who open the admin dashboard (the **Overview** page) see a notice below the page title:
 
-> 您当前使用的版本是 1.2.1
-> **官方最新版本是 1.3.0**
+> You are currently using version 1.2.1
+> **The latest official version is 1.3.0**
 
-(You are currently using version 1.2.1 / **The latest official version is 1.3.0**.) The second line links to the official download page [typecho.org/download](https://typecho.org/download). Where the notice comes from:
+The second line links to the official download page [typecho.org/download](https://typecho.org/download). Where the notice comes from:
 
 - the admin panel requests `https://typecho.org/version.json` through `/action/ajax?do=checkVersion` (`Widget\Ajax::checkVersion()`), and shows the notice only when the officially released version is newer than the current one;
 - the server must be able to reach typecho.org; the request times out after 10 seconds, and nothing is shown on failure;
@@ -87,11 +87,11 @@ Deleting before copying clears out old files that the new version has removed. I
 
 After replacing the files, log in to the admin panel with an **administrator** account. As long as the program version is newer than the version recorded in the database, visiting any admin page takes you to the upgrade page (`admin/upgrade.php`), except the **Backup** page, so that you can make one last backup:
 
-> **检测到新版本!**
-> 您已经更新了系统程序, 我们还需要执行一些后续步骤来完成升级
-> 此程序将把您的系统从 **1.2.1** 升级到 **1.3.0**
+> **New version detected!**
+> You have updated the system program; some follow-up steps are needed to complete the upgrade
+> This program will upgrade your system from **1.2.1** to **1.3.0**
 
-(**New version detected!** / You have updated the system program; some follow-up steps are needed to complete the upgrade / This program will upgrade your system from **1.2.1** to **1.3.0**.) Click <kbd>完成升级 »</kbd> (Complete upgrade »); seeing "升级已经完成" (The upgrade has been completed) means it succeeded. Non-administrator accounts are not taken to the upgrade page, so the upgrade must be done by an administrator.
+Click <kbd>Complete upgrade »</kbd>; seeing "The upgrade has been completed" means it succeeded. Non-administrator accounts are not taken to the upgrade page, so the upgrade must be done by an administrator.
 
 The 1.3.0 upgrade program does the following:
 
@@ -146,7 +146,7 @@ A working approach (using an upgrade from `1.2.1-php8.0-apache` to `1.3.0-php8.2
      -e TYPECHO_INSTALL=1 -e TYPECHO_DB_NEXT=keep \
      -e TYPECHO_SITE_URL=https://blog.example.com \
      -e TYPECHO_DB_ADAPTER=Pdo_Mysql -e TYPECHO_DB_HOST=db \
-     -e TYPECHO_DB_USER=typecho -e TYPECHO_DB_PASSWORD='数据库密码' -e TYPECHO_DB_DATABASE=typecho \
+     -e TYPECHO_DB_USER=typecho -e TYPECHO_DB_PASSWORD='your-db-password' -e TYPECHO_DB_DATABASE=typecho \
      joyqi/typecho:1.3.0-php8.2-apache
    ```
 

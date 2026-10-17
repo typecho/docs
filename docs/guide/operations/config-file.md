@@ -161,5 +161,3 @@ $db->addServer([/* 主库连接参数 */], \Typecho\Db::WRITE);
 $db->addServer([/* 只读副本连接参数 */], \Typecho\Db::READ);
 \Typecho\Db::set($db);
 ```
-
-这只是 `Typecho\Db` 提供的能力，Typecho 不处理主从复制延迟：刚写入的数据可能暂时从只读副本中读不到，请谨慎使用。

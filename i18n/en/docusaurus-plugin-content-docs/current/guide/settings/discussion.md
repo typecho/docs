@@ -11,7 +11,7 @@ source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
 
 ## Comment date format {#date-format}
 
-"Comment date format" (`commentDateFormat`) is the default format a theme uses when outputting comment dates (used when the theme calls `$comments->date()` without specifying a format of its own). It is written with PHP `date()` format characters; the "PHP 日期格式写法" link in the admin description points to this function in the PHP manual.
+"Comment date format" (`commentDateFormat`) is the default format a theme uses when outputting comment dates (used when the theme calls `$comments->date()` without specifying a format of its own). It is written with PHP `date()` format characters; the "PHP date format" link in the admin description points to this function in the PHP manual.
 
 The default is `F jS, Y \a\t h:i a`. Common formats, using 5:23 pm on 16 October 2026 as an example:
 
@@ -19,8 +19,8 @@ The default is `F jS, Y \a\t h:i a`. Common formats, using 5:23 pm on 16 October
 |---|---|
 | `Y-m-d` | 2026-10-16 |
 | `Y-m-d H:i` | 2026-10-16 17:23 |
-| `Y年n月j日` | 2026年10月16日 |
-| `Y年m月d日 H:i` | 2026年10月16日 17:23 |
+| `D, j M Y` | Fri, 16 Oct 2026 |
+| `l, F j, Y g:i a` | Friday, October 16, 2026 5:23 pm |
 | `n/j/Y` | 10/16/2026 |
 | `M j, Y` | Oct 16, 2026 |
 | `F jS, Y \a\t h:i a` (default) | October 16th, 2026 at 05:23 pm |

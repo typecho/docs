@@ -43,25 +43,25 @@ After installation the routing table contains 25 routes, matched in the order of
 
 - You can change the paths of the four routes `post`, `page`, `category` and `category_page` under "Settings → Permalinks", see [Permalink Settings](../../guide/settings/permalink.md);
 - The `/index.php` prefix in URLs (when URL rewriting is not enabled) is not part of the route path;
-- To generate the URL of a route, use `\Typecho\Router::url('路由名', ['参数' => 值], 前缀)`.
+- To generate the URL of a route, use `\Typecho\Router::url('routeName', ['param' => $value], $prefix)`.
 
 ### Matching rules
 
 - Routes are tried one by one in the order of the table, and the first matching route is used;
 - When the handler class throws an exception with code 404 (for example, `/archives/9999/` has no such post), matching continues with the following routes; the 404 page is shown only when none of them match;
 - The trailing `/` of a path is optional: both `/category/tech` and `/category/tech/` match `category`;
-- The values of the matched placeholders are passed to the handler class as request parameters; read them with `$this->request->get('名字')`.
+- The values of the matched placeholders are passed to the handler class as request parameters; read them with `$this->request->get('name')`.
 
 ## Placeholders {#placeholders}
 
-In a path, `[名字]` or `[名字:类型...]` stands for a variable segment:
+In a path, `[name]` or `[name:type...]` stands for a variable segment:
 
 | Syntax | Matches | Example |
 |---|---|---|
 | `[name]` | One or more characters **not including** `/`, same as `[name:char]` | `/tag/[slug]/` |
-| `[name:类型]` | One or more characters of the type | `/archives/[cid:digital]/` |
-| `[name:类型:N]` | Exactly N characters of the type; an `N` of `0` means zero or more | `/[year:digital:4]/`, `/feed[feed:string:0]` |
-| `[name:类型:最少:最多]` | Between the minimum and maximum number of characters of the type | `/[id:digital:1:6]/` |
+| `[name:type]` | One or more characters of the type | `/archives/[cid:digital]/` |
+| `[name:type:N]` | Exactly N characters of the type; an `N` of `0` means zero or more | `/[year:digital:4]/`, `/feed[feed:string:0]` |
+| `[name:type:min:max]` | Between the minimum and maximum number of characters of the type | `/[id:digital:1:6]/` |
 
 | Type | Each character can be |
 |---|---|
@@ -74,7 +74,7 @@ In a path, `[名字]` or `[名字:类型...]` stands for a variable segment:
 
 ## Core actions {#actions}
 
-Every action's URL is `/action/名字`, and the `do` route hands it to `\Widget\Action` for dispatch. The table below lists the 23 actions that ship with Typecho; an action added by a plugin through `Helper::addAction()` with the same name **replaces** the core action.
+Every action's URL is `/action/<name>`, and the `do` route hands it to `\Widget\Action` for dispatch. The table below lists the 23 actions that ship with Typecho; an action added by a plugin through `Helper::addAction()` with the same name **replaces** the core action.
 
 | Name | Handler class | Operations handled |
 |---|---|---|
@@ -102,4 +102,4 @@ Every action's URL is `/action/名字`, and the `do` route hands it to `\Widget\
 | `users-profile` | `\Widget\Users\Profile` | Profile: `do=` `profile` / `options` / `password` / `personal` (plugins' personal settings) |
 | `backup` | `\Widget\Backup` | Backup: `do=export` exports, `do=import` restores |
 
-Except for `ajax`, `service` and `xmlrpc`, actions check the token parameter `_` in the URL through `$this->security->protect()`, so you cannot call them by building the URL by hand; generate it with `$security->getIndex('/action/名字')`. For the required permissions, see the [permission table](../../guide/content/users.md#permission-table).
+Except for `ajax`, `service` and `xmlrpc`, actions check the token parameter `_` in the URL through `$this->security->protect()`, so you cannot call them by building the URL by hand; generate it with `$security->getIndex('/action/<name>')`. For the required permissions, see the [permission table](../../guide/content/users.md#permission-table).

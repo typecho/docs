@@ -12,12 +12,12 @@ Hooks can only insert code into flows that Typecho already has. When a plugin ne
 | Kind | URL | Purpose | Add / remove |
 |---|---|---|---|
 | Route | Custom, such as `/guestbook/` | Front-end pages | `Helper::addRoute()` / `removeRoute()` |
-| Action | `/action/名字` | Receiving forms and Ajax requests | `Helper::addAction()` / `removeAction()` |
-| Admin panel | `admin/extending.php?panel=插件名/文件名` | Admin management pages | `Helper::addPanel()` / `removePanel()`, `addMenu()` / `removeMenu()` |
+| Action | `/action/<name>` | Receiving forms and Ajax requests | `Helper::addAction()` / `removeAction()` |
+| Admin panel | `admin/extending.php?panel=<plugin name>/<file name>` | Admin management pages | `Helper::addPanel()` / `removePanel()`, `addMenu()` / `removeMenu()` |
 
 All of them are stored in the database (options `routingTable`, `actionTable`, `panelTable`), so you add them once in `activate()`, and you **must** remove them in `deactivate()`; Typecho does not clean them up automatically. `Helper` refers to `\Utils\Helper`; for all its methods, see [Utils\Helper](../reference/helper.md).
 
-This page demonstrates the three kinds with a guestbook plugin, `Guestbook`: visitors leave messages on the front-end page `/guestbook/`, and administrators view and delete them under "Manage → 留言" in the admin panel.
+This page demonstrates the three kinds with a guestbook plugin, `Guestbook`: visitors leave messages on the front-end page `/guestbook/`, and administrators view and delete them under "Manage → Messages" in the admin panel.
 
 ```text
 usr/plugins/Guestbook/
@@ -43,7 +43,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * Guestbook: visitors leave messages on the front-end /guestbook/ page; view and delete them under "Manage → Guestbook" (管理 → 留言) in the admin panel
+ * Guestbook: visitors leave messages on the front-end /guestbook/ page; view and delete them under "Manage → Messages" in the admin panel
  *
  * @package Guestbook
  * @author Your Name
@@ -58,7 +58,7 @@ class Plugin implements PluginInterface
 
         Helper::addRoute('guestbook', '/guestbook/', Action::class, 'render', 'index');
         Helper::addAction('guestbook', Action::class);
-        Helper::addPanel(3, 'Guestbook/panel.php', _t('留言'), _t('管理留言'), 'administrator');
+        Helper::addPanel(3, 'Guestbook/panel.php', _t('Messages'), _t('Manage messages'), 'administrator');
     }
 
     public static function deactivate()
@@ -157,7 +157,7 @@ Once added, requests sent to `/action/guestbook` (`/index.php/action/guestbook` 
 
 - An action name may contain only letters, digits, `_` and `-`;
 - For Typecho's own 23 actions (such as `login`, `upload`, `plugins-edit`), see [Default routes and actions](../reference/routes-actions.md#actions). An action added by a plugin with the same name **replaces** the core action, so prefix it with your plugin name;
-- One action usually handles several operations, distinguished by request parameters. `$this->on($条件)->方法()` calls the method only when the condition is true; this is Typecho's own idiom.
+- One action usually handles several operations, distinguished by request parameters. `$this->on($condition)->method()` calls the method only when the condition is true; this is Typecho's own idiom.
 
 ## Action.php
 
@@ -192,13 +192,13 @@ class Action extends Base implements ActionInterface
 
         $this->response->setContentType('text/html');
         echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'
-            . _t('留言板') . ' - ' . htmlspecialchars($this->options->title) . '</title></head><body>';
-        echo '<h1>' . _t('留言板') . '</h1>';
+            . _t('Guestbook') . ' - ' . htmlspecialchars($this->options->title) . '</title></head><body>';
+        echo '<h1>' . _t('Guestbook') . '</h1>';
 
         echo '<form method="post" action="' . $this->security->getIndex('/action/guestbook?do=add') . '">'
-            . '<p><input name="author" placeholder="' . _t('名字') . '" required></p>'
-            . '<p><textarea name="text" rows="4" placeholder="' . _t('留言') . '" required></textarea></p>'
-            . '<p><button type="submit">' . _t('提交') . '</button></p></form>';
+            . '<p><input name="author" placeholder="' . _t('Name') . '" required></p>'
+            . '<p><textarea name="text" rows="4" placeholder="' . _t('Message') . '" required></textarea></p>'
+            . '<p><button type="submit">' . _t('Submit') . '</button></p></form>';
 
         foreach ($messages as $message) {
             echo '<article><h3>' . htmlspecialchars($message['author']) . ' · '
@@ -230,7 +230,7 @@ class Action extends Base implements ActionInterface
         $text = trim((string) $this->request->get('text'));
 
         if ($author === '' || $text === '') {
-            throw new Exception(_t('名字和留言都不能为空'), 400);
+            throw new Exception(_t('Name and message are both required'), 400);
         }
 
         $this->db->query($this->db->insert('table.guestbook')->rows([
@@ -254,7 +254,7 @@ class Action extends Base implements ActionInterface
         $ids = $this->request->filter('int')->getArray('id');
         if (!empty($ids)) {
             $deleted = $this->db->query($this->db->delete('table.guestbook')->where('id IN ?', $ids));
-            Notice::alloc()->set(_t('删除了 %d 条留言', $deleted), 'success');
+            Notice::alloc()->set(_t('Deleted %d message(s)', $deleted), 'success');
         }
 
         $this->response->goBack();
@@ -275,13 +275,13 @@ A few notes:
 ## Admin panels {#admin-panels}
 
 ```php
-Helper::addPanel(3, 'Guestbook/panel.php', _t('留言'), _t('管理留言'), 'administrator');
+Helper::addPanel(3, 'Guestbook/panel.php', _t('Messages'), _t('Manage messages'), 'administrator');
 ```
 
 Parameters of `addPanel($index, $fileName, $title, $subTitle, $level, $hidden = false, $addLink = '')`:
 
 - `$index`: which menu to put it under: `1` Dashboard, `2` Write, `3` Manage, `4` Settings, or a value returned by `addMenu()`;
-- `$fileName`: `插件目录名/文件名` (plugin directory name/file name); the file lives in the plugin directory;
+- `$fileName`: `<plugin directory name>/<file name>`; the file lives in the plugin directory;
 - `$title`: the text shown in the menu; `$subTitle`: the page title;
 - `$level`: the minimum user group: `subscriber`, `contributor`, `editor` or `administrator`. Users without enough permission do not see the menu item and get 403 if they access it directly;
 - `$hidden`: when `true`, the panel does not appear in the menu but can still be accessed by its URL;
@@ -292,14 +292,14 @@ The panel URL is `admin/extending.php?panel=Guestbook/panel.php`, which you can 
 When you need a new top-level menu, add it with `addMenu()` first, then put the panel under it:
 
 ```php
-$index = Helper::addMenu(_t('留言板'));
-Helper::addPanel($index, 'Guestbook/panel.php', _t('全部留言'), _t('管理留言'), 'administrator');
+$index = Helper::addMenu(_t('Guestbook'));
+Helper::addPanel($index, 'Guestbook/panel.php', _t('All messages'), _t('Manage messages'), 'administrator');
 ```
 
 When removing, use the return value of `removeMenu()` as the first argument of `removePanel()`:
 
 ```php
-$index = Helper::removeMenu(_t('留言板'));
+$index = Helper::removeMenu(_t('Guestbook'));
 Helper::removePanel($index, 'Guestbook/panel.php');
 ```
 
@@ -328,10 +328,10 @@ $messages = $db->fetchAll($db->select()->from('table.guestbook')->order('created
                             <thead>
                             <tr>
                                 <th></th>
-                                <th><?php _e('名字'); ?></th>
-                                <th><?php _e('留言'); ?></th>
+                                <th><?php _e('Name'); ?></th>
+                                <th><?php _e('Message'); ?></th>
                                 <th><?php _e('IP'); ?></th>
-                                <th><?php _e('时间'); ?></th>
+                                <th><?php _e('Time'); ?></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -347,7 +347,7 @@ $messages = $db->fetchAll($db->select()->from('table.guestbook')->order('created
                             </tbody>
                         </table>
                     </div>
-                    <p><button type="submit" class="btn primary"><?php _e('删除选中的留言'); ?></button></p>
+                    <p><button type="submit" class="btn primary"><?php _e('Delete selected messages'); ?></button></p>
                 </form>
             </div>
         </div>
@@ -370,6 +370,6 @@ The panel file is loaded by `admin/extending.php`, so:
 After enabling `Guestbook`:
 
 1. Open `/guestbook/`: you see the guestbook and the form. After you submit a message you return to this page, and the message appears below the form;
-2. "留言" appears in the admin "Manage" menu. Open it to list the message you just posted; select it and delete it, and the top of the page shows "删除了 1 条留言" (1 message deleted);
-3. Log in with a non-administrator account: there is no "留言" in the menu, and accessing the panel URL directly returns 403;
-4. After you disable the plugin, `/guestbook/` returns 404 and the "留言" menu item disappears; the table is kept, and the messages are still there when you enable the plugin again.
+2. "Messages" appears in the admin "Manage" menu. Open it to list the message you just posted; select it and delete it, and the top of the page shows "Deleted 1 message(s)";
+3. Log in with a non-administrator account: there is no "Messages" in the menu, and accessing the panel URL directly returns 403;
+4. After you disable the plugin, `/guestbook/` returns 404 and the "Messages" menu item disappears; the table is kept, and the messages are still there when you enable the plugin again.

@@ -9,7 +9,7 @@ source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
 
 Custom fields let you attach extra data to a post or a page, such as a subtitle, a cover image URL or a view count; the theme decides how to display them. The hint below the **Custom fields** panel in the editor, "Custom fields can extend your template features, see the help documentation for usage", points to this page.
 
-This page only covers how to fill them in on the admin panel. Reading fields in a theme template (`$this->fields->字段名`) belongs to the theme part of the developer documentation, and that chapter is still being written.
+This page only covers how to fill them in on the admin panel. Reading fields in a theme template (`$this->fields->fieldName`) belongs to the theme part of the developer documentation, and that chapter is still being written.
 
 ## Where the panel is
 
@@ -43,7 +43,7 @@ Examples of the value you enter and the value read in the template:
 
 | Field | Type | Entered | Read in the template |
 |---|---|---|---|
-| `subtitle` | String | `一个副标题` | `'一个副标题'` |
+| `subtitle` | String | `A subtitle` | `'A subtitle'` |
 | `views` | Integer | `42abc` | `42` (the non-numeric part is dropped) |
 | `rating` | Float | `4.5` | `4.5` |
 | `meta` | JSON structure | `{"color":"red","size":[1,2]}` | the string `'{"color":"red","size":[1,2]}'`, **not an array** (see the note below) |

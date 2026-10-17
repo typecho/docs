@@ -113,7 +113,7 @@ Arguments of the common methods:
 - `date($format = null)`: without a format, uses the post date format from "Settings → Reading";
 - `category($split = ',', $link = true, $default = null)`, `tags(...)`, `directory($split = '/', ...)`: output categories, tags and multi-level categories; `$default` is the text shown when there are none;
 - `author($item = 'screenName')`: outputs one field of the author, for example `author('url')`;
-- `commentsNum('0 条', '1 条', '%d 条')`: picks an argument based on the comment count, replacing `%d` with the number;
+- `commentsNum('0 comments', '1 comment', '%d comments')`: picks an argument based on the comment count, replacing `%d` with the number;
 - `allow('comment')` / `allow('ping')` / `allow('feed')`: return whether it is allowed, taking password protection and the "auto-close comments" setting into account.
 
 `insert()`, `update()`, `delete()`, `select()`, `size()`, `push()`, `filter()`, `isWriteable()` and `applySlug()` are for Typecho and plugins to work with the database.

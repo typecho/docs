@@ -116,7 +116,7 @@ Other tags are ignored. `@dependence`, common in old plugins, is no longer read;
 The value of `@since` is compared with the current Typecho version using PHP's `version_compare()`. The plugin can be activated only when the current version is **greater than or equal to** `@since`:
 
 - With `@since 1.3.0`, versions 1.3.0 and later can activate it;
-- If the version requirement is not met when you click "Activate", the plugin is not activated and the page shows "插件名 无法在此版本的typecho下正常工作" (the plugin cannot work properly under this version of Typecho);
+- If the version requirement is not met when you click "Activate", the plugin is not activated and the page shows "[plugin name] cannot work properly under this version of Typecho" (with the plugin's name in place of [plugin name]);
 - If an already activated plugin no longer meets the requirement after an upgrade or downgrade, a warning icon appears after its name in the plugin list, but the plugin stays activated;
 - Omitting `@since` means no check.
 
@@ -133,7 +133,7 @@ Typecho does not execute the plugin code. Instead, it reads the PHP tokens one b
 This check only works when the class declaration is written as `implements PluginInterface` (together with `use Typecho\Plugin\PluginInterface;`) or `implements Typecho_Plugin_Interface`. Under PHP 8, 1.3.0 **does not recognize** the form with a backslash:
 
 ```php
-// The admin panel treats the plugin as "Plug and play" (即插即用); activate() is never called
+// The admin panel treats the plugin as "Plug and play"; activate() is never called
 class Plugin implements \Typecho\Plugin\PluginInterface
 ```
 
@@ -152,19 +152,19 @@ The plugin class must implement the four static methods of `Typecho\Plugin\Plugi
 
 `activate()` and `deactivate()` can:
 
-- **Return a string**: activation (deactivation) completes as usual, and the admin panel shows this string as the notice instead of the default "插件已经被启用" (plugin activated) or "插件已经被禁用" (plugin deactivated);
+- **Return a string**: activation (deactivation) completes as usual, and the admin panel shows this string as the notice instead of the default "Plugin activated" or "Plugin deactivated";
 - **Throw `Typecho\Plugin\Exception`**: the operation is canceled and the exception message is shown as an error notice. Throwing any other type of exception results in a 500 error page in the admin panel.
 
 ```php
 public static function activate()
 {
     if (!extension_loaded('curl')) {
-        throw new \Typecho\Plugin\Exception(_t('此插件需要 PHP 的 curl 扩展'));
+        throw new \Typecho\Plugin\Exception(_t('This plugin requires the PHP curl extension'));
     }
 
     \Typecho\Plugin::factory('Widget\Feedback')->comment = __CLASS__ . '::filter';
 
-    return _t('插件已启用，请到设置页面填写 API 密钥');
+    return _t('Plugin enabled; enter the API key on the settings page');
 }
 
 public static function filter(array $comment): array
@@ -179,7 +179,7 @@ After you click "Activate", Typecho (`Widget\Plugins\Edit::activate()`) does the
 
 1. Finds the entry file and reads the header comment;
 2. Checks `@since`; if the requirement is not met, it shows a notice and stops;
-3. Loads the entry file. If the plugin is already activated, the class does not exist, or there is no `activate()` method, it reports the error "无法启用插件" (unable to activate plugin);
+3. Loads the entry file. If the plugin is already activated, the class does not exist, or there is no `activate()` method, it reports the error "Unable to activate plugin";
 4. Calls `activate()`. The callbacks registered through `Typecho\Plugin::factory()` during the call are recorded;
 5. Writes these callbacks to the `plugins` option (JSON); every later request reads the callbacks from there. `activate()` is called only this once;
 6. Calls `config()` and `personalConfig()`, and stores the default values of the form items as the options `plugin:Name` and `_plugin:Name` respectively (if the plugin defines `configHandle()` / `personalConfigHandle()`, they handle this instead; see [Plugin settings](./settings.md)).
@@ -187,7 +187,7 @@ After you click "Activate", Typecho (`Widget\Plugins\Edit::activate()`) does the
 A few consequences follow:
 
 - After you change the hooks registered in `activate()`, you must **deactivate and reactivate** the plugin for the change to take effect; changes to the body of a callback method take effect immediately.
-- Registered callbacks must be storable as JSON, so write them as a string `'类名::方法名'` (`'ClassName::methodName'`) or an array `[类名, '方法名']`, not closures. A callback must be callable at registration time; a misspelled method name causes an error right at activation.
+- Registered callbacks must be storable as JSON, so write them as a string `'ClassName::methodName'` or an array `[ClassName, 'methodName']`, not closures. A callback must be callable at registration time; a misspelled method name causes an error right at activation.
 - Only administrators can activate, deactivate and configure plugins.
 
 ## What happens on deactivation
@@ -211,6 +211,6 @@ For these methods, see [Routes, actions and admin panels](./routes-actions.md).
 
 ### Plugin files deleted
 
-If a plugin's files are deleted directly while the plugin is activated, the plugin list shows "此插件文件已经损坏或者被不安全移除, 强烈建议你禁用它" (the plugin files are damaged or were removed unsafely; you are strongly advised to deactivate it) along with a "Deactivate" link. Deactivating it then skips `deactivate()` and only removes the callbacks and settings; routes, actions and panels added by the plugin are not undone. So when you uninstall a plugin, deactivate it in the admin panel first, then delete the files.
+If a plugin's files are deleted directly while the plugin is activated, the plugin list shows "The plugin files are damaged or were removed unsafely; you are strongly advised to deactivate it" along with a "Deactivate" link. Deactivating it then skips `deactivate()` and only removes the callbacks and settings; routes, actions and panels added by the plugin are not undone. So when you uninstall a plugin, deactivate it in the admin panel first, then delete the files.
 
 In code, you can also force a plugin to be deactivated with `\Utils\Helper::removePlugin('Name')`. See [Utils\Helper](../reference/helper.md).

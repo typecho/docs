@@ -16,7 +16,7 @@ These suit pages that need a special layout, such as "Archives", "Links" or "Gue
 ```php title="usr/themes/starter/page-links.php"
 <?php
 /**
- * 友情链接
+ * Links
  *
  * @package custom
  */
@@ -33,7 +33,7 @@ $this->need('header.php');
 ```
 
 - The file name is up to you (except `index.php`); put it in the theme root directory.
-- When editing a page, "友情链接" (Links) appears in the "Custom template" drop-down on the right; once selected, the page is output with `page-links.php` instead. For what the site owner does, see [Pages: custom templates](../../guide/content/pages.md#template).
+- When editing a page, "Links" appears in the "Custom template" drop-down on the right; once selected, the page is output with `page-links.php` instead. For what the site owner does, see [Pages: custom templates](../../guide/content/pages.md#template).
 - `$this` in the template is the page, so you can call `title()`, `content()`, `comments()` and so on just as in `page.php`.
 - When the site switches to a theme that does not have this file, the page is automatically output by the normal rules (`page.php` and so on).
 
@@ -57,7 +57,7 @@ $this->need('header.php');
         <?php if ($month !== $archives->date->format('Y-m')): ?>
             <?php if (null !== $month): ?></ul><?php endif; ?>
             <?php $month = $archives->date->format('Y-m'); ?>
-            <h2><?php echo $archives->date->format('Y 年 n 月'); ?></h2>
+            <h2><?php echo $archives->date->format('F Y'); ?></h2>
             <ul>
         <?php endif; ?>
         <li><a href="<?php $archives->permalink(); ?>"><?php $archives->title(); ?></a></li>
@@ -89,7 +89,7 @@ $this->need('header.php');
 <main>
     <h1><?php $this->options->title(); ?></h1>
     <p><?php $this->options->description(); ?></p>
-    <h2><?php _e('最新文章'); ?></h2>
+    <h2><?php _e('Latest posts'); ?></h2>
     <ul>
         <?php \Widget\Contents\Post\Recent::alloc('pageSize=5')->parse('<li><a href="{permalink}">{title}</a></li>'); ?>
     </ul>

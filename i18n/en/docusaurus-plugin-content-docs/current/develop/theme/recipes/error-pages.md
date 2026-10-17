@@ -20,16 +20,16 @@ Typecho has two kinds of "error pages": **page not found** (HTTP 404) is output 
 <?php $this->need('header.php'); ?>
 <main>
     <h1>404</h1>
-    <p><?php _e('页面没找到'); ?></p>
+    <p><?php _e('Page not found'); ?></p>
     <form method="post" action="<?php $this->options->siteUrl(); ?>">
-        <input type="search" name="s" placeholder="<?php _e('搜索'); ?>">
+        <input type="search" name="s" placeholder="<?php _e('Search'); ?>">
     </form>
-    <p><a href="<?php $this->options->siteUrl(); ?>"><?php _e('返回首页'); ?></a></p>
+    <p><a href="<?php $this->options->siteUrl(); ?>"><?php _e('Back to home'); ?></a></p>
 </main>
 <?php $this->need('footer.php'); ?>
 ```
 
-**Result**: URLs that do not exist, and posts that are unpublished or that the visitor is not allowed to view, all use this template; the HTTP status code is 404 and the archive title is "页面没找到" (page not found).
+**Result**: URLs that do not exist, and posts that are unpublished or that the visitor is not allowed to view, all use this template; the HTTP status code is 404 and the archive title is "Page not found".
 
 **How it works**: on a 404, Typecho assigns the theme file `404.php` directly. When the theme does not have this file, it looks for `archive/404.php`, `archive.php`, `index.php` in that order (see [Template hierarchy](../template-hierarchy.md)), and the status code is still 404. In a template you can check whether the current page is the 404 page with `$this->is('archive', '404')`.
 
@@ -43,14 +43,14 @@ When `__TYPECHO_DEBUG__` is on, a URL that matches no route does not show `404.p
 
 ```php
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>站点暂时无法访问</title>
+    <title>Site temporarily unavailable</title>
 </head>
 <body>
-    <h1>站点暂时无法访问</h1>
-    <p>错误代码 <?php echo intval($code); ?>，请稍后再试。</p>
+    <h1>Site temporarily unavailable</h1>
+    <p>Error code <?php echo intval($code); ?>. Please try again later.</p>
 </body>
 </html>
 ```

@@ -135,8 +135,8 @@ To check "is this the author of the content", compare the content's `authorId` w
 The fifth argument of `Helper::addPanel()` is the minimum role. When the panel is opened, `Widget\Menu` checks this role, so you do not need to repeat the check in the panel file:
 
 ```php
-// Add a panel visible to editors and above under the "Manage" (管理) menu (index 3)
-\Utils\Helper::addPanel(3, 'Guestbook/panel.php', '留言', '管理留言', 'editor');
+// Add a panel visible to editors and above under the "Manage" menu (index 3)
+\Utils\Helper::addPanel(3, 'Guestbook/panel.php', 'Messages', 'Manage messages', 'editor');
 ```
 
 For a complete example, see [Routes, actions and admin panels](../plugin/routes-actions.md#admin-panels). Which roles a plugin's personal settings are aimed at is declared by the plugin itself; see [Plugin settings](../plugin/settings.md).

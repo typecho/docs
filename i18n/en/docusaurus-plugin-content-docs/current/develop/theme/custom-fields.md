@@ -11,7 +11,7 @@ Custom fields are extra data attached to a post or page, such as a subtitle, a c
 
 ## Reading fields
 
-On post and page views, or inside a post list loop, use `$this->fields->字段名` (the field name):
+On post and page views, or inside a post list loop, use `$this->fields->fieldName`:
 
 ```php
 <?php if ($this->fields->subtitle): ?>
@@ -49,8 +49,8 @@ function themeFields($layout)
         'cover',
         null,
         null,
-        _t('封面图地址'),
-        _t('留空则不显示封面')
+        _t('Cover image URL'),
+        _t('Leave empty to show no cover')
     );
     $layout->addItem($cover);
 }
@@ -61,7 +61,7 @@ function themePostFields($layout)
         'source',
         null,
         null,
-        _t('转载来源')
+        _t('Source')
     );
     $layout->addItem($source);
 }
@@ -70,15 +70,15 @@ function themePageFields($layout)
 {
     $hideTitle = new \Typecho\Widget\Helper\Form\Element\Radio(
         'hideTitle',
-        ['0' => _t('显示'), '1' => _t('隐藏')],
+        ['0' => _t('Show'), '1' => _t('Hide')],
         '0',
-        _t('页面标题')
+        _t('Page title')
     );
     $layout->addItem($hideTitle);
 }
 ```
 
-With this, the post editor has the two fields "封面图地址" (cover image URL) and "转载来源" (source), and the page editor has the two fields "封面图地址" and "页面标题" (page title).
+With this, the post editor has the two fields "Cover image URL" and "Source", and the page editor has the two fields "Cover image URL" and "Page title".
 
 - Form elements are written the same way as in [Theme options](./theme-options.md); the difference is that here you use `$layout->addItem()`.
 - Predefined fields are normally saved with the "String" type; multi-value elements such as `Checkbox` are saved as "JSON structure", so the template reads an array, and the options stay checked when the editor is opened again.

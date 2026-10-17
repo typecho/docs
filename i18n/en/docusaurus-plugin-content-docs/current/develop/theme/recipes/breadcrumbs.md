@@ -13,16 +13,16 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 
 ```php
 <nav class="breadcrumbs">
-    <a href="<?php $this->options->siteUrl(); ?>"><?php _e('首页'); ?></a>
+    <a href="<?php $this->options->siteUrl(); ?>"><?php _e('Home'); ?></a>
     <?php if ($this->is('post')): ?>
         &raquo; <?php $this->category(' / '); ?>
         &raquo; <?php $this->title(); ?>
     <?php elseif (!$this->is('index')): ?>
         &raquo; <?php $this->archiveTitle([
-            'category' => _t('分类 %s'),
-            'search'   => _t('搜索 %s'),
-            'tag'      => _t('标签 %s'),
-            'author'   => _t('作者 %s'),
+            'category' => _t('Category %s'),
+            'search'   => _t('Search %s'),
+            'tag'      => _t('Tag %s'),
+            'author'   => _t('Author %s'),
         ], '', ''); ?>
     <?php endif; ?>
 </nav>

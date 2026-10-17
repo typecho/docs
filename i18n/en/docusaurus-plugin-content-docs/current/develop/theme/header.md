@@ -25,7 +25,7 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 | `description` | `<meta name="description">` | When there is an archive description |
 | `keywords` | `<meta name="keywords">` | When there are keywords |
 | `generator` | `<meta name="generator" content="Typecho 1.3.0">` | |
-| `template` | `<meta name="template" content="主题目录名">` (the theme directory name) | |
+| `template` | `<meta name="template" content="<directory>">` (the theme directory name) | |
 | `pingback` | `<link rel="pingback">` | "XMLRPC interface" is set to "On" |
 | `xmlrpc` | `<link rel="EditURI">` (RSD) | "XMLRPC interface" is not set to "Off" |
 | `wlw` | `<link rel="wlwmanifest">` | As above |
@@ -52,7 +52,7 @@ The line above removes the version number, the theme name, and the three Pingbac
 | `rss1=&atom=` | Keep only the RSS 2.0 feed |
 | `social=` | Do not output Open Graph / Twitter tags (for example when the theme or a plugin outputs these tags itself) |
 | `description=&keywords=` | Let the theme output the description and keywords itself |
-| `commentReply=/usr/themes/你的主题/js/reply.js` | Do not output the inline reply script; load the script file at the given URL instead |
+| `commentReply=/usr/themes/your-theme/js/reply.js` | Do not output the inline reply script; load the script file at the given URL instead |
 
 When the value of `commentReply` or `antiSpam` is `1` (the default), the built-in script is output; when it is empty, nothing is output; any other value is treated as a script URL and output as `<script src="...">`. When you replace it with your own script, you have to implement the original script's functionality yourself.
 

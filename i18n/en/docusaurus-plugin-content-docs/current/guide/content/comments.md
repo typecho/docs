@@ -52,7 +52,7 @@ A post's comment count (`commentsNum`) **counts only approved comments**; when y
 
 ## List and filtering
 
-Each comment shows the avatar, name, email, website, IP address, time, the post it belongs to ("on Post title") and the content. You can filter by keyword; clicking the comment count in the post or page list shows only the comments on that item (`manage-comments.php?cid=文章ID`).
+Each comment shows the avatar, name, email, website, IP address, time, the post it belongs to ("on Post title") and the content. You can filter by keyword; clicking the comment count in the post or page list shows only the comments on that item (`manage-comments.php?cid=<post ID>`).
 
 ## Actions on a single comment
 

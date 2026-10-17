@@ -20,13 +20,13 @@ $this->is(string $archiveType, ?string $archiveSlug = null): bool
 
 ```php
 <?php if ($this->is('index')): ?>
-    <p>首页</p>
+    <p>Home page</p>
 <?php elseif ($this->is('post')): ?>
-    <p>文章页</p>
+    <p>Post page</p>
 <?php elseif ($this->is('page', 'about')): ?>
-    <p>“关于”页面</p>
+    <p>The "About" page</p>
 <?php elseif ($this->is('category')): ?>
-    <p>某个分类</p>
+    <p>A category</p>
 <?php endif; ?>
 ```
 

@@ -64,10 +64,10 @@ When an error occurs, Typecho `require_once`s this file, and these variables are
 
 ```php title="usr/error.php"
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head><meta charset="UTF-8"><title><?php echo $code; ?></title></head>
 <body>
-  <h1>出错了（<?php echo $code; ?>）</h1>
+  <h1>Something went wrong (<?php echo $code; ?>)</h1>
   <p><?php echo $message; ?></p>
 </body>
 </html>
@@ -84,7 +84,7 @@ When no error appears on the page (for example a blank page), the answer is usua
 | PHP error log | Determined by PHP's `error_log` setting; PHP-FPM may also write to FPM's own log, such as `/var/log/php8.2-fpm.log` | Use `phpinfo()` to check the values of `error_log` and `log_errors` in the **web environment**. `php -i` on the command line shows the CLI configuration, which may differ from the web one |
 | nginx error log | `/var/log/nginx/error.log` | FastCGI errors such as "Primary script unknown" and "upstream timed out" are here |
 | Apache error log | `/var/log/apache2/error.log` (Debian / Ubuntu), `/var/log/httpd/error_log` (RHEL family) | `.htaccess` syntax errors, modules not loaded, etc. |
-| Containers | `docker logs 容器名` | The official image sends PHP errors to standard error; see [Containers and cloud hosting](./containers.md) |
+| Containers | `docker logs <container>` | The official image sends PHP errors to standard error; see [Containers and cloud hosting](./containers.md) |
 
 For services managed by `systemd`, you can also use `journalctl -u php8.2-fpm -u nginx --since "10 min ago"`.
 
@@ -120,7 +120,7 @@ UPDATE typecho_options SET value = '[]'     WHERE name = 'panelTable'  AND user 
 ```
 
 - `plugins` records the enabled plugins and the interfaces they hook into; the other two are the action URLs and admin menus registered by plugins. If you don't clear them, menu items left behind by plugins still show.
-- Each plugin's settings (the `plugin:插件名` options) are not affected; re-enable the plugin in the admin panel later to get them back.
+- Each plugin's settings (the `plugin:<plugin name>` options) are not affected; re-enable the plugin in the admin panel later to get them back.
 
 **Switch to the default theme**:
 
@@ -137,7 +137,7 @@ While a plugin is enabled, deleting or renaming its directory under `usr/plugins
 | Symptom | Look at first |
 |---|---|
 | All posts 404, No input file specified, 404 / 500 / 403 on login | [Web server configuration](./web-server.md#troubleshooting) |
-| After an upgrade, the admin panel always redirects to the upgrade page, or "完成升级" (Complete upgrade) keeps loading | [Upgrade](../getting-started/upgrade.md), especially the known issue with more than 100 attachments |
+| After an upgrade, the admin panel always redirects to the upgrade page, or "Complete upgrade" keeps loading | [Upgrade](../getting-started/upgrade.md), especially the known issue with more than 100 attachments |
 | 503 `Error establishing a database connection` | Check the database service and the connection parameters in `config.inc.php`; see [config.inc.php and constants](./config-file.md) |
 | Missing styles, mixed content, sent back to the login page after logging in | [HTTPS, reverse proxies and CDNs](./https-proxy.md) |
 | Uploading attachments fails | Whether `usr/uploads/` is writable, and PHP's `upload_max_filesize`; see [Attachment storage location](./uploads-storage.md) |

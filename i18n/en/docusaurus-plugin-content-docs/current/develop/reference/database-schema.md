@@ -9,7 +9,7 @@ source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
 
 Typecho 1.3.0 creates 7 tables during installation. Table names carry the prefix set during installation (`typecho_` by default); in the query builder you write `table.contents` instead. See [Database Operations](../plugin/database.md).
 
-The "Type" column shows the MySQL type. In PostgreSQL and SQLite, integer columns are `INT` / `int(10)` without `unsigned`, and auto-increment primary keys are a sequence (`表名_seq`) and `INTEGER PRIMARY KEY` respectively; other differences are noted below each table.
+The "Type" column shows the MySQL type. In PostgreSQL and SQLite, integer columns are `INT` / `int(10)` without `unsigned`, and auto-increment primary keys are a sequence (`<table name>_seq`) and `INTEGER PRIMARY KEY` respectively; other differences are noted below each table.
 
 | Table | Contents |
 |---|---|
@@ -175,9 +175,9 @@ Besides the site-wide options in the [option name list](./option-names.md), the 
 
 | `name` | `user` | Contents |
 |---|---|---|
-| `theme:主题目录名` | `0` | Theme settings, see [Theme Settings](../theme/theme-options.md) |
-| `plugin:插件名` | `0` | Plugin settings, see [Plugin Configuration](../plugin/settings.md) |
-| `_plugin:插件名` | `0` or user ID | Default value of a plugin's personal settings / a specific user's value |
+| `theme:<directory>` | `0` | Theme settings, see [Theme Settings](../theme/theme-options.md) |
+| `plugin:<plugin name>` | `0` | Plugin settings, see [Plugin Configuration](../plugin/settings.md) |
+| `_plugin:<plugin name>` | `0` or user ID | Default value of a plugin's personal settings / a specific user's value |
 | Personal setting option names (such as `autoSave`, `markdown`) | User ID | Values a user saves in "Profile", overriding the site-wide option of the same name |
 
 `name` is `varchar(32)`, so longer option names cannot be saved in MySQL and PostgreSQL. The `_plugin:` prefix takes 8 characters, so keep plugin names to 24 characters or fewer.

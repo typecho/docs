@@ -13,7 +13,7 @@ A hook is identified by two parts: the **handle** (the file or class where the h
 
 ## Registering callbacks
 
-In the plugin's `activate()`, use `Typecho\Plugin::factory(句柄)` (where `句柄` is the handle) to get the handle object, then assign the callback to the hook name:
+In the plugin's `activate()`, use `Typecho\Plugin::factory($handle)` (where `$handle` is the handle) to get the handle object, then assign the callback to the hook name:
 
 ```php
 public static function activate()
@@ -23,7 +23,7 @@ public static function activate()
 }
 ```
 
-- Write the callback as a string `'类名::方法名'` (`'ClassName::methodName'`) or an array `[类名, '方法名']`, pointing to a `public static` method. Callbacks are saved to the database as JSON, so you cannot use closures;
+- Write the callback as a string `'ClassName::methodName'` or an array `[ClassName, 'methodName']`, pointing to a `public static` method. Callbacks are saved to the database as JSON, so you cannot use closures;
 - Registration runs once when the plugin is activated and is then saved. After you change the registration code, deactivate and reactivate the plugin. See [Plugin structure and lifecycle](./structure.md#on-activation);
 - You can register multiple callbacks on the same hook, and callbacks from different plugins can be registered on the same hook too; they run in order of priority.
 
@@ -58,7 +58,7 @@ Typecho triggers hooks in classes in two ways, which determine the class the hoo
 
 ## Priority: the `_N` suffix
 
-Append `_数字` (`_` plus a number) to the hook name to set the priority. Smaller numbers run first; no suffix is the same as `_10`:
+Append `_<number>` (`_` plus a number) to the hook name to set the priority. Smaller numbers run first; no suffix is the same as `_10`:
 
 ```php
 // runs before other plugins
@@ -105,7 +105,7 @@ The first parameter is the value to filter. Each callback receives the current v
 ```php
 public static function contentEx(string $content, \Widget\Base\Contents $widget): string
 {
-    return $content . '<p>（完）</p>';
+    return $content . '<p>(The end)</p>';
 }
 ```
 
@@ -172,7 +172,7 @@ The handle of these two kinds of hooks is the class the object actually belongs 
 
 ### Widget_Service: async tasks
 
-`\Utils\Helper::requestService('任务名', 参数...)` (task name, parameters) sends a request to the site itself after the current request ends, and in that request triggers the hook on `Widget_Service` named after the task. See [HTTP requests and async tasks](./http-async.md).
+`\Utils\Helper::requestService('taskName', ...$params)` (task name, parameters) sends a request to the site itself after the current request ends, and in that request triggers the hook on `Widget_Service` named after the task. See [HTTP requests and async tasks](./http-async.md).
 
 ## Complete example: reading time
 
@@ -228,7 +228,7 @@ class Plugin implements PluginInterface
     {
         if ($widget instanceof Archive && $widget->is('single') && 'post' == $widget->type) {
             $content = '<p class="reading-time">'
-                . _t('全文 %d 字，阅读约需 %d 分钟', self::count($widget), self::readingTime($widget))
+                . _t('%d characters, about %d minutes to read', self::count($widget), self::readingTime($widget))
                 . '</p>' . $content;
         }
 
@@ -258,10 +258,10 @@ class Plugin implements PluginInterface
 }
 ```
 
-After activation, "全文 … 字，阅读约需 … 分钟" (… characters, about … minutes to read) appears before the body on post pages. You can also use it in your theme's `post.php` like this:
+After activation, "… characters, about … minutes to read" appears before the body on post pages. You can also use it in your theme's `post.php` like this:
 
-```php title="usr/themes/你的主题/post.php"
-<p>字数：<?php $this->wordCount(); ?>，阅读时间：<?php echo $this->readingTime; ?> 分钟</p>
+```php title="usr/themes/your-theme/post.php"
+<p>Words: <?php $this->wordCount(); ?>, reading time: <?php echo $this->readingTime; ?> min</p>
 ```
 
 The text inserted into the body also appears in the page's `description` meta tag and in feeds, because both are taken from the filtered body. See [Common plugin patterns](./patterns.md#content-filter).

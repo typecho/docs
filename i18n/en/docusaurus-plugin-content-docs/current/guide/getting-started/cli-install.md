@@ -35,10 +35,10 @@ export TYPECHO_SITE_URL=https://blog.example.com
 export TYPECHO_DB_ADAPTER=Pdo_Mysql
 export TYPECHO_DB_HOST=127.0.0.1
 export TYPECHO_DB_USER=typecho
-export TYPECHO_DB_PASSWORD='数据库密码'
+export TYPECHO_DB_PASSWORD='your-db-password'
 export TYPECHO_DB_DATABASE=typecho
 export TYPECHO_USER_NAME=admin
-export TYPECHO_USER_PASSWORD='管理员密码'
+export TYPECHO_USER_PASSWORD='your-admin-password'
 export TYPECHO_USER_MAIL=admin@example.com
 php install.php
 ```
@@ -48,9 +48,9 @@ Output on success:
 ```text
 Typecho 1.3.0
 PHP 8.2.x
-安装成功
-您的用户名是 admin
-您的密码是 管理员密码
+Installation successful
+Your user name is admin
+Your password is your-admin-password
 ```
 
 :::caution
@@ -96,7 +96,7 @@ The tables below list every environment variable that `install.php` reads in CLI
 | `keep` | Keeps the existing tables: if the existing data is complete, it finishes immediately and exits with 0 (no administrator is created); if the tables exist but the data is incomplete, it goes on with step 3 |
 | `config` | Requires a `config.inc.php` in the site root; if there is none, reports "No manually created configuration file was detected, please check and create it again" and exits |
 
-Any other value reports `dbNext: 确认您的配置` and exits.
+Any other value reports `dbNext: Please check your configuration` and exits.
 
 ### Administrator account
 
@@ -118,14 +118,14 @@ Every run first prints two lines of version information (`Typecho 1.3.0` and `PH
 |---|---|---|
 | Installation succeeded | "Installation successful" with the user name and password | `0` |
 | `TYPECHO_DB_NEXT=keep` and the existing data is complete | nothing more | `0` |
-| Configuration validation failed | One `field: error message` per line, e.g. `dbUser: 确认您的配置`, `userUrl: 请填写站点地址` | `1` |
+| Configuration validation failed | One `field: error message` per line, e.g. `dbUser: Please check your configuration`, `userUrl: Please enter the site URL` | `1` |
 | Environment check failed, cannot connect to the database, database does not exist, tables already exist, etc. | One or more lines of error messages | `1` |
 | The site is already installed | nothing more | `1` |
 
 A script can use this to decide whether installation is needed:
 
 ```bash
-php install.php || echo "安装失败，或站点已经安装"
+php install.php || echo "Installation failed, or the site is already installed"
 ```
 
 Note that "already installed" and "installation failed" both exit with `1`; check the output when you need to tell them apart.

@@ -21,15 +21,15 @@ In `config()`, add form elements to `$form`. The name of each element is one set
 ```php
 public static function config(Form $form)
 {
-    $word = new Text('word', null, '你好', _t('问候语'));
-    $word->addRule('required', _t('问候语不能为空'));
+    $word = new Text('word', null, 'Hello', _t('Greeting'));
+    $word->addRule('required', _t('The greeting cannot be empty'));
     $form->addInput($word);
 
     $position = new Radio('position', [
-        'navBar' => _t('后台导航栏'),
-        'footer' => _t('前台页脚'),
-        'both'   => _t('两处都显示'),
-    ], 'both', _t('显示位置'));
+        'navBar' => _t('Admin navigation bar'),
+        'footer' => _t('Front-end footer'),
+        'both'   => _t('Both'),
+    ], 'both', _t('Display location'));
     $form->addInput($position);
 }
 ```
@@ -38,7 +38,7 @@ public static function config(Form $form)
 - Validation added with `addRule()` runs on save. If it fails, the form is not saved and the message is shown below the field;
 - For the available elements and validation rules, see [Form elements](../reference/form-elements.md).
 
-The "Settings" link appears in the plugin list only when the body of `config()` is not empty. The settings page is at `admin/options-plugin.php?config=插件名`.
+The "Settings" link appears in the plugin list only when the body of `config()` is not empty. The settings page is at `admin/options-plugin.php?config=<plugin name>`.
 
 ## Reading settings
 
@@ -51,7 +51,7 @@ $all = $config->toArray(); // array of all settings
 
 `plugin()` returns a `Typecho\Config` object. A setting that does not exist reads as `null`. The value of a Checkbox is an array; all other elements give strings.
 
-When the plugin has never saved any settings (no elements are added in `config()`, or the plugin is not enabled), `plugin()` throws `Typecho\Plugin\Exception` ("插件Greeting的配置信息没有找到", the configuration of plugin Greeting was not found). Catch the exception wherever this can happen.
+When the plugin has never saved any settings (no elements are added in `config()`, or the plugin is not enabled), `plugin()` throws `Typecho\Plugin\Exception` ("the configuration of plugin Greeting was not found"). Catch the exception wherever this can happen.
 
 ## Where settings are stored
 
@@ -59,9 +59,9 @@ Settings are stored as JSON in the `options` table:
 
 | Setting | `name` | `user` |
 |---|---|---|
-| Plugin settings | `plugin:插件名` | `0` |
-| Default values of personal settings | `_plugin:插件名` | `0` |
-| Personal settings saved by a user | `_plugin:插件名` | User ID |
+| Plugin settings | `plugin:<plugin name>` | `0` |
+| Default values of personal settings | `_plugin:<plugin name>` | `0` |
+| Personal settings saved by a user | `_plugin:<plugin name>` | User ID |
 
 For example, after you enable HelloWorld, the `options` table has a new row `plugin:HelloWorld` with the value `{"word":"Hello World"}`.
 
@@ -75,7 +75,7 @@ A plugin class can define an optional static method `configCheck(array $settings
 public static function configCheck(array $settings)
 {
     if (mb_strlen($settings['word']) > 20) {
-        return _t('设置已经保存。问候语较长，在后台导航栏中可能显示不全');
+        return _t('Settings saved. The greeting is long and may be cut off in the admin navigation bar');
     }
 }
 ```
@@ -89,7 +89,7 @@ When a plugin class defines a static method `configHandle(array $settings, bool 
 - It is called once when the plugin is enabled, with `$isInit` set to `true` and `$settings` containing the default values;
 - It is called when an administrator saves the settings, with `$isInit` set to `false` and `$settings` containing the submitted values (already validated).
 
-This is useful for transforming data before saving, or for storing the settings somewhere else. If you still want to save them to `plugin:插件名` afterwards, call `\Utils\Helper::configPlugin()`:
+This is useful for transforming data before saving, or for storing the settings somewhere else. If you still want to save them to `plugin:<plugin name>` afterwards, call `\Utils\Helper::configPlugin()`:
 
 ```php
 public static function configHandle(array $settings, bool $isInit)
@@ -108,7 +108,7 @@ public static function configHandle(array $settings, bool $isInit)
 ```php
 public static function personalConfig(Form $form)
 {
-    $nickname = new Text('nickname', null, '', _t('导航栏中对你的称呼'));
+    $nickname = new Text('nickname', null, '', _t('How the navigation bar addresses you'));
     $form->addInput($nickname);
 
     return 'contributor';
@@ -129,7 +129,7 @@ As with `plugin()`, `personalPlugin()` throws `Typecho\Plugin\Exception` when th
 
 Corresponding to `configHandle()`, you can define `personalConfigHandle(array $settings, bool $isInit)` to save personal settings yourself: it is called once with the defaults when the plugin is enabled (`$isInit` is `true`), and when a user saves their personal settings (`$isInit` is `false`).
 
-`Helper::configPlugin('插件名', $settings, true)` writes personal settings. It merges `$settings` into **every** existing `_plugin:插件名` row, which means the personal settings of all users are changed.
+`Helper::configPlugin('PluginName', $settings, true)` writes personal settings. It merges `$settings` into **every** existing `_plugin:<plugin name>` row, which means the personal settings of all users are changed.
 
 ## Removing a setting when upgrading a plugin {#remove-setting-on-upgrade}
 
@@ -187,22 +187,22 @@ class Plugin implements PluginInterface
 
     public static function config(Form $form)
     {
-        $word = new Text('word', null, '你好', _t('问候语'));
-        $word->addRule('required', _t('问候语不能为空'));
+        $word = new Text('word', null, 'Hello', _t('Greeting'));
+        $word->addRule('required', _t('The greeting cannot be empty'));
         $form->addInput($word);
 
         $position = new Radio('position', [
-            'navBar' => _t('后台导航栏'),
-            'footer' => _t('前台页脚'),
-            'both'   => _t('两处都显示'),
-        ], 'both', _t('显示位置'));
+            'navBar' => _t('Admin navigation bar'),
+            'footer' => _t('Front-end footer'),
+            'both'   => _t('Both'),
+        ], 'both', _t('Display location'));
         $form->addInput($position);
     }
 
     public static function configCheck(array $settings)
     {
         if (mb_strlen($settings['word']) > 20) {
-            return _t('设置已经保存。问候语较长，在后台导航栏中可能显示不全');
+            return _t('Settings saved. The greeting is long and may be cut off in the admin navigation bar');
         }
     }
 
@@ -214,7 +214,7 @@ class Plugin implements PluginInterface
 
     public static function personalConfig(Form $form)
     {
-        $nickname = new Text('nickname', null, '', _t('导航栏中对你的称呼'));
+        $nickname = new Text('nickname', null, '', _t('How the navigation bar addresses you'));
         $form->addInput($nickname);
 
         return 'contributor';
@@ -234,7 +234,7 @@ class Plugin implements PluginInterface
             $nickname = null;
         }
         if (!empty($nickname)) {
-            $text .= '，' . $nickname;
+            $text .= ', ' . $nickname;
         }
 
         echo '<span class="message success">' . htmlspecialchars($text) . '</span>';

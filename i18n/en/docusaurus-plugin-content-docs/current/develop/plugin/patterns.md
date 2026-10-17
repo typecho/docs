@@ -131,11 +131,11 @@ class Plugin implements PluginInterface
 
     public static function config(Form $form)
     {
-        $words = new Textarea('words', null, '', _t('屏蔽词'), _t('每行一个，评论内容、名字、网址中出现任何一个就拒绝提交'));
+        $words = new Textarea('words', null, '', _t('Blocked words'), _t('One per line; a comment is rejected if its content, name or URL contains any of them'));
         $form->addInput($words);
 
-        $maxLinks = new Text('maxLinks', null, '2', _t('链接数上限'), _t('评论中的链接超过这个数目时标为垃圾'));
-        $maxLinks->addRule('isInteger', _t('请填写整数'));
+        $maxLinks = new Text('maxLinks', null, '2', _t('Maximum number of links'), _t('Comments with more links than this are marked as spam'));
+        $maxLinks->addRule('isInteger', _t('Enter an integer'));
         $form->addInput($maxLinks);
     }
 
@@ -151,7 +151,7 @@ class Plugin implements PluginInterface
         foreach (preg_split('/\r?\n/', (string) $config->words) as $word) {
             $word = trim($word);
             if ($word !== '' && mb_stripos($haystack, $word) !== false) {
-                throw new Exception(_t('评论中含有不允许的内容'), 403);
+                throw new Exception(_t('The comment contains content that is not allowed'), 403);
             }
         }
 
@@ -232,12 +232,12 @@ class Plugin implements PluginInterface
 
     public static function config(Form $form)
     {
-        $dir = new Text('dir', null, __TYPECHO_ROOT_DIR__ . '/usr/bucket', _t('保存目录'), _t('服务器上的绝对路径，PHP 要有写权限'));
-        $dir->addRule('required', _t('必须填写保存目录'));
+        $dir = new Text('dir', null, __TYPECHO_ROOT_DIR__ . '/usr/bucket', _t('Storage directory'), _t('Absolute path on the server; PHP must be able to write to it'));
+        $dir->addRule('required', _t('The storage directory is required'));
         $form->addInput($dir);
 
-        $url = new Text('url', null, Common::url('usr/bucket', Options::alloc()->siteUrl), _t('访问地址'), _t('这个地址要能访问到保存目录中的文件'));
-        $url->addRule('required', _t('必须填写访问地址'));
+        $url = new Text('url', null, Common::url('usr/bucket', Options::alloc()->siteUrl), _t('Public URL'), _t('Files in the storage directory must be reachable at this URL'));
+        $url->addRule('required', _t('The public URL is required'));
         $form->addInput($url);
     }
 
@@ -412,7 +412,7 @@ $(document).ready(function () {
         textarea.parents('form').trigger('write');
     });
 
-    // Called when "Insert" (插入) is clicked in the attachment panel; the editor must provide it
+    // Called when "Insert" is clicked in the attachment panel; the editor must provide it
     Typecho.insertFileToEditor = function (file, url, isImage) {
         const el = textarea.get(0);
         const html = isImage ? '![' + file + '](' + url + ')' : '[' + file + '](' + url + ')';

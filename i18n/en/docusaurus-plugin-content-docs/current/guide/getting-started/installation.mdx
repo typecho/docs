@@ -58,7 +58,7 @@ The installer only creates tables, not the database. If the database does not ex
 
 ```sql
 CREATE DATABASE typecho DEFAULT CHARACTER SET utf8mb4;
-CREATE USER 'typecho'@'localhost' IDENTIFIED BY '请换成你的密码';
+CREATE USER 'typecho'@'localhost' IDENTIFIED BY 'change-this-password';
 GRANT ALL PRIVILEGES ON typecho.* TO 'typecho'@'localhost';
 ```
 
@@ -66,7 +66,7 @@ GRANT ALL PRIVILEGES ON typecho.* TO 'typecho'@'localhost';
   <TabItem value="pgsql" label="PostgreSQL">
 
 ```sql
-CREATE USER typecho WITH PASSWORD '请换成你的密码';
+CREATE USER typecho WITH PASSWORD 'change-this-password';
 CREATE DATABASE typecho OWNER typecho ENCODING 'UTF8';
 ```
 
@@ -89,7 +89,7 @@ The steps check each other: visiting `?step=3` before the tables exist sends you
 
 ![Typecho installation](@site/docs/guide/getting-started/img/install-start.png)
 
-If the package contains several language packs, a language drop-down appears in the bottom right corner where you can switch the installer's interface language. After you click <kbd>我准备好了, 开始下一步 »</kbd> (I'm ready, go to the next step »), the installer checks the PHP extensions and the permissions of the `usr/uploads` directory (see [Requirements](./requirements.md)), and moves on to step 2 when they pass.
+If the package contains several language packs, a language drop-down appears in the bottom right corner where you can switch the installer's interface language. After you click <kbd>I'm ready, go to the next step »</kbd>, the installer checks the PHP extensions and the permissions of the `usr/uploads` directory (see [Requirements](./requirements.md)), and moves on to step 2 when they pass.
 
 ### Step 2: Database configuration
 
@@ -121,7 +121,7 @@ Whenever the host contains a `/`, the installer treats it as a socket path: the 
 
 #### When tables already exist or the configuration file cannot be written
 
-The installer uses a hidden field, `dbNext`, to decide what to do in these situations. When you click <kbd>确认, 开始安装 »</kbd> (Confirm, start installation »), its value is `none`; after one of the messages below appears, the button you click changes it to another value and resubmits the form:
+The installer uses a hidden field, `dbNext`, to decide what to do in these situations. When you click <kbd>Confirm, start installation »</kbd>, its value is `none`; after one of the messages below appears, the button you click changes it to another value and resubmits the form:
 
 | `dbNext` | When it appears | Effect |
 |---|---|---|
@@ -134,7 +134,7 @@ The installer uses a hidden field, `dbNext`, to decide what to do in these situa
 **Delete existing data** drops the 7 tables `comments`, `contents`, `fields`, `metas`, `options`, `relationships` and `users` (with the prefix you entered). This cannot be undone.
 :::
 
-**The configuration file cannot be written**: if the site root is not writable, the installer reports "The installer cannot create the config.inc.php file automatically" and shows the full contents of the configuration file below. Copy them into a new `config.inc.php` in the site root, then click <kbd>创建完毕, 继续安装 »</kbd>. If the file still does not exist at that point, it reports "No manually created configuration file was detected, please check and create it again".
+**The configuration file cannot be written**: if the site root is not writable, the installer reports "The installer cannot create the config.inc.php file automatically" and shows the full contents of the configuration file below. Copy them into a new `config.inc.php` in the site root, then click <kbd>Created, continue installation »</kbd>. If the file still does not exist at that point, it reports "No manually created configuration file was detected, please check and create it again".
 
 ### Step 3: Create the administrator account
 
@@ -145,9 +145,9 @@ The installer uses a hidden field, `dbNext`, to decide what to do in these situa
 | Password | If left empty, a random 8-character password is generated |
 | Email | Required, at most 200 characters |
 
-After you click <kbd>继续安装 »</kbd> (Continue installation »), the page shows the user name and password, plus links to the control panel and to the site. **If the password was generated randomly, write it down now**: you cannot view it again once this page is closed.
+After you click <kbd>Continue installation »</kbd>, the page shows the user name and password, plus links to the control panel and to the site. **If the password was generated randomly, write it down now**: you cannot view it again once this page is closed.
 
-The installer also creates a default category, a post "欢迎使用 Typecho" (Welcome to Typecho), a page "关于" (About) and a comment. You can edit or delete them freely in the admin panel.
+The installer also creates a default category, a post "Welcome to Typecho", a page "About" and a comment. You can edit or delete them freely in the admin panel.
 
 ## After installation
 
@@ -165,13 +165,13 @@ Typecho has no "recover password" feature. Proceed in this order:
 First compute the MD5 of the new password:
 
 ```bash
-php -r 'echo md5("新密码"), PHP_EOL;'
+php -r 'echo md5("new-password"), PHP_EOL;'
 ```
 
 Then run this with a database tool (adjust the table prefix to yours; `uid = 1` is the administrator created during installation):
 
 ```sql
-UPDATE typecho_users SET password = '上一步得到的 32 位 MD5' WHERE uid = 1;
+UPDATE typecho_users SET password = '<32-character MD5 from the previous step>' WHERE uid = 1;
 ```
 
 If you do not remember the user name, list all administrators first (`group` is a reserved word: MySQL uses backticks, PostgreSQL and SQLite use double quotes):

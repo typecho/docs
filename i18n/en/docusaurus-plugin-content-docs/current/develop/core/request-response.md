@@ -130,7 +130,7 @@ The following `Widget\Response` methods `exit` right after output; code after th
 For example, a common pattern at the end of admin form handling:
 
 ```php
-\Widget\Notice::alloc()->set(_t('设置已经保存'), 'success');
+\Widget\Notice::alloc()->set(_t('Settings saved'), 'success');
 $this->response->goBack();
 ```
 
@@ -149,8 +149,8 @@ A widget created in a sandbox (see [The widget component model](./widget.md#sand
 | `url($path, $prefix)` | Joins a URL: `url('archives/1/', 'https://example.com/')` → `https://example.com/archives/1/`. It only joins and does not resolve `..` |
 | `safeUrl($url)` | Cleans a URL used for redirects: removes whitespace, line breaks, quotes and angle brackets; URLs whose scheme is not `http` or `https` become `/` |
 | `buildUrl(array $parts)` | The inverse of `parse_url()` |
-| `slugName($str, $default = '', $maxLength = 128)` | Generates a slug: `'Hello World! 你好'` → `Hello-World-你好`; returns `$default` when the result is empty |
-| `subStr($str, $start, $length, $trim = '...')` | Truncates by characters; `$length` includes the suffix: `subStr('Typecho 是一个博客程序', 0, 9)` → `Typech...` |
+| `slugName($str, $default = '', $maxLength = 128)` | Generates a slug: `'Hello World! Café'` → `Hello-World-Café` (letters outside ASCII are kept); returns `$default` when the result is empty |
+| `subStr($str, $start, $length, $trim = '...')` | Truncates by characters; `$length` includes the suffix: `subStr('Typecho is a blogging platform', 0, 9)` → `Typech...` |
 | `strLen($str)` | Counts UTF-8 characters |
 | `strBy($a, $b)` | Returns `$a` when it is neither `null` nor an empty string, otherwise `$b` |
 | `randString($length, $specialChars = false)` | A random string |

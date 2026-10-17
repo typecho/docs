@@ -60,7 +60,7 @@ A theme can provide several page templates. A template is a PHP file in the them
 ```php
 <?php
 /**
- * 友情链接模板
+ * Links template
  *
  * @package custom
  */
@@ -71,7 +71,7 @@ $this->need('header.php');
 <?php $this->need('footer.php'); ?>
 ```
 
-Once the theme has such a file, "友情链接模板" (Links template) appears in the "Custom template" drop-down (`index.php` excluded). When it is selected, the page is rendered with that file on the front end. After you switch themes, if the new theme has no file with the same name, the page is displayed with the new theme's default page template.
+Once the theme has such a file, "Links template" appears in the "Custom template" drop-down (`index.php` excluded). When it is selected, the page is rendered with that file on the front end. After you switch themes, if the new theme has no file with the same name, the page is displayed with the new theme's default page template.
 
 ## Managing pages
 

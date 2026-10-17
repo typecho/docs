@@ -58,15 +58,15 @@ function themeConfig($form)
         'footerText',
         null,
         null,
-        _t('页脚文字'),
-        _t('显示在每个页面底部，可以留空')
+        _t('Footer text'),
+        _t('Shown at the bottom of every page; can be left empty')
     );
     $form->addInput($footerText);
 }
 ```
 
 - `$form` is a `\Typecho\Widget\Helper\Form` object; add form elements with `addInput()`. When this function is defined, a "Theme settings" tab appears on the Appearance page of the admin panel.
-- The saved values are stored as JSON in the `theme:主题目录名` option (`theme:` followed by the theme directory name), and are read in templates with `$this->options->footerText`.
+- The saved values are stored as JSON in the `theme:<directory>` option (`theme:` followed by the theme directory name), and are read in templates with `$this->options->footerText`.
 
 If `themeConfigHandle()` is defined as well, Typecho **no longer saves** the settings itself but hands the form values to it:
 
@@ -74,7 +74,7 @@ If `themeConfigHandle()` is defined as well, Typecho **no longer saves** the set
 function themeConfigHandle(array $settings, bool $isInit)
 {
     // $settings: the values of all fields in the form
-    // $isInit: true when the theme is activated, false when saved in "Theme settings" (设置外观)
+    // $isInit: true when the theme is activated, false when saved in "Theme settings"
 }
 ```
 
@@ -91,8 +91,8 @@ function themeFields($layout)
         'cover',
         null,
         null,
-        _t('封面图地址'),
-        _t('留空则不显示封面')
+        _t('Cover image URL'),
+        _t('Leave empty to show no cover')
     );
     $layout->addItem($cover);
 }
