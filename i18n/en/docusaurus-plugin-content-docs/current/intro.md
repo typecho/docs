@@ -2,14 +2,14 @@
 sidebar_position: 1
 slug: /
 translation: machine
-source_commit: ad6ef44bace0e7a6a427675ad7a884e0537725ca
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # Introduction
 
 The name Typecho is made up of two words, type and echo, and it is pronounced as those two sounds: `/taɪpˌ'ekoʊ/`.
 
-Type means typing, and a blog is exactly that: a platform where we express ourselves on the web by typing. Echo means a reflection, feedback, a resonance. It is also the most common and most important function in PHP; most PHP enthusiasts probably began their PHP programming journey with `echo 'Hello World!';`.
+Type means typing, and a blog is exactly that: a platform where we express ourselves on the web by typing. Echo means a reflection, feedback, a resonance. It is also PHP's `echo` output construct; most PHP enthusiasts probably began their PHP programming journey with `echo 'Hello World!';`.
 
 The name says that Typecho is a blogging application. It is released under the [GPL version 2 license](https://opensource.org/license/gpl-2-0/), is built on PHP (PHP 7.4 or later is required), runs on a wide range of platforms, and supports several databases (Mysql / PostgreSQL / SQLite).
 

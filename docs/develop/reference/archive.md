@@ -17,7 +17,7 @@ sidebar_position: 2
 
 | 方法 | 说明 |
 |---|---|
-| `addArchiveTitle(string $archiveTitle)` | 增加标题 |
+| `addArchiveTitle(string $archiveTitle)` | 增加标题。**1.3.0 中这个方法不能使用**：已有标题时报错（`[] operator not supported for strings`），没有标题时抛出 `TypeError`。要在标题后追加文字，用 `setArchiveTitle()` 自己拼接，例如 `$this->setArchiveTitle(($this->getArchiveTitle() ?? '') . ' - 第 2 页')` |
 | `archiveTitle($defines = null, string $before = ' &raquo; ', string $end = '')` | 输出归档标题 |
 | `attachments(int $limit = 0, int $offset = 0): Related` | 获取附件对象 |
 | `comments(): Archive` | 获取评论归档对象 |

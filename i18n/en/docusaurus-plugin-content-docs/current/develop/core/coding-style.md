@@ -2,7 +2,7 @@
 title: Coding Style
 sidebar_position: 9
 translation: machine
-source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # Coding Style
@@ -81,7 +81,7 @@ The `.editorconfig` in the repository root specifies: indent with 4 spaces (2 sp
 
 ## Type declarations
 
-New code declares types for properties, parameters and return values. When you modify an existing class, be careful: adding types to a property or method of a class that themes or plugins may extend causes a fatal error for same-name declarations without types in subclasses (which is exactly why some old plugins need changes for 1.3; see [Migrating themes and plugins to 1.3](../migrate-to-1-3.md)). For public classes that are often extended (`Widget\Archive`, `Widget\Base\*` and so on), assess the impact on existing plugins before changing a signature.
+New code declares types for properties, parameters and return values. When you modify an existing class, be careful: adding types to a class that themes or plugins may extend causes a fatal error for incompatible same-name declarations in subclasses: once a parent property has a type, the subclass's property of the same name must declare the same type; once a parent method has a return type, the subclass's method of the same name must declare a compatible return type. A subclass method parameter without a type is still compatible, because PHP allows subclasses to widen parameter types (which is exactly why some old plugins need changes for 1.3; see [Migrating themes and plugins to 1.3](../migrate-to-1-3.md)). For public classes that are often extended (`Widget\Archive`, `Widget\Base\*` and so on), assess the impact on existing plugins before changing a signature.
 
 ## Keeping legacy class names working {#aliases}
 

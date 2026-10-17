@@ -2,7 +2,7 @@
 title: $this->options
 sidebar_position: 5
 translation: machine
-source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # $this->options
@@ -72,13 +72,13 @@ Calling a method with the name of any option outputs its value directly (this is
 | `loginUrl` | `string` | Get the login URL |
 | `logoutUrl` | `string` | Get the logout URL |
 | `missingTheme` | `?string` | Dynamically determine the theme directory |
-| `originalSiteUrl` | `string` | The site URL saved in the database (not rewritten by `__TYPECHO_SITE_URL__` and the like) |
+| `originalSiteUrl` | `string` | The site URL actually in use: the site URL saved in the settings; the constant `__TYPECHO_SITE_URL__` when it is defined, or `rootUrl` when `__TYPECHO_DYNAMIC_SITE_URL__` is enabled. `siteUrl` is normalized from it, with `http://` changed to `https://` on HTTPS requests |
 | `panelTable` | `array` | Admin panels registered by plugins |
 | `pluginDir` | `string` | Absolute path of the plugin directory |
 | `plugins` | `array` | Enabled plugins and the hooks they registered |
 | `pluginUrl` | `string` | Get the plugin path |
 | `profileUrl` | `string` | Get the profile URL |
-| `registerAction` | `string` | Get the login submit URL |
+| `registerAction` | `string` | Submit URL of the registration form, with a security token |
 | `registerUrl` | `string` | Get the registration URL |
 | `rootUrl` | `string` | Dynamically get the root directory |
 | `routingTable` | `array` | The parsed routing table |

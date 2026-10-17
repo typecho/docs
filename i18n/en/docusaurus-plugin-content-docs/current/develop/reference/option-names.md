@@ -2,7 +2,7 @@
 title: Option Names
 sidebar_position: 6
 translation: machine
-source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # Option Names
@@ -99,6 +99,6 @@ The following names are not among the default options; they are created by actio
 | `theme:<theme directory name>` | Created from the defaults of the theme's `themeConfig()` when you activate the theme; updated when you save the theme settings; deleted when you switch to another theme |
 | `plugin:<plugin name>` | Created when you enable a plugin that has settings, updated when you save the plugin settings, deleted when you disable the plugin |
 | `_plugin:<plugin name>` | The plugin's personal settings: when you enable the plugin, the defaults are saved with `user = 0`; when a user saves them in their profile, a row with `user = <user ID>` is written; all of them are deleted when you disable the plugin |
-| Names defined by plugins | Plugins can write any option with `Helper::setOption()` |
+| Names defined by plugins | Inserted into `table.options` by the plugin itself (`name`, `user = 0`, `value`). `Helper::setOption()` only changes options that already exist and does not create new ones; see [Helper](./helper.md). For ordinary plugin settings, `plugin:<plugin name>` is enough; it is managed by `Helper::configPlugin()` and the plugin configuration form |
 
 The form under "Settings → Discussion" also submits three names, `commentsUniqueIpInterval`, `commentsStopWords` and `commentsIpBlackList`, but they are not default options and no code reads them.

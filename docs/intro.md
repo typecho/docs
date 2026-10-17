@@ -7,7 +7,7 @@ slug: /
 
 Typecho 是由两个单词 type 和 echo 组成的，在发音的时候也发这两个音 `/taɪpˌ'ekoʊ/`。
 
-Type，有打字的意思，博客这个东西，正是一个让我们通过打字，在网络上表达自己的平台。Echo，意思是回声、反馈、共鸣，也是PHP里最常见、最重要的函数，相信大部分 PHP 爱好者都是从 `echo 'Hello World!';` 开始自己的PHP编程之路的。
+Type，有打字的意思，博客这个东西，正是一个让我们通过打字，在网络上表达自己的平台。Echo，意思是回声、反馈、共鸣，也是 PHP 中用于输出内容的语言结构 `echo`，相信大部分 PHP 爱好者都是从 `echo 'Hello World!';` 开始自己的PHP编程之路的。
 
 此名称就表明 Typecho 是一款博客程序，它在 [GPL version 2 许可证](https://opensource.org/license/gpl-2-0/)下发行，基于 PHP（需要 PHP 7.4 以上版本）构建,可以运行在各种平台上，支持多种数据库（Mysql / PostgreSQL / SQLite）。
 

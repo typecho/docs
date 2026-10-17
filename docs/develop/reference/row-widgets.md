@@ -27,9 +27,9 @@ sidebar_position: 3
 | `static destory(string $alias)` | **已弃用**。释放组件 |
 | `static destroy(?string $alias = null)` | 释放组件 |
 | `execute()` | execute function. |
-| `have(): bool` | 返回堆栈是否为空 |
+| `have(): bool` | 是否有数据：堆栈非空时返回 `true`，为空时返回 `false` |
 | `next()` | 返回堆栈每一行的值 |
-| `on(bool $condition)` | post事件触发 |
+| `on(bool $condition)` | 条件为真时返回对象本身，为假时返回一个什么也不做的空对象，用来有条件地调用后面的方法，例如 `$this->on($this->is('post'))->title()`。与事件无关 |
 | `parse(string $template)` | 格式化解析堆栈内的所有数据 |
 | `push(array $value)` | 将每一行的值压入堆栈 |
 | `pushAll(array $values)` | 将所有行的值压入堆栈 |

@@ -54,13 +54,21 @@ npm ci          # 按 package-lock.json 安装
 |---|---|---|---|
 | `npm run build_js` | `admin/src/js/*.js` | `admin/js/*.js` | 用 uglify-js 逐个压缩 |
 | `npm run build_css` | `admin/src/scss/*.scss` | `admin/css/*.css` | 用 node-sass 编译（压缩输出）。以 `_` 开头的文件是被引用的片段，不单独输出，实际生成 `grid.css`、`install.css`、`style.css` |
-| `npm run build_css:theme` | `usr/themes/classic-22/static/scss/*.scss` | `usr/themes/classic-22/static/css/*.css` | 编译 `classic-22` 主题的样式 |
+| `npm run build_css:theme` | `usr/themes/classic-22/static/scss/*.scss` | `usr/themes/classic-22/static/css/*.css` | 编译 `classic-22` 主题的样式。1.3.0 中生成的结果不能使用，改用下文的 Dart Sass 命令 |
 
 `build_css` 还会把 `admin/src/img/icons/`、`admin/src/img/editor/` 中的小图标合成雪碧图，输出 `admin/img/icons.png`、`icons@2x.png`、`editor.png`、`editor@2x.png`，并把坐标写进 CSS。雪碧图的中间文件缓存在 `tools/tmp/`（已被 `.gitignore` 忽略）。
 
 构建结果（`admin/js/`、`admin/css/`、`admin/img/`、主题的 `static/css/`）是提交到仓库中的，发行包直接使用它们；`admin/src/` 和主题的 `static/scss/` 只在仓库中，打包时被去掉。修改了源文件就要运行对应的脚本，并把源文件和构建结果一起提交。压缩器版本不同时，压缩后的 JS 可能与仓库中的版本在变量名等细节上不同，这不影响功能。
 
-1.3.0 中，`classic-22` 的 `style.scss` 使用了 `@use "…/@picocss/pico/scss" with (…)` 语法，而 node-sass 不支持它：`npm run build_css:theme` 会把这一行原样写进输出，生成的 `style.css` 缺少 Pico CSS 的全部样式，不能使用。仓库中的 `classic-22/static/css/style.css` 是用支持该语法的 Dart Sass 编译的（文件开头为 Pico CSS v2.0.6 的版权注释）。修改主题样式时请改用 Dart Sass 编译，或者不要提交 `build_css:theme` 生成的文件。
+1.3.0 中，`classic-22` 的 `style.scss` 使用了 `@use "…/@picocss/pico/scss" with (…)` 语法，而 node-sass 不支持它：`npm run build_css:theme` 会把这一行原样写进输出，生成的 `style.css` 缺少 Pico CSS 的全部样式，不能使用。仓库中的 `classic-22/static/css/style.css` 是用支持该语法的 Dart Sass 编译的（文件开头为 Pico CSS v2.0.6 的版权注释）。修改主题样式时用 Dart Sass 编译。在 `tools/` 中先运行 `npm ci`（安装 Pico CSS），然后在 `tools/` 中运行：
+
+```bash
+npx --yes --package=sass sass --style=compressed --no-source-map \
+  ../usr/themes/classic-22/static/scss/style.scss \
+  ../usr/themes/classic-22/static/css/style.css
+```
+
+新版 Dart Sass 编译时会对 Pico CSS 的源文件输出一些弃用警告，不影响结果。把修改后的 SCSS 和生成的 CSS 一起提交。
 
 ## Makefile
 

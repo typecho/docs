@@ -2,7 +2,7 @@
 title: Hook Reference
 sidebar_position: 1
 translation: machine
-source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # Hook Reference
@@ -14,14 +14,32 @@ All plugin hooks in Typecho 1.3.0. For how to register callbacks and what the th
 - **Handle**: the name you pass to `Typecho\Plugin::factory()` when registering. For class handles you can use either the 1.3 class name (such as `Widget\Base\Contents`) or the name in the table (such as `Widget_Abstract_Contents`); Typecho converts it to the name in the table. See [Handle names](../plugin/hooks.md#handle-names).
 - **Hook**: the property name you assign to, for example `Typecho\Plugin::factory('Widget\Archive')->beforeRender = ...`.
 - **Type**:
-  - `call`: a notification. The callback receives the arguments in the order of the "Arguments" column; the return value is usually not used;
+  - `call`: the callback receives the arguments in the order of the "Arguments" column. `call` returns the return value of the last callback; most `call` hooks do not use it, and those that do are listed under [Return values](#return-values) below;
   - `filter`: a filter. The first argument the callback receives is the value being filtered (the first item in the "Arguments" column), and the callback **must return** the processed value;
-  - `trigger + call` / `trigger + filter`: same as above, and as soon as any callback runs, Typecho **skips its own default handling** and the plugin takes over;
+  - `trigger + call` / `trigger + filter`: same as above; in addition the calling code learns whether any callback ran and decides what happens next. In most cases, when a callback has run, Typecho **skips its own default handling** and uses the callback's result instead; for the exceptions see [Return values](#return-values);
   - `deprecated magic`: triggered through a deprecated magic method; behaves the same as `call`.
 - **Arguments**: the expressions passed to the hook at the call site, copied verbatim from the source. `$this` is the object that triggers the hook, whose type is the class under the section heading; in file handles, `$post` and `$page` are the post or page being edited.
 - **Location**: `file:line`, with line numbers matching Typecho 1.3.0. When the same hook is triggered in several places, all of them are listed.
 
 For hooks triggered by `self::pluginHandle()`, the handle is the class the object actually belongs to. The tables list them under the class where they appear in the source; `getDefaultFieldItems` and `isFieldReadOnly`, which `Widget\Contents\EditTrait` triggers with `static::pluginHandle()`, are listed under `Widget\Contents\Post\Edit` and `Widget\Contents\Page\Edit`, which use the trait.
+
+## Return values {#return-values}
+
+Callbacks for the following hooks must return the stated value; otherwise login fails, a type error is raised or the query breaks:
+
+| Handle | Hook | The callback should return |
+|---|---|---|
+| `Widget_User` | `login` | `bool`, used as the login result; Typecho no longer checks the user name and password itself |
+| `Widget_User` | `hashValidate` | `bool`, whether the password is correct |
+| `Widget_Archive` | `select` | `Typecho\Db\Query`; `Widget\Archive` adds its conditions, ordering and pagination to it |
+| `Widget_Upload` | `attachmentHandle` | `string`, the URL of the attachment |
+| `Widget_Upload` | `attachmentDataHandle` | `string`, the contents of the attachment file |
+| `Widget_Upload` | `deleteHandle` | `bool`, whether the deletion succeeded |
+| `Widget_Upload` | `uploadHandle` / `modifyHandle` | An array with the same structure as the default implementation's (`name`, `path`, `size`, `type`, `mime`), or `false` on failure |
+| `Widget_Feed` | `feedItem` / `commentFeedItem` | `string` or `null`. Typecho still generates the item as usual; the returned string is inserted as raw XML at the end of that item |
+| `Widget_Abstract_Contents`, `Widget_Contents_Post_Edit`, `Widget_Contents_Page_Edit` | `isFieldReadOnly` | `bool`. Returning `true` skips this custom field, returning `false` handles it as usual; registering a callback that does not return `true` does not make the field read-only |
+
+Every `filter` hook must return the processed value; they are not listed one by one.
 
 ## Overview
 

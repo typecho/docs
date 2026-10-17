@@ -2,7 +2,7 @@
 title: Widget\Archive
 sidebar_position: 2
 translation: machine
-source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
+source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 ---
 
 # Widget\Archive
@@ -19,7 +19,7 @@ source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
 
 | Method | Description |
 |---|---|
-| `addArchiveTitle(string $archiveTitle)` | Appends to the title |
+| `addArchiveTitle(string $archiveTitle)` | Appends to the title. **This method cannot be used in 1.3.0**: it raises an error when a title already exists (`[] operator not supported for strings`) and throws a `TypeError` when there is no title. To append text to the title, build the string yourself with `setArchiveTitle()`, for example `$this->setArchiveTitle(($this->getArchiveTitle() ?? '') . ' - Page 2')` |
 | `archiveTitle($defines = null, string $before = ' &raquo; ', string $end = '')` | Outputs the archive title |
 | `attachments(int $limit = 0, int $offset = 0): Related` | Gets the attachments object |
 | `comments(): Archive` | Gets the comment archive object |

@@ -82,7 +82,6 @@ $form->addInput($count->addRule('required', _t('必须填写'))->addRule('isInte
 
 | 方法 | 说明 |
 |---|---|
-| `addRule(string $key, $rule, string $message): Validate` | 增加验证规则 |
 | `static alpha(string $str): bool` | Alpha |
 | `static alphaDash(string $str): bool` | Alpha-numeric with underscores and dashes |
 | `static alphaNumeric(string $str): bool` | Alpha-numeric |
@@ -95,8 +94,6 @@ $form->addInput($count->addRule('required', _t('必须填写'))->addRule('isInte
 | `static minLength(string $str, int $length): bool` | 最小长度 |
 | `static regexp(string $str, string $pattern): bool` | 正则表达式验证 |
 | `required(): bool` | 是否为空 |
-| `run(array $data, ?array $rules = null): array` | Run the Validator |
-| `setBreak()` | 设置为中断模式 |
 | `static url(string $str): bool` | 验证是否为网址 |
 | `static xssCheck(string $str): bool` | 对xss字符串的检测 |
 
@@ -106,7 +103,7 @@ $form->addInput($count->addRule('required', _t('必须填写'))->addRule('isInte
 | `email` | — | `addRule('email', '邮箱格式错误')` |
 | `url` | — | `addRule('url', '网址格式错误')` |
 | `isInteger` / `isFloat` | — | `addRule('isInteger', '请填入整数')` |
-| `minLength` / `maxLength` | 长度 | `addRule('maxLength', '最多 20 个字', 20)` |
+| `minLength` / `maxLength` | 长度 | `addRule('maxLength', '最多 20 个字', 21)`：`maxLength` 要求长度**小于**参数，所以“最多 20 个字”要写 `21` |
 | `alpha` / `alphaNumeric` / `alphaDash` | — | 只允许字母 / 字母和数字 / 字母、数字、下划线和横杠 |
 | `enum` | 允许的值组成的数组 | `addRule('enum', '取值不正确', ['a', 'b'])` |
 | `regexp` | 正则表达式 | `addRule('regexp', '格式不正确', '/^#[0-9a-f]{6}$/i')` |
