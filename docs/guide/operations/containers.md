@@ -134,7 +134,7 @@ docker compose logs typecho   # 第一次启动时会打印“安装成功”和
 
 几点说明：
 
-- **为什么要 `TYPECHO_DB_NEXT: keep`**：`config.inc.php` 写在 `/app` 根目录，而这里只把 `/app/usr` 挂载到了宿主机。容器被删除重建（例如换用新版本镜像）后，`/app` 是一个新的空卷，`config.inc.php` 也就没有了。`TYPECHO_INSTALL=1` 加 `TYPECHO_DB_NEXT=keep` 让每次启动都用环境变量重新生成配置；数据库中已有完整数据时，安装程序写好配置后直接结束，不会重建数据表，也不会改动管理员帐号。去掉 `keep` 重建时，会报“安装程序检查到原有数据表已经存在.”并跳到安装页。`keep` 只在数据表已经存在时才起作用，所以不影响空库上的首次安装。
+- **为什么要 `TYPECHO_DB_NEXT: keep`**：`config.inc.php` 写在 `/app` 根目录，而这里只把 `/app/usr` 挂载到了宿主机。`/app` 是镜像声明的匿名卷，容器被删除后重新创建（`docker compose down` 后再 `up`，或者按下文的升级步骤重建匿名卷）时，`/app` 是一个新的空卷，`config.inc.php` 也就没有了。`TYPECHO_INSTALL=1` 加 `TYPECHO_DB_NEXT=keep` 让每次启动都用环境变量重新生成配置；数据库中已有完整数据时，安装程序写好配置后直接结束，不会重建数据表，也不会改动管理员帐号。去掉 `keep` 重建时，会报“安装程序检查到原有数据表已经存在.”并跳到安装页。`keep` 只在数据表已经存在时才起作用，所以不影响空库上的首次安装。
 - **等数据库就绪**：`depends_on` 加 `condition: service_healthy` 让 Typecho 容器等 MySQL 可以连接后再启动。否则第一次启动时 MySQL 还没准备好，自动安装会失败。
 - 和普通安装一样，MySQL / PostgreSQL 的数据库必须事先存在，这里由 `MYSQL_DATABASE` 创建。
 - 安装成功后管理员密码会以明文出现在 `docker compose logs` 中。可以不设置 `TYPECHO_USER_PASSWORD`，让它随机生成，登录后立即修改。
@@ -149,11 +149,19 @@ docker compose logs typecho   # 第一次启动时会打印“安装成功”和
 
 只挂载 `usr/`，并且保留 `TYPECHO_INSTALL: "1"`、全部 `TYPECHO_SITE_URL` / `TYPECHO_DB_*` 和 `TYPECHO_DB_NEXT: keep`（上面的 Compose 文件已经包含）：
 
-1. [备份](./backup.md)数据库和 `./usr`；
-2. 把 `image` 改成新版本标签，执行 `docker compose pull && docker compose up -d`；
-3. 用管理员登录后台，会被带到升级页面，按提示完成升级。
+1. [备份](./backup.md)数据库、`./usr` 和容器中的 `config.inc.php`（`docker compose cp typecho:/app/config.inc.php ./config.inc.php.bak`）；
+2. 把 `image` 改成新版本标签，然后执行：
 
-按这个流程，新容器启动时重新生成配置，登录后台会跳到 `upgrade.php`，执行后版本即为新版本。漏掉 `TYPECHO_DB_NEXT=keep` 或 `TYPECHO_INSTALL=1` 时，新容器没有 `config.inc.php`，站点会跳到安装页；这时补上变量重建即可，数据库不受影响。
+   ```bash
+   docker compose pull typecho
+   docker compose up -d --no-deps --force-recreate --renew-anon-volumes typecho
+   ```
+
+   只执行 `docker compose up -d` 不够：Compose 重建容器时会沿用旧容器的匿名卷，卷里旧版本的 `admin/`、`var/` 不会被替换，升级实际上不会发生。`--renew-anon-volumes` 让 `/app` 换成新的空卷；
+3. 如果你在 `config.inc.php` 中加过自定义常量（例如 HTTPS、Cookie、附件位置、关闭主题编辑器的设置），或者改过后台目录名，新容器中都没有了，要对照第 1 步的备份重新加上；
+4. 用管理员登录后台，会被带到升级页面，按提示完成升级，然后在后台页脚确认版本号。
+
+按这个流程，新容器启动时重新生成配置，登录后台会跳到 `upgrade.php`，执行后版本即为新版本。`TYPECHO_DB_NEXT=keep` 保留的是数据库中的数据，重新生成的 `config.inc.php` 只包含数据库连接等标准内容。漏掉 `TYPECHO_DB_NEXT=keep` 或 `TYPECHO_INSTALL=1` 时，新容器没有 `config.inc.php`，站点会跳到安装页；这时补上变量重建即可，数据库不受影响。
 
 注意 `usr/themes` 等目录已经存在，新版本镜像带来的新主题不会自动出现在 `./usr/themes` 中。
 

@@ -43,7 +43,7 @@ Typecho 运行时只需要写入很少的位置（详细列表见[容器与云�
 | `config.inc.php` | 只读 | `640`，属于部署用户、组为 PHP 进程的组 |
 | 其他所有文件和目录 | 只读 | 属于部署用户，目录 `755`、文件 `644` |
 
-一个示例（部署用户 `deploy`，PHP 以 `www-data` 运行）：
+一个示例（使用 MySQL / PostgreSQL，部署用户 `deploy`，PHP 以 `www-data` 运行）：
 
 ```bash
 cd /srv/www/typecho
@@ -52,6 +52,14 @@ find . -type d -exec chmod 755 {} \;
 find . -type f -exec chmod 644 {} \;
 chmod 640 config.inc.php
 chown -R www-data:www-data usr/uploads
+```
+
+使用 SQLite 时，上面的命令会让数据库文件和它所在的 `usr/` 目录对 PHP 只读，站点无法写入数据库。不要因此把整个 `usr/` 设为可写，而是把数据库移到单独的目录（最好在网站目录之外），让 PHP 进程拥有这个目录，再把 `config.inc.php` 中的 `'file'` 改成新路径：
+
+```bash
+mkdir -p /srv/data/typecho
+mv usr/你的数据库文件.db /srv/data/typecho/
+chown -R www-data:www-data /srv/data/typecho
 ```
 
 这样设置之后会有两个影响：

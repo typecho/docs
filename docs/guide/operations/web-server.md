@@ -43,8 +43,8 @@ server {
         deny all;
     }
 
-    # 上传目录中的 PHP 文件一律不执行
-    location ~ ^/usr/uploads/.*\.php$ {
+    # 上传目录中的 PHP 文件一律不执行（包括 /usr/uploads/x.php/xxx 这种带路径的地址）
+    location ~ ^/usr/uploads/.*\.php(/|$) {
         deny all;
     }
 
@@ -72,7 +72,7 @@ server {
 - nginx 按出现顺序匹配正则 `location`，两条 `deny` 规则要写在 PHP 的 `location` **之前**。
 - Debian / Ubuntu 的 `fastcgi_params` 不包含 `SCRIPT_FILENAME`，所以上面单独设置了一次。如果你用的是发行版自带的 `snippets/fastcgi-php.conf`，它已经包含 `fastcgi_split_path_info` 和 `PATH_INFO`，不要重复设置。
 - 不要用早年流传的 `if (!-e $request_filename) { rewrite ^(.*)$ /index.php$1 last; }` 代替 `try_files`。它和 `location ~ \.php$` 一起使用时，`/index.php/action/login` 会被反复重写成 `/index.php/index.php/...`，返回 **500**（日志：`rewrite or internal redirection cycle`）。
-- 网站装在子目录（例如 `/blog/`）时，把 `location /` 改成 `location /blog/`，`try_files` 的最后一项改成 `/blog/index.php$is_args$args`。
+- 网站装在子目录（例如 `/blog/`）时，把 `location /` 改成 `location /blog/`，`try_files` 的最后一项改成 `/blog/index.php$is_args$args`；两条 `deny` 规则的开头也要加上子目录，写成 `^/blog/usr/(.+\.db$|backups/)` 和 `^/blog/usr/uploads/.*\.php(/|$)`，否则它们匹配不到任何地址。`root` 要让 `/blog/index.php` 对应到 Typecho 实际的 `index.php`，例如程序放在 `/srv/www/blog/` 时，`root` 是 `/srv/www`。
 
 改完后用 `nginx -t` 检查语法，再 `nginx -s reload`（或 `systemctl reload nginx`）。
 
@@ -88,6 +88,14 @@ Apache 需要启用 `mod_rewrite`，并允许网站目录使用 `.htaccess`：
     <Directory /srv/www/typecho>
         AllowOverride All
         Require all granted
+    </Directory>
+
+    # 禁止下载 SQLite 数据库文件和服务器上的备份文件
+    <FilesMatch "\.db$">
+        Require all denied
+    </FilesMatch>
+    <Directory /srv/www/typecho/usr/backups>
+        Require all denied
     </Directory>
 
     # 使用 PHP-FPM 时（mod_proxy_fcgi）；使用 mod_php 时不需要这一段
@@ -135,6 +143,16 @@ RewriteRule . /index.php [L]
 </FilesMatch>
 ```
 
+不能修改站点配置（例如共享主机）时，用 `.htaccess` 代替上面 `<VirtualHost>` 中禁止下载数据库和备份的两段：在根目录的 `.htaccess` 中加上
+
+```apache
+<FilesMatch "\.db$">
+    Require all denied
+</FilesMatch>
+```
+
+并在 `usr/backups/` 下放一个只有一行 `Require all denied` 的 `.htaccess`。
+
 ## Caddy 2 {#caddy}
 
 Caddy 2 的 `php_fastcgi` 指令已经包含了 Typecho 需要的处理：按 `.php` 拆分路径，文件不存在时回落到 `index.php`，并保留原始的 `REQUEST_URI`。
@@ -144,7 +162,7 @@ blog.example.com {
     root * /srv/www/typecho
 
     # 禁止下载 SQLite 数据库文件、服务器上的备份文件和上传目录中的 PHP
-    @blocked path_regexp ^/usr/(.+\.db$|backups/|uploads/.*\.php$)
+    @blocked path_regexp ^/usr/(.+\.db$|backups/|uploads/.*\.php(/|$))
     respond @blocked 403
 
     php_fastcgi unix//run/php/php8.2-fpm.sock
@@ -171,7 +189,7 @@ blog.example.com {
     root * /srv/www/typecho
 
     # 禁止下载 SQLite 数据库文件、服务器上的备份文件和上传目录中的 PHP
-    @blocked path_regexp ^/usr/(.+\.db$|backups/|uploads/.*\.php$)
+    @blocked path_regexp ^/usr/(.+\.db$|backups/|uploads/.*\.php(/|$))
     respond @blocked 403
 
     # /index.php/action/login 这类地址直接交给 index.php（兼容 cgi.fix_pathinfo=0）

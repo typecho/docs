@@ -96,34 +96,34 @@ tail -f /var/log/nginx/error.log /var/log/php8.2-fpm.log
 
 ## 排查流程：禁用插件、切回默认主题 {#isolate}
 
-升级后、启用某个插件后、更换主题后出现 500、空白页、后台按钮失效等问题，大多与插件或主题有关。按下面的顺序缩小范围：
+升级后、启用某个插件后、更换主题后出现 500、空白页、后台按钮失效等问题，大多与插件或主题有关。按下面的顺序缩小范围。开始前**先备份数据库**：在后台禁用插件会删除它的设置，设置较多的插件请先记下设置内容。
 
 1. **禁用全部插件**：后台“控制台 → 插件”，逐个点击“禁用”。
 2. **切换到自带主题**：后台“控制台 → 外观”，启用 `default`（或 1.3 新增的 `classic-22`）。
 3. 问题消失后，**逐个**重新启用插件，每启用一个就测试一次，找出引起问题的那一个；最后再切回原来的主题测试。
 4. 找到之后：升级该插件或主题到支持 1.3 的版本，或联系作者，或停用它。
 
-插件的设置保存在数据库中，禁用后再启用，设置不会丢失。
+插件的设置保存在数据库中（`plugin:插件名` 和 `_plugin:插件名` 两项）。在后台禁用插件时，这两项会一起删除；重新启用后是插件的默认设置，需要按记下的内容重新填写。
 
 ### 后台进不去时：通过数据库操作
 
-如果错误导致后台也打不开，可以直接改数据库中的选项（表前缀以 `config.inc.php` 为准，默认 `typecho_`）。**先备份数据库**。下面的语句只用了 MySQL、PostgreSQL 和 SQLite 都支持的语法。
+如果错误导致后台也打不开，可以直接改数据库中的选项（表前缀以 `config.inc.php` 为准，默认 `typecho_`）。**先备份数据库**。下面的语句只用了 MySQL、PostgreSQL 和 SQLite 都支持的语法。`user` 列要写成 `typecho_options.user`：在 PostgreSQL 中单独写 `user` 表示当前的数据库用户，而不是这一列，语句会报错。
 
 **一次禁用全部插件**（与新安装站点的初始值相同）：
 
 ```sql
-UPDATE typecho_options SET value = 'a:0:{}' WHERE name = 'plugins'     AND user = 0;
-UPDATE typecho_options SET value = '[]'     WHERE name = 'actionTable' AND user = 0;
-UPDATE typecho_options SET value = '[]'     WHERE name = 'panelTable'  AND user = 0;
+UPDATE typecho_options SET value = 'a:0:{}' WHERE name = 'plugins'     AND typecho_options.user = 0;
+UPDATE typecho_options SET value = '[]'     WHERE name = 'actionTable' AND typecho_options.user = 0;
+UPDATE typecho_options SET value = '[]'     WHERE name = 'panelTable'  AND typecho_options.user = 0;
 ```
 
 - `plugins` 记录了启用的插件和它们挂接的接口；后两项是插件注册的动作地址和后台菜单，不清空的话，插件留下的菜单项还会显示。
-- 各插件的设置（`plugin:插件名` 选项）不受影响，之后在后台重新启用插件即可恢复。
+- 这样做不会删除各插件的设置（`plugin:插件名`、`_plugin:插件名` 选项）。但之后在后台重新启用插件时，插件的默认设置会写到原有设置上，原来的值可能被重置，请事先备份这两项。
 
 **切换到默认主题**：
 
 ```sql
-UPDATE typecho_options SET value = 'default' WHERE name = 'theme' AND user = 0;
+UPDATE typecho_options SET value = 'default' WHERE name = 'theme' AND typecho_options.user = 0;
 ```
 
 :::warning 不要只删除插件目录
