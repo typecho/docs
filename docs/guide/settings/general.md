@@ -12,20 +12,20 @@ sidebar_position: 1
 | 界面名称 | 选项名 | 默认值 | 说明 |
 |---|---|---|---|
 | 站点名称 | `title` | 安装时填写 | 显示在网页标题和后台中，必填 |
-| 站点地址 | `siteUrl` | 安装时的地址 | 生成所有永久链接的基础，见[下文](#site-url) |
+| 站点地址 | `siteUrl` | 安装时的地址 | 首页链接，以及主题、插件静态文件和附件地址的前缀，见[下文](#site-url) |
 | 站点描述 | `description` | `Your description here.` | 输出为页面头部的 `<meta name="description">` |
 | 关键词 | `keywords` | `typecho,php,blog` | 输出为 `<meta name="keywords">`，用半角逗号分隔 |
 | 是否允许注册 | `allowRegister` | 不允许（`0`） | 允许后访客可以注册，新用户为“关注者”，见[用户、角色与注册](../content/users.md#register) |
 | XMLRPC 接口 | `allowXmlRpc` | 打开（`2`） | `0` 关闭、`1` 仅关闭 Pingback 接口、`2` 打开，见[订阅源与离线客户端](../content/feeds-xmlrpc.md#xmlrpc) |
 | 语言 | `lang` | `zh_CN` | 只在 `usr/langs` 中有语言包时才显示，见[界面语言](../extend/languages.md) |
-| 时区 | `timezone` | 安装时选择 | 见[下文](#timezone) |
+| 时区 | `timezone` | GMT +8（`28800`） | 安装程序不提供时区选择，安装后请改成你所在的时区，见[下文](#timezone) |
 | 允许上传的文件类型 | `attachmentTypes` | `@image@` | 见[下文](#attachment-types) |
 
 站点名称、站点描述、关键词中不能包含 `<`、`>` 等特殊字符，否则提示“请不要在……中使用特殊字符”。
 
 ## 站点地址 {#site-url}
 
-“站点地址”（`siteUrl`）是 Typecho 生成文章、页面、分类、订阅源等所有链接时使用的前缀。迁移到新域名或改用 HTTPS 时要修改它，见[从其他博客迁移：换域名](../operations/migration.md#new-domain)。
+“站点地址”（`siteUrl`）用于首页链接，以及主题、插件的静态文件（CSS、JS、图片）和附件地址。文章、页面、分类、订阅源等永久链接**不使用**它，而是使用当前请求的根地址，所以永久链接的域名或协议不对时，只改这一项解决不了，见[HTTPS、反向代理与 CDN：永久链接的域名和协议](../operations/https-proxy.md#root-url)。迁移到新域名或改用 HTTPS 时也要修改它，见[从其他博客迁移：换域名](../operations/migration.md#new-domain)。
 
 - 保存时会去掉末尾的 `/`。
 - 1.3 起输入框是网址类型，可以直接输入中文等国际化域名（以 `xn--` 形式保存，显示时转回原文，需要 PHP `intl` 扩展）。

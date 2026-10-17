@@ -32,15 +32,35 @@ Typecho 升级分两步：先**替换程序文件**，再在后台**执行升级
 
 | 当前版本 | 升级路线 |
 |---|---|
-| 1.2.x | 直接升级到 1.3.0 |
-| 1.1.x | **建议先升级到 1.2.1，再升级到 1.3.0**（原因见下） |
-| 1.1.0 以前（0.x、1.0） | 必须先升级到 1.2.1，再升级到 1.3.0。直接运行 1.3 的升级程序会提示“请先升级至版本 1.1.0” |
+| 1.2.x | 直接升级到 1.3.0。站点是从 1.1 升级到 1.2 的，先按下文检查两项表结构 |
+| 1.1.x | **先手动完成下文的两项表结构调整，再升级到 1.3.0** |
+| 1.1.0 以前（0.x、1.0） | 先用 1.1 的升级程序升级到 1.1，再按 1.1.x 处理。直接运行 1.3 的升级程序会提示“请先升级至版本 1.1.0” |
 
-**为什么 1.1 要经过 1.2.1**：1.3 删除了 1.2.1 及以前的全部历史升级脚本，只保留 1.3.0 自己的一步。1.1 站点的版本号能通过 `MIN_VERSION` 检查，但 1.2.1 中的两项表结构调整（`comments.agent` 改为 `varchar(511)`、`comments.url` 改为 `varchar(255)`）在 1.3 中已经不存在，1.1 直接升级到 1.3 时这两列不会被修改。先用 1.2.1 升级一次就能补上。
+**为什么 1.1 要手动调整表结构**：1.3 删除了全部历史升级脚本，只保留 1.3.0 自己的一步。1.1 站点的版本号能通过 `MIN_VERSION` 检查，但 1.2 中的两项表结构调整（`comments.agent` 改为 `varchar(511)`、`comments.url` 改为 `varchar(255)`）在 1.3 中已经不存在，1.1 直接升级到 1.3 时这两列不会被修改。
 
-1.2.1 的安装包在 [GitHub Releases 的 v1.2.1](https://github.com/typecho/typecho/releases/tag/v1.2.1) 页面下载（附件 `typecho.zip`），升级步骤与本页相同。
+先用 1.2.0 或 1.2.1 升级一次也补不上：这两个版本的升级程序按版本号挑选历史脚本时，遇到第一个（最旧的）脚本就停止，所以从 1.1 升级时一个历史脚本都不会执行，却照样把版本号改成 1.2.x。因此从 1.1 升级上来的 1.2.x 站点也可能缺少这两项调整。
+
+备份数据库后，用数据库客户端检查 `comments` 表这两列的长度（下面以默认前缀 `typecho_` 为例），不是 `511` 和 `255` 时执行：
+
+```sql
+-- MySQL / MariaDB
+ALTER TABLE `typecho_comments` MODIFY COLUMN `agent` varchar(511);
+ALTER TABLE `typecho_comments` MODIFY COLUMN `url` varchar(255);
+
+-- PostgreSQL
+ALTER TABLE "typecho_comments" ALTER COLUMN "agent" TYPE varchar(511);
+ALTER TABLE "typecho_comments" ALTER COLUMN "url" TYPE varchar(255);
+```
+
+SQLite 不限制 `varchar` 的长度，不需要调整。
+
+1.0 及更早版本请先用 1.1 的安装包升级（[GitHub Releases 的 v1.1-17.10.30-release](https://github.com/typecho/typecho/releases/tag/v1.1-17.10.30-release)），它的升级程序会执行全部历史脚本。
 
 ## 第一步：替换程序文件
+
+:::caution 先确认 PHP 版本
+1.3 需要 PHP 7.4 或更高版本。替换文件之前，先确认 **Web 服务器使用的** PHP 已经是 7.4 以上、并装好所需扩展（见[环境要求](./requirements.md)）。在 PHP 7.2、7.3 上替换文件后，整个站点和后台的升级页都无法运行。命令行里的 `php -v` 与 Web 服务器使用的 PHP 可能不是同一个。
+:::
 
 1. 下载新版安装包并解压到临时目录：
 
@@ -76,7 +96,13 @@ Typecho 升级分两步：先**替换程序文件**，再在后台**执行升级
 按[安全加固](../operations/security.md#remove-installer)的建议在安装后删除了 `install.php` 和 `install/` 的站点，升级时可以不复制这两项：后台升级程序不使用它们。
 
 :::tip 关于新主题
-新包的 `usr/themes/` 里带有 1.3 新增的官方主题 `classic-22`。想使用它，单独把 `usr/themes/classic-22` 复制到网站目录即可。不要整体覆盖 `usr/themes/default`，否则你对默认主题的修改会丢失。
+新包的 `usr/themes/` 里带有 1.3 新增的官方主题 `classic-22`。想使用它，单独把这个目录复制到网站的 `usr/themes/` 下，再到“控制台 → 外观”中启用：
+
+```bash
+cp -R /tmp/typecho-new/usr/themes/classic-22 /srv/www/typecho/usr/themes/
+```
+
+不要整体覆盖 `usr/themes/default`，否则你对默认主题的修改会丢失。
 :::
 
 先删除再复制，是为了清掉新版本已经删除的旧文件。只覆盖不删除，旧文件会残留在 `admin/` 和 `var/` 里。
@@ -103,9 +129,9 @@ Typecho 升级分两步：先**替换程序文件**，再在后台**执行升级
 
 各项变化对站点的影响见 [1.3 新特性与变更](./whats-new-1-3.md)。
 
-## 已知问题：附件超过 100 个的站点升级时卡住
+## 已知问题：附件达到 100 个的站点升级时可能卡住
 
-**影响范围**：1.3.0 正式版。附件较多（100 个以上）的站点，点击“完成升级”后页面一直加载，直到 PHP 执行超时，升级始终无法完成。
+**影响范围**：1.3.0 正式版，附件达到 100 个的站点。点击“完成升级”后页面一直加载，直到 PHP 执行超时，升级始终无法完成。只有当升级程序读到的某一批 100 个附件**全都不需要转换**时才会出现，最常见的是第一次升级中途超时、部分附件已经转换过之后再点“完成升级”。附件数量多本身并不会导致卡住。
 
 **原因**：升级程序按每批 100 条转换附件数据，但只有遇到需要转换的旧格式附件时才会推进读取位置。如果连续 100 个附件都不需要转换（例如已经是 JSON 格式），读取位置不再前进，同一批数据被反复读取，形成死循环。
 
@@ -134,21 +160,19 @@ curl -fL -o var/Utils/Upgrade.php \
 - 只挂载 `/app/usr`、照常重建容器：`config.inc.php` 随旧容器一起消失，首页跳转到 `/install.php`；
 - 挂载整个 `/app`：换成新标签的镜像后，卷里的程序文件不会更新，站点仍停留在升级前的版本。
 
-可行的做法（以从 `1.2.1-php8.0-apache` 升级到 `1.3.0-php8.2-apache` 为例）：
+可行的做法（以用 [Compose 部署](../operations/containers.md#upgrade)、从 `1.2.1-php8.0-apache` 升级到 `1.3.0-php8.2-apache` 为例）：
 
 1. [备份](../operations/backup.md)数据库和挂载在 `/app/usr` 的目录；
-2. 用新标签重建容器，**只挂载 `/app/usr`**，并且传入 `TYPECHO_INSTALL=1`、安装时用过的全部 `TYPECHO_SITE_URL` 和 `TYPECHO_DB_*` 变量，再加上 `TYPECHO_DB_NEXT=keep`：
+2. 确认 `compose.yaml` 中**只挂载 `/app/usr`**，并且保留 `TYPECHO_INSTALL=1`、安装时用过的全部 `TYPECHO_SITE_URL` 和 `TYPECHO_DB_*` 变量，以及 `TYPECHO_DB_NEXT=keep`；把 `image` 改成新标签后重建容器：
 
    ```bash
-   docker run -d --name typecho -p 8080:80 -v /srv/typecho-usr:/app/usr \
-     -e TYPECHO_INSTALL=1 -e TYPECHO_DB_NEXT=keep \
-     -e TYPECHO_SITE_URL=https://blog.example.com \
-     -e TYPECHO_DB_ADAPTER=Pdo_Mysql -e TYPECHO_DB_HOST=db \
-     -e TYPECHO_DB_USER=typecho -e TYPECHO_DB_PASSWORD='数据库密码' -e TYPECHO_DB_DATABASE=typecho \
-     joyqi/typecho:1.3.0-php8.2-apache
+   docker compose pull
+   docker compose up -d
    ```
 
+   用 `docker run` 单独启动容器时，要传入同样的变量，并用 `--network` 加入数据库所在的网络，否则 `TYPECHO_DB_HOST` 中的服务名（如 `db`）无法解析。
+
    `keep` 让安装程序按环境变量重新生成 `config.inc.php`，数据完整时不建表、不改管理员帐号。少了 `keep` 会报“安装程序检查到原有数据表已经存在.”，站点同样跳到安装页。
-3. 用管理员登录后台，会被带到升级页面，执行[第二步](#第二步在后台执行升级)。附件超过 100 个的站点，先按[已知问题](#已知问题附件超过-100-个的站点升级时卡住)用 `docker cp` 把修复后的 `Upgrade.php` 放到容器的 `/app/var/Utils/` 下。
+3. 用管理员登录后台，会被带到升级页面，执行[第二步](#第二步在后台执行升级)。附件达到 100 个的站点，先按[已知问题](#已知问题附件达到-100-个的站点升级时可能卡住)用 `docker cp` 把修复后的 `Upgrade.php` 放到容器的 `/app/var/Utils/` 下。
 
 镜像没有 `latest` 标签，请写明版本号；`nightly-*` 标签来自 `master` 分支，不要用于生产。已经挂载了整个 `/app` 的站点见[容器与云主机部署](../operations/containers.md#mount-whole-app)。

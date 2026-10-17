@@ -42,7 +42,7 @@ sidebar_position: 2
 | 评论者名称显示时自动加上其个人主页链接 | `commentsShowUrl` | 开 | 评论者填写了网址时，名字链接到该网址 |
 | 对评论者个人主页链接使用 nofollow 属性 | `commentsUrlNofollow` | 开 | 上述链接带 `rel="nofollow"` |
 | 启用 Gravatar 头像服务, 最高显示评级为 [下拉框] 的头像 | `commentsAvatar`，下拉框为 `commentsAvatarRating` | 开，`G` | 评论者头像按邮箱从 Gravatar 获取；评级可选 `G`（普通）、`PG`（13岁以上）、`R`（17岁以上成人）、`X`（限制级），超过所选评级的头像不显示 |
-| 启用分页, 并且每页显示 [数字] 篇评论, 在列出时将 [第一页 / 最后一页] 作为默认显示 | `commentsPageBreak`，数字为 `commentsPageSize`，下拉框为 `commentsPageDisplay` | 关，20，最后一页 | 评论分页。`commentsPageDisplay` 为 `last` 时，打开文章默认显示最后一页（最新的评论），为 `first` 时显示第一页 |
+| 启用分页, 并且每页显示 [数字] 篇评论, 在列出时将 [第一页 / 最后一页] 作为默认显示 | `commentsPageBreak`，数字为 `commentsPageSize`，下拉框为 `commentsPageDisplay` | 关，20，最后一页 | 评论分页。`commentsPageDisplay` 为 `last` 时，打开文章默认显示最后一页，为 `first` 时显示第一页。第一页、最后一页按下面“评论排序”的顺序计算：旧评论在前时最后一页是最新的评论；新评论在前时要选第一页，才会默认显示最新的评论 |
 | 启用评论回复, 以 [数字] 层作为每个评论最多的回复层数 | `commentsThreaded`，数字为 `commentsMaxNestingLevels` | 开，5 | 嵌套回复，见下文 |
 | 将 [较新的 / 较旧的] 的评论显示在前面 | `commentsOrder` | 较旧的（`ASC`） | `DESC` 新评论在前，`ASC` 旧评论在前 |
 
@@ -58,7 +58,7 @@ sidebar_position: 2
 
 | 界面名称 | 选项名 | 默认 | 作用 |
 |---|---|---|---|
-| 所有评论必须经过审核 | `commentsRequireModeration` | 关 | 新评论进入“待审核” |
+| 所有评论必须经过审核 | `commentsRequireModeration` | 关 | 新评论进入“待审核”。该文章的作者以及编辑、管理员发表的评论不受此限制，直接通过；测试这项设置时请退出登录，以访客身份评论 |
 | 评论者之前须有评论通过了审核 | `commentsWhitelist` | 关 | 同一称呼和邮箱以前有过已通过的评论才直接通过，否则待审核；只在上一项关闭时起作用 |
 | 必须填写邮箱 | `commentsRequireMail` | 开 | 未登录的评论者必须填邮箱，否则提示“必须填写电子邮箱地址” |
 | 必须填写网址 | `commentsRequireUrl` | 关 | 未登录的评论者必须填个人主页，否则提示“必须填写个人主页” |

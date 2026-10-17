@@ -15,14 +15,17 @@ php install.php
 
 ## 快速示例
 
-SQLite，最少的配置：
+请用 Web 服务器运行 PHP 的帐号（例如 `www-data`）执行安装。安装程序的环境检查只检查执行命令的帐号能否写入；用 root 等其他帐号安装时，`usr/uploads`、SQLite 数据库文件及其所在目录会属于那个帐号，之后网页上传附件、写入数据库可能失败。不方便切换帐号时，安装后把这些路径的所有者改成 Web 服务器的帐号。
+
+SQLite，最少的配置。数据库文件放在网站目录之外，并事先建好它所在的目录、让 Web 服务器的帐号可写（放在 `usr/` 下的 `.db` 文件可能被直接下载，见[安全加固](../operations/security.md#sensitive-files)）：
 
 ```bash
 cd /srv/www/typecho
-TYPECHO_SITE_URL=https://blog.example.com \
-TYPECHO_DB_ADAPTER=Pdo_SQLite \
-TYPECHO_DB_FILE=site.db \
-php install.php
+sudo -u www-data env \
+  TYPECHO_SITE_URL=https://blog.example.com \
+  TYPECHO_DB_ADAPTER=Pdo_SQLite \
+  TYPECHO_DB_FILE=/srv/data/typecho/site.db \
+  php install.php
 ```
 
 MySQL：
@@ -71,7 +74,7 @@ PHP 8.2.x
 | 变量 | 默认值 | 作用 |
 |---|---|---|
 | `TYPECHO_DB_ADAPTER` | 服务器上第一个可用的适配器 | 取值 `Pdo_Mysql`、`Pdo_SQLite`、`Pdo_Pgsql`、`Mysqli`、`SQLite`、`Pgsql`，必须是当前 PHP 能用的。默认顺序见[环境要求](./requirements.md#php-扩展)，装了 `pdo_mysql` 时默认就是 `Pdo_Mysql` |
-| `TYPECHO_DB_PREFIX` | `typecho_` | 表前缀，1–16 位字母、数字、下划线或连字符 |
+| `TYPECHO_DB_PREFIX` | `typecho_` | 表前缀。安装程序接受 1–16 位字母、数字、下划线或连字符，但 SQLite 下含连字符或以数字开头的前缀会建表失败；请以字母或下划线开头，只用字母、数字和下划线 |
 | `TYPECHO_DB_HOST` | `localhost` | MySQL / PostgreSQL 地址。MySQL 下含有 `/` 时视为 Unix socket 路径，并忽略端口 |
 | `TYPECHO_DB_PORT` | MySQL `3306`，PostgreSQL `5432` | 端口，必须是整数 |
 | `TYPECHO_DB_USER` | 无 | MySQL / PostgreSQL 必填 |
@@ -90,7 +93,7 @@ PHP 8.2.x
 | 取值 | 效果 |
 |---|---|
 | `none` | 正常安装；同前缀的数据表已存在时报“安装程序检查到原有数据表已经存在.”并退出 |
-| `delete` | 先删除同前缀的 7 张表再重新安装，**原有数据全部丢失** |
+| `delete` | 先删除同前缀的 7 张表再重新安装，**原有数据全部丢失**。PostgreSQL 下删表不会删除安装时建立的序列，新表因此建不起来，安装无法完成；在 PostgreSQL 上重装请改用新建的空数据库 |
 | `keep` | 保留已存在的表：如果原有数据完整，直接结束并以 0 退出（不再创建管理员）；如果表在而数据不完整，继续执行第三步 |
 | `config` | 要求网站根目录已有 `config.inc.php`，没有时报“没有检测到您手动创建的配置文件, 请检查后再次创建”并退出 |
 
@@ -130,13 +133,20 @@ php install.php || echo "安装失败，或站点已经安装"
 
 ## 半途失败后重试
 
-CLI 安装在数据库这一步就会写入 `config.inc.php` 并建表，如果之后第三步失败（最常见的是忘了设置 `TYPECHO_SITE_URL`），站点会处于“有配置、有表、没有数据”的状态。这时直接重跑会报“安装程序检查到原有数据表已经存在.”，请补上缺少的变量并加上 `TYPECHO_DB_NEXT=keep`：
+CLI 安装在数据库这一步就会写入 `config.inc.php` 并建表，如果之后第三步失败（最常见的是忘了设置 `TYPECHO_SITE_URL`），站点会处于“有配置、有表、没有数据”的状态。这时直接重跑会报“安装程序检查到原有数据表已经存在.”。请用**第一次安装时的全部环境变量**（适配器、表前缀、`TYPECHO_DB_*` 等）重跑，补上缺少的变量并加上 `TYPECHO_DB_NEXT=keep`。以 MySQL 为例：
 
 ```bash
-TYPECHO_SITE_URL=https://blog.example.com TYPECHO_DB_NEXT=keep php install.php
+TYPECHO_SITE_URL=https://blog.example.com \
+TYPECHO_DB_ADAPTER=Pdo_Mysql \
+TYPECHO_DB_HOST=127.0.0.1 \
+TYPECHO_DB_USER=typecho \
+TYPECHO_DB_PASSWORD='数据库密码' \
+TYPECHO_DB_DATABASE=typecho \
+TYPECHO_DB_NEXT=keep \
+php install.php
 ```
 
-根目录已经存在 `config.inc.php` 时，安装程序会直接使用其中的数据库连接，不再按 `TYPECHO_DB_HOST` 等变量重新连接。
+第一次用 `export` 设置的变量还在当前 shell 中时，只补上缺少的变量和 `TYPECHO_DB_NEXT=keep` 也可以。安装程序会先校验这些变量（MySQL / PostgreSQL 缺少 `TYPECHO_DB_USER`、`TYPECHO_DB_DATABASE` 时直接报错退出），表前缀也以变量为准，未设置时按 `typecho_` 处理；校验通过后，如果根目录已经存在 `config.inc.php`，才直接使用其中的数据库连接，不再按 `TYPECHO_DB_HOST` 等变量重新连接。
 
 ## 容器
 
