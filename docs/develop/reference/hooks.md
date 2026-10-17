@@ -12,14 +12,32 @@ Typecho 1.3.0 中全部的插件钩子。注册回调的方法、三种触发方
 - **句柄**：注册时传给 `Typecho\Plugin::factory()` 的名字。类句柄写成 1.3 的类名（如 `Widget\Base\Contents`）或表中的名字（如 `Widget_Abstract_Contents`）都可以，Typecho 会换算成表中的名字，见[句柄的名字](../plugin/hooks.md#句柄的名字)。
 - **钩子**：赋值时的属性名，例如 `Typecho\Plugin::factory('Widget\Archive')->beforeRender = ...`。
 - **类型**：
-  - `call`：通知，回调按“参数”一栏的顺序收到参数，返回值一般不使用；
+  - `call`：回调按“参数”一栏的顺序收到参数。`call` 返回最后一个回调的返回值，大多数 `call` 钩子不使用它，用到的见下面的[返回值](#return-values)；
   - `filter`：过滤，回调收到的第一个参数就是要过滤的值（“参数”一栏的第一项），**必须返回**处理后的值；
-  - `trigger + call` / `trigger + filter`：同上，并且只要有回调执行，Typecho 就**跳过自己的默认处理**，由插件接管；
+  - `trigger + call` / `trigger + filter`：同上，另外调用处会得知是否有回调执行，接下来怎么做由调用处决定。多数情况下，有回调执行时 Typecho **跳过自己的默认处理**，改用回调的结果；例外见[返回值](#return-values)；
   - `deprecated magic`：用已弃用的魔术方法触发，效果等同 `call`。
 - **参数**：调用处传给钩子的表达式，原样摘自源码。`$this` 是触发钩子的对象本身，类型就是本节标题下的类；文件句柄中的 `$post`、`$page` 是正在编辑的文章或页面。
 - **调用位置**：`文件:行号`，行号对应 Typecho 1.3.0。同一个钩子在多处触发时全部列出。
 
 `self::pluginHandle()` 触发的钩子，句柄是对象实际所属的类。表中按源码中所在的类列出；`Widget\Contents\EditTrait` 中用 `static::pluginHandle()` 触发的 `getDefaultFieldItems` 和 `isFieldReadOnly` 分别列在使用它的 `Widget\Contents\Post\Edit` 和 `Widget\Contents\Page\Edit` 下。
+
+## 返回值 {#return-values}
+
+下面这些钩子的回调必须返回指定的值，否则会导致登录失败、类型错误或查询出错：
+
+| 句柄 | 钩子 | 回调应返回 |
+|---|---|---|
+| `Widget_User` | `login` | `bool`，作为登录结果；Typecho 不再自己验证用户名和密码 |
+| `Widget_User` | `hashValidate` | `bool`，密码是否正确 |
+| `Widget_Archive` | `select` | `Typecho\Db\Query`，`Widget\Archive` 在它上面继续加条件、排序和分页 |
+| `Widget_Upload` | `attachmentHandle` | `string`，附件的访问地址 |
+| `Widget_Upload` | `attachmentDataHandle` | `string`，附件的文件内容 |
+| `Widget_Upload` | `deleteHandle` | `bool`，是否删除成功 |
+| `Widget_Upload` | `uploadHandle` / `modifyHandle` | 与默认实现相同结构的数组（`name`、`path`、`size`、`type`、`mime`），失败时返回 `false` |
+| `Widget_Feed` | `feedItem` / `commentFeedItem` | `string` 或 `null`。条目照常由 Typecho 生成，返回的字符串作为 XML 原样插入到该条目的末尾 |
+| `Widget_Abstract_Contents`、`Widget_Contents_Post_Edit`、`Widget_Contents_Page_Edit` | `isFieldReadOnly` | `bool`。返回 `true` 时跳过这个自定义字段，返回 `false` 时照常处理；只注册回调而不返回 `true` 不会让字段只读 |
+
+`filter` 类型的钩子都必须返回处理后的值，不再逐个列出。
 
 ## 总览
 

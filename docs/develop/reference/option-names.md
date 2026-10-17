@@ -97,6 +97,6 @@ Typecho 的设置都保存在数据库 `options` 表中，每行一个选项：`
 | `theme:主题目录名` | 启用某个主题时，按其 `themeConfig()` 的默认值生成；保存“设置外观”时更新；切换到其他主题时删除 |
 | `plugin:插件名` | 启用带设置项的插件时生成，保存插件设置时更新，禁用插件时删除 |
 | `_plugin:插件名` | 插件的个人设置：启用插件时以 `user = 0` 保存默认值，用户在个人设置中保存后写入 `user = 用户 ID` 的一行；禁用插件时全部删除 |
-| 插件自定义的名字 | 插件可以用 `Helper::setOption()` 写入任意选项 |
+| 插件自定义的名字 | 由插件自己向 `table.options` 插入（`name`、`user = 0`、`value`）。`Helper::setOption()` 只修改已经存在的选项，不会新建，见 [Helper](./helper.md)。普通的插件设置用 `plugin:插件名` 即可，由 `Helper::configPlugin()` 和插件配置表单管理 |
 
 “设置 → 评论”的表单还会提交 `commentsUniqueIpInterval`、`commentsStopWords`、`commentsIpBlackList` 三个名字，但它们不是默认选项，也没有任何代码读取。

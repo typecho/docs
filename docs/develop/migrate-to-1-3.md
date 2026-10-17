@@ -123,4 +123,4 @@ PHP Fatal error: Declaration of MyContents::___permalink() must be compatible wi
 - 选项 `commentsRequireURL` 改名为 `commentsRequireUrl`；
 - 订阅源改由 `\Widget\Feed` 输出，评论分页改由 `\Widget\CommentPage` 处理，接管这些输出的插件需要检查；
 - 自定义的表单元素：`Textarea`、`Select` 在 1.3.0 中必须提供标题参数，见[表单元素](./reference/form-elements.md)；
-- 在 `__TYPECHO_DEBUG__` 下逐页访问前台和后台，PHP 8 下的弃用提示和类型错误都会直接显示出来。
+- 在 `config.inc.php` 中 `define('__TYPECHO_DEBUG__', true);`，逐页访问前台和后台：未捕获的异常和类型错误会显示详细的错误信息。这个常量不改变 PHP 的错误报告设置，要看到弃用提示，还需在本地开发环境中设置 `error_reporting = E_ALL` 和 `display_errors = On`（或者查看 PHP 错误日志）。

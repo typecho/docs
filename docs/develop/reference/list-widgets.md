@@ -15,7 +15,7 @@ sidebar_position: 4
 | `\Widget\Comments\Recent` | 评论 | `pageSize`（评论设置的“评论列表数目”）、`parentId`（`0`）、`ignoreAuthor`（`false`） | 已通过的评论，按 ID 倒序；开启“仅显示评论”时不含引用 |
 | `\Widget\Metas\Category\Rows` | 分类 | `ignore`（`0`）、`current`（`0`） | 全部分类，按分类树和排序 |
 | `\Widget\Contents\Page\Rows` | 独立页面 | `ignore`（`0`）、`current`（`0`） | 已发布、发布时间已到的页面，按页面树和“页面顺序”；不含被设为首页的页面 |
-| `\Widget\Contents\Post\Date` | 时间段 | `type`（`month`）、`format`（`Y-m`）、`limit`（`0`） | 已发布文章按年 / 月 / 日分组 |
+| `\Widget\Contents\Post\Date` | 时间段 | `type`（`month`）、`format`（`Y-m`）、`limit`（`0`） | 已发布文章按 `format` 格式化后的日期分组 |
 | `\Widget\Metas\Tag\Cloud` | 标签 | `sort`（`count`）、`desc`（`true`）、`ignoreZeroCount`（`false`）、`limit`（`0`） | 全部标签 |
 | `\Widget\Stat` | 无（单个对象） | 请求参数 `cid`、`uid`（只用于 `current…` 系列） | 各类计数 |
 
@@ -27,7 +27,28 @@ sidebar_position: 4
 |---|---|
 | `execute()` | 执行函数 |
 
-只查询了 `cid`、`title`、`slug`、`created`、`modified`、`type`、`status`、`commentsNum`、`allow*`、`template`、`password`、`authorId`、`parent` 这些字段，**不含正文**，所以 `content()`、`excerpt()` 输出为空。需要带摘要的最新文章时，用 `\Widget\Archive::allocWithAlias('recent', 'pageSize=5&type=index')`。密码保护的文章也会列出，标题对未解锁的访客显示为“此内容被密码保护”。
+只查询了 `cid`、`title`、`slug`、`created`、`modified`、`type`、`status`、`commentsNum`、`allow*`、`template`、`password`、`authorId`、`parent` 这些字段，**不含正文**，所以 `content()`、`excerpt()` 输出为空。密码保护的文章也会列出，标题对未解锁的访客显示为“此内容被密码保护”。
+
+需要带摘要的最新文章时，用 `\Widget\Contents\From` 执行一个取全部字段的查询，条件与 `Recent` 相同：
+
+```php
+$db = \Typecho\Db::get();
+\Widget\Contents\From::allocWithAlias('recent-excerpts', [
+    'query' => $db->select()->from('table.contents')
+        ->where('type = ?', 'post')
+        ->where('status = ?', 'publish')
+        ->where('created < ?', $this->options->time)
+        ->order('created', \Typecho\Db::SORT_DESC)
+        ->limit(5),
+])->to($recent);
+
+while ($recent->next()) {
+    $recent->title();
+    $recent->excerpt(100);
+}
+```
+
+不要用 `\Widget\Archive` 代替：它会按“首页显示”设置改变 `type=index` 的含义，并读取当前请求的 `page` 参数分页，在第 2 页上取到的不是最新的文章。
 
 ## Comments\Recent
 
@@ -132,6 +153,14 @@ function treeViewCategoriesCallback($categories, $options)
 | `execute()` | 初始化函数 |
 
 每一行的字段：`year`、`month`、`day`、`date`（按 `format` 格式化的文字）、`count`（这一时间段的文章数）、`permalink`（归档地址）。
+
+`format` 既是显示的文字，也是分组的依据：格式化结果相同的文章归为一组。`type` 只决定 `permalink` 用哪个归档路由（`year`、`month` 或 `day`）。两者要配套设置：
+
+| 按年 | 按月 | 按日 |
+|---|---|---|
+| `type=year&format=Y` | `type=month&format=Y-m` | `type=day&format=Y-m-d` |
+
+只改 `type=year` 而保留 `format=Y-m`，得到的仍是按月的分组，同一年的各组指向同一个年度地址；`format=F`（只有月份名）会把不同年份的同一个月合成一组。需要其他显示样式时，用每一行的 `year`、`month`、`day` 自己格式化。
 
 ## Metas\Tag\Cloud
 

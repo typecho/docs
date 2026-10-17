@@ -70,13 +70,13 @@ sidebar_position: 5
 | `loginUrl` | `string` | 获取登录地址 |
 | `logoutUrl` | `string` | 获取登出地址 |
 | `missingTheme` | `?string` | 动态判断皮肤目录 |
-| `originalSiteUrl` | `string` | 数据库中保存的站点地址（未经 `__TYPECHO_SITE_URL__` 等改写） |
+| `originalSiteUrl` | `string` | 实际使用的站点地址：设置中保存的站点地址；定义了 `__TYPECHO_SITE_URL__` 时为该常量，开启了 `__TYPECHO_DYNAMIC_SITE_URL__` 时为 `rootUrl`。`siteUrl` 由它规范化得到，并在 HTTPS 请求中把 `http://` 换成 `https://` |
 | `panelTable` | `array` | 插件注册的后台面板 |
 | `pluginDir` | `string` | 插件目录的绝对路径 |
 | `plugins` | `array` | 已启用插件及其注册的钩子 |
 | `pluginUrl` | `string` | 获取插件路径 |
 | `profileUrl` | `string` | 获取个人档案地址 |
-| `registerAction` | `string` | 获取登录提交地址 |
+| `registerAction` | `string` | 注册表单的提交地址，带安全令牌 |
 | `registerUrl` | `string` | 获取注册地址 |
 | `rootUrl` | `string` | 动态获取根目录 |
 | `routingTable` | `array` | 解析后的路由表 |

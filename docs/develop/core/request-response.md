@@ -35,7 +35,7 @@ public function get(string $key, $default = null, ?bool &$exists = true)
 所以同名时 GET 优先于 POST。另有两条规则：
 
 - 值为空字符串时视为不存在，返回 `$default`；
-- 值的类型与 `$default` 不一致时返回 `$default`：默认值不是数组时，提交的数组（`a[]=1`）被忽略；默认值是数组时，提交的字符串被忽略。这能防止把数组当作字符串使用。
+- 一个是数组、另一个不是时返回 `$default`：默认值不是数组时，提交的数组（`a[]=1`）被忽略；默认值是数组时，提交的字符串被忽略。这能防止把数组当作字符串使用。只检查是不是数组，不按默认值的类型转换或校验：`get('page', 1)` 读到的是字符串 `"2"`，需要整数时用 `filter('int')->get('page', 1)`，取值范围仍要自己检查。
 
 第三个参数用引用返回参数是否存在：
 
@@ -83,7 +83,7 @@ $text = $this->request->filter('trim', 'html')->get('text');  // 依次 trim、h
 
 | 方法 | 返回 |
 |---|---|
-| `isGet()`、`isPost()`、`isPut()` | 请求方法 |
+| `isGet()`、`isPost()`、`isPut()` | 是否为 GET、POST、PUT 请求（`bool`）。请求方法的名字用 `getServer('REQUEST_METHOD')` 读取 |
 | `isAjax()` | 带 `X-Requested-With: XMLHttpRequest` 头 |
 | `isJson()` | `Content-Type` 为 `application/json` |
 | `isSecure()` | 是否 HTTPS：检查 `HTTPS`、端口 443、反向代理传来的 `X-Forwarded-Proto`/`X-Forwarded-Port`，以及常量 `__TYPECHO_SECURE__`，见 [HTTPS 与反向代理](../../guide/operations/https-proxy.md) |
@@ -134,7 +134,7 @@ $this->response->goBack();
 
 `Widget\Notice` 把提示存入 Cookie，下一个后台页面中的脚本（`admin/common-js.php`）显示它并删除 Cookie。`goBack('?saved=1#done')` 在来源地址 `…/options-general.php?x=1` 上得到 `…/options-general.php?x=1&saved=1#done`。
 
-`throwFinish()` 与上面不同：它把已有输出发送给客户端并结束连接（PHP-FPM 下调用 `fastcgi_finish_request()`），但脚本继续执行，用于在响应之后做耗时的工作。
+`throwFinish()` 与上面不同：它结束响应但让脚本继续执行，用于在响应之后做耗时的工作。行为取决于 PHP 的运行方式：在 PHP-FPM 下调用 `fastcgi_finish_request()`，已有输出发送给客户端；在没有 `fastcgi_finish_request()` 的环境中（如 Apache 的 mod_php、PHP 内置服务器），它丢弃当前输出缓冲区中的内容，只发送响应头和一个空的正文。
 
 在沙箱中创建的 Widget（见 [Widget 组件模型](./widget.md#sandbox)）调用这些方法时不会输出也不会 `exit`，只是中止该 Widget 的执行。
 

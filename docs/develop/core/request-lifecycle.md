@@ -99,7 +99,7 @@ pathInfo = /archives/999/
 只有 `dispatch()` 正常返回时才会执行。以下情况都**不会**执行 `end`：
 
 - 显示 404 页面或错误页（异常处理函数最后调用了 `exit`）；
-- Widget 调用了 `redirect()`、`goBack()`、`throwJson()` 等响应方法，这些方法输出后直接 `exit`，见 [Request、Response 与常用工具](./request-response.md#response)。所有 `/action/*` 请求的处理结束于这类方法，因此也不会执行 `end`。
+- Widget 调用了 `redirect()`、`goBack()`、`throwJson()` 等响应方法，这些方法输出后直接 `exit`，见 [Request、Response 与常用工具](./request-response.md#response)。大多数 `/action/*` 请求以这类方法结束，因此不执行 `end`；但 Action 正常返回时（例如用 GET 请求 `/action/upload`，只设置 403 状态后返回），`end` 照常执行。
 
 需要在每个请求结束时做事，不能只依赖 `index.php:end`。
 
@@ -180,4 +180,4 @@ class Plugin implements PluginInterface
 }
 ```
 
-启用后访问首页、一篇文章、一个不存在的地址和一个 Action，日志中只有前两个请求同时出现 `begin` 和 `end`。`Router::$current` 是最后一次匹配到的路由名。
+启用后访问首页、一篇文章、一个不存在的地址，再在后台点击“登出”（`/action/logout`，以跳转结束），日志中只有前两个请求同时出现 `begin` 和 `end`。`Router::$current` 是最后一次匹配到的路由名。
