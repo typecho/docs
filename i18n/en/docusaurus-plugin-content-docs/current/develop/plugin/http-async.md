@@ -2,12 +2,12 @@
 title: HTTP Requests and Async Tasks
 sidebar_position: 8
 translation: machine
-source_commit: fc55a1004f355202effc7d999ebe984ff3ec2cf2
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # HTTP Requests and Async Tasks
 
-Plugins often need to call external services: pushing notifications, querying an anti-spam API, uploading to object storage. Typecho ships with a curl-based HTTP client, `Typecho\Http\Client`. For requests whose result you do not need to wait for, you can also hand them off to an async task, which runs after the visitor's request has finished.
+Plugins often need to call external services: pushing notifications, querying an anti-spam API, uploading to object storage. Typecho ships with a curl-based HTTP client, `Typecho\Http\Client`. For requests whose result you do not need to wait for, you can also hand them off to an async task, which runs in another request the site sends to itself, so the visitor's request does not wait for it to complete.
 
 ## Typecho\Http\Client
 
@@ -69,7 +69,7 @@ Behavior to watch out for:
 
 ## Async tasks
 
-Calling external services slows pages down: when a visitor submits a message and has to wait for the notification API to respond before seeing the page, they wait several extra seconds, and an API error can even affect the submission itself. Async tasks move this kind of work to after the visitor's request has finished:
+Calling external services slows pages down: when a visitor submits a message and has to wait for the notification API to respond before seeing the page, they wait several extra seconds, and an API error can even affect the submission itself. Async tasks hand this kind of work to another request:
 
 ```php
 \Utils\Helper::requestService('guestbookNotify', $id);
@@ -78,7 +78,7 @@ Calling external services slows pages down: when a visitor submits a message and
 How it works:
 
 1. `requestService('taskName', ...$params)` only records the task.
-2. When the current request ends, Typecho sends a POST request to the site's own `/action/service?do=async`, carrying all recorded tasks and a token valid for a few seconds (timeout 2 seconds).
+2. After the current request has produced its output and before it exits, Typecho sends a POST request to the site's own `/action/service?do=async`, carrying all recorded tasks and a token valid for a few seconds (timeout 2 seconds). This step is synchronous: the current request only really ends once the other side finishes its response (or the timeout is reached), which can add up to 2 seconds.
 3. That request verifies the token, **immediately finishes its response**, and then, in the background, triggers one by one the hooks on `Widget_Service` named after each task, passing the arguments to the callbacks.
 
 So a plugin has to do two things: register the callback on `Widget\Service` in `activate()`, and call `requestService()` where needed.
@@ -174,7 +174,7 @@ $id = $this->db->query($this->db->insert('table.guestbook')->rows([
 Helper::requestService('guestbookNotify', $id);
 ```
 
-Because `activate()` has changed, deactivate and reactivate the plugin, then enter the notification URL in the plugin settings. From then on, each time a message is submitted, the page returns immediately as usual, and the notification URL then receives a request:
+Because `activate()` has changed, deactivate and reactivate the plugin, then enter the notification URL in the plugin settings. From then on, each time a message is submitted, the page redirects back without waiting for the notification API, and the notification URL then receives a request:
 
 ```text
 POST /hook

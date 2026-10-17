@@ -2,7 +2,7 @@
 title: Common Plugin Patterns
 sidebar_position: 9
 translation: machine
-source_commit: fc55a1004f355202effc7d999ebe984ff3ec2cf2
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # Common Plugin Patterns
@@ -21,7 +21,7 @@ The body and excerpt of posts and pages pass through a series of filter hooks be
 | `excerpt` | filter | Before the excerpt is cut; receives the full body HTML |
 | `excerptEx` | filter | After the excerpt is generated; receives the excerpt HTML |
 
-When you only want to make small changes to the HTML (add attributes, replace text, insert content), use `contentEx` and `excerptEx`. Comment bodies have a set of hooks with the same names on `Widget\Base\Comments` (handle `Widget_Abstract_Comments`).
+When you only want to make small changes to the HTML (add attributes, replace text, insert content), use `contentEx` and `excerptEx`. Comment bodies have hooks with the same names, `content`, `markdown`, `autoP` and `contentEx`, on `Widget\Base\Comments` (handle `Widget_Abstract_Comments`); comments have no `excerpt` or `excerptEx` hooks, so modify comment HTML with `contentEx`.
 
 The plugin below adds `target="_blank"` to external links:
 
@@ -190,7 +190,7 @@ Trackbacks have a corresponding `trackback` filter used the same way; pingbacks 
 ]
 ```
 
-The plugin below saves attachments to a configurable directory and serves them from a configurable URL, for example a mounted network drive paired with a separate static file domain. Replace `save()`, `deleteHandle()` and `attachmentHandle()` with an object storage SDK's upload, delete and URL generation calls, and you have an object storage plugin:
+The plugin below saves attachments to a configurable directory and serves them from a configurable URL, for example a mounted network drive paired with a separate static file domain. Replace `save()`, `deleteHandle()` and `attachmentHandle()` with an object storage SDK's upload, delete and URL generation calls, rewrite `info()`, and you have an object storage plugin. `info()` reads the size and MIME type from the local destination file, which does not exist when the file is only uploaded to object storage, so get those two values from the temporary file (`$file['tmp_name']`) or the file content sent over XML-RPC before uploading, and return them together with the path in object storage:
 
 ```php title="usr/plugins/LocalBucket/Plugin.php"
 <?php
@@ -333,6 +333,7 @@ Key points:
 - You must implement `deleteHandle`; otherwise deleting an attachment in the admin only deletes the record, and the file stays in storage.
 - When replacing an attachment, Typecho's built-in logic requires the old and new files to have the same extension; the example keeps this rule.
 - `attachmentHandle` is called every time an attachment URL is read, so do not make network requests in it.
+- Once activated, the URL, replacement and deletion of **every** attachment are handled as "access URL / storage directory + `path`", including attachments uploaded before activation, whose `path` is `/usr/uploads/...`. Before activating on a site that already has attachments, copy the site's `usr/uploads` directory as is into the storage directory (so it becomes `<storage directory>/usr/uploads/...`); otherwise the URLs of those attachments do not work, and deleting an attachment only deletes the record while the original file stays. Likewise, when you later change the storage directory or the access URL, move the existing files to the new location yourself;
 - The `path` in the file info is decided by the plugin and only that plugin understands it. **After the plugin is deactivated**, attachments it saved still get URLs the default Typecho way (site URL + `path`), which usually do not work. Warn users about this in the plugin description.
 
 `Widget\Upload` also has a few notification hooks: `beforeUpload` / `beforeModify` receive the file info array before it is written to the database, and `upload` / `modify` receive the `Widget\Upload` object after it is written.
@@ -406,6 +407,8 @@ class Plugin implements PluginInterface
 <script>
 $(document).ready(function () {
     const textarea = $('#text');
+    // When content is saved as Markdown, the form has a hidden field named "markdown"; without it, attachments are inserted as HTML
+    const isMarkdown = textarea.parents('form').find('input[name="markdown"]').length > 0;
 
     // Notify the form when the content changes; autosave and the leave-page prompt depend on this event
     textarea.on('input', function () {
@@ -415,7 +418,9 @@ $(document).ready(function () {
     // Called when "Insert" is clicked in the attachment panel; the editor must provide it
     Typecho.insertFileToEditor = function (file, url, isImage) {
         const el = textarea.get(0);
-        const html = isImage ? '![' + file + '](' + url + ')' : '[' + file + '](' + url + ')';
+        const html = isMarkdown
+            ? (isImage ? '![' + file + '](' + url + ')' : '[' + file + '](' + url + ')')
+            : (isImage ? '<img src="' + url + '" alt="' + file + '" />' : '<a href="' + url + '">' + file + '</a>');
         const start = el.selectionStart, end = el.selectionEnd;
 
         el.value = el.value.substring(0, start) + html + el.value.substring(end);
@@ -444,12 +449,14 @@ Login-related hooks live on two classes:
 |---|---|---|
 | `Widget_User` | `login` | Trigger; takes over the whole login verification and returns whether it succeeded |
 | `Widget_User` | `hashValidate` | Trigger; takes over password verification, receives the plaintext password and the hash from the database, and returns whether they match |
-| `Widget_User` | `loginSucceed` / `loginFail` | After every successful / failed login, through any route, including the login form and XML-RPC |
+| `Widget_User` | `loginSucceed` / `loginFail` | After an account is found and its password checked, on success / failure; routes such as the login form and XML-RPC all go through them; not triggered when the username does not exist or when `login` is taken over by a plugin |
 | `Widget_Login` | `loginSuccess` / `loginFailure` | Only after a successful / failed login through the admin login form |
 | `Widget_User` | `logout` | Trigger; takes over logout: once registered, Typecho no longer clears the login cookie |
 | `Widget_Logout` | `logout` | After the user clicks "Logout" and the login state has been cleared |
 
-To record logins through every route, use `loginSucceed` / `loginFail` on `Widget_User`. They receive the `Widget\User` object, the login name, the **plaintext password**, whether the login is temporary (every XML-RPC request is a temporary login) and the expiry. Do not write the password to logs or send it anywhere.
+To record logins through the login form, XML-RPC and other routes, use `loginSucceed` / `loginFail` on `Widget_User`. They receive the `Widget\User` object, the login name, the **plaintext password**, whether the login is temporary (every XML-RPC request is a temporary login) and the expiry. Do not write the password to logs or send it anywhere.
+
+These two hooks fire only after an account has been found and its password checked: when the username (or email) does not exist, the login fails immediately without triggering `loginFail`; when a plugin has registered the `login` hook to take over authentication, neither fires. To record every failure on the admin login form (including nonexistent usernames), also register `loginFailure` on `Widget_Login`; it receives four arguments: the `Widget\User` object, the login name, the plaintext password and whether "Remember me" was checked. On a wrong password, both it and `loginFail` fire.
 
 ```php title="usr/plugins/LoginLog/Plugin.php"
 <?php
@@ -466,7 +473,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * Writes every successful and failed login to the PHP error log
+ * Writes successful logins and wrong-password attempts to the PHP error log
  *
  * @package LoginLog
  * @version 1.0.0
@@ -514,7 +521,7 @@ class Plugin implements PluginInterface
 }
 ```
 
-After activation, every login through the login form and XML-RPC clients leaves a line in the PHP error log, for example:
+After activation, successful logins and wrong-password attempts through the login form and XML-RPC clients each leave a line in the PHP error log (attempts with a nonexistent username are not recorded), for example:
 
 ```text
 [LoginLog] success user=admin uid=1 ip=203.0.113.5 temporarily=0

@@ -2,7 +2,7 @@
 title: functions.php Callbacks
 sidebar_position: 6
 translation: machine
-source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # functions.php Callbacks
@@ -20,16 +20,18 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 | Function | When it is called | Purpose |
 |---|---|---|
-| `themeInit($archive)` | On every front-end request, after the data has been queried and before the template is output | Change the parameters of the current page, for example the number of posts per page |
+| `themeInit($archive)` | On front-end requests, after the page type is resolved and before list queries run and the template is output (single-item content is already loaded); not called when the home page is a template file | Change the parameters of the current page, for example the number of posts per page |
 | `themeConfig($form)` | When the "Theme settings" page is opened, and when the theme is activated | Define the theme settings form |
 | `themeConfigHandle($settings, $isInit)` | When the theme settings are saved, and when the theme is activated | Handle saving the settings yourself |
-| `themeFields($layout)` | When the post or page editor is opened, and on save | Predefine custom fields for posts and pages |
+| `themeFields($layout)` | When the editor builds its custom fields area | Predefine custom fields for posts and pages |
 | `themePostFields($layout)` | As above, for posts only | Predefine fields for posts only |
 | `themePageFields($layout)` | As above, for pages only | Predefine fields for pages only |
 | `threadedComments($comments, $options)` | When `listComments()` outputs each comment | Customize the HTML of a single comment |
 | `singlePing($pings, $options)` | When `listPings()` outputs each trackback | Customize the HTML of a single trackback (not usable in 1.3.0, see below) |
 
 All callbacks are optional; when one is not defined, Typecho's default behavior applies.
+
+`themeFields`, `themePostFields` and `themePageFields` only build the field controls in the editor. They are not called when a post or page is saved, so they cannot validate or process submitted field values.
 
 ## themeInit
 
@@ -46,6 +48,7 @@ function themeInit($archive)
 - When it is called: Typecho has already determined the page type from the URL and prepared the query, but **has not yet run the list query**, so changing `pageSize` here takes effect on the current list page. The example above makes the `tech` category show only 2 posts per page; `/category/tech/2/` is the second page.
 - For posts and pages, the content has already been fetched before `themeInit` is called, so you can read properties such as `$archive->title` to make decisions.
 - It is only called for front-end pages; the admin panel and feeds do not call it.
+- When the home page is set to "use a template file directly", Typecho does not load `functions.php` and does not call `themeInit`; see [Home page templates](./custom-templates.md#home-page-template).
 
 For more examples, see [Custom templates](./custom-templates.md#page-size).
 

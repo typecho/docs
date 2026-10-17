@@ -2,7 +2,7 @@
 title: Calling Widgets in Templates
 sidebar_position: 11
 translation: machine
-source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # Calling Widgets in Templates
@@ -106,11 +106,13 @@ The options of `listPages()` are the same as those of `listCategories()`. For lo
 
 | Parameter | Default | Description |
 |---|---|---|
-| `type` | `month` | Archive granularity: `year`, `month`, `day` |
-| `format` | `Y-m` | Display format, in PHP `date()` syntax |
+| `type` | `month` | The archive granularity the links point to: `year`, `month`, `day` |
+| `format` | `Y-m` | Display format, in PHP `date()` syntax; also decides how posts are grouped and counted |
 | `limit` | `0` | The maximum number of periods to show; `0` means unlimited |
 
 Fields available in `parse()`: `{permalink}`, `{date}`, `{count}` (number of posts), `{year}`, `{month}`, `{day}`.
+
+Posts are grouped by their date formatted with `format`; `type` only decides the link URL, so the two must be paired at the same granularity: `type=year&format=Y` for yearly archives, `type=month&format=Y-m` for monthly archives and `type=day&format=Y-m-d` for daily archives (other notations such as `F j, Y` also work). Changing only `type` still groups by month: a yearly archive then appears once per month, and a daily archive shows the count for the whole month. When `format` does not include the year, the same month of different years is merged into one item.
 
 ### Statistics: `\Widget\Stat`
 

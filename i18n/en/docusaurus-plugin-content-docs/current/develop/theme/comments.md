@@ -2,7 +2,7 @@
 title: Comment Templates
 sidebar_position: 10
 translation: machine
-source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # Comment Templates
@@ -116,7 +116,7 @@ When "Reply" is clicked, the script output by `$this->header()` moves the elemen
 
 - `header.php` must call `$this->header()`, and must not suppress `commentReply` (see [Header output: header()](./header.md));
 - The `id` of the form's wrapper element must be `$this->respondId()`;
-- When JavaScript is disabled in the browser, the "Reply" link opens the page with `?replyTo=<comment ID>`, and `$this->commentUrl()` then carries the parent comment parameter, so replying works as well.
+- When JavaScript is disabled in the browser, the "Reply" link opens the page with `?replyTo=<comment ID>`, and `$this->commentUrl()` then carries the parent comment parameter, so the reply target is not lost. However, when the site owner has turned on "Enable anti-spam protection" (on by default after installation), the form lacks the verification field that only the script can add and the submission is sent back, so without JavaScript comments still cannot be submitted; see "The comment form" below.
 
 ## The comment form
 
