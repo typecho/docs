@@ -2,7 +2,7 @@
 title: Header Output with header()
 sidebar_position: 12
 translation: machine
-source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # Header Output with header()
@@ -21,7 +21,7 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 
 | Key | Output | Condition |
 |---|---|---|
-| — | `<link rel="canonical">` | Posts and pages (cannot be suppressed) |
+| — | `<link rel="canonical">` | `is('single')` is true (posts, pages, attachments), except a page used as the home page (cannot be suppressed) |
 | `description` | `<meta name="description">` | When there is an archive description |
 | `keywords` | `<meta name="keywords">` | When there are keywords |
 | `generator` | `<meta name="generator" content="Typecho 1.3.0">` | |
@@ -29,10 +29,10 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 | `pingback` | `<link rel="pingback">` | "XMLRPC interface" is set to "On" |
 | `xmlrpc` | `<link rel="EditURI">` (RSD) | "XMLRPC interface" is not set to "Off" |
 | `wlw` | `<link rel="wlwmanifest">` | As above |
-| `rss2` / `rss1` / `atom` | Three `<link rel="alternate">` feeds | On post pages, the post must also "allow appearing in feeds" |
+| `rss2` / `rss1` / `atom` | Three `<link rel="alternate">` feeds | When `is('single')` is true, the content must also "allow appearing in feeds", except a page used as the home page |
 | `social` | `og:type`, `og:url`, `og:title`, `og:description`, `og:site_name` and `twitter:*` tags | |
-| `commentReply` | The comment reply script (`window.TypechoComment`) | Posts and pages, with "Enable comment replies" turned on |
-| `antiSpam` | The anti-spam script, which adds a verification field to the comment form | Posts and pages, with "Enable anti-spam protection" turned on |
+| `commentReply` | The comment reply script (`window.TypechoComment`) | `is('single')` is true (posts, pages, attachments), with "Enable comment replies" turned on |
+| `antiSpam` | The anti-spam script, which adds a verification field to the comment form | `is('single')` is true (posts, pages, attachments), with "Enable anti-spam protection" turned on |
 
 `commentReply` and `antiSpam` are required for comments to work: with `commentReply` suppressed, the "Reply" button cannot move the form below the comment; with `antiSpam` suppressed, comment submissions fail on sites that have anti-spam protection turned on.
 

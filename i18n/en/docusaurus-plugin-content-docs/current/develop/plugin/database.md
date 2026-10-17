@@ -2,7 +2,7 @@
 title: Database Operations
 sidebar_position: 7
 translation: machine
-source_commit: fc55a1004f355202effc7d999ebe984ff3ec2cf2
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # Database Operations
@@ -96,7 +96,7 @@ The type of the fetched values depends on the database driver: with PDO drivers,
 | `from($table)` | Table name |
 | `where($condition, ...$values)` | Condition; `?` is a placeholder and the values are escaped. Multiple calls are joined with `AND` |
 | `orWhere($condition, ...$values)` | Same as above, joined with `OR` |
-| `join($table, $condition, $op = Db::INNER_JOIN)` | Join; `$op` can also be `Db::LEFT_JOIN`, `Db::RIGHT_JOIN`, `Db::OUTER_JOIN` |
+| `join($table, $condition, $op = Db::INNER_JOIN)` | Join; `$op` can also be `Db::LEFT_JOIN` or `Db::RIGHT_JOIN` (supported by SQLite from 3.39). `Db::OUTER_JOIN` emits a bare `OUTER JOIN`, which none of the three databases accepts, so do not use it |
 | `order($field, $sort = Db::SORT_ASC)` | Sort; `Db::SORT_DESC` for descending. Multiple calls are appended in order |
 | `group($field)`, `having($condition, ...$values)` | Grouping |
 | `limit($n)`, `offset($n)` | How many rows to take, how many to skip |

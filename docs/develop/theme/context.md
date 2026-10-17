@@ -41,8 +41,9 @@ $this->is(string $archiveType, ?string $archiveSlug = null): bool
 | `author` | 作者页 | 用户 ID |
 | `date` | 日期归档 | `year`、`month`、`day` |
 | `search` | 搜索结果页 | 关键字 |
+| `front` | 首页改为页面或模板文件、并开启[文章列表页](../../guide/settings/reading.md#front-archive)时，文章列表页（默认 `/blog/`）及其分页 | — |
 | `single` | **伪类型**：文章、独立页面、附件 | 同上 |
-| `archive` | **伪类型**：除首页外的所有列表页（分类、标签、作者、日期、搜索）以及 404 页 | 404 页的缩略名为 `404` |
+| `archive` | **伪类型**：除首页外的所有列表页（分类、标签、作者、日期、搜索、文章列表页）以及 404 页 | 404 页的缩略名为 `404` |
 | `feed` | **伪类型**：由订阅源调用时为真 | — |
 
 `single`、`archive`、`feed` 不是页面本身的类型，而是按情况归类：
@@ -66,12 +67,12 @@ $this->is(string $archiveType, ?string $archiveSlug = null): bool
 |---|---|
 | `getArchiveType()` | 页面类型，取值同上表第一列（不含伪类型） |
 | `getArchiveSlug()` | 缩略名 |
-| `getArchiveTitle()` | 归档标题：文章 / 页面标题、分类名、搜索关键字等，首页为 `null` |
+| `getArchiveTitle()` | 归档标题：文章 / 页面标题、分类名、搜索关键字等，首页和文章列表页为 `null` |
 | `getArchiveDescription()` | 归档描述：分类描述、文章摘要，首页和搜索页为站点描述 |
 | `getArchiveUrl()` | 当前页面的地址 |
 
-:::caution 首页没有缩略名
-1.3.0 中，首页（`index`）的缩略名没有初始化。在首页上调用 `$this->getArchiveSlug()`，或者调用带第二个参数的 `$this->is('index', ...)`，会抛出 `Typed property Widget\Archive::$archiveSlug must not be accessed before initialization` 错误，页面变成 500。判断首页只用 `$this->is('index')`；需要读缩略名的代码，先用 `!$this->is('index')` 排除首页。
+:::caution 首页和文章列表页没有缩略名
+1.3.0 中，首页（`index`）和文章列表页（`front`）的缩略名没有初始化。在这两种页面上调用 `$this->getArchiveSlug()`，或者调用带第二个参数的 `$this->is('index', ...)`、`$this->is('front', ...)`，会抛出 `Typed property Widget\Archive::$archiveSlug must not be accessed before initialization` 错误，页面变成 500。文章列表页同时满足 `is('archive')`，但不满足 `is('index')`，所以只排除首页不够：需要读缩略名的代码，先用 `!$this->is('index') && !$this->is('front')` 排除这两种页面。
 :::
 
 其他类型的页面都有缩略名，`is('category', 'tech')` 这类判断在首页上也安全：类型不符时不会读取缩略名。

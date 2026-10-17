@@ -2,7 +2,7 @@
 title: Routes, Actions and Admin Panels
 sidebar_position: 6
 translation: machine
-source_commit: fc55a1004f355202effc7d999ebe984ff3ec2cf2
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # Routes, Actions and Admin Panels
@@ -367,7 +367,7 @@ The panel file is loaded by `admin/extending.php`, so:
 
 ## Checking
 
-After enabling `Guestbook`:
+After enabling `Guestbook` (the URLs below assume URL rewriting is on and Typecho is installed at the site root; without URL rewriting the address is `/index.php/guestbook/`, and in a subdirectory installation prefix it with the subdirectory):
 
 1. Open `/guestbook/`: you see the guestbook and the form. After you submit a message you return to this page, and the message appears below the form;
 2. "Messages" appears in the admin "Manage" menu. Open it to list the message you just posted; select it and delete it, and the top of the page shows "Deleted 1 message(s)";

@@ -2,7 +2,7 @@
 title: Template Hierarchy
 sidebar_position: 4
 translation: machine
-source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # Template Hierarchy
@@ -17,7 +17,7 @@ Let the current page's **type** be `{type}` and its **slug** be `{slug}` (the va
 2. `{type}/{slug}.php`, for example `category/tech.php`, `page/about.php`, `post/12.php`;
 3. `{type}.php`, for example `category.php`, `page.php`, `post.php`;
 4. For attachment pages (`{type}` is `attachment`): `page.php`, then `post.php`;
-5. `single.php` for posts, pages and attachments, `archive.php` for all other pages (the home page skips this step);
+5. `single.php` for posts, pages and attachments, `archive.php` for all other pages (the home page and the post list page skip this step);
 6. `index.php`.
 
 If none is found, Typecho reports "file does not exist" (HTTP 500), which is why `index.php` is required.
@@ -29,6 +29,7 @@ Note that step 2 uses a **subdirectory**: `category/tech.php` lives in the `cate
 | Page | Example URL | `{type}` | `{slug}` | Dedicated templates available |
 |---|---|---|---|---|
 | Home page | `/`, `/page/2/` | `index` | none | `index.php` |
+| Post list page | `/blog/`, `/blog/page/2/` | `front` | none | `front.php`, `index.php` |
 | Post | `/archives/12/` | `post` | post ID | `post/12.php`, `post.php`, `single.php` |
 | Page | `/about.html` | `page` | page slug | `page/about.php`, `page.php`, `single.php` |
 | Attachment | `/attachment/15/` | `attachment` | attachment ID | `attachment/15.php`, `attachment.php`, `page.php`, `post.php`, `single.php` |
@@ -41,7 +42,8 @@ Note that step 2 uses a **subdirectory**: `category/tech.php` lives in the `cate
 
 - The slug of a post is the **post ID**, not its URL slug, so a template for one particular post must be named `post/<post ID>.php`;
 - The slug of a date archive is its granularity; `date/year.php`, `date/month.php` and `date/day.php` correspond to yearly, monthly and daily archives;
-- When a page is used as the home page, the home page looks up templates as that page (`page/<slug>.php`, `page.php` ...).
+- When a page is used as the home page, the home page looks up templates as that page (`page/<slug>.php`, `page.php` ...);
+- The post list page exists only when the home page is set to a page or a template file and the [post list page](../../guide/settings/reading.md#front-archive) is enabled. It does not use `archive.php`; without `front.php` it uses `index.php` directly.
 
 ## Example
 

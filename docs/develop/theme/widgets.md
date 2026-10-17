@@ -104,11 +104,13 @@ sidebar_position: 11
 
 | 参数 | 默认值 | 说明 |
 |---|---|---|
-| `type` | `month` | 归档粒度：`year`、`month`、`day` |
-| `format` | `Y-m` | 显示格式，PHP `date()` 写法 |
+| `type` | `month` | 链接指向的归档粒度：`year`、`month`、`day` |
+| `format` | `Y-m` | 显示格式，PHP `date()` 写法；同时决定文章按什么分组计数 |
 | `limit` | `0` | 最多显示几个时间段，`0` 为不限 |
 
 `parse()` 中可用的字段：`{permalink}`、`{date}`、`{count}`（文章数）、`{year}`、`{month}`、`{day}`。
+
+文章按 `format` 格式化后的日期分组，`type` 只决定链接地址，所以两者要按同一粒度配对：年归档用 `type=year&format=Y`，月归档用 `type=month&format=Y-m`，日归档用 `type=day&format=Y-m-d`（可以换成 `Y年m月d日` 等写法）。只改 `type` 时仍按月分组：年归档会每个月出现一次，日归档的数量是整个月的。`format` 中不含年份时，不同年份的同一月份会合并成一项。
 
 ### 统计：`\Widget\Stat`
 

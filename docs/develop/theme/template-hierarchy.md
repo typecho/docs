@@ -15,7 +15,7 @@ sidebar_position: 4
 2. `{type}/{slug}.php`，例如 `category/tech.php`、`page/about.php`、`post/12.php`；
 3. `{type}.php`，例如 `category.php`、`page.php`、`post.php`；
 4. 附件页面（`{type}` 为 `attachment`）：`page.php`，再 `post.php`；
-5. 文章、独立页面、附件用 `single.php`，其他页面用 `archive.php`（首页不查这一步）；
+5. 文章、独立页面、附件用 `single.php`，其他页面用 `archive.php`（首页和文章列表页不查这一步）；
 6. `index.php`。
 
 都找不到时报错“文件不存在”（HTTP 500），所以 `index.php` 是必需的。
@@ -27,6 +27,7 @@ sidebar_position: 4
 | 页面 | 地址示例 | `{type}` | `{slug}` | 可用的专属模板 |
 |---|---|---|---|---|
 | 首页 | `/`、`/page/2/` | `index` | 无 | `index.php` |
+| 文章列表页 | `/blog/`、`/blog/page/2/` | `front` | 无 | `front.php`、`index.php` |
 | 文章 | `/archives/12/` | `post` | 文章 ID | `post/12.php`、`post.php`、`single.php` |
 | 独立页面 | `/about.html` | `page` | 页面缩略名 | `page/about.php`、`page.php`、`single.php` |
 | 附件 | `/attachment/15/` | `attachment` | 附件 ID | `attachment/15.php`、`attachment.php`、`page.php`、`post.php`、`single.php` |
@@ -39,7 +40,8 @@ sidebar_position: 4
 
 - 文章的缩略名是**文章 ID**，不是网址缩略名，所以为某篇文章单独做模板要用 `post/文章ID.php`；
 - 日期归档的缩略名是归档粒度，`date/year.php`、`date/month.php`、`date/day.php` 分别对应年、月、日归档；
-- 以独立页面作为首页时，首页按这个独立页面查找模板（`page/缩略名.php`、`page.php`……）。
+- 以独立页面作为首页时，首页按这个独立页面查找模板（`page/缩略名.php`、`page.php`……）；
+- 文章列表页只在首页改为页面或模板文件、并开启了[文章列表页](../../guide/settings/reading.md#front-archive)时存在，它不用 `archive.php`，没有 `front.php` 时直接用 `index.php`。
 
 ## 示例
 

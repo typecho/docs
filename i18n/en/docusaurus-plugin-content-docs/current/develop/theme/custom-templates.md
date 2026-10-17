@@ -2,7 +2,7 @@
 title: Custom Templates
 sidebar_position: 7
 translation: machine
-source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # Custom Templates
@@ -101,6 +101,7 @@ When the site owner selects it, the option is saved as `file:home.php` and the h
 
 - In this case `$this` on the home page **contains no posts**, and `$this->next()` fetches nothing; you have to fetch the data you need yourself with widgets (like the latest posts above);
 - In 1.3.0 this kind of home page skips the initialization of the feed URLs and similar values, so as soon as the template calls `$this->header()` it fails with `Typed property Widget\Archive::$archiveFeedUrl must not be accessed before initialization`. The four `setArchive…()` lines at the top above fill them in for that reason; they cannot be omitted when `header.php` calls `header()`;
+- This kind of home page does not load `functions.php` and does not call `themeInit()`. If the template, or a file it includes such as `header.php`, uses functions from `functions.php`, load the file yourself at the top of the template: `if (is_file(__DIR__ . '/functions.php')) require_once __DIR__ . '/functions.php';`. This only loads the function definitions; if you need the initialization in `themeInit()`, call it yourself;
 - In 1.3.0 the pagination URLs of this kind of home page (`/page/2/`) return a 500 error, so do not output pagination links in the template;
 - When the theme is switched, this setting automatically reverts to "show the latest posts".
 

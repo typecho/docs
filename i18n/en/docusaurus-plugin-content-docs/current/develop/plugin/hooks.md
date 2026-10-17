@@ -2,7 +2,7 @@
 title: Using Hooks
 sidebar_position: 4
 translation: machine
-source_commit: fc55a1004f355202effc7d999ebe984ff3ec2cf2
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # Using Hooks
@@ -194,7 +194,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * Estimates the word count and reading time of a post
+ * Estimates the character count and reading time of a post
  *
  * @package ReadingTime
  * @version 1.0.0
@@ -261,10 +261,10 @@ class Plugin implements PluginInterface
 After activation, "… characters, about … minutes to read" appears before the body on post pages. You can also use it in your theme's `post.php` like this:
 
 ```php title="usr/themes/your-theme/post.php"
-<p>Words: <?php $this->wordCount(); ?>, reading time: <?php echo $this->readingTime; ?> min</p>
+<p>Characters: <?php $this->wordCount(); ?>, reading time: <?php echo $this->readingTime; ?> min</p>
 ```
 
-The text inserted into the body also appears in the page's `description` meta tag and in feeds, because both are taken from the filtered body. See [Common plugin patterns](./patterns.md#content-filter).
+The text inserted into the body also appears in the post page's `description` meta tag, because it is taken from the filtered body. Posts in feeds do not carry this text: when a feed fetches posts, `is('single')` is false and `prepend()` inserts nothing. A content filter without this check affects feeds as well; see [Common plugin patterns](./patterns.md#content-filter).
 
 `prepend()` detects post pages with `is('single')` plus a `type` check rather than `is('post')`: the body of a post page is already output and cached when Typecho generates the page description, and at that point the page type has not yet been set to `post`, so `is('post')` returns `false` while `is('single')` is already `true`.
 

@@ -262,7 +262,7 @@ class Plugin implements PluginInterface
 <p>字数：<?php $this->wordCount(); ?>，阅读时间：<?php echo $this->readingTime; ?> 分钟</p>
 ```
 
-插入正文的文字会一起出现在页面的 `description` 元信息和订阅源中，因为它们都取自过滤后的正文，见[常见插件模式](./patterns.md#content-filter)。
+插入正文的文字会一起出现在文章页的 `description` 元信息中，因为它取自过滤后的正文。订阅源中的文章不会带上这段文字：订阅源取出文章时 `is('single')` 为假，`prepend()` 不插入。不做这个判断的内容过滤会同时影响订阅源，见[常见插件模式](./patterns.md#content-filter)。
 
 `prepend()` 中用 `is('single')` 加 `type` 判断文章页，而不是 `is('post')`：文章页的正文在 Typecho 生成页面描述时就已经输出并缓存，那时页面类型还没有确定为 `post`，`is('post')` 返回 `false`，`is('single')` 已经是 `true`。
 

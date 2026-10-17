@@ -19,7 +19,7 @@ sidebar_position: 12
 
 | 键 | 输出 | 条件 |
 |---|---|---|
-| — | `<link rel="canonical">` | 文章、页面（不能屏蔽） |
+| — | `<link rel="canonical">` | `is('single')` 为真（文章、页面、附件），但作为首页的独立页面除外（不能屏蔽） |
 | `description` | `<meta name="description">` | 有归档描述时 |
 | `keywords` | `<meta name="keywords">` | 有关键词时 |
 | `generator` | `<meta name="generator" content="Typecho 1.3.0">` | |
@@ -27,10 +27,10 @@ sidebar_position: 12
 | `pingback` | `<link rel="pingback">` | “XMLRPC 接口”为“打开” |
 | `xmlrpc` | `<link rel="EditURI">`（RSD） | “XMLRPC 接口”不为“关闭” |
 | `wlw` | `<link rel="wlwmanifest">` | 同上 |
-| `rss2` / `rss1` / `atom` | 三条 `<link rel="alternate">` 订阅源 | 文章页还要求文章“允许在聚合中出现” |
+| `rss2` / `rss1` / `atom` | 三条 `<link rel="alternate">` 订阅源 | `is('single')` 为真时还要求内容“允许在聚合中出现”，作为首页的独立页面除外 |
 | `social` | `og:type`、`og:url`、`og:title`、`og:description`、`og:site_name` 和 `twitter:*` 标签 | |
-| `commentReply` | 评论回复脚本（`window.TypechoComment`） | 文章、页面，且开启了“启用评论回复” |
-| `antiSpam` | 反垃圾脚本，向评论表单加入校验字段 | 文章、页面，且开启了“开启反垃圾保护” |
+| `commentReply` | 评论回复脚本（`window.TypechoComment`） | `is('single')` 为真（文章、页面、附件），且开启了“启用评论回复” |
+| `antiSpam` | 反垃圾脚本，向评论表单加入校验字段 | `is('single')` 为真（文章、页面、附件），且开启了“开启反垃圾保护” |
 
 `commentReply` 和 `antiSpam` 是评论功能所必需的：屏蔽 `commentReply` 后“回复”按钮不能把表单移到评论下方；屏蔽 `antiSpam` 后，开启了反垃圾保护的站点上评论会提交失败。
 

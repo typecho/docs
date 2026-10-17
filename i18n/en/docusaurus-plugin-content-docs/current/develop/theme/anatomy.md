@@ -2,7 +2,7 @@
 title: Theme Structure and Header Information
 sidebar_position: 3
 translation: machine
-source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # Theme Structure and Header Information
@@ -46,7 +46,7 @@ The doc comment (`/** ... */`) at the top of `index.php` is the theme informatio
 | Syntax | Shown in the admin panel as |
 |---|---|
 | The first block of text (the lines before any `@`) | Theme description |
-| `@package` | Theme name. Without it, the list shows no name |
+| `@package` | Theme name. Without it, the list shows the theme directory name |
 | `@author` | Author |
 | `@link` | The author name links to this URL |
 | `@version` | Version |

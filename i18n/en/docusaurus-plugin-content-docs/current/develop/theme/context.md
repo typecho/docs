@@ -2,7 +2,7 @@
 title: Page Context and is()
 sidebar_position: 5
 translation: machine
-source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 ---
 
 # Page Context and is()
@@ -43,8 +43,9 @@ $this->is(string $archiveType, ?string $archiveSlug = null): bool
 | `author` | Author pages | user ID |
 | `date` | Date archives | `year`, `month`, `day` |
 | `search` | Search result pages | keyword |
+| `front` | The post list page (`/blog/` by default) and its pagination, when the home page is set to a page or a template file and the [post list page](../../guide/settings/reading.md#front-archive) is enabled | — |
 | `single` | **Pseudo-type**: posts, pages, attachments | as above |
-| `archive` | **Pseudo-type**: all list pages except the home page (category, tag, author, date, search) plus the 404 page | the slug of the 404 page is `404` |
+| `archive` | **Pseudo-type**: all list pages except the home page (category, tag, author, date, search, post list page) plus the 404 page | the slug of the 404 page is `404` |
 | `feed` | **Pseudo-type**: true when called from a feed | — |
 
 `single`, `archive` and `feed` are not types of the page itself but groupings by situation:
@@ -68,12 +69,12 @@ You can read them directly in a template:
 |---|---|
 | `getArchiveType()` | The page type; values as in the first column of the table above (excluding pseudo-types) |
 | `getArchiveSlug()` | The slug |
-| `getArchiveTitle()` | The archive title: post / page title, category name, search keyword, etc.; `null` on the home page |
+| `getArchiveTitle()` | The archive title: post / page title, category name, search keyword, etc.; `null` on the home page and the post list page |
 | `getArchiveDescription()` | The archive description: category description, post excerpt; the site description on the home page and search pages |
 | `getArchiveUrl()` | The URL of the current page |
 
-:::caution The home page has no slug
-In 1.3.0, the slug of the home page (`index`) is not initialized. Calling `$this->getArchiveSlug()` on the home page, or calling `$this->is('index', ...)` with a second argument, throws the error `Typed property Widget\Archive::$archiveSlug must not be accessed before initialization` and the page becomes a 500. Check for the home page only with `$this->is('index')`; code that needs to read the slug should first exclude the home page with `!$this->is('index')`.
+:::caution The home page and the post list page have no slug
+In 1.3.0, the slug of the home page (`index`) and of the post list page (`front`) is not initialized. Calling `$this->getArchiveSlug()` on either of them, or calling `$this->is('index', ...)` or `$this->is('front', ...)` with a second argument, throws the error `Typed property Widget\Archive::$archiveSlug must not be accessed before initialization` and the page becomes a 500. The post list page also satisfies `is('archive')` but not `is('index')`, so excluding the home page alone is not enough: code that needs to read the slug should first exclude both with `!$this->is('index') && !$this->is('front')`.
 :::
 
 Pages of every other type have a slug, and checks such as `is('category', 'tech')` are safe on the home page too: when the type does not match, the slug is not read.

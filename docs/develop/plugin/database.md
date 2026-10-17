@@ -94,7 +94,7 @@ $deleted = $db->query($db->delete('table.guestbook')->where('id IN ?', [$id]));
 | `from($table)` | 表名 |
 | `where($condition, ...$values)` | 条件，`?` 是占位符，值会被转义；多次调用以 `AND` 连接 |
 | `orWhere($condition, ...$values)` | 同上，以 `OR` 连接 |
-| `join($table, $condition, $op = Db::INNER_JOIN)` | 连接，`$op` 还可以是 `Db::LEFT_JOIN`、`Db::RIGHT_JOIN`、`Db::OUTER_JOIN` |
+| `join($table, $condition, $op = Db::INNER_JOIN)` | 连接，`$op` 还可以是 `Db::LEFT_JOIN`、`Db::RIGHT_JOIN`（SQLite 3.39 起支持）。`Db::OUTER_JOIN` 会原样生成 `OUTER JOIN`，三种数据库都不接受这种写法，不要使用 |
 | `order($field, $sort = Db::SORT_ASC)` | 排序，`Db::SORT_DESC` 为倒序；多次调用依次追加 |
 | `group($field)`、`having($condition, ...$values)` | 分组 |
 | `limit($n)`、`offset($n)` | 取几行、跳过几行 |
