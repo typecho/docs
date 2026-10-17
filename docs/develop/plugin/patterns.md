@@ -19,7 +19,7 @@ sidebar_position: 9
 | `excerpt` | filter | 截取摘要之前，收到完整的正文 HTML |
 | `excerptEx` | filter | 摘要生成之后，收到摘要 HTML |
 
-只想在 HTML 上做点修改（加属性、替换文字、插入内容）时用 `contentEx` 和 `excerptEx`。评论的正文有一套同名的钩子，在 `Widget\Base\Comments` 上（句柄 `Widget_Abstract_Comments`）。
+只想在 HTML 上做点修改（加属性、替换文字、插入内容）时用 `contentEx` 和 `excerptEx`。评论的正文有同名的 `content`、`markdown`、`autoP`、`contentEx` 钩子，在 `Widget\Base\Comments` 上（句柄 `Widget_Abstract_Comments`）；评论没有 `excerpt` 和 `excerptEx` 钩子，修改评论 HTML 用 `contentEx`。
 
 下面的插件给站外链接加上 `target="_blank"`：
 
@@ -188,7 +188,7 @@ class Plugin implements PluginInterface
 ]
 ```
 
-下面的插件把附件保存到一个可配置的目录，并通过可配置的地址访问，例如一个挂载的网络磁盘配一个独立的静态文件域名。把 `save()`、`deleteHandle()` 和 `attachmentHandle()` 换成对象存储 SDK 的上传、删除和生成地址，就是一个对象存储插件：
+下面的插件把附件保存到一个可配置的目录，并通过可配置的地址访问，例如一个挂载的网络磁盘配一个独立的静态文件域名。把 `save()`、`deleteHandle()` 和 `attachmentHandle()` 换成对象存储 SDK 的上传、删除和生成地址，再改写 `info()`，就是一个对象存储插件。`info()` 从本地的目标文件读取大小和 MIME 类型，文件只上传到对象存储时本地没有这个文件，所以要在上传之前从临时文件（`$file['tmp_name']`）或 XML-RPC 传来的文件内容取得这两项，再和对象存储中的路径一起返回：
 
 ```php title="usr/plugins/LocalBucket/Plugin.php"
 <?php
@@ -331,6 +331,7 @@ class Plugin implements PluginInterface
 - `deleteHandle` 一定要实现，否则后台删除附件时只删除了记录，存储中的文件还在；
 - 替换附件时，Typecho 自带的逻辑要求新旧文件扩展名相同，上例沿用了这个规则；
 - 每次读取附件地址都会调用 `attachmentHandle`，不要在里面发网络请求；
+- 启用后，**所有**附件的地址、替换和删除都按“访问地址 / 保存目录 + `path`”处理，包括启用之前上传、`path` 为 `/usr/uploads/…` 的附件。在已有附件的站点上启用前，先把站点目录下的 `usr/uploads` 按原样复制到保存目录中（成为 `保存目录/usr/uploads/…`），否则这些附件的地址无法访问，删除附件时也只删除了记录、原文件还在。之后修改保存目录或访问地址时，同样要自己把已有文件搬到新位置；
 - 文件信息中的 `path` 由插件自己决定，只有这个插件能理解。**禁用插件后**，它保存的附件仍按 Typecho 默认的方式（站点地址 + `path`）生成地址，通常无法访问。在插件说明中提醒用户这一点。
 
 `Widget\Upload` 上还有几个通知类钩子：`beforeUpload` / `beforeModify` 在写入数据库之前收到文件信息数组，`upload` / `modify` 在写入之后收到 `Widget\Upload` 对象。
@@ -404,6 +405,8 @@ class Plugin implements PluginInterface
 <script>
 $(document).ready(function () {
     const textarea = $('#text');
+    // 内容按 Markdown 保存时，表单中有 name="markdown" 的隐藏字段；没有时按 HTML 插入附件
+    const isMarkdown = textarea.parents('form').find('input[name="markdown"]').length > 0;
 
     // 内容变化时通知表单，自动保存和离开页面提示依赖这个事件
     textarea.on('input', function () {
@@ -413,7 +416,9 @@ $(document).ready(function () {
     // 附件面板中点击“插入”时调用，必须由编辑器提供
     Typecho.insertFileToEditor = function (file, url, isImage) {
         const el = textarea.get(0);
-        const html = isImage ? '![' + file + '](' + url + ')' : '[' + file + '](' + url + ')';
+        const html = isMarkdown
+            ? (isImage ? '![' + file + '](' + url + ')' : '[' + file + '](' + url + ')')
+            : (isImage ? '<img src="' + url + '" alt="' + file + '" />' : '<a href="' + url + '">' + file + '</a>');
         const start = el.selectionStart, end = el.selectionEnd;
 
         el.value = el.value.substring(0, start) + html + el.value.substring(end);
@@ -442,12 +447,14 @@ $(document).ready(function () {
 |---|---|---|
 | `Widget_User` | `login` | trigger 类，接管整个登录验证，返回是否成功 |
 | `Widget_User` | `hashValidate` | trigger 类，接管密码校验，收到明文密码和数据库中的哈希，返回是否匹配 |
-| `Widget_User` | `loginSucceed` / `loginFail` | 每次登录成功 / 失败后，包括登录表单、XML-RPC 等所有途径 |
+| `Widget_User` | `loginSucceed` / `loginFail` | 找到账号并校验密码之后，成功 / 失败时触发，登录表单、XML-RPC 等途径都会经过；用户名不存在、或 `login` 被插件接管时不触发 |
 | `Widget_Login` | `loginSuccess` / `loginFailure` | 只在后台登录表单登录成功 / 失败后 |
 | `Widget_User` | `logout` | trigger 类，接管退出登录：注册后 Typecho 不再清除登录 Cookie |
 | `Widget_Logout` | `logout` | 用户点击“登出”、登录状态清除之后 |
 
-记录所有途径的登录用 `Widget_User` 上的 `loginSucceed` / `loginFail`。它们收到 `Widget\User` 对象、登录名、**明文密码**、是否临时登录（XML-RPC 每次请求都是临时登录）和有效期。不要把密码写进日志或发送出去。
+记录登录表单和 XML-RPC 等途径的登录用 `Widget_User` 上的 `loginSucceed` / `loginFail`。它们收到 `Widget\User` 对象、登录名、**明文密码**、是否临时登录（XML-RPC 每次请求都是临时登录）和有效期。不要把密码写进日志或发送出去。
+
+这两个钩子只在找到账号、校验过密码之后触发：用户名（或邮箱）不存在时登录直接失败，不触发 `loginFail`；有插件注册了 `login` 钩子接管验证时，两个都不触发。要记录后台登录表单上的所有失败（包括用户名不存在），再注册 `Widget_Login` 的 `loginFailure`，它收到 `Widget\User` 对象、登录名、明文密码和是否勾选了“记住我”四个参数；密码错误时它和 `loginFail` 都会触发。
 
 ```php title="usr/plugins/LoginLog/Plugin.php"
 <?php
@@ -464,7 +471,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
 }
 
 /**
- * 把每次登录成功和失败写入 PHP 错误日志
+ * 把登录成功和密码错误写入 PHP 错误日志
  *
  * @package LoginLog
  * @version 1.0.0
@@ -512,7 +519,7 @@ class Plugin implements PluginInterface
 }
 ```
 
-启用后，登录表单和 XML-RPC 客户端的每次登录都会在 PHP 错误日志中留下一行，例如：
+启用后，登录表单和 XML-RPC 客户端的登录成功和密码错误都会在 PHP 错误日志中留下一行（用户名不存在的尝试不会记录），例如：
 
 ```text
 [LoginLog] success user=admin uid=1 ip=203.0.113.5 temporarily=0

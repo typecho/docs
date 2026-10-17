@@ -18,16 +18,18 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 | 函数 | 调用时机 | 用途 |
 |---|---|---|
-| `themeInit($archive)` | 前台每次请求，查询数据之后、输出模板之前 | 修改当前页面的参数，例如每页篇数 |
+| `themeInit($archive)` | 前台请求确定页面类型之后、执行列表查询和输出模板之前（单篇内容此时已经取出）；首页设为模板文件时不调用 | 修改当前页面的参数，例如每页篇数 |
 | `themeConfig($form)` | 打开“设置外观”页面、启用主题时 | 定义主题设置表单 |
 | `themeConfigHandle($settings, $isInit)` | 保存主题设置、启用主题时 | 自己处理设置的保存 |
-| `themeFields($layout)` | 打开文章或页面编辑器、保存时 | 为文章和页面预置自定义字段 |
+| `themeFields($layout)` | 编辑器生成自定义字段区域时 | 为文章和页面预置自定义字段 |
 | `themePostFields($layout)` | 同上，只用于文章 | 只给文章预置字段 |
 | `themePageFields($layout)` | 同上，只用于独立页面 | 只给独立页面预置字段 |
 | `threadedComments($comments, $options)` | `listComments()` 输出每一条评论时 | 自定义单条评论的 HTML |
 | `singlePing($pings, $options)` | `listPings()` 输出每一条引用时 | 自定义单条引用的 HTML（1.3.0 中不可用，见下文） |
 
 所有回调都是可选的，没有定义时使用 Typecho 的默认行为。
+
+`themeFields`、`themePostFields`、`themePageFields` 只用来生成编辑器中的字段控件，保存文章或页面时不会调用，不能在其中校验或处理提交的字段值。
 
 ## themeInit
 
@@ -44,6 +46,7 @@ function themeInit($archive)
 - 调用时机：Typecho 已经根据地址确定了页面类型、准备好了查询，但**还没有执行列表查询**，所以这里修改 `pageSize` 对当前列表页有效。上面的例子让 `tech` 分类每页只显示 2 篇，`/category/tech/2/` 是第二页。
 - 文章页、独立页面在调用 `themeInit` 之前已经取出了内容，这时可以读取 `$archive->title` 等属性来做判断。
 - 只在前台页面中调用；后台、订阅源不会调用。
+- 首页设为“直接调用模板文件”时，Typecho 不加载 `functions.php`，也不调用 `themeInit`，见[首页模板](./custom-templates.md#首页模板package-index)。
 
 更多例子见[自定义模板](./custom-templates.md#page-size)。
 

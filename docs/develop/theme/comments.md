@@ -114,7 +114,7 @@ function threadedComments($comments, $options)
 
 - `header.php` 中必须调用 `$this->header()`，并且不能屏蔽 `commentReply`（见[头部输出 header()](./header.md)）；
 - 表单外层元素的 `id` 必须是 `$this->respondId()`；
-- 浏览器禁用 JavaScript 时，“回复”链接会带上 `?replyTo=评论ID` 打开页面，`$this->commentUrl()` 随之带上父评论参数，同样能回复。
+- 浏览器禁用 JavaScript 时，“回复”链接会带上 `?replyTo=评论ID` 打开页面，`$this->commentUrl()` 随之带上父评论参数，回复对象不会丢失。但站长开启了“开启反垃圾保护”（安装后默认开启）时，表单缺少只能由脚本加入的校验字段，提交会被退回，所以这时没有 JavaScript 仍然无法提交评论，见下文“评论表单”。
 
 ## 评论表单
 
