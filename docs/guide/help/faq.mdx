@@ -9,9 +9,10 @@ sidebar_position: 4
 
 ## 首页能打开，点任何文章链接都是 404 {#404}
 
-开启了永久链接（地址重写），但 Web 服务器没有把这些地址转给 `index.php`。按服务器类型检查 nginx 的 `try_files`、Apache 的 `mod_rewrite` 与 `.htaccess`、Caddy 的 `php_fastcgi`；后台“永久链接”中的重写检测失败也在同一页说明。见[Web 服务器配置：所有文章 404](../operations/web-server.md#404-everywhere)。
+先看出错的文章地址是哪一种：
 
-如果是**登录时**才 404，多半是 nginx 的 PHP 配置不支持 `/index.php/action/login` 这样的地址，见下面两条。
+- **形如 `/archives/1/`**：说明开启了地址重写，但 Web 服务器没有把这些地址转给 `index.php`。按服务器类型检查 nginx 的 `try_files`、Apache 的 `mod_rewrite` 与 `.htaccess`、Caddy 的 `php_fastcgi`；后台“永久链接”中的重写检测失败也在同一页说明。见[Web 服务器配置：所有文章 404](../operations/web-server.md#404-everywhere)。
+- **形如 `/index.php/archives/1/`**：没有开启地址重写，Web 服务器没有把 `/index.php/...` 形式的请求交给 PHP 处理（新安装的站点常见）。这和登录时 404 是同一个原因，见下面两条。
 
 ## 页面显示 “No input file specified.” {#no-input-file}
 

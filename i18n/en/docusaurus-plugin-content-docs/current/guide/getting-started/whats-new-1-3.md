@@ -2,7 +2,7 @@
 title: What's new and changed in 1.3
 sidebar_position: 5
 translation: machine
-source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 # What's new and changed in 1.3
@@ -46,5 +46,5 @@ The upgrade program handles these changes in the database automatically. But if 
 
 ## Things to watch when upgrading
 
-- 1.3 can only be upgraded to from 1.1.0 or later; for 1.1 sites, upgrading to 1.2.1 first is recommended. See [Upgrading](./upgrade.md#direct-upgrade).
-- The 1.3.0 release can hang during the upgrade on sites with more than 100 attachments; for the workaround, see [Upgrading](./upgrade.md#known-issue-attachments).
+- 1.3 can only be upgraded to from 1.1.0 or later; 1.1 sites must first make two table structure changes by hand. See [Upgrading](./upgrade.md#direct-upgrade).
+- The 1.3.0 release can hang during the upgrade on sites with 100 or more attachments (mostly when retrying after a failed attempt); for the workaround, see [Upgrading](./upgrade.md#known-issue-attachments).

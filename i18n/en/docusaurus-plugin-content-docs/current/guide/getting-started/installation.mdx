@@ -2,7 +2,7 @@
 title: Installation
 sidebar_position: 2
 translation: machine
-source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 import Tabs from '@theme/Tabs';
@@ -79,11 +79,11 @@ Open `https://your-domain/install.php` in the browser. The installer has three s
 
 | Step | Address | Contents |
 |---|---|---|
-| 1 | `install.php` (or `?step=1`) | Welcome page, license, interface language; clicking on checks the environment |
+| 1 | `install.php` (or `?step=1`) | Welcome page, license, interface language; click the button to go on to the environment check |
 | 2 | `install.php?step=2` | Choose the database adapter and enter the connection details; writes the configuration file and creates the tables |
 | 3 | `install.php?step=3` | Create the administrator account and write the initial data |
 
-The steps check each other: visiting `?step=3` before the tables exist sends you back to `?step=2`; visiting `?step=2` when the tables already exist sends you on to `?step=3`. Once everything is done, visiting `install.php` again redirects straight to the site's home page.
+The installer sends you to the step you need: visiting `?step=3` before the tables exist sends you back to `?step=2`; visiting `?step=2` when the tables already exist sends you on to `?step=3`. Once everything is done, visiting `install.php` again redirects straight to the site's home page.
 
 ### Step 1: Welcome and environment check
 
@@ -97,7 +97,7 @@ First choose an adapter in the **Database adapter** drop-down; the form switches
 
 | Field | MySQL default | PostgreSQL default | Notes |
 |---|---|---|---|
-| Database prefix | `typecho_` | `typecho_` | 1–16 letters, digits, underscores or hyphens |
+| Database prefix | `typecho_` | `typecho_` | The installer accepts 1–16 letters, digits, underscores or hyphens, but on SQLite a prefix containing a hyphen or starting with a digit fails to create the tables; start with a letter or underscore and use only letters, digits and underscores |
 | Database host | `localhost` | `localhost` | MySQL accepts a socket path, see below |
 | Database port | `3306` | `5432` | Under **Advanced options** |
 | Database user name | empty (hint `root`) | `postgres` | Required |
@@ -107,7 +107,7 @@ First choose an adapter in the **Database adapter** drop-down; the form switches
 | Database SSL certificate | empty | — | CA certificate path, MySQL only |
 | Enable SSL server certificate verification | off | off | MySQL: verification is enabled automatically when a CA certificate is given; PostgreSQL: when enabled, connects with `sslmode=require` |
 
-SQLite has only one field, **Database file path**; by default it creates a `.db` file with a random name in the `usr/` directory.
+SQLite has only one field, **Database file path**; by default it creates a `.db` file with a random name in the `usr/` directory. Files under `usr/` can be reached directly by URL, so once the database file name leaks, the whole database can be downloaded. Enter an absolute path outside the site directory instead (create its directory beforehand and make it writable by the web server's account), or deny access to `.db` files in the web server; see [Security hardening: keep sensitive files from being downloaded](../operations/security.md#sensitive-files).
 
 #### Using a MySQL socket {#mysql-socket}
 
@@ -126,7 +126,7 @@ The installer uses a hidden field, `dbNext`, to decide what to do in these situa
 | `dbNext` | When it appears | Effect |
 |---|---|---|
 | `none` | Default | Normal installation; if tables with the same prefix already exist, shows "The installer has detected that the existing tables already exist." with the two buttons below |
-| `delete` | Click **Delete existing data** | Drops the 7 tables with the same prefix and creates them again |
+| `delete` | Click **Delete existing data** | Drops the 7 tables with the same prefix and creates them again. On PostgreSQL: dropping the tables does not drop the sequences created at installation, so the new tables cannot be created and the installation cannot complete; to reinstall on PostgreSQL, use a newly created empty database instead |
 | `keep` | Click **Use existing data** | Keeps the existing tables; if the existing data is complete, the installation ends immediately and the user name and password stay as before; if the tables exist but the data is incomplete, it goes on to step 3 |
 | `config` | Click **Created, continue installation »** | Skips writing the configuration file and reads the `config.inc.php` you created manually instead |
 

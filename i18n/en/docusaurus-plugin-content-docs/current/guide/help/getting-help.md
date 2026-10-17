@@ -2,7 +2,7 @@
 title: Getting help
 sidebar_position: 5
 translation: machine
-source_commit: 97eccd0fe4871e7b33f99f7b47436e058e9520d3
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 # Getting help
@@ -52,7 +52,7 @@ A problem that can be solved quickly is one that others can **reproduce**. The b
 |---|---|---|
 | Operating system version | Ubuntu 24.04 | Run `cat /etc/os-release` on the server |
 | Apache/Nginx version | nginx 1.26.2 | `nginx -v` or `apachectl -v` |
-| Database version | MySQL 8.0.39 | `mysql --version`, or run `SELECT VERSION();` in the database |
+| Database version | MySQL 8.0.39 | Connect to the database Typecho uses and run `SELECT VERSION();` (MySQL, MariaDB, PostgreSQL) or `SELECT sqlite_version();` (SQLite). `mysql --version` shows the client version, not the database server's version |
 | PHP version | PHP 8.2.20 | `php -v`. Note that the command line and the web server may not use the same PHP |
 | Typecho version | 1.3.0 | The admin footer |
 | Browser version | Chrome 130 | The browser's "About" page |
@@ -90,4 +90,4 @@ Platform:
 Already tried: disabled all plugins and retried, same result. The site has about 800 attachments.
 ```
 
-(This example is exactly the known issue described on the [Upgrading](../getting-started/upgrade.md#known-issue-attachments) page.)
+(The symptoms in this example match the known issue described on the [Upgrading](../getting-started/upgrade.md#known-issue-attachments) page.)

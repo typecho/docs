@@ -50,7 +50,7 @@ sidebar_position: 5
 |---|---|---|
 | 操作系统版本 | Ubuntu 24.04 | 服务器上执行 `cat /etc/os-release` |
 | Apache/Nginx 版本 | nginx 1.26.2 | `nginx -v` 或 `apachectl -v` |
-| 数据库版本 | MySQL 8.0.39 | `mysql --version`，或在数据库中执行 `SELECT VERSION();` |
+| 数据库版本 | MySQL 8.0.39 | 连接到 Typecho 使用的数据库后执行 `SELECT VERSION();`（MySQL、MariaDB、PostgreSQL）或 `SELECT sqlite_version();`（SQLite）。`mysql --version` 显示的是客户端版本，不是数据库服务器的版本 |
 | PHP 版本 | PHP 8.2.20 | `php -v`。注意命令行与 Web 服务器使用的 PHP 可能不是同一个 |
 | Typecho 版本 | 1.3.0 | 后台页脚 |
 | 浏览器版本 | Chrome 130 | 浏览器的“关于”页面 |
@@ -88,4 +88,4 @@ sidebar_position: 5
 已尝试：禁用全部插件后重试，结果相同。站点约有 800 个附件。
 ```
 
-（这个例子正是[升级](../getting-started/upgrade.md#已知问题附件超过-100-个的站点升级时卡住)页里写到的已知问题。）
+（这个例子的现象与[升级](../getting-started/upgrade.md#已知问题附件达到-100-个的站点升级时可能卡住)页里写到的已知问题一致。）

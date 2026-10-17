@@ -2,7 +2,7 @@
 title: Interface Language
 sidebar_position: 3
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 # Interface Language
@@ -13,7 +13,7 @@ Typecho's interface text is written in Simplified Chinese, and the installation 
 
 1. Download `langs.zip` from the [typecho/languages Release page](https://github.com/typecho/languages/releases/tag/ci). It contains the `.mo` files for all languages (generated automatically by the repository's CI, last updated on 2025-08-07). Currently available: `ceb`, `el_GR`, `en_US`, `es_ES`, `fa_IR`, `fil_PH`, `fr_FR`, `ja_JP`, `pt_BR`, `ru_RU`, `tr_TR`, `ug_CN`, `zh_TW`.
 2. Create `usr/langs/` in the site directory (the installation package does not include this directory) and upload the `.mo` files you need into it, for example `usr/langs/en_US.mo`. **Do not rename the files**; the file name is the language code.
-3. Go to "Settings → General"; a "Language" drop-down that was not there before appears. Its options are Simplified Chinese (the built-in language) plus each language pack's own name (such as `English`, or Japanese written in Japanese). Select one and save.
+3. Sign in as an administrator and open `https://<your site>/admin/options-general.php` (in the Chinese interface this is "设置 → 基本"; if you renamed the admin directory, use your own directory name). A "语言" (Language) drop-down that was not there before appears. Its options are Simplified Chinese (the built-in language) plus each language pack's own name (such as `English`, or Japanese written in Japanese). Select one and click "保存设置" (Save settings).
 
 For example, after switching to English, the admin menu becomes "Console / Overview / Preferences / Plugins / Appearance…" and the page title becomes "Basic settings"; after switching to Japanese, the menu is shown in Japanese.
 
@@ -42,8 +42,8 @@ Both the language list in the admin panel and the actual loading read from this 
 
 1.3.0 changed the links in several admin messages from `http://` to `https://`, but the corresponding source strings in the existing language packs are still `http://`, so the two do not match and these sentences still appear in Chinese in other languages:
 
-- Settings → Discussion → Comment date format: the description "For the syntax, see PHP date format."
-- Settings → Reading → Post date format: the description "See PHP date format."
+- Settings → Comments → Comment date format: the description "For the syntax, see PHP date format."
+- Settings → Read → Post date format: the description "See PHP date format."
 - Edit user → User group: the description "For the full permission table, see here."
 - Editor → Custom fields: the description "Custom fields extend what your templates can do; for usage see the help documentation"
 

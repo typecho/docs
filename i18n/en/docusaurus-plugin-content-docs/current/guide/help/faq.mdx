@@ -2,7 +2,7 @@
 title: FAQ
 sidebar_position: 4
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 # FAQ
@@ -11,9 +11,10 @@ These are the questions site owners ask most often. Each entry only gives the ca
 
 ## The home page opens, but every post link returns 404 {#404}
 
-Permalinks (URL rewriting) are enabled, but the web server does not pass these URLs to `index.php`. Depending on the server, check nginx's `try_files`, Apache's `mod_rewrite` and `.htaccess`, or Caddy's `php_fastcgi`; a failed rewrite check under **Permalinks** in the admin panel is covered on the same page. See [Web server configuration: all posts return 404](../operations/web-server.md#404-everywhere).
+First look at the form of the failing post URL:
 
-If you only get a 404 **when logging in**, the nginx PHP configuration most likely does not support URLs like `/index.php/action/login`; see the next two entries.
+- **Like `/archives/1/`**: URL rewriting is enabled, but the web server does not pass these URLs to `index.php`. Depending on the server, check nginx's `try_files`, Apache's `mod_rewrite` and `.htaccess`, or Caddy's `php_fastcgi`; a failed rewrite check under **Permalinks** in the admin panel is covered on the same page. See [Web server configuration: all posts return 404](../operations/web-server.md#404-everywhere).
+- **Like `/index.php/archives/1/`**: URL rewriting is not enabled, and the web server does not pass requests of the form `/index.php/...` to PHP (common on newly installed sites). This is the same cause as a 404 when logging in; see the next two entries.
 
 ## The page shows "No input file specified." {#no-input-file}
 
@@ -45,7 +46,7 @@ For WordPress you can use the WordpressToTypecho plugin from the official plugin
 
 ## How do I back up my site? {#backup}
 
-A full backup consists of three parts: the database (with the database's own export tool), the `usr/` directory, and `config.inc.php`. **Dashboard → Backup** in the admin panel only exports content, without settings or any files, and cannot replace a full backup. See [Backup and restore](../operations/backup.md).
+A full backup consists of three parts: the database (with the database's own export tool), the `usr/` directory, and `config.inc.php`. **Console → Backup** in the admin panel only exports content, without settings or any files, and cannot replace a full backup. See [Backup and restore](../operations/backup.md).
 
 ## Can I change the admin path `/admin/`? {#admin-path}
 

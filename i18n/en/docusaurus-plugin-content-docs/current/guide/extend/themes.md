@@ -2,12 +2,12 @@
 title: Installing and Configuring Themes
 sidebar_position: 1
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 ---
 
 # Installing and Configuring Themes
 
-A theme (appearance) determines how the front end of your site looks. Themes are managed in the admin panel under "Dashboard → Appearance" (`admin/themes.php`), which only administrators can use.
+A theme (appearance) determines how the front end of your site looks. Themes are managed in the admin panel under "Console → Appearance" (`admin/themes.php`), which only administrators can use.
 
 ## The two bundled themes
 
@@ -20,7 +20,7 @@ Settings of the two themes:
 
 | Theme | UI label | Field | Description |
 |---|---|---|---|
-| default | Site logo URL | `logoUrl` | An image URL, shown before the site title |
+| default | Site logo URL | `logoUrl` | Once an image URL is entered, the header shows the logo image **in place of** the text site title and description (the site title is used as the image's `alt`); clear it to restore the text header |
 | default | Sidebar display | `sidebarBlock[]` | Checkboxes: show recent posts, show recent replies, show categories, show archives, show other miscellany (all selected by default) |
 | classic-22 | Site logo | `logoUrl` | An image URL; displays the logo |
 | classic-22 | Appearance style | `colorSchema` | Auto, light, dark, custom; "If custom is selected, the theme uses the styles from theme.css" |
@@ -31,7 +31,7 @@ The admin panel has **no** feature for uploading themes; you need to put the fil
 
 1. Download the theme and extract it to get a directory;
 2. Upload the whole directory into `usr/themes/`, for example `usr/themes/mytheme/`;
-3. Go to "Dashboard → Appearance"; the new theme appears in the "Available themes" list.
+3. Go to "Console → Appearance"; the new theme appears in the "Available themes" list.
 
 For a directory to be recognized as a theme, it must contain at least an `index.php` whose opening comment describes the theme. The name, author, version and description shown in the list all come from this comment:
 
@@ -49,7 +49,7 @@ For a directory to be recognized as a theme, it must contain at least an `index.
 
 An image in the directory named `screenshot.png` (jpg, gif, webp and so on also work) is shown as the screenshot. Once the directory is in place, no installation step is needed; refresh the Appearance page to see it.
 
-When you download a theme from GitHub, the extracted directory name often has a `-main` or `-master` suffix. Themes have no hard requirement on the directory name, but theme settings and custom templates are stored by directory name, so rename it to the name the theme author specifies before uploading.
+When you download a theme from GitHub, the extracted directory name often has a `-main` or `-master` suffix. Themes have no hard requirement on the directory name, but theme settings are stored by directory name, so rename it to the name the theme author specifies before uploading. The custom template chosen for a page is stored only by file name, regardless of theme: after switching themes, check the pages that use custom templates; if the new theme has a template file with the same name it is used, otherwise the page is shown as an ordinary page.
 
 ## Switching themes
 
