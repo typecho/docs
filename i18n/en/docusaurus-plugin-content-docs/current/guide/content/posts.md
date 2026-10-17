@@ -2,7 +2,7 @@
 title: Writing posts
 sidebar_position: 2
 translation: machine
-source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Writing posts
@@ -115,12 +115,12 @@ Switch to the "Attachments" panel on the right and drag files onto the "Drop fil
 - If the post has already been saved (it has a post ID), uploaded files belong to the post immediately; for a new post they are attached on the first save or publish.
 - For which file types are allowed, file size limits, replacing files and so on, see [Attachments and file management](./attachments.md).
 
-## Publishing
+## Publishing {#publish}
 
 Click "Publish post".
 
 - Editors and above publish with the chosen "Visibility", which defaults to "Public"; afterwards you are taken to the post list with the message "Post "title" has been published".
-- **Contributors** have no "Visibility" option; their posts always go to the "pending" state, with the message "Post "title" is awaiting review". An editor or administrator reviews it under "Manage → Posts → Pending": tick it, then choose "Mark as public" in the "Selected items" menu.
+- **Contributors** have no "Visibility" option; their posts always go to the "pending" state, with the message "Post "title" is awaiting review". To review it, an editor or administrator goes to "Manage → Posts", first switches to "All" (the default "Mine" lists only their own posts), then opens the "Pending" tab, ticks the submission and chooses "Mark as public" in the "Selected items" menu.
 - If a contributor edits and publishes again a post that has **already been approved**, it becomes "pending" again and disappears from the front end until it is approved again (`checkStatus()` in `var/Widget/Contents/EditTrait.php`: content published by roles below editor is always `waiting`).
 
 ### Scheduled publishing {#scheduled}
@@ -142,6 +142,6 @@ A scheduled post still has the status `publish` (public); only its creation time
 - Tabs at the top: "Available" (all posts, including unpublished drafts), "Pending" (with a count) and "Drafts". Editors and above also have an "All" / "Mine" toggle, which defaults to "Mine" and remembers your choice; contributors only see their own posts.
 - The status column shows markers such as "Pending", "Password protected", "Private", "Hidden" and "Has revision"; public posts show no marker.
 - You can filter by keyword and by category.
-- After ticking posts, the "Selected items" menu offers: Delete, Mark as public, Mark as pending, Mark as hidden, Mark as private.
+- After ticking posts, the "Selected items" menu offers "Delete"; editors and above also get Mark as public, Mark as pending, Mark as hidden and Mark as private.
 
 When a post is deleted, its comments, custom fields and revision are deleted with it; its attachments are not deleted but become "unattached" files; see [Attachments and file management](./attachments.md#unattached).

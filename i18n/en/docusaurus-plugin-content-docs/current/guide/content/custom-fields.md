@@ -2,14 +2,14 @@
 title: Custom fields (editor side)
 sidebar_position: 6
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Custom fields (editor side)
 
 Custom fields let you attach extra data to a post or a page, such as a subtitle, a cover image URL or a view count; the theme decides how to display them. The hint below the **Custom fields** panel in the editor, "Custom fields can extend your template features, see the help documentation for usage", points to this page.
 
-This page only covers how to fill them in on the admin panel. Reading fields in a theme template (`$this->fields->fieldName`) belongs to the theme part of the developer documentation, and that chapter is still being written.
+This page only covers how to fill them in on the admin panel. For reading and defining fields in a theme template (`$this->fields->fieldName`), see [Custom fields in templates](../../develop/theme/custom-fields.md).
 
 ## Where the panel is
 

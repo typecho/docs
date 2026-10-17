@@ -2,7 +2,7 @@
 title: Security Hardening
 sidebar_position: 9
 translation: machine
-source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Security Hardening
@@ -45,7 +45,7 @@ At runtime Typecho only needs to write to very few locations (for the detailed l
 | `config.inc.php` | Read only | `640`, owned by the deploy user, group set to the PHP process's group |
 | All other files and directories | Read only | Owned by the deploy user, directories `755`, files `644` |
 
-An example (deploy user `deploy`, PHP running as `www-data`):
+An example (with MySQL / PostgreSQL, deploy user `deploy`, PHP running as `www-data`):
 
 ```bash
 cd /srv/www/typecho
@@ -54,6 +54,14 @@ find . -type d -exec chmod 755 {} \;
 find . -type f -exec chmod 644 {} \;
 chmod 640 config.inc.php
 chown -R www-data:www-data usr/uploads
+```
+
+With SQLite, the commands above leave the database file and the `usr/` directory that contains it read-only to PHP, so the site cannot write to the database. Don't fix this by making all of `usr/` writable. Instead, move the database to a separate directory (preferably outside the site directory), make the PHP process own that directory, and change `'file'` in `config.inc.php` to the new path:
+
+```bash
+mkdir -p /srv/data/typecho
+mv usr/your-database-file.db /srv/data/typecho/
+chown -R www-data:www-data /srv/data/typecho
 ```
 
 This setup has two effects:

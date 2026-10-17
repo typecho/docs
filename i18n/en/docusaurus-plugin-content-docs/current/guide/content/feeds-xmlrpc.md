@@ -2,7 +2,7 @@
 title: Feeds and offline clients
 sidebar_position: 11
 translation: machine
-source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Feeds and offline clients
@@ -33,7 +33,11 @@ Each feed outputs the latest 10 entries, and includes only posts that meet all o
 - "Allow in feeds" (`allowFeed`) is checked in the editor;
 - no password is set.
 
-Hidden, private and pending-review posts and drafts never appear. See [Visibility and password protection](./visibility.md) for the rules.
+Hidden, private and pending-review posts and drafts never appear. The one exception is the author: when logged in, opening the feed URL in the same browser shows their own private posts (they still need to allow feeds and have no password); feed readers and other visitors get the logged-out result. See [Visibility and password protection](./visibility.md) for the rules.
+
+### Comment feed {#comment-feed}
+
+The conditions above apply only to post feeds. The site-wide comment feed (`/feed/comments/`) outputs the 10 latest approved comments and does not check the status or the "Allow in feeds" setting of the post each comment belongs to: after a post is made private or hidden, or removed from feeds, its approved comments still appear here (only comments on password-protected posts show their content as "The content is hidden."). If you don't want those comments to be picked up by subscribers, mark them as pending or delete them.
 
 ### Full text or excerpt: `feedFullText`
 
@@ -77,14 +81,14 @@ The `<link rel="EditURI" href=".../action/xmlrpc?rsd">` and wlwmanifest links ou
 :::
 
 :::caution In 1.3.0, editing an existing post from a client creates a new post
-The 1.3.0 XML-RPC edit interface has a known issue: when you modify an existing post with `metaWeblog.editPost`, the original is not changed; instead **a new post is created**, and the original stays as it was. `wp.editPost` and `wp.editPage` use the same code and are affected the same way. The issue is fixed in the code after 1.3.0; the 1.3.0 release is still affected. With 1.3.0, edit published posts in the web admin panel, or after editing in the client, delete the duplicate post in the admin panel.
+The 1.3.0 XML-RPC edit interface has a known issue: when you modify an existing post with `metaWeblog.editPost`, the original is not changed; instead **a new post is created**, and the original stays as it was. `wp.editPost` and `wp.editPage` use the same code and are affected the same way. The issue is fixed in the code after 1.3.0; the 1.3.0 release is still affected. With 1.3.0, edit published posts in the web admin panel. If a duplicate has already been created, first copy its changes into the original in the admin panel, check that the original is correct, and only then delete the duplicate.
 :::
 
 ### Writing Markdown in a client {#markdown}
 
-By default, content submitted by a client is saved as HTML, and a client reading a post also gets the converted HTML. If your client itself writes in Markdown, turn on "Use Markdown syntax in the XMLRPC interface" (`xmlrpcMarkdown`) in your [Profile](./profile.md#writing): from then on, content submitted with your account is saved as Markdown (with the `<!--markdown-->` marker in the content), and the client gets the Markdown source when reading. This option is set per user.
+By default, content submitted by a client is saved as HTML, and a client reading a post also gets the converted HTML. If your client itself writes in Markdown, turn on **both** "Use Markdown syntax to edit and parse content" (`markdown`) and "Use Markdown syntax in the XMLRPC interface" (`xmlrpcMarkdown`) in your [Profile](./profile.md#writing). With only the latter on, the content gets no Markdown marker and the front end shows the Markdown source as plain text. With both on, content submitted with your account is saved as Markdown (with the `<!--markdown-->` marker in the content), and the client gets the Markdown source when reading. This option is set per user.
 
-For new posts, "Allow comments / trackbacks / in feeds" follows "Allow by default" in your Profile.
+For new posts, "Allow comments / trackbacks" uses the value the client sends, and falls back to "Allow by default" in your Profile when the client sends none; "Allow in feeds" always comes from your Profile.
 
 ### PHP 8.4 and later
 

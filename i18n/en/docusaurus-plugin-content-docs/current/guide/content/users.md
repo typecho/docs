@@ -2,7 +2,7 @@
 title: Users, roles and registration
 sidebar_position: 9
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Users, roles and registration
@@ -47,7 +47,7 @@ The link "See here for the detailed permission table" below the user group on th
 | Publish and manage posts with an XML-RPC client | ✓ | ✓ | ✓ only their own posts | ✗ | ✗ |
 | Manage pages, categories and the author list via XML-RPC | ✓ | ✓ | ✗ | ✗ | ✗ |
 | Manage users | ✓ | ✗ | ✗ | ✗ | ✗ |
-| System settings (General, Discussion, Reading, Permalink) | ✓ | ✗ | ✗ | ✗ | ✗ |
+| System settings (General, Comments, Reading, Permalink) | ✓ | ✗ | ✗ | ✗ | ✗ |
 | Plugins, appearance, editing theme files, backup, upgrade | ✓ | ✗ | ✗ | ✗ | ✗ |
 
 Additional notes:
@@ -85,7 +85,7 @@ If an account ends up in the `visitor` group, for example because the database w
 The list shows each user's post count, username, nickname, email and user group, and can be filtered by keyword. Check users and delete them from the **Selected items** menu (confirm "Are you sure you want to delete these users?"):
 
 - **The first user** (the account with the smallest ID, usually the administrator created during installation) and **yourself** are not deleted; they are skipped even if checked;
-- Deleting a user **does not delete or transfer their posts and comments**: the posts remain, and the author column of the admin post list becomes blank. If you want to keep the byline, hand the posts over to someone else before deleting, or change the account to a subscriber instead of deleting it.
+- Deleting a user **does not delete or transfer their posts and comments**: the posts remain, and the author column of the admin post list becomes blank. The admin panel has no way to transfer authorship; if you want to keep the byline, change the account to a subscriber instead of deleting it.
 
 ## Open registration {#register}
 

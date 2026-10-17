@@ -2,7 +2,7 @@
 title: Profile
 sidebar_position: 10
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Profile
@@ -41,11 +41,11 @@ Only **contributors and higher roles** have this block (subscribers cannot write
 | UI name | Option name | Default | Description |
 |---|---|---|---|
 | Use Markdown syntax to edit and parse content | `markdown` | On | When on, the editor has a Markdown toolbar and preview, and new posts are saved as Markdown. "Enabling this does not affect content that was not previously edited with Markdown syntax" |
-| Use Markdown syntax in the XMLRPC interface | `xmlrpcMarkdown` | Off | When posting from an offline client with this on, content is saved as Markdown, and reading returns the Markdown source instead of the converted HTML. Turn it on only if the client itself supports writing in Markdown, see [Feeds and offline clients](./feeds-xmlrpc.md#markdown) |
+| Use Markdown syntax in the XMLRPC interface | `xmlrpcMarkdown` | Off | When posting from an offline client with this on, content is saved as Markdown, and reading returns the Markdown source instead of the converted HTML. It needs `markdown` above to be on as well, otherwise the content is not saved as Markdown. Turn it on only if the client itself supports writing in Markdown, see [Feeds and offline clients](./feeds-xmlrpc.md#markdown) |
 | Auto save | `autoSave` | Off | When on, the editor automatically saves a draft or revision 3 seconds after you stop typing, see [Writing posts](./posts.md#drafts) |
-| Allow by default | `defaultAllowComment`, `defaultAllowPing`, `defaultAllowFeed` | All checked | Three checkboxes, "Can be commented on", "Can be trackbacked" and "Appear in feeds", decide whether "Allow comments", "Allow trackbacks" and "Allow in feeds" are checked by default for new posts; posts published via XML-RPC also use these settings |
+| Allow by default | `defaultAllowComment`, `defaultAllowPing`, `defaultAllowFeed` | All checked | Three checkboxes (allow comments, allow trackbacks and pingbacks, appear in feeds; the English interface labels them "Commentable", "Citable" and "Shown in aggregation.") decide whether "Allow comments", "Allow trackbacks" and "Allow in feeds" are checked by default for new posts; for posts published via XML-RPC, the comment and trackback values are used only when the client does not specify them, and the feed value is always used |
 
-Click **Save settings** to apply. These settings apply per user: for example, after a user turns on `xmlrpcMarkdown`, posts published with their account via `metaWeblog.newPost` carry the `<!--markdown-->` marker in the content, and other users are not affected; items not checked under "Allow by default" are also turned off for posts published via XML-RPC (for example, after unchecking "Can be trackbacked", `allowPing` is 0).
+Click **Save settings** to apply. These settings apply per user: for example, after a user turns on `markdown` and `xmlrpcMarkdown`, posts published with their account via `metaWeblog.newPost` carry the `<!--markdown-->` marker in the content, and other users are not affected; when the client does not specify the comment and trackback settings, items not checked under "Allow by default" are also turned off for posts published via XML-RPC (for example, after unchecking "Citable", when the client does not send `mt_allow_pings`, `allowPing` is 0).
 
 ## Changing your password {#change-password}
 

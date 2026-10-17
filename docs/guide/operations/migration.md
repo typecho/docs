@@ -52,13 +52,15 @@ Typecho 安装包和官方插件仓库中**没有** Emlog 的导入工具（官�
 
 1. 在旧服务器上备份三部分：数据库导出、`usr/`、`config.inc.php`（见[备份与恢复](./backup.md)）。
 2. 在新服务器上准备同一版本的 Typecho 程序文件（`admin/`、`var/`、`install/`、`index.php`、`install.php`），版本号以原站点后台页脚为准。
-3. 放回 `usr/` 和 `config.inc.php`，并导入数据库。MySQL / PostgreSQL 的数据库要先创建好。
+3. 放回 `usr/` 和 `config.inc.php`，并导入数据库。MySQL / PostgreSQL 的数据库要先创建好。改过后台目录名时（`config.inc.php` 中定义了 `__TYPECHO_ADMIN_DIR__`），把新放入的 `admin/` 目录改成同样的名字，Web 服务器、CDN 上针对后台路径的规则也要一并迁移，见[自定义后台路径](./admin-dir.md)。
 4. 按新环境修改 `config.inc.php`：
    - 数据库地址、用户名、密码有变化时，修改 `addServer()` 中的值；
    - **使用 SQLite 时**，`'file'` 是绝对路径，网站目录换了位置就要同步修改；
    - `__TYPECHO_UPLOAD_ROOT_DIR__`、`__TYPECHO_BACKUP_DIR__`、`__TYPECHO_LANG_DIR__` 等绝对路径常量也要检查。
 5. 确认 `usr/uploads/` 对 PHP 进程可写，并按[Web 服务器配置](./web-server.md)配好永久链接规则。
-6. 修改本机的 `hosts` 文件，把域名指向新服务器，检查首页、文章、后台登录、上传附件都正常后，再修改 DNS。
+6. 修改本机的 `hosts` 文件，把域名指向新服务器，检查首页、文章、后台登录、上传附件都正常。测试时写入的内容会在下一步被覆盖。
+7. 正式切换：在旧服务器上暂停写入（例如在 Web 服务器上暂时返回维护页面），重新导出数据库、复制 `usr/`，在新服务器上再恢复一次，然后修改 DNS。
+8. DNS 生效需要时间，这期间仍有访客访问旧服务器。让旧服务器保持暂停写入，或者把它反向代理到新服务器，只在新服务器上接受新内容。
 
 数据库和 `config.inc.php` 都原样迁移时，不需要重新运行安装程序。
 
@@ -92,7 +94,7 @@ server {
 
 ```sql
 UPDATE typecho_options SET value = 'https://new.example.com'
-WHERE name = 'siteUrl' AND user = 0;
+WHERE name = 'siteUrl' AND typecho_options.user = 0;
 ```
 
 ### 批量替换正文中的地址 {#replace-urls}

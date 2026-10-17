@@ -2,12 +2,12 @@
 title: Managing and moderating comments
 sidebar_position: 8
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Managing and moderating comments
 
-Comments left by visitors, and trackbacks and pingbacks sent by other sites, are all handled in **Manage → Comments** (`admin/manage-comments.php`). Comment form requirements, whether moderation is required, anti-spam and other options are set in **Settings → Discussion**.
+Comments left by visitors, and trackbacks and pingbacks sent by other sites, are all handled in **Manage → Comments** (`admin/manage-comments.php`). Comment form requirements, whether moderation is required, anti-spam and other options are set in **Settings → Comments**.
 
 ## Who can manage which comments
 
@@ -40,13 +40,13 @@ Conversely, when you publish a post: the URLs entered under **Trackbacks** in th
 | Pending | `waiting` | Not shown, waiting to be handled; the tab shows the count |
 | Spam | `spam` | Not shown; the tab shows the count |
 
-The status of a new comment depends on **Settings → Discussion**:
+The status of a new comment depends on **Settings → Comments**:
 
 - With "All comments must be moderated" (`commentsRequireModeration`) checked: every new comment is "Pending";
 - With only "The commenter must have a previously approved comment" (`commentsWhitelist`) checked: if the same name and email have an approved comment before, the comment is approved directly; otherwise it is pending;
 - With neither checked (the default): comments are approved directly, and visitor comments appear immediately.
 
-Comments posted on the front end by the post's author, and by editors and administrators, are always approved directly.
+Comments posted on the front end by the post's author, and by editors and administrators, are exempt from "All comments must be moderated" and are approved directly. But when only "The commenter must have a previously approved comment" is checked, that rule applies to them too: the first comment under a given name and email goes to pending as well and needs to be approved once in the admin panel.
 
 A post's comment count (`commentsNum`) **counts only approved comments**; when you mark a comment or trackback as spam or pending, the post's comment count decreases accordingly.
 
@@ -76,6 +76,6 @@ The "Spam" tab also has a **Delete all spam comments** button (confirm "Are you 
 ## A few anti-spam rules
 
 - Once a trackback from an IP has been marked as spam, further trackbacks from that IP get a 404 directly.
-- The anti-spam protection, referer check, minimum interval between comments from the same IP and other options in **Settings → Discussion** stop most bot comments.
+- The anti-spam protection, referer check, minimum interval between comments from the same IP and other options in **Settings → Comments** stop most bot comments.
 - To close comments or trackbacks on a particular post: uncheck "Allow comments" or "Allow trackbacks" in the editor's **Advanced options**, see [Writing posts](./posts.md).
 - For stronger filtering, use an anti-spam plugin.

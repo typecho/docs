@@ -101,7 +101,7 @@ define('__TYPECHO_THEME_WRITEABLE__', false);
 |---|---|---|---|
 | `__TYPECHO_SITE_URL__` | 字符串，未定义 | 固定站点地址，代替后台设置的值；后台“基本设置”中不再显示“站点地址” | `var/Widget/Options.php:440`、`var/Widget/Options/General.php:100`、`:155` |
 | `__TYPECHO_DYNAMIC_SITE_URL__` | 布尔，未定义 | 为真时站点地址跟随当前访问的域名 | `var/Widget/Options.php:442` |
-| `__TYPECHO_ROOT_URL__` | 字符串，未定义 | 固定根地址（永久链接、后台、表单地址的前缀，含安装目录） | `var/Widget/Options.php:422` |
+| `__TYPECHO_ROOT_URL__` | 字符串，未定义 | 固定根地址（永久链接、后台、表单地址的前缀，含安装目录）；1.3.0 中会让后台地址被截断，见[HTTPS、反向代理与 CDN](./https-proxy.md#root-url) | `var/Widget/Options.php:422` |
 | `__TYPECHO_URL_PREFIX__` | 字符串，未定义 | 固定“协议 + 域名”部分，如 `https://blog.example.com`，安装目录仍按请求计算 | `var/Typecho/Request.php:614` |
 | `__TYPECHO_SECURE__` | 布尔，未定义 | 为真时总是认为当前请求是 HTTPS | `var/Typecho/Request.php:462` |
 | `__TYPECHO_IP_SOURCE__` | 请求头名，默认按 `X-Forwarded-For` | 从哪个请求头读取客户端 IP，如 `X-Real-IP`、`CF-Connecting-IP` | `var/Typecho/Request.php:393` |

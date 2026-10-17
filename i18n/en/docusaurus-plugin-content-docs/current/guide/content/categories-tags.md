@@ -2,7 +2,7 @@
 title: Categories and tags
 sidebar_position: 4
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Categories and tags
@@ -26,8 +26,8 @@ Click "Add" next to the title to open `category.php`:
 
 | UI name | Field | Description |
 |---|---|---|
-| Category name * | `name` | Required; must not duplicate the name of an existing category |
-| Category slug | `slug` | Used in the address; letters, digits, underscores and hyphens are recommended. When left empty, it is generated from the name; it must not duplicate an existing category |
+| Category name * | `name` | Required; must not duplicate the name of an existing category with the same parent |
+| Category slug | `slug` | Used in the address; letters, digits, underscores and hyphens are recommended. When left empty, it is generated from the name; it must not duplicate an existing category (categories with the same name under different parents still need different slugs) |
 | Parent category | `parent` | "None" makes it a top-level category; when selected, "this category will be filed under the parent category you selected" |
 | Category description | `description` | Some themes display it |
 
@@ -76,7 +76,7 @@ The "Merge into" drop-down only lists categories at the level of the current lis
 
 | UI name | Field | Description |
 |---|---|---|
-| Tag name * | `name` | "This is the name of the tag as shown on the site. Chinese can be used, such as …" (the example in the hint is a Chinese word meaning "Earth") |
+| Tag name * | `name` | The tag's display name; non-English names are supported |
 | Tag slug | `slug` | When left empty, the tag name is used |
 
 | Action | Result |

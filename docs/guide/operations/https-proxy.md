@@ -79,12 +79,13 @@ define('__TYPECHO_DYNAMIC_SITE_URL__', true);
 | 常量 | 覆盖什么 | 示例 |
 |---|---|---|
 | `__TYPECHO_URL_PREFIX__` | 只覆盖“协议 + 域名”部分；安装目录仍按请求计算。Typecho 判断“当前请求的地址”时也用它 | `'https://blog.example.com'` |
-| `__TYPECHO_ROOT_URL__` | 覆盖整个根地址（含安装目录） | `'https://blog.example.com/blog'` |
+| `__TYPECHO_ROOT_URL__` | 覆盖整个根地址（含安装目录）；1.3.0 中会让后台地址出错，见下文 | `'https://blog.example.com/blog'` |
 
 **代理后面优先用 `__TYPECHO_URL_PREFIX__`**。原因是：打开文章时，Typecho 会比较“文章的永久链接”和“当前请求的地址”，域名或路径不一致就 301 跳转到永久链接（`var/Widget/Archive.php`）。
 
 - 用 `__TYPECHO_URL_PREFIX__` 时，两边使用同一个前缀，不会多出跳转；
 - 用 `__TYPECHO_ROOT_URL__` 而代理传给 PHP 的 `Host` 是另一个值时，每次打开文章都会 301 到 `__TYPECHO_ROOT_URL__` 的域名；这个跳转经过代理后又以原来的 `Host` 到达 PHP，于是形成**重定向循环**。例如根地址设为 `https://blog.example.com`，而 PHP 收到的 `Host` 是内网地址时，请求 `/archives/1/` 总是返回 301；改用 `__TYPECHO_URL_PREFIX__` 后正常返回 200。
+- 在后台页面中，1.3.0 会从根地址末尾去掉后台目录（默认 `/admin`）的长度（`var/Widget/Options.php` 的 `___rootUrl()`），而 `__TYPECHO_ROOT_URL__` 本身不含后台目录，于是后台链接和表单地址被截断，例如 `https://blog.example.com` 变成 `https://blog.example.co`，后台无法正常使用。
 
 `__TYPECHO_URL_PREFIX__` 不会让 Typecho 认为请求是 HTTPS，站点地址的 `http` → `https` 自动替换仍依赖上一节的判断。
 
@@ -159,5 +160,5 @@ define('__TYPECHO_COOKIE_OPTIONS__', [
 
 ### CDN 缓存注意事项
 
-- Typecho 对前台页面不做缓存控制。在 CDN 上缓存 HTML 时，评论提交后的页面、登录用户看到的页面也可能被缓存，请只缓存静态文件，或者为带有 Typecho 登录 Cookie 的请求绕过缓存。
+- Typecho 对前台页面不做缓存控制。在 CDN 上缓存 HTML 时，评论提交后的页面、登录用户看到的页面也可能被缓存，请只缓存静态文件。只为带登录 Cookie 的请求绕过缓存是不够的：匿名访客提交评论后，Typecho 用一个名字以 `__typecho_unapproved_comment` 结尾的 Cookie 让评论者本人在页面上看到自己待审核的评论，这样的页面被缓存后，其他访客也会看到未审核的内容。
 - 后台路径、`/index.php/action/`、`/action/` 不要缓存。
