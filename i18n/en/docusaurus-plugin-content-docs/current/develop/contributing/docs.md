@@ -2,7 +2,7 @@
 title: Contributing to and Translating the Documentation
 sidebar_position: 2
 translation: machine
-source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
+source_commit: fb841685c610badcc748a91d15de4618f547b72b
 ---
 
 # Contributing to and Translating the Documentation
