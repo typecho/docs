@@ -2,7 +2,7 @@
 title: Debugging and Troubleshooting
 sidebar_position: 10
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Debugging and Troubleshooting
@@ -98,34 +98,34 @@ Then reproduce the problem in the browser.
 
 ## Troubleshooting procedure: disable plugins, switch back to the default theme {#isolate}
 
-500 errors, blank pages, admin buttons that stop working and similar problems that appear after an upgrade, after enabling a plugin or after switching themes are mostly caused by a plugin or theme. Narrow it down in this order:
+500 errors, blank pages, admin buttons that stop working and similar problems that appear after an upgrade, after enabling a plugin or after switching themes are mostly caused by a plugin or theme. Narrow it down in this order. **Back up the database** before you start: disabling a plugin in the admin panel deletes its settings, so write down the settings of plugins that have many.
 
 1. **Disable all plugins**: in the admin panel, go to "Dashboard → Plugins" and click "Disable" on each one.
 2. **Switch to a bundled theme**: in the admin panel, go to "Dashboard → Appearance" and enable `default` (or `classic-22`, new in 1.3).
 3. Once the problem is gone, re-enable the plugins **one at a time**, testing after each, to find the one causing the problem; finally switch back to the original theme and test.
 4. Once found: upgrade that plugin or theme to a version that supports 1.3, contact its author, or stop using it.
 
-Plugin settings are stored in the database, so they are not lost when you disable and re-enable a plugin.
+Plugin settings are stored in the database (the `plugin:<plugin name>` and `_plugin:<plugin name>` options). Disabling a plugin in the admin panel deletes both; after you re-enable it, the plugin has its default settings, and you need to fill them in again from your notes.
 
 ### When you cannot get into the admin panel: working through the database
 
-If the error also makes the admin panel inaccessible, you can change the options directly in the database (use the table prefix in `config.inc.php`; the default is `typecho_`). **Back up the database first.** The statements below only use syntax supported by MySQL, PostgreSQL and SQLite.
+If the error also makes the admin panel inaccessible, you can change the options directly in the database (use the table prefix in `config.inc.php`; the default is `typecho_`). **Back up the database first.** The statements below only use syntax supported by MySQL, PostgreSQL and SQLite. Write the `user` column as `typecho_options.user`: in PostgreSQL a bare `user` means the current database user rather than this column, and the statement fails.
 
 **Disable all plugins at once** (the same as the initial values of a newly installed site):
 
 ```sql
-UPDATE typecho_options SET value = 'a:0:{}' WHERE name = 'plugins'     AND user = 0;
-UPDATE typecho_options SET value = '[]'     WHERE name = 'actionTable' AND user = 0;
-UPDATE typecho_options SET value = '[]'     WHERE name = 'panelTable'  AND user = 0;
+UPDATE typecho_options SET value = 'a:0:{}' WHERE name = 'plugins'     AND typecho_options.user = 0;
+UPDATE typecho_options SET value = '[]'     WHERE name = 'actionTable' AND typecho_options.user = 0;
+UPDATE typecho_options SET value = '[]'     WHERE name = 'panelTable'  AND typecho_options.user = 0;
 ```
 
 - `plugins` records the enabled plugins and the interfaces they hook into; the other two are the action URLs and admin menus registered by plugins. If you don't clear them, menu items left behind by plugins still show.
-- Each plugin's settings (the `plugin:<plugin name>` options) are not affected; re-enable the plugin in the admin panel later to get them back.
+- This does not delete each plugin's settings (the `plugin:<plugin name>` and `_plugin:<plugin name>` options). But when you later re-enable a plugin in the admin panel, its default settings are written over the existing ones, and the original values may be reset, so back up these two options first.
 
 **Switch to the default theme**:
 
 ```sql
-UPDATE typecho_options SET value = 'default' WHERE name = 'theme' AND user = 0;
+UPDATE typecho_options SET value = 'default' WHERE name = 'theme' AND typecho_options.user = 0;
 ```
 
 :::warning Don't just delete the plugin directory

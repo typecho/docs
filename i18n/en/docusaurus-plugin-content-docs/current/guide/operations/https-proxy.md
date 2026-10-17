@@ -2,7 +2,7 @@
 title: HTTPS, Reverse Proxies and CDNs
 sidebar_position: 2
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # HTTPS, Reverse Proxies and CDNs
@@ -81,12 +81,13 @@ Permalinks use the request's root URL. The best approach is to have the proxy pa
 | Constant | What it overrides | Example |
 |---|---|---|
 | `__TYPECHO_URL_PREFIX__` | Only the "scheme + domain" part; the installation directory is still computed from the request. Typecho also uses it when determining "the URL of the current request" | `'https://blog.example.com'` |
-| `__TYPECHO_ROOT_URL__` | The whole root URL (including the installation directory) | `'https://blog.example.com/blog'` |
+| `__TYPECHO_ROOT_URL__` | The whole root URL (including the installation directory); in 1.3.0 it breaks admin URLs, see below | `'https://blog.example.com/blog'` |
 
 **Behind a proxy, prefer `__TYPECHO_URL_PREFIX__`**. The reason: when a post is opened, Typecho compares "the post's permalink" with "the URL of the current request", and if the domain or path differs, it issues a 301 redirect to the permalink (`var/Widget/Archive.php`).
 
 - With `__TYPECHO_URL_PREFIX__`, both sides use the same prefix, so no extra redirect happens;
 - With `__TYPECHO_ROOT_URL__`, if the `Host` the proxy passes to PHP is a different value, every post request is redirected with 301 to the domain of `__TYPECHO_ROOT_URL__`; that redirect goes back through the proxy and reaches PHP with the original `Host` again, forming a **redirect loop**. For example, with the root URL set to `https://blog.example.com` while PHP receives an internal address as `Host`, a request for `/archives/1/` always returns 301; after switching to `__TYPECHO_URL_PREFIX__` it returns 200.
+- On admin pages, 1.3.0 strips the length of the admin directory (`/admin` by default) from the end of the root URL (`___rootUrl()` in `var/Widget/Options.php`). `__TYPECHO_ROOT_URL__` does not contain the admin directory, so admin links and form URLs get truncated, for example `https://blog.example.com` becomes `https://blog.example.co`, and the admin panel stops working properly.
 
 `__TYPECHO_URL_PREFIX__` does not make Typecho consider the request HTTPS; the automatic `http` → `https` replacement of the site URL still depends on the detection in the previous section.
 
@@ -161,5 +162,5 @@ Theme files and attachments use the site URL. Check each item:
 
 ### CDN caching notes
 
-- Typecho does no cache control for front-end pages. If you cache HTML on the CDN, pages shown after a comment is submitted and pages seen by logged-in users may be cached too; cache only static files, or bypass the cache for requests that carry a Typecho login cookie.
+- Typecho does no cache control for front-end pages. If you cache HTML on the CDN, pages shown after a comment is submitted and pages seen by logged-in users may be cached too; cache only static files. Bypassing the cache only for requests with a login cookie is not enough: after an anonymous visitor submits a comment, Typecho uses a cookie whose name ends in `__typecho_unapproved_comment` to show the commenter their own pending comment on the page, and once such a page is cached, other visitors see the unapproved content too.
 - Do not cache the admin path, `/index.php/action/` or `/action/`.

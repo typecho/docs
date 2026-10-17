@@ -2,7 +2,7 @@
 title: config.inc.php and Constants
 sidebar_position: 4
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # config.inc.php and Constants
@@ -103,7 +103,7 @@ For details and use cases see [HTTPS, reverse proxies and CDNs](./https-proxy.md
 |---|---|---|---|
 | `__TYPECHO_SITE_URL__` | string, undefined | Fixes the site URL, replacing the value set in the admin panel; "Site URL" is no longer shown in the admin "General settings" | `var/Widget/Options.php:440`, `var/Widget/Options/General.php:100`, `:155` |
 | `__TYPECHO_DYNAMIC_SITE_URL__` | boolean, undefined | When true, the site URL follows the domain currently used to access the site | `var/Widget/Options.php:442` |
-| `__TYPECHO_ROOT_URL__` | string, undefined | Fixes the root URL (the prefix of permalinks, admin and form URLs, including the installation directory) | `var/Widget/Options.php:422` |
+| `__TYPECHO_ROOT_URL__` | string, undefined | Fixes the root URL (the prefix of permalinks, admin and form URLs, including the installation directory); in 1.3.0 it truncates admin URLs, see [HTTPS, reverse proxies and CDNs](./https-proxy.md#root-url) | `var/Widget/Options.php:422` |
 | `__TYPECHO_URL_PREFIX__` | string, undefined | Fixes the "scheme + domain" part, such as `https://blog.example.com`; the installation directory is still computed from the request | `var/Typecho/Request.php:614` |
 | `__TYPECHO_SECURE__` | boolean, undefined | When true, the current request is always treated as HTTPS | `var/Typecho/Request.php:462` |
 | `__TYPECHO_IP_SOURCE__` | request header name, defaults to `X-Forwarded-For` | Which request header the client IP is read from, such as `X-Real-IP` or `CF-Connecting-IP` | `var/Typecho/Request.php:393` |

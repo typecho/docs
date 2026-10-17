@@ -2,7 +2,7 @@
 title: Migrating from Other Blogs
 sidebar_position: 8
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Migrating from Other Blogs
@@ -54,13 +54,15 @@ Neither the Typecho release package nor the official plugin repository contains 
 
 1. On the old server, back up three parts: the database export, `usr/` and `config.inc.php` (see [Backup and restore](./backup.md)).
 2. On the new server, prepare the program files of the same Typecho version (`admin/`, `var/`, `install/`, `index.php`, `install.php`), using the version number shown in the old site's admin footer.
-3. Put `usr/` and `config.inc.php` back and import the database. For MySQL / PostgreSQL, create the database first.
+3. Put `usr/` and `config.inc.php` back and import the database. For MySQL / PostgreSQL, create the database first. If you renamed the admin directory (`config.inc.php` defines `__TYPECHO_ADMIN_DIR__`), rename the newly copied `admin/` directory to the same name, and carry over any web server or CDN rules for the admin path, see [Custom admin path](./admin-dir.md).
 4. Adjust `config.inc.php` for the new environment:
    - If the database host, user name or password changed, update the values in `addServer()`;
    - **With SQLite**, `'file'` is an absolute path, so update it if the site directory moved;
    - Also check absolute-path constants such as `__TYPECHO_UPLOAD_ROOT_DIR__`, `__TYPECHO_BACKUP_DIR__` and `__TYPECHO_LANG_DIR__`.
 5. Make sure `usr/uploads/` is writable by the PHP process, and set up the permalink rules as described in [Web server configuration](./web-server.md).
-6. Edit your local `hosts` file to point the domain at the new server, check that the home page, posts, admin login and attachment uploads all work, and only then change DNS.
+6. Edit your local `hosts` file to point the domain at the new server, and check that the home page, posts, admin login and attachment uploads all work. Content written during testing is overwritten in the next step.
+7. Cut over: stop writes on the old server (for example, temporarily serve a maintenance page from the web server), export the database and copy `usr/` again, restore them on the new server once more, and then change DNS.
+8. DNS changes take time to propagate, and some visitors still reach the old server in the meantime. Keep writes stopped on the old server, or reverse-proxy it to the new server, so that new content is accepted only on the new server.
 
 When the database and `config.inc.php` are migrated unchanged, you don't need to run the installer again.
 
@@ -94,7 +96,7 @@ The SQL below assumes the default table prefix `typecho_`; change it to the actu
 
 ```sql
 UPDATE typecho_options SET value = 'https://new.example.com'
-WHERE name = 'siteUrl' AND user = 0;
+WHERE name = 'siteUrl' AND typecho_options.user = 0;
 ```
 
 ### Replacing URLs in content in bulk {#replace-urls}

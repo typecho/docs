@@ -2,7 +2,7 @@
 title: Web Server Configuration
 sidebar_position: 1
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Web Server Configuration
@@ -45,8 +45,8 @@ server {
         deny all;
     }
 
-    # Never execute PHP files in the upload directory
-    location ~ ^/usr/uploads/.*\.php$ {
+    # Never execute PHP files in the upload directory (including path-style URLs such as /usr/uploads/x.php/xxx)
+    location ~ ^/usr/uploads/.*\.php(/|$) {
         deny all;
     }
 
@@ -74,7 +74,7 @@ Key points:
 - nginx matches regex `location` blocks in the order they appear, so the two `deny` rules must come **before** the PHP `location`.
 - The `fastcgi_params` shipped with Debian / Ubuntu does not include `SCRIPT_FILENAME`, which is why it is set separately above. If you use the distribution's `snippets/fastcgi-php.conf`, it already contains `fastcgi_split_path_info` and `PATH_INFO`; do not set them again.
 - Do not replace `try_files` with the old, widely copied `if (!-e $request_filename) { rewrite ^(.*)$ /index.php$1 last; }`. Combined with `location ~ \.php$`, it rewrites `/index.php/action/login` over and over into `/index.php/index.php/...` and returns **500** (log: `rewrite or internal redirection cycle`).
-- When the site is installed in a subdirectory (for example `/blog/`), change `location /` to `location /blog/`, and change the last item of `try_files` to `/blog/index.php$is_args$args`.
+- When the site is installed in a subdirectory (for example `/blog/`), change `location /` to `location /blog/`, and change the last item of `try_files` to `/blog/index.php$is_args$args`; the two `deny` rules also need the subdirectory at the start, as `^/blog/usr/(.+\.db$|backups/)` and `^/blog/usr/uploads/.*\.php(/|$)`, otherwise they match nothing. `root` must map `/blog/index.php` to Typecho's actual `index.php`: for example, when the program is in `/srv/www/blog/`, `root` is `/srv/www`.
 
 After editing, check the syntax with `nginx -t`, then run `nginx -s reload` (or `systemctl reload nginx`).
 
@@ -90,6 +90,14 @@ Apache needs `mod_rewrite` enabled and must allow `.htaccess` in the site direct
     <Directory /srv/www/typecho>
         AllowOverride All
         Require all granted
+    </Directory>
+
+    # Block downloads of SQLite database files and backup files on the server
+    <FilesMatch "\.db$">
+        Require all denied
+    </FilesMatch>
+    <Directory /srv/www/typecho/usr/backups>
+        Require all denied
     </Directory>
 
     # With PHP-FPM (mod_proxy_fcgi); not needed with mod_php
@@ -137,6 +145,16 @@ It is also a good idea to put a `.htaccess` in `usr/uploads/` that prevents PHP 
 </FilesMatch>
 ```
 
+If you cannot change the site configuration (for example on shared hosting), use `.htaccess` files instead of the two blocks in `<VirtualHost>` that block the database and backups: add this to the `.htaccess` in the root directory
+
+```apache
+<FilesMatch "\.db$">
+    Require all denied
+</FilesMatch>
+```
+
+and put a `.htaccess` containing the single line `Require all denied` in `usr/backups/`.
+
 ## Caddy 2 {#caddy}
 
 Caddy 2's `php_fastcgi` directive already does what Typecho needs: it splits the path at `.php`, falls back to `index.php` when a file does not exist, and keeps the original `REQUEST_URI`.
@@ -146,7 +164,7 @@ blog.example.com {
     root * /srv/www/typecho
 
     # Block downloads of SQLite database files, backup files on the server and PHP files in the upload directory
-    @blocked path_regexp ^/usr/(.+\.db$|backups/|uploads/.*\.php$)
+    @blocked path_regexp ^/usr/(.+\.db$|backups/|uploads/.*\.php(/|$))
     respond @blocked 403
 
     php_fastcgi unix//run/php/php8.2-fpm.sock
@@ -173,7 +191,7 @@ blog.example.com {
     root * /srv/www/typecho
 
     # Block downloads of SQLite database files, backup files on the server and PHP files in the upload directory
-    @blocked path_regexp ^/usr/(.+\.db$|backups/|uploads/.*\.php$)
+    @blocked path_regexp ^/usr/(.+\.db$|backups/|uploads/.*\.php(/|$))
     respond @blocked 403
 
     # Hand addresses such as /index.php/action/login straight to index.php (works with cgi.fix_pathinfo=0)

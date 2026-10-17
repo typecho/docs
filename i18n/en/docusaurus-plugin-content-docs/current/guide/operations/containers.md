@@ -2,7 +2,7 @@
 title: Containers and Cloud Hosting
 sidebar_position: 3
 translation: machine
-source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Containers and Cloud Hosting
@@ -136,7 +136,7 @@ docker compose logs typecho   # on first start, prints "Installation successful"
 
 Some notes:
 
-- **Why `TYPECHO_DB_NEXT: keep` is needed**: `config.inc.php` is written to the root of `/app`, but here only `/app/usr` is mounted from the host. After the container is removed and recreated (for example when switching to a newer image), `/app` is a new, empty volume, and `config.inc.php` is gone with it. `TYPECHO_INSTALL=1` plus `TYPECHO_DB_NEXT=keep` regenerates the configuration from the environment variables on every start; when the database already holds complete data, the installer writes the configuration and stops, without recreating tables or touching the administrator account. If you recreate without `keep`, you get "The installer found that the existing data tables already exist." and are sent to the installer page. `keep` only takes effect when the tables already exist, so it does not affect the first installation on an empty database.
+- **Why `TYPECHO_DB_NEXT: keep` is needed**: `config.inc.php` is written to the root of `/app`, but here only `/app/usr` is mounted from the host. `/app` is an anonymous volume declared by the image; when the container is removed and created again (`docker compose down` followed by `up`, or recreating the anonymous volumes as in the upgrade steps below), `/app` is a new, empty volume, and `config.inc.php` is gone with it. `TYPECHO_INSTALL=1` plus `TYPECHO_DB_NEXT=keep` regenerates the configuration from the environment variables on every start; when the database already holds complete data, the installer writes the configuration and stops, without recreating tables or touching the administrator account. If you recreate without `keep`, you get "The installer found that the existing data tables already exist." and are sent to the installer page. `keep` only takes effect when the tables already exist, so it does not affect the first installation on an empty database.
 - **Wait for the database to be ready**: `depends_on` with `condition: service_healthy` makes the Typecho container wait until MySQL accepts connections before starting. Otherwise MySQL is not ready on the first start and the automatic installation fails.
 - As with a regular installation, the MySQL / PostgreSQL database must exist beforehand; here `MYSQL_DATABASE` creates it.
 - After a successful installation, the administrator password appears in plain text in `docker compose logs`. You can leave `TYPECHO_USER_PASSWORD` unset to have it generated randomly, and change it right after logging in.
@@ -151,11 +151,19 @@ You can also mount the whole of `/app` as a named volume, which keeps `config.in
 
 Mount only `usr/`, and keep `TYPECHO_INSTALL: "1"`, all of `TYPECHO_SITE_URL` / `TYPECHO_DB_*`, and `TYPECHO_DB_NEXT: keep` (the Compose file above already has them):
 
-1. [Back up](./backup.md) the database and `./usr`;
-2. Change `image` to the new version tag and run `docker compose pull && docker compose up -d`;
-3. Log in to the admin panel as an administrator; you are taken to the upgrade page, where you follow the prompts to complete the upgrade.
+1. [Back up](./backup.md) the database, `./usr` and the container's `config.inc.php` (`docker compose cp typecho:/app/config.inc.php ./config.inc.php.bak`);
+2. Change `image` to the new version tag, then run:
 
-With this procedure, the new container regenerates the configuration on startup, logging in to the admin panel redirects to `upgrade.php`, and once that has run the version is the new one. If `TYPECHO_DB_NEXT=keep` or `TYPECHO_INSTALL=1` is missing, the new container has no `config.inc.php` and the site jumps to the installer; add the variables and recreate the container, and the database is not affected.
+   ```bash
+   docker compose pull typecho
+   docker compose up -d --no-deps --force-recreate --renew-anon-volumes typecho
+   ```
+
+   `docker compose up -d` alone is not enough: when Compose recreates a container it reuses the old container's anonymous volumes, so the old `admin/` and `var/` in the volume are not replaced and the upgrade does not actually happen. `--renew-anon-volumes` replaces `/app` with a new, empty volume;
+3. If you added custom constants to `config.inc.php` (for example the HTTPS, cookie, upload location or theme editor settings), or renamed the admin directory, the new container no longer has them; add them back using the backup from step 1;
+4. Log in to the admin panel as an administrator; you are taken to the upgrade page, where you follow the prompts to complete the upgrade. Then check the version number in the admin footer.
+
+With this procedure, the new container regenerates the configuration on startup, logging in to the admin panel redirects to `upgrade.php`, and once that has run the version is the new one. `TYPECHO_DB_NEXT=keep` keeps the data in the database; the regenerated `config.inc.php` contains only the standard content such as the database connection. If `TYPECHO_DB_NEXT=keep` or `TYPECHO_INSTALL=1` is missing, the new container has no `config.inc.php` and the site jumps to the installer; add the variables and recreate the container, and the database is not affected.
 
 Note that directories such as `usr/themes` already exist, so new themes shipped with a newer image do not appear in `./usr/themes` automatically.
 

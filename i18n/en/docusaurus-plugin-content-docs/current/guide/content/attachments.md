@@ -2,7 +2,7 @@
 title: Attachments and file management
 sidebar_position: 5
 translation: machine
-source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
+source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 ---
 
 # Attachments and file management
@@ -34,7 +34,7 @@ By default, files are stored under `usr/uploads/year/month/` in the site directo
 usr/uploads/2026/10/3396430629.png
 ```
 
-The original file name is only stored in the database and is shown as the attachment's title. The access address is "site URL + this path". Missing directories are created level by level automatically, so `usr/uploads` must be writable by PHP. To change the storage location or serve attachments through a CDN, see [Upload storage location](../operations/uploads-storage.md).
+The original file name is only stored in the database and is shown as the attachment's title. The access address is "site URL + this path". Anyone who knows the address can open the file directly, regardless of the visibility of the post it belongs to; see [Attachment pages](#attachment-page). Missing directories are created level by level automatically, so `usr/uploads` must be writable by PHP. To change the storage location or serve attachments through a CDN, see [Upload storage location](../operations/uploads-storage.md).
 
 ## Allowed file types {#types}
 
@@ -89,8 +89,12 @@ The "Belongs to" column under "Manage → Files" shows which post or page a file
 - a post or page was deleted: its attachments are not deleted but become unattached;
 - files were uploaded in a new post that was never saved or published.
 
-The "Clean up unattached files" button above the list (confirm "Are you sure you want to clean up unattached files?") deletes all unattached files, including the files on disk. If content references these files' addresses directly (for example, you copied an image address before deleting an old post), those addresses stop working after the cleanup, so check before you run it.
+The "Clean up unattached files" button above the list (confirm "Are you sure you want to clean up unattached files?") deletes unattached files, including the files on disk. In 1.3.0, when there are more than 100 unattached files, one cleanup may not remove them all; repeat the cleanup until no unattached files remain in the list. If content references these files' addresses directly (for example, you copied an image address before deleting an old post), those addresses stop working after the cleanup, so check before you run it.
 
-## Attachment pages
+## Attachment pages {#attachment-page}
 
 Every attachment also has its own front-end page (default address `/attachment/{cid}/`). Themes can use it to show an image or a download link, and visitors can comment on the attachment page (attachments allow comments by default).
+
+:::caution Attachments are not protected by the post's visibility
+An attachment is public as soon as it is uploaded. Even when the post it belongs to is private, password protected, pending review or a draft, the attachment page and the file URL can still be accessed directly by anyone who knows the address. Keep confidential files in separate storage with access control instead of uploading them as attachments.
+:::
