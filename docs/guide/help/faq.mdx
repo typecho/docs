@@ -16,7 +16,7 @@ sidebar_position: 4
 
 ## 页面显示 “No input file specified.” {#no-input-file}
 
-PHP 收到的脚本路径不存在：通常是 PHP 设置了 `cgi.fix_pathinfo=0`、nginx 又缺少 `fastcgi_split_path_info`（这时登录还会返回 403 `Access denied.`），或者 `SCRIPT_FILENAME` 写错、容器里 nginx 和 PHP-FPM 看到的路径不一致、`open_basedir` 限制。见[Web 服务器配置：No input file specified](../operations/web-server.md#no-input-file)。
+PHP 收到的脚本路径不存在，通常是以下原因之一：PHP 设置了 `cgi.fix_pathinfo=0` 而 nginx 缺少 `fastcgi_split_path_info`（这时登录还会返回 403 `Access denied.`）；`SCRIPT_FILENAME` 写错；容器里 nginx 和 PHP-FPM 看到的路径不一致；受到 `open_basedir` 限制。见[Web 服务器配置：No input file specified](../operations/web-server.md#no-input-file)。
 
 ## 登录时返回 404、500 或 403 {#login-fails}
 
@@ -60,7 +60,7 @@ Typecho 没有“找回密码”功能。可以请其他管理员在后台重置
 
 ## 更多
 
-- 站点在 HTTPS、反向代理或 CDN 后面，出现样式丢失、混合内容、重定向循环、登录后又回到登录页：见[HTTPS、反向代理与 CDN](../operations/https-proxy.md)。
+- 站点位于 HTTPS、反向代理或 CDN 之后，出现样式丢失、混合内容、重定向循环，或者登录后又回到登录页：见[HTTPS、反向代理与 CDN](../operations/https-proxy.md)。
 - 用 Docker 部署：见[容器与云主机部署](../operations/containers.md)。
 - `config.inc.php` 中能设置哪些常量：见[config.inc.php 与常量](../operations/config-file.md)。
 - 加固站点安全：见[安全加固](../operations/security.md)。

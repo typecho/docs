@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # 基本设置
 
-后台“设置 → 基本”（`admin/options-general.php`），只有管理员能打开。保存后提示“设置已经保存”。
+本页对应后台“设置 → 基本”（`admin/options-general.php`），只有管理员可以访问。保存后提示“设置已经保存”。
 
 ## 字段一览
 
@@ -25,7 +25,7 @@ sidebar_position: 1
 
 ## 站点地址 {#site-url}
 
-“站点地址”（`siteUrl`）用于首页链接，以及主题、插件的静态文件（CSS、JS、图片）和附件地址。文章、页面、分类、订阅源等永久链接**不使用**它，而是使用当前请求的根地址，所以永久链接的域名或协议不对时，只改这一项解决不了，见[HTTPS、反向代理与 CDN：永久链接的域名和协议](../operations/https-proxy.md#root-url)。迁移到新域名或改用 HTTPS 时也要修改它，见[从其他博客迁移：换域名](../operations/migration.md#new-domain)。
+“站点地址”（`siteUrl`）用于首页链接，以及主题、插件的静态文件（CSS、JS、图片）和附件地址。文章、页面、分类、订阅源等永久链接**不使用**它，而是使用当前请求的根地址。因此永久链接的域名或协议有误时，只修改这一项无法解决（详见[HTTPS、反向代理与 CDN：永久链接的域名和协议](../operations/https-proxy.md#root-url)）。迁移到新域名或改用 HTTPS 时，也需要修改这一项，见[从其他博客迁移：换域名](../operations/migration.md#new-domain)。
 
 - 保存时会去掉末尾的 `/`。
 - 1.3 起输入框是网址类型，可以直接输入中文等国际化域名（以 `xn--` 形式保存，显示时转回原文，需要 PHP `intl` 扩展）。
@@ -33,7 +33,7 @@ sidebar_position: 1
 
 ### 用 `__TYPECHO_SITE_URL__` 固定站点地址
 
-在 `config.inc.php` 中定义这个常量，站点地址就以常量为准：
+在 `config.inc.php` 中定义这个常量后，站点地址将以常量的值为准：
 
 ```php
 define('__TYPECHO_SITE_URL__', 'https://example.com');
@@ -63,6 +63,6 @@ define('__TYPECHO_SITE_URL__', 'https://example.com');
 
 ## 语言 {#lang}
 
-只有 `usr/langs`（或 `__TYPECHO_LANG_DIR__` 指定的目录）中至少有一个 `.mo` 语言包时，才会出现“语言”下拉框，选项是“简体中文”加上每个语言包自己声明的语言名称，例如 `English`、`日本語`。切换后整个后台和主题中使用 `_t()` 的文字都会改变，**对所有用户生效**，没有按用户分别设置的语言。
+只有 `usr/langs`（或 `__TYPECHO_LANG_DIR__` 指定的目录）中至少有一个 `.mo` 语言包时，才会出现“语言”下拉框，选项是“简体中文”加上每个语言包自己声明的语言名称，例如 `English`、`日本語`。切换后，整个后台以及主题中使用 `_t()` 输出的文字都会随之改变。这项设置**对所有用户生效**，不能按用户分别设置语言。
 
 安装语言包和语言包缺失时的行为见[界面语言](../extend/languages.md)。

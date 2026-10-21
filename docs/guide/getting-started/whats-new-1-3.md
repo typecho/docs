@@ -21,9 +21,9 @@ Typecho 1.3.0 于 2026 年 1 月 20 日发布。本页面向站长，列出从 1
 | 新官方主题 classic-22 | 基于 Pico CSS 2 的新主题，与 `default` 一起随安装包提供，位于 `usr/themes/classic-22` |
 | Ctrl/Cmd+S 保存 | 在 Markdown 编辑器中按 <kbd>Ctrl</kbd>+<kbd>S</kbd>（macOS 为 <kbd>Cmd</kbd>+<kbd>S</kbd>）保存草稿，不必点按钮 |
 | 国际化域名（IDN） | “站点地址”和“个人主页地址”改用网址输入框；以 `xn--` 编码形式保存的中文等国际化域名，在后台会转换回原文显示（需要 PHP `intl` 扩展） |
-| 高清头像 | 头像可以额外输出 2 倍、3 倍尺寸的 Gravatar 地址（`srcset`），在高分辨率屏幕上更清晰。后台“管理 → 评论”已默认启用；前台评论列表默认不启用，需要主题在 `listComments()` 中传入 `avatarHighRes => true`，自带的两个主题都没有开启 |
+| 高清头像 | 头像可以额外输出 2 倍、3 倍尺寸的 Gravatar 地址（`srcset`），在高分辨率屏幕上更清晰。后台“管理 → 评论”已默认启用。前台评论列表默认不启用，需要主题在 `listComments()` 中传入 `avatarHighRes => true`；自带的两个主题都没有开启 |
 | PostgreSQL SSL | PostgreSQL 连接可以启用 SSL（`sslmode=require`），安装时选择即可 |
-| MySQL socket | 安装时“数据库地址”可以填 Unix socket 路径，见[安装](./installation.mdx#使用-mysql-socket) |
+| MySQL socket | 安装时“数据库地址”可以填 Unix socket 路径（见[安装](./installation.mdx#使用-mysql-socket)） |
 
 ## 环境要求提高
 
@@ -44,5 +44,5 @@ Typecho 1.3.0 于 2026 年 1 月 20 日发布。本页面向站长，列出从 1
 
 ## 升级时的注意事项
 
-- 1.3 只能从 1.1.0 及以上版本升级，1.1 站点要先手动完成两项表结构调整，见[升级](./upgrade.md#能否直接升级)。
+- 只有 1.1.0 及以上版本可以升级到 1.3，1.1 站点还要先手动完成两项表结构调整。详见[升级](./upgrade.md#能否直接升级)。
 - 1.3.0 正式版在附件达到 100 个的站点上可能出现升级卡住的问题（多见于中途失败后重试），处理办法见[升级](./upgrade.md#已知问题附件达到-100-个的站点升级时可能卡住)。
