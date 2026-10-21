@@ -2,12 +2,12 @@
 title: Widget\Archive
 sidebar_position: 2
 translation: machine
-source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Widget\Archive
 
-`Widget\Archive` is the main object of front-end pages: `$this` in a template is this object. For usage, see [Theme Development Overview](../theme/index.md). It extends `Widget\Base\Contents`, so besides the methods listed on this page you can also use all methods and properties of [content objects](./row-widgets.md#contents) (`title()`, `content()`, `permalink` and so on), plus `have()`, `next()`, `to()` and the other members shared by all widgets (see [Members shared by all widgets](./row-widgets.md#widget)).
+`Widget\Archive` is the main object on front-end pages; in templates, `$this` refers to it. For usage, see [Theme Development Overview](../theme/index.md). It extends `Widget\Base\Contents`, so besides the methods listed on this page you can also use all methods and properties of [content objects](./row-widgets.md#contents) (`title()`, `content()`, `permalink` and so on), plus `have()`, `next()`, `to()` and the other members shared by all widgets (see [Members shared by all widgets](./row-widgets.md#widget)).
 
 ## How methods and properties are called
 
@@ -24,41 +24,41 @@ source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 | `attachments(int $limit = 0, int $offset = 0): Related` | Gets the attachments object |
 | `comments(): Archive` | Gets the comment archive object |
 | `content($more = null)` | Outputs the post content |
-| `execute()` | Execute function |
+| `execute()` | Executes the widget |
 | `footer()` | Supports custom footer output |
 | `getArchiveDescription(): ?string` | Returns the archive description (category description, post excerpt; the site description on the home page and search pages) |
 | `getArchiveFeedAtomUrl(): string` | Returns the Atom feed URL of the current page |
 | `getArchiveFeedRssUrl(): string` | Returns the RSS 1.0 feed URL of the current page |
 | `getArchiveFeedUrl(): string` | Returns the RSS 2.0 feed URL of the current page |
 | `getArchiveKeywords(): ?string` | Returns the archive keywords (post tags, category names, etc.) |
-| `getArchiveSlug(): ?string` | Returns the archive slug. Calling it on the home page throws an error, see above |
+| `getArchiveSlug(): ?string` | Returns the archive slug. Throws an error when called on the home page (see the notes below) |
 | `getArchiveTitle(): ?string` | Returns the archive title; `null` on the home page |
 | `getArchiveType(): ?string` | Returns the page type; for possible values see [Page Context and is()](../theme/context.md) |
 | `getArchiveUrl(): ?string` | Returns the URL of the current page |
 | `getCountSql(): ?Query` | Returns the query object used to count the list |
 | `getCurrentPage(): int` | Returns the current page number |
 | `getDescription(): ?string` | **Deprecated**. |
-| `getFeed()` | **Deprecated**. Get the value of feed |
+| `getFeed()` | **Deprecated**. |
 | `getFeedAtomUrl(): string` | **Deprecated**. |
 | `getFeedRssUrl(): string` | **Deprecated**. |
 | `getFeedUrl(): string` | **Deprecated**. |
 | `getKeywords(): ?string` | **Deprecated**. |
 | `getThemeDir(): ?string` | Returns the absolute path of the current theme directory |
 | `getThemeFile(): ?string` | Returns the name of the template file that will be (or is being) output |
-| `getTotal(): int` | Returns the total number of posts in the list. Can only be called on list pages, see above |
+| `getTotal(): int` | Returns the total number of posts in the list. Can only be called on list pages (see the notes below) |
 | `getTotalPage(): int` | Gets the number of pages |
 | `header(?string $rule = null)` | Outputs header metadata |
 | `is(string $archiveType, ?string $archiveSlug = null): bool` | Checks the archive type and name |
 | `keywords(string $split = ',', string $default = '')` | Outputs the keywords |
 | `need(string $fileName)` | Includes a theme file |
-| `pageLink(string $word = '&laquo; Previous Entries', string $page = 'prev')` | Previous page |
+| `pageLink(string $word = '&laquo; Previous Entries', string $page = 'prev')` | Outputs the previous-page or next-page link, depending on `$page` |
 | `pageNav(string $prev = '&laquo;', string $next = '&raquo;', int $splitPage = 3, string $splitWord = '...', $template = '')` | Outputs pagination |
 | `pings(): Ping` | Gets the pings archive object |
 | `query($select)` | Runs the query |
 | `related(int $limit = 5, ?string $type = null): Contents` | Gets the related content widget |
-| `remember(string $cookieName, bool $return = false)` | Outputs a remembered cookie value |
+| `remember(string $cookieName, bool $return = false)` | Outputs the commenter name, email or URL remembered in a cookie |
 | `render()` | Renders the view |
-| `select(...$fields): Query` | Overrides select |
+| `select(...$fields): Query` | Returns the content query object |
 | `setArchiveDescription(string $archiveDescription)` | Sets the archive description |
 | `setArchiveFeedAtomUrl(string $archiveFeedAtomUrl)` | Sets the Atom feed URL |
 | `setArchiveFeedRssUrl(string $archiveFeedRssUrl)` | Sets the RSS 1.0 feed URL |
@@ -69,7 +69,7 @@ source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
 | `setArchiveType(string $archiveType)` | Sets the page type |
 | `setArchiveUrl(?string $archiveUrl): void` | Sets the URL of the current page |
 | `setCountSql($countSql)` | Sets the count query |
-| `setFeed($feed)` | **Deprecated**. Set the value of feed |
+| `setFeed($feed)` | **Deprecated**. |
 | `setThemeDir(string $themeDir)` | Sets the theme directory |
 | `setThemeFile(string $themeFile)` | Sets the template file to output |
 | `setTotal(int $total)` | Sets the total number of posts |
@@ -98,4 +98,4 @@ Magic properties declared by `Widget\Archive` itself:
 
 The other properties (`title`, `permalink`, `fields`, `categories`, `tags`, `author` and so on) are inherited from `Widget\Base\Contents`; see [content objects](./row-widgets.md#contents).
 
-`$this->options` (site settings, see [$this->options](./options.md)) and `$this->user` (the currently logged-in user; all fields are `null` when nobody is logged in) are also available directly in templates.
+`$this->options` (site settings; see [$this->options](./options.md)) and `$this->user` (the currently logged-in user; all fields are `null` when nobody is logged in) are also available directly in templates.

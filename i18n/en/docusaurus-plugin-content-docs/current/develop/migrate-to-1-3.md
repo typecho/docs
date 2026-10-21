@@ -2,7 +2,7 @@
 title: Migrating Themes and Plugins to 1.3
 sidebar_position: 2
 translation: machine
-source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Migrating Themes and Plugins to 1.3
@@ -79,7 +79,7 @@ $data = \Typecho\Plugin::factory('MyPlugin')->filter('beforeOutput', $data);
 
 - `call($component, ...$args)`: calls all callbacks registered on the hook;
 - `filter($component, $value, ...$args)`: passes `$value` to each callback in turn, uses each callback's return value as the next callback's `$value`, and returns the final result;
-- You can call `trigger($signal)` first to find out whether any callback ran: `Plugin::factory('X')->trigger($plugged)->call('hook', ...)`; afterwards `$plugged` is `true` if a plugin took over;
+- To find out whether any callback ran, pass a variable to `trigger()` before the call: `Plugin::factory('X')->trigger($plugged)->call('hook', ...)`; afterwards `$plugged` is `true` if a plugin took over;
 - The way you **register** callbacks is unchanged: `\Typecho\Plugin::factory('Widget\Archive')->header = [Plugin::class, 'header'];`. The handle can be written as either `Widget\Archive` or `Widget_Archive`.
 
 ## Type declarations can break subclasses
@@ -95,7 +95,7 @@ What to check:
 
 - A property redeclared in a subclass must have the same type as in the parent class (for example `protected \Widget\Options $options;`), or simply do not redeclare it;
 - An overridden method must have parameter and return types that are the same as or compatible with the parent's, for example `protected function ___permalink(): string`;
-- A typed property of the parent class cannot be read before it is assigned; otherwise `must not be accessed before initialization` is thrown. This happens, for example, when you read the archive slug of `Widget\Archive` on the home page; see [Page context and is()](./theme/context.md).
+- A typed property of the parent class cannot be read before it is assigned; otherwise `must not be accessed before initialization` is thrown, for example when you read the archive slug of `Widget\Archive` on the home page. See [Page context and is()](./theme/context.md).
 
 ## archive.php removed from the default theme
 

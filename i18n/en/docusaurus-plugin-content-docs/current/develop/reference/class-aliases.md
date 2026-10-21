@@ -2,7 +2,7 @@
 title: Legacy Class Names
 sidebar_position: 11
 translation: machine
-source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Legacy Class Names
@@ -16,7 +16,7 @@ The autoloader handles a class name it cannot find in the following order:
 1. **Explicit aliases**: if the class name is in the alias table below, it maps directly to the new class in the table.
 2. **Underscore class names starting with `Typecho_`, `Widget_` or `IXR_`**: `_` is replaced with `\`, for example `Widget_Contents_Post_Recent` → `\Widget\Contents\Post\Recent`, `Typecho_Widget_Helper_Form_Element_Text` → `\Typecho\Widget\Helper\Form\Element\Text`.
 3. **Other class names containing underscores** are treated as plugin classes: `PluginName_ClassName` → `\TypechoPlugin\PluginName\ClassName`, in the file `usr/plugins/PluginName/ClassName.php`. For example, `HelloWorld_Plugin` in an old-style plugin maps to `\TypechoPlugin\HelloWorld\Plugin`.
-4. In the other direction, new namespaced class names also get an underscore alias automatically, so the old and new forms point to the same class, and `instanceof` checks and inheritance work interchangeably.
+4. Conversely, new namespaced class names also get an underscore alias automatically. Both forms therefore point to the same class, and `instanceof` checks and inheritance work with either name.
 
 Plugin hook handle names are normalized in the same way: `\Typecho\Plugin::factory('Widget\Archive')` and `factory('Widget_Archive')` are the same handle; classes in the explicit alias table use the old name as the handle name (for example, the handle of `\Widget\Base\Contents` is `Widget_Abstract_Contents`).
 
@@ -51,16 +51,16 @@ The 21 aliases defined in `var/Widget/Init.php`:
 
 ## Old class names that no longer work
 
-Of the Typecho 1.1 classes, the following cannot be resolved in 1.3.0:
+The following Typecho 1.1 class names cannot be resolved in 1.3.0:
 
 | Old class name | Notes |
 |---|---|
 | `Typecho_AutoP` | Moved to `\Utils\AutoP`; the old name `AutoP` still works |
 | `Typecho_Db_Adapter_Exception` | Split into `\Typecho\Db\Adapter\ConnectionException` and `\Typecho\Db\Adapter\SQLException` |
 | `Typecho_Http_Client_Adapter`, `Typecho_Http_Client_Adapter_Curl`, `Typecho_Http_Client_Adapter_Socket` | The HTTP client no longer has separate adapters; it is unified as `\Typecho\Http\Client` |
-| `Widget_Comments_Ping` | The corresponding `\Widget\Comments\Ping` causes a fatal error when loaded in 1.3.0 (the return type of `___parentContent()` is incompatible with the parent class), see [Comments Template](../theme/comments.md#pings) |
+| `Widget_Comments_Ping` | The corresponding `\Widget\Comments\Ping` causes a fatal error when loaded in 1.3.0 (the return type of `___parentContent()` is incompatible with the parent class); see [Comments Template](../theme/comments.md#pings) |
 
-Resolving does not mean the behavior is identical: the class name maps, but method signatures and return values may have changed. See [Migrating Themes and Plugins to 1.3](../migrate-to-1-3.md).
+A class name that resolves does not necessarily behave the same: method signatures and return values may have changed. See [Migrating Themes and Plugins to 1.3](../migrate-to-1-3.md).
 
 ## All old class names
 

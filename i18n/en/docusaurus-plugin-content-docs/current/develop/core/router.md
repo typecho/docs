@@ -7,7 +7,7 @@ source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
 
 # Routing
 
-For every front-end URL, the router `Typecho\Router` (`var/Typecho/Router.php`) decides which widget handles it. This page explains the structure of the routing table, how rules are written, how to generate URLs in reverse, and how widgets supply URL parameters through `ParamsDelegateInterface`. For the 25 default routes, see [Default routes and actions](../reference/routes-actions.md); for a complete example of a plugin adding a route, see [Routes, actions and admin panels](../plugin/routes-actions.md).
+For every front-end URL, the router `Typecho\Router` (`var/Typecho/Router.php`) decides which widget handles it. This page explains the structure of the routing table, how rules are written, how to generate URLs from routes (reverse routing), and how widgets supply URL parameters through `ParamsDelegateInterface`. For the 25 default routes, see [Default routes and actions](../reference/routes-actions.md); for a complete example of a plugin adding a route, see [Routes, actions and admin panels](../plugin/routes-actions.md).
 
 ## Routing table
 
@@ -45,7 +45,7 @@ After compilation each route has three extra fields:
 | Field | Contents |
 |---|---|
 | `regx` | The regular expression used to match the path |
-| `format` | The rule with every placeholder replaced by `%s`, used to generate URLs in reverse |
+| `format` | The rule with every placeholder replaced by `%s`, used to generate URLs from the route |
 | `params` | The list of placeholder names, in the same order as the regular expression's capture groups |
 
 Every piece of core code that modifies the routing table deletes key `0` first: `Utils\Helper::addRoute()`/`removeRoute()`, saving "Settings → Permalinks", and the upgrade script `v1_3_0()`. The next request recompiles the table when it reads the options. If you edit `routingTable` in the database directly, you must also delete key `0`, or your change will not take effect.
@@ -93,7 +93,7 @@ Note:
 
 After a successful match, the captured values are put into an array in `params` order and passed to the handler class as request parameters. Read them in the handler class with `$this->request->get('cid')`; when names clash, route parameters take precedence over GET and POST parameters.
 
-## Generating URLs in reverse: Router::url()
+## Generating URLs from routes: Router::url()
 
 ```php
 public static function url(string $name, $value = null, ?string $prefix = null): string

@@ -100,4 +100,4 @@ Typecho 的前台地址由路由表决定，表单提交和 Ajax 请求由 Actio
 | `users-profile` | `\Widget\Users\Profile` | 个人设置：`do=` `profile` / `options` / `password` / `personal`（插件的个人设置） |
 | `backup` | `\Widget\Backup` | 备份：`do=export` 导出、`do=import` 恢复 |
 
-除 `ajax`、`service`、`xmlrpc` 三个外，Action 都通过 `$this->security->protect()` 校验地址中的令牌参数 `_`，所以不能直接拼出地址调用，要用 `$security->getIndex('/action/名字')` 生成。权限要求见[权限分配表](../../guide/content/users.md#permission-table)。
+除 `ajax`、`service`、`xmlrpc` 三个外，Action 都通过 `$this->security->protect()` 校验地址中的令牌参数 `_`，因此不能自己拼接地址来调用，必须用 `$security->getIndex('/action/名字')` 生成地址。权限要求见[权限分配表](../../guide/content/users.md#permission-table)。

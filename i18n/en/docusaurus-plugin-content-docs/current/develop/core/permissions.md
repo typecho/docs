@@ -2,7 +2,7 @@
 title: Permission Model
 sidebar_position: 5
 translation: machine
-source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Permission Model
@@ -56,7 +56,7 @@ Key points:
 
 ## Minimum role required by admin pages {#admin-screens}
 
-Admin pages do not go through the router. When each page does `include 'common.php'`, `Widget\Menu` is created; it finds the menu item for the current page and calls `$user->pass()` with the role that item requires (`var/Widget/Menu.php`). So the access permission of an admin page is the role given for it in the menu definition:
+Admin pages do not go through the router. When a page includes `common.php`, `Widget\Menu` is created; it finds the menu item for the current page and calls `$user->pass()` with the role that item requires (`var/Widget/Menu.php`). So the access permission of an admin page is the role given for it in the menu definition:
 
 | Page | Minimum role |
 |---|---|
@@ -73,7 +73,7 @@ Menu items the user has no access to are not shown; this is also decided by `pas
 
 ## Actions check permissions themselves
 
-The menu protects only admin **pages**. A form submitted to `/action/<name>` does not go through `Widget\Menu`, so the widget of every action calls `pass()` in its own `action()` or `execute()`, for example:
+The menu protects only admin **pages**. A form submitted to `/action/<name>` does not go through `Widget\Menu`, so each action's widget calls `pass()` in its own `action()` or `execute()`, for example:
 
 | Action | Check |
 |---|---|

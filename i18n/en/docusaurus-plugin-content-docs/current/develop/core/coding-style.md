@@ -2,7 +2,7 @@
 title: Coding Style
 sidebar_position: 9
 translation: machine
-source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Coding Style
@@ -81,7 +81,7 @@ The `.editorconfig` in the repository root specifies: indent with 4 spaces (2 sp
 
 ## Type declarations
 
-New code declares types for properties, parameters and return values. When you modify an existing class, be careful: adding types to a class that themes or plugins may extend causes a fatal error for incompatible same-name declarations in subclasses: once a parent property has a type, the subclass's property of the same name must declare the same type; once a parent method has a return type, the subclass's method of the same name must declare a compatible return type. A subclass method parameter without a type is still compatible, because PHP allows subclasses to widen parameter types (which is exactly why some old plugins need changes for 1.3; see [Migrating themes and plugins to 1.3](../migrate-to-1-3.md)). For public classes that are often extended (`Widget\Archive`, `Widget\Base\*` and so on), assess the impact on existing plugins before changing a signature.
+New code declares types for properties, parameters and return values. Be careful when you modify an existing class: if you add types to a class that themes or plugins may extend, incompatible declarations of the same name in subclasses cause a fatal error. Once a parent property has a type, the subclass's property of the same name must declare the same type; once a parent method has a return type, the subclass's method of the same name must declare a compatible return type. A subclass method parameter without a type is still compatible, because PHP allows subclasses to widen parameter types (which is exactly why some old plugins need changes for 1.3; see [Migrating themes and plugins to 1.3](../migrate-to-1-3.md)). For public classes that are often extended (`Widget\Archive`, `Widget\Base\*` and so on), assess the impact on existing plugins before changing a signature.
 
 ## Keeping legacy class names working {#aliases}
 

@@ -51,7 +51,7 @@ msgfmt --check --statistics -o /dev/null ja_JP.po   # check the format and count
 
 ### Adding a new language
 
-1. Start from a copy of `en_US.po` and rename it to the code of the new language, for example `de_DE.po`; you can also create a new translation from `messages.pot` in Poedit. Starting from English has the advantage that you can translate with the English translation alongside;
+1. Start from a copy of `en_US.po` and rename it to the code of the new language, for example `de_DE.po`; you can also create a new translation from `messages.pot` in Poedit. Starting from `en_US.po` has the advantage that you can refer to the English translation while you translate;
 2. Set the file's language in Poedit (Translation → Properties), then update it from `messages.pot` as described above to fill in the strings missing from `en_US.po`;
 3. Find the entry `msgid "lang"` and set its translation to the name of the language **written in that language itself**, for example `Deutsch`. This is what the language drop-down in the admin panel's "Settings → General" shows.
 

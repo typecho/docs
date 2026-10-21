@@ -2,7 +2,7 @@
 title: Development Environment and Front-end Build
 sidebar_position: 8
 translation: machine
-source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Development Environment and Front-end Build
@@ -60,7 +60,7 @@ npm ci          # install from package-lock.json
 
 `build_css` also combines the small icons in `admin/src/img/icons/` and `admin/src/img/editor/` into sprites, outputs `admin/img/icons.png`, `icons@2x.png`, `editor.png` and `editor@2x.png`, and writes the coordinates into the CSS. Intermediate files for the sprites are cached in `tools/tmp/` (ignored by `.gitignore`).
 
-The build output (`admin/js/`, `admin/css/`, `admin/img/`, the theme's `static/css/`) is committed to the repository, and the release package uses it directly; `admin/src/` and the theme's `static/scss/` exist only in the repository and are removed when packaging. When you change source files, run the corresponding script and commit the source files together with the build output. With a different minifier version, the minified JS may differ from the version in the repository in details such as variable names; this does not affect functionality.
+The build output (`admin/js/`, `admin/css/`, `admin/img/`, the theme's `static/css/`) is committed to the repository, and the release package uses it directly; `admin/src/` and the theme's `static/scss/` exist only in the repository and are removed when packaging. When you change source files, run the corresponding script and commit the source files together with the build output. With a different minifier version, the minified JS may differ from the version in the repository in details such as variable names; these differences are harmless.
 
 In 1.3.0, the `style.scss` of `classic-22` uses the syntax `@use "…/@picocss/pico/scss" with (…)`, which node-sass does not support: `npm run build_css:theme` writes that line into the output unchanged, and the resulting `style.css` lacks all of Pico CSS's styles and cannot be used. The `classic-22/static/css/style.css` in the repository was compiled with Dart Sass, which supports this syntax (the file starts with the copyright comment of Pico CSS v2.0.6). When you change the theme's styles, compile them with Dart Sass. First run `npm ci` in `tools/` (it installs Pico CSS), then run, in `tools/`:
 
@@ -83,7 +83,7 @@ The targets in `tools/Makefile` must be run in the `tools/` directory:
 | `make langs` | Clones `typecho/languages`, compiles each `.po` to `.mo` with `msgfmt`, and copies them to `usr/langs/` (deleting the whole `usr/langs/` first). Requires gettext |
 | `make update` | Shallow-clones the latest code of `typecho/typecho` from GitHub into `tools/build/`, minifies its CSS and the JS under `admin/js/` with yuicompressor (requires Java), and syntax-checks the PHP files |
 | `make package` | Removes development files from the result of `update` and packs it into `build.tar.gz` |
-| `make install`, `make upgrade`, `make theme` | Overwrite files in the parent directory with the result of `update` (everything, program files, the default theme) |
+| `make install`, `make upgrade`, `make theme` | Overwrite the corresponding files in the parent directory with the result of `update`: everything for `install`, the program files for `upgrade`, the default theme for `theme` |
 | `make all` | `update` + `package` + `clear` |
 | `make clear` | Deletes `tools/build/` |
 

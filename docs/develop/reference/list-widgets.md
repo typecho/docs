@@ -73,7 +73,7 @@ while ($recent->next()) {
 | `getRow(int $id): ?array` | 按 ID 取一行数据（数组） |
 | `getRows(array $ids, int $ignore = 0): array` | 获取多个节点 |
 | `hasParent($id, $parentId): bool` | 是否拥有某个父级节点 |
-| `levelsAlt(...$args)` | 根据深度余数输出 |
+| `levelsAlt(...$args)` | 按嵌套层级轮流输出其中一个参数 |
 | `listCategories($categoryOptions = null)` | 输出带层级的分类列表，选项见下文 |
 
 | 属性 | 类型 | 说明 |
@@ -100,7 +100,7 @@ while ($recent->next()) {
 | `getRow(int $id): ?array` | 按 ID 取一行数据（数组） |
 | `getRows(array $ids, int $ignore = 0): array` | 获取多个节点 |
 | `hasParent($id, $parentId): bool` | 是否拥有某个父级节点 |
-| `levelsAlt(...$args)` | 根据深度余数输出 |
+| `levelsAlt(...$args)` | 按嵌套层级轮流输出其中一个参数 |
 | `listPages($pageOptions = null)` | 输出带层级的页面列表，选项见下文 |
 
 | 属性 | 类型 | 说明 |
@@ -167,7 +167,7 @@ function treeViewCategoriesCallback($categories, $options)
 | 方法 | 说明 |
 |---|---|
 | `execute()` | 入口函数 |
-| `split(...$args)` | 按分割数输出字符串 |
+| `split(...$args)` | 按标签的文章数所在区间输出对应的阈值，见下文 |
 
 `split(...$args)` 的参数是整数阈值，输出第一个大于该标签文章数的数字，都不大于时输出 `0`，用法见[标签云](../theme/recipes/tag-cloud.md)。`sort` 可用 `count`、`name`、`mid` 等字段名。
 
@@ -177,29 +177,29 @@ function treeViewCategoriesCallback($categories, $options)
 
 | 属性 | 类型 | 说明 |
 |---|---|---|
-| `categoriesNum` | `int` | 获取分类数目 |
-| `currentCommentsNum` | `int` | 获取当前文章的评论数目 |
-| `currentDraftPostsNum` | `int` | 获取当前用户草稿文章数目 |
-| `currentPublishedCommentsNum` | `int` | 获取当前文章显示的评论数目 |
-| `currentPublishedPostsNum` | `int` | 获取当前用户已发布的文章数目 |
-| `currentSpamCommentsNum` | `int` | 获取当前文章垃圾评论数目 |
-| `currentWaitingCommentsNum` | `int` | 获取当前文章待审核的评论数目 |
-| `currentWaitingPostsNum` | `int` | 获取当前用户待审核文章数目 |
-| `draftPagesNum` | `int` | 获取草稿页面数目 |
-| `draftPostsNum` | `int` | 获取草稿文章数目 |
-| `myDraftPostsNum` | `int` | 获取当前用户草稿文章数目 |
-| `myPublishedCommentsNum` | `int` | 获取当前用户显示的评论数目 |
-| `myPublishedPostsNum` | `int` | 获取当前用户已发布的文章数目 |
-| `mySpamCommentsNum` | `int` | 获取当前用户垃圾评论数目 |
-| `myWaitingCommentsNum` | `int` | 获取当前用户待审核的评论数目 |
-| `myWaitingPostsNum` | `int` | 获取当前用户待审核文章数目 |
-| `publishedCommentsNum` | `int` | 获取当前显示的评论数目 |
-| `publishedPagesNum` | `int` | 获取已发布页面数目 |
-| `publishedPostsNum` | `int` | 获取已发布的文章数目 |
-| `spamCommentsNum` | `int` | 获取当前垃圾评论数目 |
-| `tagsNum` | `int` | 获取标签数目 |
-| `waitingCommentsNum` | `int` | 获取当前待审核的评论数目 |
-| `waitingPostsNum` | `int` | 获取待审核的文章数目 |
+| `categoriesNum` | `int` | 分类总数 |
+| `currentCommentsNum` | `int` | 当前文章的评论数 |
+| `currentDraftPostsNum` | `int` | 当前用户的草稿文章数 |
+| `currentPublishedCommentsNum` | `int` | 当前文章已显示的评论数 |
+| `currentPublishedPostsNum` | `int` | 当前用户已发布的文章数 |
+| `currentSpamCommentsNum` | `int` | 当前文章的垃圾评论数 |
+| `currentWaitingCommentsNum` | `int` | 当前文章待审核的评论数 |
+| `currentWaitingPostsNum` | `int` | 当前用户待审核的文章数 |
+| `draftPagesNum` | `int` | 草稿页面数 |
+| `draftPostsNum` | `int` | 草稿文章数 |
+| `myDraftPostsNum` | `int` | 当前用户的草稿文章数 |
+| `myPublishedCommentsNum` | `int` | 当前用户已显示的评论数 |
+| `myPublishedPostsNum` | `int` | 当前用户已发布的文章数 |
+| `mySpamCommentsNum` | `int` | 当前用户的垃圾评论数 |
+| `myWaitingCommentsNum` | `int` | 当前用户待审核的评论数 |
+| `myWaitingPostsNum` | `int` | 当前用户待审核的文章数 |
+| `publishedCommentsNum` | `int` | 已显示的评论数 |
+| `publishedPagesNum` | `int` | 已发布的页面数 |
+| `publishedPostsNum` | `int` | 已发布的文章数 |
+| `spamCommentsNum` | `int` | 垃圾评论数 |
+| `tagsNum` | `int` | 标签总数 |
+| `waitingCommentsNum` | `int` | 待审核的评论数 |
+| `waitingPostsNum` | `int` | 待审核的文章数 |
 
 - `my…` 系列统计当前登录用户；
 - `current…Posts` 系列统计请求参数 `uid` 指定的用户，`current…Comments` 系列统计请求参数 `cid` 指定的内容，参数通过 `alloc()` 的第二个参数传入：`\Widget\Stat::alloc(null, 'cid=3')`。

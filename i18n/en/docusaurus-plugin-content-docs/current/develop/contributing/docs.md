@@ -65,7 +65,7 @@ sidebar_position: 3
 
 | Key | Rule |
 |---|---|
-| `title` | The Chinese title, shown in the sidebar and the browser title |
+| `title` | The page title (in Chinese in the source files), shown in the sidebar and the browser title |
 | `sidebar_position` | The page's position within its category, starting at 1 |
 | `slug` | **Do not set it.** The URL is generated from the file path; only a few pages, such as `intro.md`, `glossary.md` and `develop/index.md`, have a `slug` |
 
@@ -81,7 +81,7 @@ The first line of the body is a level-1 heading identical to `title`. When a hea
 
 Other conventions:
 
-- The body text is in Simplified Chinese; class names, method names, option names, hook names, file paths and commands go in inline code or code blocks and are kept as they are;
+- Source pages are written in Simplified Chinese; class names, method names, option names, hook names, file paths and commands go in inline code or code blocks and are kept as they are;
 - Every code identifier, option name, hook, constant and path that appears on a page must have been checked against the Typecho 1.3 source code; changes that exist only on the development branch after 1.3.0 are not written up as features;
 - Terms follow the [glossary](/glossary); add a new term to the glossary before using it;
 - Link between pages with relative paths to `.md` files, for example `[Routing](../core/router.md)`.

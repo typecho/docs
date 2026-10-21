@@ -2,7 +2,7 @@
 title: Content, Comment, Category and User Objects
 sidebar_position: 3
 translation: machine
-source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Content, Comment, Category and User Objects
@@ -21,14 +21,14 @@ Every row of data you loop over in a template is a widget object: posts and page
 
 | Method | Description |
 |---|---|
-| `static alias(string $widgetClass, string $aliasClass)` | Widget alias |
-| `static alloc($params = null, $request = null, $disableSandboxOrCallback = true): Widget` | alloc widget instance |
-| `static allocWithAlias(?string $alias, $params = null, $request = null, $disableSandboxOrCallback = true): Widget` | alloc widget instance with alias |
-| `alt(...$args)` | Outputs based on the remainder |
-| `altBy(int $current, ...$args)` | Outputs based on the remainder |
+| `static alias(string $widgetClass, string $aliasClass)` | Sets an alias for a widget class |
+| `static alloc($params = null, $request = null, $disableSandboxOrCallback = true): Widget` | Creates or reuses an instance of the current class |
+| `static allocWithAlias(?string $alias, $params = null, $request = null, $disableSandboxOrCallback = true): Widget` | Creates or reuses an instance of the current class under the given alias |
+| `alt(...$args)` | Outputs one of the arguments in rotation, by row number |
+| `altBy(int $current, ...$args)` | Outputs one of the arguments in rotation, by `$current` |
 | `static destory(string $alias)` | **Deprecated**. Releases the widget |
 | `static destroy(?string $alias = null)` | Releases the widget |
-| `execute()` | execute function. |
+| `execute()` | Executes the widget |
 | `have(): bool` | Whether there is data: `true` when the stack is non-empty, `false` when it is empty |
 | `next()` | Returns the value of each row in the stack |
 | `on(bool $condition)` | Returns the object itself when the condition is true and an empty object that does nothing when it is false, so that the following method is called conditionally, for example `$this->on($this->is('post'))->title()`. It has nothing to do with events |
@@ -36,10 +36,10 @@ Every row of data you loop over in a template is a widget object: posts and page
 | `push(array $value)` | Pushes a row's values onto the stack |
 | `pushAll(array $values)` | Pushes all rows' values onto the stack |
 | `template(string $template): string` | Renders with a template |
-| `to(&$variable): Widget` | Assigns the object itself to a variable |
+| `to(&$variable): Widget` | Assigns the object itself to `$variable` and returns it |
 | `toArray($column): array` | Collects the given column of all rows into an array |
 | `toColumn($column)` | Gets the given column of the current row |
-| `static widget(string $alias, $params = null, $request = null, $disableSandboxOrCallback = true): Widget` | Factory method that registers the class instance in a static list |
+| `static widget(string $alias, $params = null, $request = null, $disableSandboxOrCallback = true): Widget` | Factory method: creates or reuses a widget instance by alias |
 
 | Property | Type | Description |
 |---|---|---|
@@ -108,7 +108,7 @@ Posts, pages, attachments, `Widget\Archive` itself, and the objects returned by 
 Arguments of the common methods:
 
 - `title($length = 0, $trim = '...')`: truncates the title when `$length` is greater than 0;
-- `content($more = false)`: when you pass text, posts containing `<!--more-->` output only the excerpt followed by a "read more" link;
+- `content($more = false)`: when you pass link text, a post containing `<!--more-->` is output only up to the excerpt, followed by a "read more" link;
 - `excerpt($length = 100, $trim = '...')`: outputs a plain-text excerpt;
 - `date($format = null)`: without a format, uses the post date format from "Settings → Reading";
 - `category($split = ',', $link = true, $default = null)`, `tags(...)`, `directory($split = '/', ...)`: output categories, tags and multi-level categories; `$default` is the text shown when there are none;
@@ -185,7 +185,7 @@ Each item in the `$this->comments()` list and each row of `Comments\Recent` is a
 
 | Method | Description |
 |---|---|
-| `author(?bool $autoLink = null, ?bool $noFollow = null)` | Outputs the author |
+| `author(?bool $autoLink = null, ?bool $noFollow = null)` | Outputs the commenter's name |
 | `autoP(?string $text): ?string` | Converts plain text into HTML with paragraphs |
 | `date(?string $format = null)` | Outputs the post publish date |
 | `delete(Query $condition): int` | Deletes data |
@@ -210,13 +210,13 @@ Each item in the `$this->comments()` list and each row of `Comments\Recent` is a
 
 | Property | Type | Description |
 |---|---|---|
-| `commentPage` | `int` | Gets the current comment page number |
-| `content` | `?string` | Gets the current comment content |
+| `commentPage` | `int` | Page number of the current comment |
+| `content` | `?string` | Content of the current comment |
 | `dateWord` | `string` | Outputs the human-readable date |
-| `parentContent` | `Contents` | Gets the current content structure |
-| `permalink` | `string` | Gets the current comment link |
+| `parentContent` | `Contents` | The content object the comment belongs to |
+| `permalink` | `string` | Link of the current comment |
 | `theId` | `string` | Anchor ID |
-| `title` | `?string` | Gets the current comment title |
+| `title` | `?string` | Title of the current comment |
 
 `parentContent` is the content object the comment belongs to, for example `$comments->parentContent->title`.
 
@@ -226,23 +226,23 @@ The list returned by `$this->comments()` also provides:
 
 | Method | Description |
 |---|---|
-| `alt(...$args)` | Overrides alt to support threaded comments |
-| `cancelReply(string $word = '')` | Cancel-reply link |
-| `execute()` | Execute function |
-| `levelsAlt(...$args)` | Outputs based on the depth remainder |
+| `alt(...$args)` | Outputs one of the arguments in rotation, adapted for threaded comments |
+| `cancelReply(string $word = '')` | Outputs the cancel-reply link |
+| `execute()` | Executes the widget |
+| `levelsAlt(...$args)` | Outputs one of the arguments in rotation, by nesting level |
 | `listComments($singleCommentOptions = null)` | Lists comments |
 | `num(...$args)` | Outputs the post comment count |
 | `pageNav(string $prev = '&laquo;', string $next = '&raquo;', int $splitPage = 3, string $splitWord = '...', $template = '')` | Outputs pagination |
 | `push(array $value): array` | Pushes each row's values onto the stack |
-| `reply(string $word = '')` | Reply link |
+| `reply(string $word = '')` | Outputs the reply link |
 | `threadedComments()` | Outputs comments recursively |
 
 | Property | Type | Description |
 |---|---|---|
 | `children` | `array` | Child comments |
-| `commentPage` | `int` | Overrides getting the comment page number |
+| `commentPage` | `int` | Current comment page number |
 | `isTopLevel` | `bool` | Whether the top level has been reached |
-| `parentContent` | `Contents` | Overrides getting the content |
+| `parentContent` | `Contents` | The content object the comments belong to |
 
 For the options of `listComments()` and the `threadedComments` callback, see [Comment Template](../theme/comments.md). `levels` is the nesting depth (0 at the top level).
 

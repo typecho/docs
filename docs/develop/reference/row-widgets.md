@@ -19,25 +19,25 @@ sidebar_position: 3
 
 | 方法 | 说明 |
 |---|---|
-| `static alias(string $widgetClass, string $aliasClass)` | widget别名 |
-| `static alloc($params = null, $request = null, $disableSandboxOrCallback = true): Widget` | alloc widget instance |
-| `static allocWithAlias(?string $alias, $params = null, $request = null, $disableSandboxOrCallback = true): Widget` | alloc widget instance with alias |
-| `alt(...$args)` | 根据余数输出 |
-| `altBy(int $current, ...$args)` | 根据余数输出 |
+| `static alias(string $widgetClass, string $aliasClass)` | 设置 Widget 类的别名 |
+| `static alloc($params = null, $request = null, $disableSandboxOrCallback = true): Widget` | 创建或取得当前类的实例 |
+| `static allocWithAlias(?string $alias, $params = null, $request = null, $disableSandboxOrCallback = true): Widget` | 以指定别名创建或取得当前类的实例 |
+| `alt(...$args)` | 按行序号轮流输出其中一个参数 |
+| `altBy(int $current, ...$args)` | 按 `$current` 轮流输出其中一个参数 |
 | `static destory(string $alias)` | **已弃用**。释放组件 |
 | `static destroy(?string $alias = null)` | 释放组件 |
-| `execute()` | execute function. |
+| `execute()` | 执行组件 |
 | `have(): bool` | 是否有数据：堆栈非空时返回 `true`，为空时返回 `false` |
 | `next()` | 返回堆栈每一行的值 |
 | `on(bool $condition)` | 条件为真时返回对象本身，为假时返回一个什么也不做的空对象，用来有条件地调用后面的方法，例如 `$this->on($this->is('post'))->title()`。与事件无关 |
 | `parse(string $template)` | 格式化解析堆栈内的所有数据 |
 | `push(array $value)` | 将每一行的值压入堆栈 |
 | `pushAll(array $values)` | 将所有行的值压入堆栈 |
-| `template(string $template): string` | 按模版渲染 |
-| `to(&$variable): Widget` | 将类本身赋值 |
+| `template(string $template): string` | 按模板渲染 |
+| `to(&$variable): Widget` | 把对象本身赋给 `$variable` 并返回它 |
 | `toArray($column): array` | 把所有行的指定列取成数组 |
 | `toColumn($column)` | 取当前行的指定列 |
-| `static widget(string $alias, $params = null, $request = null, $disableSandboxOrCallback = true): Widget` | 工厂方法,将类静态化放置到列表中 |
+| `static widget(string $alias, $params = null, $request = null, $disableSandboxOrCallback = true): Widget` | 工厂方法：按别名创建或取得 Widget 实例 |
 
 | 属性 | 类型 | 说明 |
 |---|---|---|
@@ -146,7 +146,7 @@ sidebar_position: 3
 | `summary` | `?string` | 输出文章的第一行作为摘要 |
 | `tags` | `array` | 将tags取出 |
 | `text` | `string` | 原始正文（Markdown 文章不含开头的 `<!--markdown-->` 标记） |
-| `theId` | `string` | 锚点id |
+| `theId` | `string` | 锚点 ID |
 | `title` | `string` | 标题；密码保护且未解锁时为“此内容被密码保护” |
 | `trackbackUrl` | `string` | trackback地址 |
 | `url` | `string` | 同 `permalink` |
@@ -183,7 +183,7 @@ sidebar_position: 3
 
 | 方法 | 说明 |
 |---|---|
-| `author(?bool $autoLink = null, ?bool $noFollow = null)` | 输出作者相关 |
+| `author(?bool $autoLink = null, ?bool $noFollow = null)` | 输出评论者称呼 |
 | `autoP(?string $text): ?string` | 把纯文本转为带段落的 HTML |
 | `date(?string $format = null)` | 输出文章发布日期 |
 | `delete(Query $condition): int` | 删除数据 |
@@ -191,7 +191,7 @@ sidebar_position: 3
 | `filter(array $row): array` | 通用过滤器 |
 | `getPrimaryKey(): string` | 返回主键字段名 |
 | `getRouterParam(string $key): string` | 返回生成地址时用到的路由参数值 |
-| `gravatar(int $size = 32, ?string $default = null, $highRes = false)` | 调用gravatar输出用户头像 |
+| `gravatar(int $size = 32, ?string $default = null, $highRes = false)` | 通过 Gravatar 输出用户头像 |
 | `insert(array $rows): int` | 增加评论 |
 | `mail(bool $link = false)` | 输出邮箱地址 |
 | `markdown(?string $text): ?string` | 把 Markdown 转为 HTML |
@@ -208,13 +208,13 @@ sidebar_position: 3
 
 | 属性 | 类型 | 说明 |
 |---|---|---|
-| `commentPage` | `int` | 获取当前评论页码 |
-| `content` | `?string` | 获取当前评论内容 |
+| `commentPage` | `int` | 当前评论的页码 |
+| `content` | `?string` | 当前评论的内容 |
 | `dateWord` | `string` | 输出词义化日期 |
-| `parentContent` | `Contents` | 获取当前内容结构 |
-| `permalink` | `string` | 获取当前评论链接 |
-| `theId` | `string` | 锚点id |
-| `title` | `?string` | 获取当前评论标题 |
+| `parentContent` | `Contents` | 评论所属的内容对象 |
+| `permalink` | `string` | 当前评论的链接 |
+| `theId` | `string` | 锚点 ID |
+| `title` | `?string` | 当前评论的标题 |
 
 `parentContent` 是评论所属的内容对象，例如 `$comments->parentContent->title`。
 
@@ -224,23 +224,23 @@ sidebar_position: 3
 
 | 方法 | 说明 |
 |---|---|
-| `alt(...$args)` | 重载alt函数,以适应多级评论 |
-| `cancelReply(string $word = '')` | 取消评论回复链接 |
+| `alt(...$args)` | 轮流输出其中一个参数，适应嵌套评论 |
+| `cancelReply(string $word = '')` | 输出“取消回复”链接 |
 | `execute()` | 执行函数 |
-| `levelsAlt(...$args)` | 根据深度余数输出 |
+| `levelsAlt(...$args)` | 按嵌套层级轮流输出其中一个参数 |
 | `listComments($singleCommentOptions = null)` | 列出评论 |
 | `num(...$args)` | 输出文章评论数 |
 | `pageNav(string $prev = '&laquo;', string $next = '&raquo;', int $splitPage = 3, string $splitWord = '...', $template = '')` | 输出分页 |
 | `push(array $value): array` | 将每行的值压入堆栈 |
-| `reply(string $word = '')` | 评论回复链接 |
+| `reply(string $word = '')` | 输出“回复”链接 |
 | `threadedComments()` | 递归输出评论 |
 
 | 属性 | 类型 | 说明 |
 |---|---|---|
 | `children` | `array` | 子评论 |
-| `commentPage` | `int` | 重载评论页码获取 |
+| `commentPage` | `int` | 当前评论页码 |
 | `isTopLevel` | `bool` | 是否到达顶层 |
-| `parentContent` | `Contents` | 重载内容获取 |
+| `parentContent` | `Contents` | 评论所属的内容对象 |
 
 `listComments()` 的选项和 `threadedComments` 回调见[评论模板](../theme/comments.md)。`levels` 是嵌套深度（顶层为 0）。
 
@@ -287,7 +287,7 @@ sidebar_position: 3
 | `feedRssUrl` | `string` | RSS 1.0 订阅地址 |
 | `feedUrl` | `string` | RSS 2.0 订阅地址 |
 | `permalink` | `string` | 完整地址 |
-| `theId` | `string` | 锚点id |
+| `theId` | `string` | 锚点 ID |
 | `title` | `string` | 同 `name` |
 | `url` | `string` | 同 `permalink` |
 
@@ -318,7 +318,7 @@ sidebar_position: 3
 | `filter(array $row): array` | 通用过滤器 |
 | `getPrimaryKey(): string` | 返回主键字段名 |
 | `getRouterParam(string $key): string` | 返回生成地址时用到的路由参数值 |
-| `gravatar(int $size = 40, string $rating = 'X', ?string $default = null, ?string $class = null)` | 调用gravatar输出用户头像 |
+| `gravatar(int $size = 40, string $rating = 'X', ?string $default = null, ?string $class = null)` | 通过 Gravatar 输出用户头像 |
 | `insert(array $rows): int` | 增加记录方法 |
 | `push(array $value): array` | 将每行的值压入堆栈 |
 | `select(...$fields): Query` | 查询方法 |

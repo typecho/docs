@@ -1,7 +1,7 @@
 ---
 slug: /develop
 translation: machine
-source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Development Overview

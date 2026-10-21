@@ -54,8 +54,8 @@ new Element(?string $name, ?array $options, $value, ?string $label, ?string $des
 | `input(?string $name = null, ?array $options = null): ?Layout` | 初始化当前输入项 |
 | `label(string $value): Element` | 创建表单标题 |
 | `message(string $message): Element` | 设置提示信息 |
-| `multiline(): Layout` | 多行输出模式 |
-| `multiMode(): Element` | 多行输出模式 |
+| `multiline(): Layout` | 为一个选项创建外层容器，供 `multiMode()` 使用（内部方法） |
+| `multiMode(): Element` | 让每个选项各占一行显示 |
 | `setInputsAttribute(string $attributeName, $attributeValue)` | 统一设置所有输入项的属性值 |
 | `value($value): Element` | 设置表单元素值 |
 
@@ -82,20 +82,20 @@ $form->addInput($count->addRule('required', _t('必须填写'))->addRule('isInte
 
 | 方法 | 说明 |
 |---|---|
-| `static alpha(string $str): bool` | Alpha |
-| `static alphaDash(string $str): bool` | Alpha-numeric with underscores and dashes |
-| `static alphaNumeric(string $str): bool` | Alpha-numeric |
-| `confirm(?string $str, string $key): bool` | 验证输入是否一致 |
-| `static email(string $str): bool` | Valid Email |
-| `static enum(string $str, array $params): bool` | 枚举类型判断 |
-| `static isFloat($str): bool` | Numeric |
-| `static isInteger($str): bool` | Is Numeric |
-| `static maxLength(string $str, int $length): bool` | Max Length |
-| `static minLength(string $str, int $length): bool` | 最小长度 |
-| `static regexp(string $str, string $pattern): bool` | 正则表达式验证 |
-| `required(): bool` | 是否为空 |
-| `static url(string $str): bool` | 验证是否为网址 |
-| `static xssCheck(string $str): bool` | 对xss字符串的检测 |
+| `static alpha(string $str): bool` | 是否只含字母 |
+| `static alphaDash(string $str): bool` | 是否只含字母、数字、下划线和横杠 |
+| `static alphaNumeric(string $str): bool` | 是否只含字母和数字 |
+| `confirm(?string $str, string $key): bool` | 是否与另一个字段的值一致 |
+| `static email(string $str): bool` | 是否为合法的邮箱地址 |
+| `static enum(string $str, array $params): bool` | 是否为允许的值之一 |
+| `static isFloat($str): bool` | 是否为浮点数 |
+| `static isInteger($str): bool` | 是否为整数 |
+| `static maxLength(string $str, int $length): bool` | 长度是否小于给定值 |
+| `static minLength(string $str, int $length): bool` | 长度是否不小于给定值 |
+| `static regexp(string $str, string $pattern): bool` | 是否匹配正则表达式 |
+| `required(): bool` | 是否已填写（不为空） |
+| `static url(string $str): bool` | 是否为网址 |
+| `static xssCheck(string $str): bool` | 检查字符串中是否含有可能用于 XSS 的字符 |
 
 | 规则 | 额外参数 | 写法示例 |
 |---|---|---|

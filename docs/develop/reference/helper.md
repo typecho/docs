@@ -11,7 +11,7 @@ sidebar_position: 8
 
 | 方法 | 说明 |
 |---|---|
-| `addRoute(string $name, string $url, string $widget, ?string $action = null, ?string $after = null): int` | 添加一条路由。`$name` 是路由名；`$url` 是路径规则，占位符见[默认路由与 Action](./routes-actions.md#placeholders)；`$widget` 是处理请求的类；`$action` 是创建对象后调用的方法；`$after` 是插在哪个路由之后，不写或找不到时放在最后。路由名不能与已有的路由重复 |
+| `addRoute(string $name, string $url, string $widget, ?string $action = null, ?string $after = null): int` | 添加一条路由。`$name`：路由名；`$url`：路径规则（占位符见[默认路由与 Action](./routes-actions.md#placeholders)）；`$widget`：处理请求的类；`$action`：创建对象后调用的方法；`$after`：插在哪个路由之后，省略或找不到时放在最后。路由名不能与已有的路由重复 |
 | `removeRoute(string $name): int` | 删除一条路由 |
 
 两者的返回值是更新选项 `routingTable` 时受影响的行数。用法见[路由、Action 与后台面板](../plugin/routes-actions.md#路由)。
@@ -50,7 +50,7 @@ sidebar_position: 8
 
 | 方法 | 说明 |
 |---|---|
-| `requestService($method, ...$params)` | 安排一个异步任务：当前请求以跳转或直接输出结束后，Typecho 请求自己的 `/action/service`，在那个请求中触发 `Widget_Service` 上名为 `$method` 的钩子，参数为 `$params`（经过 JSON 编码）。见 [HTTP 请求与异步任务](../plugin/http-async.md) |
+| `requestService($method, ...$params)` | 安排一个异步任务。当前请求以跳转或直接输出结束后，Typecho 会向自己的 `/action/service` 发起一个请求，在其中触发 `Widget_Service` 上名为 `$method` 的钩子，并传入 `$params`（经过 JSON 编码）。见 [HTTP 请求与异步任务](../plugin/http-async.md) |
 
 ## 其他
 

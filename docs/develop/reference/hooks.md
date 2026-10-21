@@ -19,7 +19,7 @@ Typecho 1.3.0 中全部的插件钩子。注册回调的方法、三种触发方
 - **参数**：调用处传给钩子的表达式，原样摘自源码。`$this` 是触发钩子的对象本身，类型就是本节标题下的类；文件句柄中的 `$post`、`$page` 是正在编辑的文章或页面。
 - **调用位置**：`文件:行号`，行号对应 Typecho 1.3.0。同一个钩子在多处触发时全部列出。
 
-`self::pluginHandle()` 触发的钩子，句柄是对象实际所属的类。表中按源码中所在的类列出；`Widget\Contents\EditTrait` 中用 `static::pluginHandle()` 触发的 `getDefaultFieldItems` 和 `isFieldReadOnly` 分别列在使用它的 `Widget\Contents\Post\Edit` 和 `Widget\Contents\Page\Edit` 下。
+`self::pluginHandle()` 触发的钩子，句柄是对象实际所属的类。表中按源码中所在的类列出。`Widget\Contents\EditTrait` 用 `static::pluginHandle()` 触发 `getDefaultFieldItems` 和 `isFieldReadOnly`，这两个钩子分别列在使用该 Trait 的 `Widget\Contents\Post\Edit` 和 `Widget\Contents\Page\Edit` 下。
 
 ## 返回值 {#return-values}
 

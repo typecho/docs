@@ -2,7 +2,7 @@
 title: Default Routes and Actions
 sidebar_position: 9
 translation: machine
-source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Default Routes and Actions
@@ -17,7 +17,7 @@ After installation the routing table contains 25 routes, matched in the order of
 |---|---|---|---|---|
 | `index` | `/` | `\Widget\Archive` | `render` | Home page |
 | `archive` | `/blog/` | `\Widget\Archive` | `render` | Post list page when the home page is set to a page |
-| `do` | `/action/[action:alpha]` | `\Widget\Action` | `action` | All actions, see below |
+| `do` | `/action/[action:alpha]` | `\Widget\Action` | `action` | All actions (see below) |
 | `post` | `/archives/[cid:digital]/` | `\Widget\Archive` | `render` | Post |
 | `attachment` | `/attachment/[cid:digital]/` | `\Widget\Archive` | `render` | Attachment |
 | `category` | `/category/[slug]/` | `\Widget\Archive` | `render` | Category |
@@ -41,7 +41,7 @@ After installation the routing table contains 25 routes, matched in the order of
 | `feedback` | `[permalink:string]/[type:alpha]` | `\Widget\Feedback` | `action` | Submitting comments and trackbacks, such as `/archives/1/comment` |
 | `page` | `/[slug].html` | `\Widget\Archive` | `render` | Page |
 
-- You can change the paths of the four routes `post`, `page`, `category` and `category_page` under "Settings → Permalinks", see [Permalink Settings](../../guide/settings/permalink.md);
+- You can change the paths of the four routes `post`, `page`, `category` and `category_page` under "Settings → Permalinks" (see [Permalink Settings](../../guide/settings/permalink.md));
 - The `/index.php` prefix in URLs (when URL rewriting is not enabled) is not part of the route path;
 - To generate the URL of a route, use `\Typecho\Router::url('routeName', ['param' => $value], $prefix)`.
 
@@ -102,4 +102,4 @@ Every action's URL is `/action/<name>`, and the `do` route hands it to `\Widget\
 | `users-profile` | `\Widget\Users\Profile` | Profile: `do=` `profile` / `options` / `password` / `personal` (plugins' personal settings) |
 | `backup` | `\Widget\Backup` | Backup: `do=export` exports, `do=import` restores |
 
-Except for `ajax`, `service` and `xmlrpc`, actions check the token parameter `_` in the URL through `$this->security->protect()`, so you cannot call them by building the URL by hand; generate it with `$security->getIndex('/action/<name>')`. For the required permissions, see the [permission table](../../guide/content/users.md#permission-table).
+Except for `ajax`, `service` and `xmlrpc`, every action checks the token parameter `_` in the URL through `$this->security->protect()`, so you cannot call an action through a URL you put together yourself; generate the URL with `$security->getIndex('/action/<name>')`. For the required permissions, see the [permission table](../../guide/content/users.md#permission-table).

@@ -2,7 +2,7 @@
 title: Form Elements
 sidebar_position: 7
 translation: machine
-source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Form Elements
@@ -56,14 +56,14 @@ In 1.3.0, `Textarea` and `Select` access the title element during construction. 
 | `input(?string $name = null, ?array $options = null): ?Layout` | Initialize the current input |
 | `label(string $value): Element` | Create the form title |
 | `message(string $message): Element` | Set the message |
-| `multiline(): Layout` | Multi-line output mode |
-| `multiMode(): Element` | Multi-line output mode |
+| `multiline(): Layout` | Creates the wrapper for one option, used by `multiMode()` (internal) |
+| `multiMode(): Element` | Shows each option on its own line |
 | `setInputsAttribute(string $attributeName, $attributeValue)` | Set an attribute value on all inputs at once |
 | `value($value): Element` | Set the value of the form element |
 
 The ones you commonly use:
 
-- `addRule($rule, $message, ...$params)`: adds a validation rule, see below; you can chain calls, as it returns the element itself;
+- `addRule($rule, $message, ...$params)`: adds a validation rule (see below); it returns the element itself, so you can chain calls;
 - `multiMode()`: adds the `multiline` class to each option of a `Radio` or `Checkbox`, so each option is shown on its own line in the admin panel; it only affects layout;
 - `value($value)`: sets the value;
 - `$element->input->setAttribute('class', 'w-100')`: adds an attribute to the input control; `input` is the control itself (`Typecho\Widget\Helper\Layout`). `setInputsAttribute()` sets an attribute on a whole group of radio buttons / checkboxes at once.
@@ -84,20 +84,20 @@ Available rule names (methods of `Typecho\Validate`):
 
 | Method | Description |
 |---|---|
-| `static alpha(string $str): bool` | Alpha |
-| `static alphaDash(string $str): bool` | Alpha-numeric with underscores and dashes |
-| `static alphaNumeric(string $str): bool` | Alpha-numeric |
-| `confirm(?string $str, string $key): bool` | Check that the inputs match |
-| `static email(string $str): bool` | Valid Email |
-| `static enum(string $str, array $params): bool` | Enumeration check |
-| `static isFloat($str): bool` | Numeric |
-| `static isInteger($str): bool` | Is Numeric |
-| `static maxLength(string $str, int $length): bool` | Max Length |
-| `static minLength(string $str, int $length): bool` | Minimum length |
-| `static regexp(string $str, string $pattern): bool` | Regular expression check |
-| `required(): bool` | Whether it is empty |
-| `static url(string $str): bool` | Check whether it is a URL |
-| `static xssCheck(string $str): bool` | Check a string for XSS |
+| `static alpha(string $str): bool` | Whether it contains only letters |
+| `static alphaDash(string $str): bool` | Whether it contains only letters, digits, underscores and dashes |
+| `static alphaNumeric(string $str): bool` | Whether it contains only letters and digits |
+| `confirm(?string $str, string $key): bool` | Whether it matches the value of another field |
+| `static email(string $str): bool` | Whether it is a valid email address |
+| `static enum(string $str, array $params): bool` | Whether it is one of the allowed values |
+| `static isFloat($str): bool` | Whether it is a floating-point number |
+| `static isInteger($str): bool` | Whether it is an integer |
+| `static maxLength(string $str, int $length): bool` | Whether the length is less than the given value |
+| `static minLength(string $str, int $length): bool` | Whether the length is at least the given value |
+| `static regexp(string $str, string $pattern): bool` | Whether it matches the regular expression |
+| `required(): bool` | Whether it has been filled in (is not empty) |
+| `static url(string $str): bool` | Whether it is a URL |
+| `static xssCheck(string $str): bool` | Checks the string for characters that could be used for XSS |
 
 | Rule | Extra arguments | Example |
 |---|---|---|
@@ -122,4 +122,4 @@ Available rule names (methods of `Typecho\Validate`):
   }, _t('Enter a color in #RRGGBB format')));
   ```
 
-- A string rule name is first tried as a PHP function name; only if no function with that name exists is the `Typecho\Validate` method used. So do not use a string with the same name as a built-in PHP function as a rule.
+- Typecho first tries a string rule name as a PHP function name, and uses the `Typecho\Validate` method only if no function with that name exists. So do not use the name of a built-in PHP function as a rule.

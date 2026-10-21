@@ -2,7 +2,7 @@
 title: The Widget Component Model
 sidebar_position: 4
 translation: machine
-source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # The Widget Component Model
@@ -151,7 +151,7 @@ When you write `$widget->name = $value`, if there is a `___name()` method (or a 
 When you call a method that does not exist, `$widget->name(...)`:
 
 1. The hook `call<Name>` (such as `callTitle`) is triggered first; plugins can use it to add methods to widgets;
-2. If no plugin handles it, `echo $widget->name` is done.
+2. If no plugin handles it, `__call` outputs `$widget->name` with `echo`.
 
 This is why `$this->title()` in a template outputs the title directly: `Widget\Archive` has no `title()` method, and `__call` outputs the `title` property.
 
@@ -166,7 +166,7 @@ Application widgets extend the abstract class `Widget\Base` (`var/Widget/Base.ph
 | `$this->user` | `Widget\User::alloc()` |
 | `$this->security` | `Widget\Security::alloc()` |
 
-Subclasses can override `initComponents(int &$components)` to prepare fewer of them. The argument is a bitwise combination of `INIT_DB`, `INIT_USER`, `INIT_SECURITY` and `INIT_OPTIONS`, defaulting to `INIT_ALL`; `INIT_NONE` means none of them, in which case not even `$this->db` is set. As long as it is not `INIT_NONE`, `$this->db` is always set.
+Subclasses can override `initComponents(int &$components)` to prepare only the ones they need. The argument is a bitwise combination of `INIT_DB`, `INIT_USER`, `INIT_SECURITY` and `INIT_OPTIONS`, defaulting to `INIT_ALL`; `INIT_NONE` means none of them, in which case not even `$this->db` is set. As long as it is not `INIT_NONE`, `$this->db` is always set.
 
 After that, `init()` calls `initParameter(Config $parameter)`, where subclasses can set default values on `$this->parameter` or prepare things based on the parameters. `Widget\Options` uses both methods, because it cannot depend on itself while it is being created:
 

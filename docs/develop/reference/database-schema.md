@@ -153,7 +153,7 @@ Typecho 1.3.0 安装后建立 7 张表。表名前加安装时设置的前缀（
 | `screenName` | `varchar(32)` | `NULL` | 昵称，显示用 |
 | `created` | `int(10) unsigned` | `0` | 注册时间 |
 | `activated` | `int(10) unsigned` | `0` | 最后活动时间，已登录用户的每次请求都会更新 |
-| `logged` | `int(10) unsigned` | `0` | 每次登录时被设为当时 `activated` 的值，即上一次登录期间的最后活动时间 |
+| `logged` | `int(10) unsigned` | `0` | 每次登录时记为登录前 `activated` 的值，即上一次登录期间的最后活动时间 |
 | `group` | `varchar(16)` | `'visitor'` | 用户组：`administrator`、`editor`、`contributor`、`subscriber`、`visitor`，见[权限分配表](../../guide/content/users.md#permission-table) |
 | `authCode` | `varchar(64)` | `NULL` | 登录凭证，每次登录重新生成 |
 
@@ -175,7 +175,7 @@ Typecho 1.3.0 安装后建立 7 张表。表名前加安装时设置的前缀（
 |---|---|---|
 | `theme:主题目录名` | `0` | 主题设置，见[主题设置](../theme/theme-options.md) |
 | `plugin:插件名` | `0` | 插件设置，见[插件配置](../plugin/settings.md) |
-| `_plugin:插件名` | `0` 或用户 ID | 插件个人设置的默认值 / 某个用户的值 |
+| `_plugin:插件名` | `0` 或用户 ID | 插件个人设置：`user` 为 `0` 时是默认值，为用户 ID 时是该用户的值 |
 | 个人设置的选项名（如 `autoSave`、`markdown`） | 用户 ID | 用户在“个人设置”中保存的值，覆盖同名的全站选项 |
 
 `name` 是 `varchar(32)`，MySQL 和 PostgreSQL 中更长的选项名无法保存。`_plugin:` 前缀占去 8 个字符，所以插件名不要超过 24 个字符。
