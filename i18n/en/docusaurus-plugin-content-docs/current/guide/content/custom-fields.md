@@ -2,7 +2,7 @@
 title: Custom fields (editor side)
 sidebar_position: 6
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Custom fields (editor side)
@@ -26,7 +26,7 @@ Each row is one field:
 
 Click **+ Add field** to add a row. Fields are saved together with **Save draft** or **Publish**:
 
-- Rows with an empty field name are ignored; for a name that breaks the rules, the browser warns you immediately, and even if it is submitted, the server discards the row.
+- Rows with an empty field name are ignored. If a name breaks the rules, the browser warns you immediately; even if it is submitted, the server discards the row.
 - Delete a row and save, and the field is removed from the post.
 - When you **Save draft** on a published post, the fields are also saved in the [revision](./posts.md#drafts), and take effect only after you publish.
 
@@ -53,12 +53,12 @@ The integer and float types do not validate input: if you enter something that i
 :::caution In 1.3.0, "JSON structure" in the panel is encoded twice
 When you choose "JSON structure" in the panel, the text you enter is treated as a **string** and passed through `json_encode()` once more, so the template reads back the original text rather than a parsed array. Worse, when you open the editor again, the field value is shown escaped as `"{\"color\":\"red\",...}"`, and every save (including saving a revision) adds another layer of escaping.
 
-Until this is fixed, we recommend: when you need structured data, choose the "String" type in the panel, enter the JSON text, and let the theme call `json_decode()` itself; or use fields predefined by the theme (see the next section), where the theme's checkboxes and other multi-value controls produce the JSON data, and saving and reading both work correctly.
+Until this is fixed, there are two ways to store structured data. Either choose the "String" type in the panel, enter the JSON text, and let the theme call `json_decode()` itself; or use fields predefined by the theme (see the next section), whose checkboxes and other multi-value controls produce the JSON data, so that saving and reading both work correctly.
 :::
 
 ## Fields predefined by the theme {#theme-fields}
 
-A theme can predefine fields in `functions.php`. They appear at the top of the panel with a description, and can take the form of text boxes, drop-downs, checkboxes and so on; you do not need to type a field name and type by hand.
+A theme can predefine fields in `functions.php`. They appear at the top of the panel with a description, as text boxes, drop-downs, checkboxes or other controls, so you do not need to enter the field name and type manually.
 
 - The theme defines these fields with `themeFields()` (shown for both posts and pages), `themePostFields()` (shown only for posts) or `themePageFields()` (shown only for pages).
 - Predefined fields are usually saved as the "String" type; the value of a multi-select control (for example a checkbox group) is saved as "JSON structure", and the template reads an array. For example, a checkbox group with the two options "Sticky" and "Hot", with both checked, is saved as `["top","hot"]`, the template reads `['top', 'hot']`, and both options stay checked the next time you edit.

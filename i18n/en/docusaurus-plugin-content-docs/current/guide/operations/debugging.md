@@ -2,7 +2,7 @@
 title: Debugging and Troubleshooting
 sidebar_position: 10
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Debugging and Troubleshooting
@@ -98,10 +98,10 @@ Then reproduce the problem in the browser.
 
 ## Troubleshooting procedure: disable plugins, switch back to the default theme {#isolate}
 
-500 errors, blank pages, admin buttons that stop working and similar problems that appear after an upgrade, after enabling a plugin or after switching themes are mostly caused by a plugin or theme. Narrow it down in this order. **Back up the database** before you start: disabling a plugin in the admin panel deletes its settings, so write down the settings of plugins that have many.
+If 500 errors, blank pages, broken admin buttons or similar problems appear after an upgrade, after enabling a plugin or after switching themes, a plugin or theme is usually the cause. Narrow it down in this order. **Back up the database** before you start: disabling a plugin in the admin panel deletes its settings, so write down the settings of plugins that have many.
 
-1. **Disable all plugins**: in the admin panel, go to "Dashboard → Plugins" and click "Disable" on each one.
-2. **Switch to a bundled theme**: in the admin panel, go to "Dashboard → Appearance" and enable `default` (or `classic-22`, new in 1.3).
+1. **Disable all plugins**: in the admin panel, go to "Console → Plugins" and click "Disable" on each one.
+2. **Switch to a bundled theme**: in the admin panel, go to "Console → Appearance" and enable `default` (or `classic-22`, new in 1.3).
 3. Once the problem is gone, re-enable the plugins **one at a time**, testing after each, to find the one causing the problem; finally switch back to the original theme and test.
 4. Once found: upgrade that plugin or theme to a version that supports 1.3, contact its author, or stop using it.
 

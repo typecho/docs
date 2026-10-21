@@ -2,7 +2,7 @@
 title: HTTPS, Reverse Proxies and CDNs
 sidebar_position: 2
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # HTTPS, Reverse Proxies and CDNs
@@ -13,14 +13,14 @@ When the site sits **behind a reverse proxy, load balancer or CDN**, PHP sees th
 
 ## How Typecho builds links
 
-Once this is clear, the problems further down are easy to understand. Typecho has two "addresses":
+Once this is clear, the problems further down are easy to understand. Typecho has two "URLs":
 
-| Address | Source | Used for |
+| URL | Source | Used for |
 |---|---|---|
 | **Root URL** `rootUrl` | Computed on every request from the **current request**: scheme (see the next section) + `Host` request header + installation directory | Permalinks of posts, pages, categories and so on, feeds, admin URLs, login and form submission URLs |
 | **Site URL** `siteUrl` | The value saved in "Settings → General" in the admin panel (option `siteUrl`) | Static files of themes and plugins (CSS, JS, images), attachment URLs, the home page link |
 
-In other words, **permalinks follow the request, static files follow the setting**. When the proxy does not pass the real `Host` and scheme to PHP, permalinks become internal addresses or `http://`; when the site URL setting is wrong, styles and images break.
+In other words, **permalinks depend on the current request, while static files depend on the saved setting**. When the proxy does not pass the real `Host` and scheme to PHP, permalinks become internal addresses or `http://`; when the site URL setting is wrong, styles and images break.
 
 In addition, when the current request is judged to be HTTPS, Typecho automatically replaces a site URL starting with `http://` with `https://` (`___siteUrl()` in `var/Widget/Options.php`).
 
@@ -47,7 +47,7 @@ location / {
 }
 ```
 
-If the proxy cannot add request headers and the site is **only accessed over HTTPS**, tell Typecho directly that it is always HTTPS:
+If the proxy cannot add request headers and the site is **only accessed over HTTPS**, you can configure Typecho directly to always treat requests as HTTPS:
 
 ```php
 define('__TYPECHO_SECURE__', true);
@@ -62,7 +62,7 @@ When `__TYPECHO_SECURE__` is true, every request is treated as HTTPS, including 
 | Constant | Effect |
 |---|---|
 | `__TYPECHO_SITE_URL__` | Uses the constant's value instead of the site URL stored in the database. The "Site URL" field in the admin "General settings" is hidden, and saving the settings no longer changes it |
-| `__TYPECHO_DYNAMIC_SITE_URL__` | When true, the site URL is the root URL of the current request, that is, whatever domain the visitor uses. If `__TYPECHO_SITE_URL__` is also defined, this one wins |
+| `__TYPECHO_DYNAMIC_SITE_URL__` | When true, the site URL is the root URL of the current request, so it follows whichever domain the visitor uses. If `__TYPECHO_SITE_URL__` is also defined, `__TYPECHO_SITE_URL__` takes precedence |
 
 ```php
 // Fix the site URL, e.g. when several servers share one database, or to keep it from being changed by mistake in the admin panel
@@ -81,7 +81,7 @@ Permalinks use the request's root URL. The best approach is to have the proxy pa
 | Constant | What it overrides | Example |
 |---|---|---|
 | `__TYPECHO_URL_PREFIX__` | Only the "scheme + domain" part; the installation directory is still computed from the request. Typecho also uses it when determining "the URL of the current request" | `'https://blog.example.com'` |
-| `__TYPECHO_ROOT_URL__` | The whole root URL (including the installation directory); in 1.3.0 it breaks admin URLs, see below | `'https://blog.example.com/blog'` |
+| `__TYPECHO_ROOT_URL__` | The whole root URL (including the installation directory); in 1.3.0 it breaks admin URLs (see below) | `'https://blog.example.com/blog'` |
 
 **Behind a proxy, prefer `__TYPECHO_URL_PREFIX__`**. The reason: when a post is opened, Typecho compares "the post's permalink" with "the URL of the current request", and if the domain or path differs, it issues a 301 redirect to the permalink (`var/Widget/Archive.php`).
 
@@ -150,7 +150,7 @@ Theme files and attachments use the site URL. Check each item:
 | Symptom | Cause and fix |
 |---|---|
 | Every page redirects in a loop and the browser reports "too many redirects" | Most likely the HTTPS settings of the proxy or CDN conflict with the origin: the CDN fetches from the origin over HTTP, and the origin redirects HTTP to HTTPS. Make the CDN fetch from the origin over HTTPS, or remove the forced redirect on the origin and let the CDN handle it |
-| The home page works, but opening a post loops | `__TYPECHO_ROOT_URL__` is defined, but its domain or path does not match the request PHP receives, see [above](#root-url). Use `__TYPECHO_URL_PREFIX__` instead, or have the proxy pass the correct `Host` |
+| The home page works, but opening a post loops | `__TYPECHO_ROOT_URL__` is defined, but its domain or path does not match the request PHP receives (see [above](#root-url)). Use `__TYPECHO_URL_PREFIX__` instead, or have the proxy pass the correct `Host` |
 | The proxy maps `/blog/` to `/` on the origin | Permalinks contain `/blog/` but the path PHP receives does not, so post pages loop as well. Install the origin under the `/blog/` directory too, so the paths match |
 
 ### Back at the login page after logging in {#login-loop}
@@ -162,5 +162,5 @@ Theme files and attachments use the site URL. Check each item:
 
 ### CDN caching notes
 
-- Typecho does no cache control for front-end pages. If you cache HTML on the CDN, pages shown after a comment is submitted and pages seen by logged-in users may be cached too; cache only static files. Bypassing the cache only for requests with a login cookie is not enough: after an anonymous visitor submits a comment, Typecho uses a cookie whose name ends in `__typecho_unapproved_comment` to show the commenter their own pending comment on the page, and once such a page is cached, other visitors see the unapproved content too.
+- Typecho does no cache control for front-end pages. If you cache HTML on the CDN, pages shown after a comment is submitted and pages seen by logged-in users may be cached too; cache only static files. Bypassing the cache only for requests with a login cookie is not enough. After an anonymous visitor submits a comment, Typecho uses a cookie whose name ends in `__typecho_unapproved_comment` to show the commenter their own pending comment on the page. Once such a page is cached, other visitors see the unapproved content too.
 - Do not cache the admin path, `/index.php/action/` or `/action/`.

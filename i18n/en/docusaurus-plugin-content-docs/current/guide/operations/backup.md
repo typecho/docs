@@ -2,7 +2,7 @@
 title: Backup and Restore
 sidebar_position: 7
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Backup and Restore
@@ -21,7 +21,7 @@ Upgrades do not overwrite `usr/`, but that does not mean you can skip backing it
 
 ## The admin "Backup" feature {#builtin}
 
-Since version 1.1, Typecho has built-in backup and restore, so no backup plugin is needed. It is under "Dashboard → Backup" in the admin panel (`admin/backup.php`), and **only administrators** can use it.
+Since version 1.1, Typecho has built-in backup and restore, so no backup plugin is needed. It is under "Console → Backup" in the admin panel (`admin/backup.php`), and **only administrators** can use it.
 
 ![Backup page](./img/backup.png)
 
@@ -90,7 +90,7 @@ To back up **all data** (including settings and plugins' own tables), use the da
 mysqldump --single-transaction --default-character-set=utf8mb4 \
   -u typecho -p typecho > typecho-$(date +%Y%m%d).sql
 
-# Import into an empty database you have already created
+# Import into an existing empty database
 mysql --default-character-set=utf8mb4 -u typecho -p typecho < typecho-20261016.sql
 ```
 

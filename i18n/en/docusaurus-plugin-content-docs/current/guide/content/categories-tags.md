@@ -2,7 +2,7 @@
 title: Categories and tags
 sidebar_position: 4
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Categories and tags
@@ -14,7 +14,7 @@ Categories and tags are only used for posts; pages do not have them. Both are un
 | Hierarchy | Can be multi-level (category tree) | No hierarchy |
 | Creating | Only under "Manage → Categories" | Created by typing it when writing a post, or under "Manage → Tags" |
 | Per post | At least one (if none is selected, the post goes into the default category) | Can have none |
-| Front-end address | `/category/{slug}/` | `/tag/{slug}/` |
+| Front-end URL | `/category/{slug}/` | `/tag/{slug}/` |
 
 ## Managing categories
 
@@ -27,7 +27,7 @@ Click "Add" next to the title to open `category.php`:
 | UI name | Field | Description |
 |---|---|---|
 | Category name * | `name` | Required; must not duplicate the name of an existing category with the same parent |
-| Category slug | `slug` | Used in the address; letters, digits, underscores and hyphens are recommended. When left empty, it is generated from the name; it must not duplicate an existing category (categories with the same name under different parents still need different slugs) |
+| Category slug | `slug` | Used in the URL; letters, digits, underscores and hyphens are recommended. When left empty, it is generated from the name; it must not duplicate an existing category (categories with the same name under different parents still need different slugs) |
 | Parent category | `parent` | "None" makes it a top-level category; when selected, "this category will be filed under the parent category you selected" |
 | Category description | `description` | Some themes display it |
 
@@ -35,9 +35,9 @@ Click a category name to edit it; click the external-link icon next to the name 
 
 ### Category tree {#tree}
 
-- "Add" in the "Subcategories" column creates a subcategory for that category (`category.php?parent=category ID`, with the parent category preselected); when it has subcategories, the column shows their count, which opens the subcategory list (`manage-categories.php?parent=category ID`), titled "Manage subcategories of Tech".
+- "Add" in the "Subcategories" column creates a subcategory for that category (`category.php?parent=category ID`, with the parent category preselected); when it has subcategories, the column shows their count; clicking it opens the subcategory list (`manage-categories.php?parent=category ID`), titled "Manage subcategories of Tech".
 - When writing a post, subcategories are indented in the category list.
-- The rule for category addresses is changed under "Category path" in "Settings → Permalinks"; the available parameters are `{mid}`, `{slug}` and `{directory}`, which stands for a multi-level category path.
+- The rule for category URLs is changed under "Category path" in "Settings → Permalinks"; the available parameters are `{mid}`, `{slug}` and `{directory}`, which stands for a multi-level category path.
 
 ### Sorting
 
@@ -97,13 +97,13 @@ This is a frequently asked question. The "Posts" count next to categories and ta
 | The front-end list contains "This content is password protected" entries | Password-protected posts are counted and also appear in lists | Normal |
 | Hidden, private and pending posts, drafts, revisions and pages are not counted | Only posts **with the status public** are counted | Normal |
 | The number is too high after merging tags or categories | Merging counts all associated records directly, including revisions and hidden or pending posts, so the count after merging can exceed the number of public posts | Run "Refresh" on the target after merging |
-| Numbers are off after importing data, restoring a backup or editing the database by hand | These operations do not recount | Select all and "Refresh" |
+| Counts are inaccurate after importing data, restoring a backup or editing the database directly | These operations do not recount | Select all and "Refresh" |
 | Empty tags with a count of 0 remain | When posts are deleted, tags no longer associated with any post are left behind | Delete them manually on the tag page |
 
-**Refresh**: in the category or tag list, tick the items to refresh (you can select all with the checkbox in the table header), click "Refresh" in the "Selected items" menu, and confirm "Refreshing categories may take a long time…" to run it. After refreshing, the number = the associated posts whose status is public (including scheduled and password-protected posts).
+**Refresh**: in the category or tag list, tick the items to refresh (you can select all with the checkbox in the table header), click "Refresh" in the "Selected items" menu, and confirm "Refreshing categories may take a long time…" to run it. After refreshing, the count equals the number of associated public posts (including scheduled and password-protected posts).
 
 :::note Refreshing tags does not delete empty tags
-As the source code intends, refreshing tags should also delete tags with a count of 0 that are no longer associated with any content. In 1.3.0, however, the type name queried by this code is written as `tags` (it should be `tag`), so nothing is actually deleted, and tags with a count of 0 still exist after refreshing. Select and delete empty tags manually on the tag page.
+Refreshing tags is meant to also delete tags with a count of 0 that are no longer associated with any content. In 1.3.0, however, the type name queried by this code is written as `tags` (it should be `tag`), so nothing is actually deleted, and tags with a count of 0 still exist after refreshing. Select and delete empty tags manually on the tag page.
 :::
 
 For bulk processing after importing or migrating, see also [Migrating from other blogs](../operations/migration.md#counts).

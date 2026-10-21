@@ -2,12 +2,12 @@
 title: Admin overview
 sidebar_position: 1
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Admin overview
 
-By default the admin panel is at `site URL/admin/` (you can rename it; see [Custom admin path](../operations/admin-dir.md)). The top navigation has four menus: **Dashboard, Write, Manage, Settings**. Every item has a minimum role, and menu items your role is not allowed to use are not shown; if you open such a page by typing its address directly, you get "Forbidden" (HTTP 403).
+By default the admin panel is at `site URL/admin/` (you can rename it; see [Custom admin path](../operations/admin-dir.md)). The top navigation has four menus: **Console, Write, Manage, Settings**. Every item requires a minimum role, and items above your role are hidden. Opening one of these pages directly by its URL returns "Forbidden" (HTTP 403).
 
 ## Menu map
 
@@ -15,7 +15,7 @@ From highest to lowest, the roles are: administrator > editor > contributor > su
 
 | Menu | Submenu | Page file | Minimum role | Notes |
 |---|---|---|---|---|
-| Dashboard | Overview | `index.php` | subscriber | Admin home page (site overview) |
+| Console | Overview | `index.php` | subscriber | Admin home page (site overview) |
 | | Profile | `profile.php` | subscriber | See [Profile](./profile.md) |
 | | Plugins | `plugins.php` | administrator | Plugin management; plugin settings pages (`options-plugin.php?config=`) are not in the menu |
 | | Appearance | `themes.php` | administrator | Theme management; "Edit current theme" (`theme-editor.php`) and "Theme settings" (`options-theme.php`) are not in the menu |
@@ -36,7 +36,7 @@ From highest to lowest, the roles are: administrator > editor > contributor > su
 
 The menus each role sees:
 
-| Role | Dashboard | Write | Manage | Settings |
+| Role | Console | Write | Manage | Settings |
 |---|---|---|---|---|
 | administrator | Overview, Profile, Plugins, Appearance, Backup | Write Post, Create Page | Posts, Pages, Comments, Categories, Tags, Files, Users | General, Comments, Reading, Permalinks |
 | editor | Overview, Profile | Write Post, Create Page | Posts, Pages, Comments, Categories, Tags, Files | Not shown |
@@ -57,26 +57,26 @@ The following pages are hidden normally and are only highlighted in the menu whi
 | Add category `category.php`, edit category `category.php?mid=` | editor | The category list |
 | Add user `user.php`, edit user `user.php?uid=` | administrator | The user list |
 | Plugin settings, Edit current theme, Theme settings | administrator | The Plugins and Appearance pages |
-| Upgrader `upgrade.php` | administrator | Only opens when the program files are newer than the database version; otherwise it redirects to the dashboard. See [Upgrading](../getting-started/upgrade.md) |
+| Upgrader `upgrade.php` | administrator | Only opens when the program files are newer than the database version; otherwise it redirects to the Console. See [Upgrading](../getting-started/upgrade.md) |
 | Welcome `welcome.php` | subscriber | See the next section |
 
 ## Welcome page `welcome.php`
 
-The first time an account logs in (it has never logged in before), the admin panel first redirects to the "Welcome" page, which has three shortcut links: "It is strongly recommended that you change your default password" (which goes to the password section of [Profile](./profile.md)), "Write your first post" (contributor and above) and "View my site" (administrator; other roles see "View site"). Click "Let me start right away »" to go to the dashboard.
+The first time an account logs in (it has never logged in before), the admin panel first redirects to the "Welcome" page, which has three shortcut links: "It is strongly recommended that you change your default password" (which goes to the password section of [Profile](./profile.md)), "Write your first post" (contributor and above) and "View my site" (administrator; other roles see "View site"). Click "Let me start right away »" to go to the Console.
 
-Once the welcome page has been opened, the browser stores a `__typecho_first_run` cookie and the redirect does not happen again. An administrator who has logged in before and visits `welcome.php` is sent straight back to the dashboard; other roles can open this page again at any time.
+Once the welcome page has been opened, the browser stores a `__typecho_first_run` cookie and the redirect does not happen again. An administrator who has logged in before is redirected straight to the Console when visiting `welcome.php`; other roles can open this page again at any time.
 
-## Dashboard home
+## Console home
 
 "Site overview" shows "There are currently N posts, and N comments about you in N categories". The post count and the comment count only include **your own**, while the category count is site-wide. The shortcut links below it depend on the role:
 
-- contributor and above: write a new post; when there are pending or spam comments, "Pending comments" and "Spam comments" with their counts;
-- administrator: additionally change theme, manage plugins, and system settings.
+- Contributor and above: "Write a new post", plus "Pending comments" and "Spam comments" with their counts when there are any;
+- Administrator: also "Change appearance", "Manage plugins" and "System settings".
 
 On the right are "Recently published posts", "Recent replies" and "Latest official posts". When a new version is available, administrators see an upgrade notice here; see [Upgrading](../getting-started/upgrade.md).
 
 ## Login and sessions
 
-- In the login form you can enter a **username or email** ("Username or email").
+- The "Username or email" field in the login form accepts either your **username** or your **email**.
 - An account can only be logged in at one place at a time: every login generates new login credentials, so any earlier login in another browser or on another device becomes invalid immediately and returns to the login page on its next action.
 - Accounts in the visitor group can log in, but every admin page returns 403; see [Users, roles and registration](./users.md#visitor).

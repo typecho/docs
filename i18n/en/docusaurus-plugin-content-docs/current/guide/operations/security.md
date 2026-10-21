@@ -2,7 +2,7 @@
 title: Security Hardening
 sidebar_position: 9
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Security Hardening
@@ -11,9 +11,9 @@ This page lists the security settings worth applying after deploying Typecho, in
 
 ## 1. Upgrade promptly {#upgrade}
 
-This is the most effective measure. When a new version is released, the admin dashboard shows a "The latest official version is …" notice; you can also follow [GitHub Releases](https://github.com/typecho/typecho/releases). For the upgrade steps, see [Upgrade](../getting-started/upgrade.md).
+This is the most effective measure. When a new version is released, the admin Console shows a "The latest official version is …" notice; you can also follow [GitHub Releases](https://github.com/typecho/typecho/releases). For the upgrade steps, see [Upgrade](../getting-started/upgrade.md).
 
-Themes and plugins need updating too. Avoid plugins that have gone unmaintained for a long time and do not state support for 1.3 whenever you can.
+Themes and plugins need updating too. Whenever you can, avoid plugins that have gone unmaintained for a long time and do not state support for 1.3.
 
 ## 2. Reporting security vulnerabilities {#report}
 
@@ -67,7 +67,7 @@ chown -R www-data:www-data /srv/data/typecho
 This setup has two effects:
 
 - The theme editor in the admin panel cannot save files. This is exactly the recommended state; see [item 6](#theme-editor);
-- When you enable permalinks under Apache `mod_php`, Typecho cannot write `.htaccess` automatically, so you need to create it by hand; see [Web server configuration](./web-server.md#htaccess).
+- When you enable permalinks under Apache `mod_php`, Typecho cannot write `.htaccess` automatically, so you need to create it manually; see [Web server configuration](./web-server.md#htaccess).
 
 Approaches such as "chmod 777 on every file" or "chmod 644 is enough" do not apply: the former lets PHP rewrite everything, the latter makes uploads fail.
 
@@ -84,7 +84,7 @@ The corresponding rules for nginx, Apache and Caddy are in [Web server configura
 
 ## 6. Disable the online theme editor {#theme-editor}
 
-"Dashboard → Appearance → Edit current theme" in the admin panel can modify a theme's `.php` files directly. Once an administrator account is stolen, an attacker can use it to execute arbitrary code on the server. If you don't need to edit themes online, disable it in `config.inc.php`:
+"Console → Appearance → Edit current theme" in the admin panel can modify a theme's `.php` files directly. Once an administrator account is stolen, an attacker can use it to execute arbitrary code on the server. If you don't need to edit themes online, disable it in `config.inc.php`:
 
 ```php
 define('__TYPECHO_THEME_WRITEABLE__', false);

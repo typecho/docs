@@ -2,7 +2,7 @@
 title: Visibility and password protection
 sidebar_position: 7
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Visibility and password protection
@@ -21,7 +21,7 @@ source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
 
 When you choose "Password protected", a **Content password** input box appears below.
 
-Two other situations also make a post invisible on the front end: a **draft** (never published, see [Writing posts](./posts.md#drafts)) and a **scheduled post** (public, but with a publish date in the future, see [Writing posts](./posts.md#scheduled)).
+Two other kinds of posts are also invisible on the front end: **drafts** (never published; see [Writing posts](./posts.md#drafts)) and **scheduled posts** (public, but with a publish date in the future; see [Writing posts](./posts.md#scheduled)).
 
 ## How they behave on the front end
 
@@ -50,10 +50,10 @@ When a visitor opens a password-protected post:
 
 - the page returns HTTP 403, the title is shown as "This content is password protected", and in place of the content there is a "Please enter the password to access" form;
 - entering a wrong password returns 403 and "Sorry, the password you entered is incorrect";
-- after the correct password is entered, the browser receives a session cookie named `protectPassword_<post ID>`; until the browser is closed, visiting this post again does not require the password, and the post also shows its real title and content in list pages;
+- after the correct password is entered, the browser stores a session cookie named `protectPassword_<post ID>`. Until the browser is closed, the visitor can open this post again without re-entering the password, and list pages also show the post's real title and content;
 - until the post is unlocked, the visitor cannot comment on it (the comment form is not shown).
 
-People who see the content **without entering the password**: the post's author, and all editors and administrators (when logged in). A contributor visiting someone else's password-protected post still has to enter the password.
+The post's author and all editors and administrators (when logged in) can see the content **without entering the password**. A contributor visiting someone else's password-protected post still has to enter the password.
 
 Password-protected posts **never appear in feeds**, even after the password has been entered; they do not appear in search results either (except for the author when logged in).
 

@@ -2,7 +2,7 @@
 title: Writing posts
 sidebar_position: 2
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Writing posts
@@ -103,7 +103,7 @@ The default state of the three "Allow" switches for new posts comes from "Allow 
 Switch to the "Attachments" panel on the right and drag files onto the "Drop files here" area, or click "Choose files to upload".
 
 - In 1.3.0 you can only select one file at a time (selecting several files at once is a change merged after 1.3.0 and is not in 1.3.0).
-- Uploaded files appear in the list. **Clicking the file name** inserts it into the editor: images are inserted as Markdown images, other files as links, with the address written as a reference at the end of the content, for example:
+- Uploaded files appear in the list. **Clicking the file name** inserts it into the editor (images as Markdown images, other files as links), with the URL written as a reference at the end of the content, for example:
 
   ```markdown
   ![pic.png][1]
@@ -121,13 +121,13 @@ Click "Publish post".
 
 - Editors and above publish with the chosen "Visibility", which defaults to "Public"; afterwards you are taken to the post list with the message "Post "title" has been published".
 - **Contributors** have no "Visibility" option; their posts always go to the "pending" state, with the message "Post "title" is awaiting review". To review it, an editor or administrator goes to "Manage → Posts", first switches to "All" (the default "Mine" lists only their own posts), then opens the "Pending" tab, ticks the submission and chooses "Mark as public" in the "Selected items" menu.
-- If a contributor edits and publishes again a post that has **already been approved**, it becomes "pending" again and disappears from the front end until it is approved again (`checkStatus()` in `var/Widget/Contents/EditTrait.php`: content published by roles below editor is always `waiting`).
+- If a contributor edits and republishes an **already approved** post, it reverts to "pending" and disappears from the front end until it is approved again (`checkStatus()` in `var/Widget/Contents/EditTrait.php` sets all content published by roles below editor to `waiting`).
 
 ### Scheduled publishing {#scheduled}
 
 Set the "Publish date" to a future time and click "Publish post" (with visibility "Public"). At that time, the post appears on the front end automatically; no cron job is needed. Until then:
 
-- the post's address returns 404, and it does not appear on the home page, in categories, tags, archives or feeds; even the author does not see it while logged in;
+- the post's URL returns 404, and it does not appear on the home page, in categories, tags, archives or feeds; even the author does not see it while logged in;
 - in the admin post list it is shown like any other post, with the future date in the date column (for example "Dec 1"), and **without any "scheduled" marker**;
 - it is already counted in the post counts of categories and tags, so front-end lists show fewer posts than the admin panel; see [Categories and tags](./categories-tags.md#counts).
 

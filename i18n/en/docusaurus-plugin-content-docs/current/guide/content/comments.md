@@ -2,7 +2,7 @@
 title: Managing and moderating comments
 sidebar_position: 8
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Managing and moderating comments
@@ -28,7 +28,7 @@ All three are stored in the `comments` table and distinguished by `type`:
 | Name and content | The name and text the visitor entered | The name is the other blog's name; the content is the excerpt it submitted (truncated to the first 100 characters) | The name is the title of the other page; the content is a passage extracted from that page |
 | Shown in the admin panel | Normally | Marked "Trackback" next to the author name | Marked "Trackback" next to the author name |
 | Can be replied to in the admin panel | Yes | No | No |
-| Prerequisite | The post has "Allow comments" | The post has "Allow trackbacks" | The post has "Allow trackbacks", and **XMLRPC interface** in **Settings → General** is "On" (`allowXmlRpc = 2`), see [Feeds and offline clients](./feeds-xmlrpc.md#xmlrpc) |
+| Prerequisite | The post has "Allow comments" | The post has "Allow trackbacks" | The post has "Allow trackbacks", and **XMLRPC interface** in **Settings → General** is "On" (`allowXmlRpc = 2`); see [Feeds and offline clients](./feeds-xmlrpc.md#xmlrpc) |
 
 Conversely, when you publish a post: the URLs entered under **Trackbacks** in the editor receive a trackback; other sites linked from the content receive a pingback (if they support it).
 
@@ -43,10 +43,10 @@ Conversely, when you publish a post: the URLs entered under **Trackbacks** in th
 The status of a new comment depends on **Settings → Comments**:
 
 - With "All comments must be moderated" (`commentsRequireModeration`) checked: every new comment is "Pending";
-- With only "The commenter must have a previously approved comment" (`commentsWhitelist`) checked: if the same name and email have an approved comment before, the comment is approved directly; otherwise it is pending;
-- With neither checked (the default): comments are approved directly, and visitor comments appear immediately.
+- With only "The commenter must have a previously approved comment" (`commentsWhitelist`) checked: if a previous comment under the same name and email has been approved, the new comment is approved immediately; otherwise it is held as pending;
+- With neither checked (the default): comments are approved immediately, and visitor comments appear right away.
 
-Comments posted on the front end by the post's author, and by editors and administrators, are exempt from "All comments must be moderated" and are approved directly. But when only "The commenter must have a previously approved comment" is checked, that rule applies to them too: the first comment under a given name and email goes to pending as well and needs to be approved once in the admin panel.
+Comments posted on the front end by the post's author, and by editors and administrators, are exempt from "All comments must be moderated" and are approved immediately. But when only "The commenter must have a previously approved comment" is checked, that rule applies to them too: the first comment under a given name and email goes to pending as well and needs to be approved once in the admin panel.
 
 A post's comment count (`commentsNum`) **counts only approved comments**; when you mark a comment or trackback as spam or pending, the post's comment count decreases accordingly.
 
@@ -77,5 +77,5 @@ The "Spam" tab also has a **Delete all spam comments** button (confirm "Are you 
 
 - Once a trackback from an IP has been marked as spam, further trackbacks from that IP get a 404 directly.
 - The anti-spam protection, referer check, minimum interval between comments from the same IP and other options in **Settings → Comments** stop most bot comments.
-- To close comments or trackbacks on a particular post: uncheck "Allow comments" or "Allow trackbacks" in the editor's **Advanced options**, see [Writing posts](./posts.md).
+- To close comments or trackbacks on a particular post: uncheck "Allow comments" or "Allow trackbacks" in the editor's **Advanced options** (see [Writing posts](./posts.md)).
 - For stronger filtering, use an anti-spam plugin.

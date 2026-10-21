@@ -2,7 +2,7 @@
 title: Attachments and file management
 sidebar_position: 5
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Attachments and file management
@@ -34,7 +34,7 @@ By default, files are stored under `usr/uploads/year/month/` in the site directo
 usr/uploads/2026/10/3396430629.png
 ```
 
-The original file name is only stored in the database and is shown as the attachment's title. The access address is "site URL + this path". Anyone who knows the address can open the file directly, regardless of the visibility of the post it belongs to; see [Attachment pages](#attachment-page). Missing directories are created level by level automatically, so `usr/uploads` must be writable by PHP. To change the storage location or serve attachments through a CDN, see [Upload storage location](../operations/uploads-storage.md).
+The original file name is only stored in the database and is shown as the attachment's title. The file's URL is "site URL + this path". Anyone who knows the URL can open the file directly, regardless of the visibility of the post it belongs to (see [Attachment pages](#attachment-page)). Missing directories are created level by level automatically, so `usr/uploads` must be writable by PHP. To change the storage location or serve attachments through a CDN, see [Upload storage location](../operations/uploads-storage.md).
 
 ## Allowed file types {#types}
 
@@ -67,19 +67,19 @@ Click the edit icon next to a file in the editor's "Attachments" panel, or click
 | UI name | Field | Description |
 |---|---|---|
 | Title * | `name` | Defaults to the original file name at upload |
-| Slug | `slug` | Used in the address of the attachment page |
+| Slug | `slug` | Used in the URL of the attachment page |
 | Description | `description` | Some themes display it |
 
 The upload area at the top of the page is for **replacing the file**: upload a new file and the original file is overwritten, with the message "File X has been replaced".
 
-- After replacing, **the path and the access address stay the same**, so addresses already inserted in content remain valid; the title also stays the same.
+- After replacing, **the path and the URL stay the same**, so links already inserted in content remain valid; the title also stays the same.
 - The new file must have the same extension as the original. If the extension differs (for example replacing a `.txt` file with a `.md` file), only "Upload failed" is shown, without a reason.
 - Browsers or CDNs may cache the old file; if you see no change after replacing, force a refresh or purge the CDN cache.
 
 ## Deleting files
 
 - Click the delete icon in the editor's "Attachments" panel (confirm "Are you sure you want to delete file X?"), or tick files under "Manage → Files" and choose "Delete" (confirm "Are you sure you want to delete these files?").
-- Deleting removes both the database record and the file on disk. Addresses that reference it in content stop working, and you need to edit the content yourself.
+- Deleting removes both the database record and the file on disk. Any links or images in your content that point to it stop working, and you need to edit the content yourself.
 - If `__TYPECHO_UPLOAD_ROOT_DIR__` is defined in `config.inc.php`, 1.3.0 does not delete the file on disk when an attachment is deleted; see [Upload storage location](../operations/uploads-storage.md).
 
 ## Unattached files {#unattached}
@@ -89,12 +89,12 @@ The "Belongs to" column under "Manage → Files" shows which post or page a file
 - a post or page was deleted: its attachments are not deleted but become unattached;
 - files were uploaded in a new post that was never saved or published.
 
-The "Clean up unattached files" button above the list (confirm "Are you sure you want to clean up unattached files?") deletes unattached files, including the files on disk. In 1.3.0, when there are more than 100 unattached files, one cleanup may not remove them all; repeat the cleanup until no unattached files remain in the list. If content references these files' addresses directly (for example, you copied an image address before deleting an old post), those addresses stop working after the cleanup, so check before you run it.
+The "Clean up unattached files" button above the list (confirm "Are you sure you want to clean up unattached files?") deletes unattached files, including the files on disk. In 1.3.0, when there are more than 100 unattached files, one cleanup may not remove them all; repeat the cleanup until no unattached files remain in the list. If content links to these files directly (for example, you copied an image URL before deleting an old post), those links stop working after the cleanup, so check before you run it.
 
 ## Attachment pages {#attachment-page}
 
-Every attachment also has its own front-end page (default address `/attachment/{cid}/`). Themes can use it to show an image or a download link, and visitors can comment on the attachment page (attachments allow comments by default).
+Every attachment also has its own front-end page (default URL `/attachment/{cid}/`). Themes can use it to show an image or a download link, and visitors can comment on the attachment page (attachments allow comments by default).
 
 :::caution Attachments are not protected by the post's visibility
-An attachment is public as soon as it is uploaded. Even when the post it belongs to is private, password protected, pending review or a draft, the attachment page and the file URL can still be accessed directly by anyone who knows the address. Keep confidential files in separate storage with access control instead of uploading them as attachments.
+An attachment is public as soon as it is uploaded. Even when the post it belongs to is private, password protected, pending review or a draft, the attachment page and the file URL can still be accessed directly by anyone who knows the URL. Keep confidential files in separate storage with access control instead of uploading them as attachments.
 :::

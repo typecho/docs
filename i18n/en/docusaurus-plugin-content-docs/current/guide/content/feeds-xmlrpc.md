@@ -2,12 +2,12 @@
 title: Feeds and offline clients
 sidebar_position: 11
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Feeds and offline clients
 
-Typecho ships with three kinds of feeds, RSS 2.0, RSS 1.0 and Atom, plus an XML-RPC interface that offline writing clients (MetaWeblog and other protocols) use to publish and manage posts, and that is also used to receive pingbacks.
+Typecho ships with three feed formats (RSS 2.0, RSS 1.0 and Atom) and an XML-RPC interface. Offline writing clients use the interface to publish and manage posts (over MetaWeblog and other protocols), and it also receives pingbacks.
 
 ## Feed URLs {#feeds}
 
@@ -48,7 +48,7 @@ The conditions above apply only to post feeds. The site-wide comment feed (`/fee
 | Full text | `1` (default) | The feed contains the full text of posts |
 | Excerpt only | `0` | When a post has the excerpt separator `<!--more-->`, only the part before the separator is output, followed by a `[...]` link to the original post; **posts without a separator are still output in full** |
 
-So after choosing "Excerpt only", you also need to insert the excerpt separator in your posts (the editor toolbar button or <kbd>Ctrl</kbd>+<kbd>M</kbd>), see [Writing posts](./posts.md#markdown).
+So after choosing "Excerpt only", you also need to insert the excerpt separator in your posts (the editor toolbar button or <kbd>Ctrl</kbd>+<kbd>M</kbd>); see [Writing posts](./posts.md#markdown).
 
 ## XML-RPC interface {#xmlrpc}
 
@@ -60,7 +60,7 @@ So after choosing "Excerpt only", you also need to insert the excerpt separator 
 | Disable only the Pingback interface | `1` | Available | No; calling `pingback.ping` returns "requested method pingback.ping does not exist" | RSD and wlwmanifest links are output; no pingback link and no `X-Pingback` response header |
 | On | `2` | Available | Yes | Everything is output; post pages carry the `X-Pingback` response header |
 
-For sites that use no offline client and do not want to receive pingbacks, we recommend "Off", to reduce the entry points for scanning and abuse. Trackbacks do not go through XML-RPC and are not affected by this option; they are controlled by each post's "Allow trackbacks", see [Managing and moderating comments](./comments.md).
+If your site uses no offline client and does not need to receive pingbacks, we recommend setting this to "Off" to reduce its exposure to scanning and abuse. Trackbacks do not go through XML-RPC and are not affected by this option; they are controlled by each post's "Allow trackbacks" (see [Managing and moderating comments](./comments.md)).
 
 ### Connecting an offline client
 
