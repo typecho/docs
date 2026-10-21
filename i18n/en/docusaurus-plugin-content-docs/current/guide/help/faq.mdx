@@ -2,7 +2,7 @@
 title: FAQ
 sidebar_position: 4
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # FAQ
@@ -18,7 +18,7 @@ First look at the form of the failing post URL:
 
 ## The page shows "No input file specified." {#no-input-file}
 
-The script path that PHP receives does not exist. Usually PHP has `cgi.fix_pathinfo=0` set while nginx lacks `fastcgi_split_path_info` (in which case logging in also returns 403 `Access denied.`), or `SCRIPT_FILENAME` is wrong, nginx and PHP-FPM see different paths in a container, or `open_basedir` restricts access. See [Web server configuration: No input file specified](../operations/web-server.md#no-input-file).
+The script path that PHP receives does not exist. The usual causes are: PHP has `cgi.fix_pathinfo=0` set while nginx lacks `fastcgi_split_path_info` (in which case logging in also returns 403 `Access denied.`); `SCRIPT_FILENAME` is wrong; nginx and PHP-FPM see different paths in a container; or `open_basedir` restricts access. See [Web server configuration: No input file specified](../operations/web-server.md#no-input-file).
 
 ## Logging in returns 404, 500 or 403 {#login-fails}
 
@@ -62,7 +62,7 @@ Post counts are stored in the database and are not recalculated automatically af
 
 ## More
 
-- The site is behind HTTPS, a reverse proxy or a CDN, and you see missing styles, mixed content, redirect loops, or being sent back to the login page after logging in: see [HTTPS, reverse proxies and CDNs](../operations/https-proxy.md).
+- Missing styles, mixed content, redirect loops, or landing back on the login page after logging in, on a site behind HTTPS, a reverse proxy or a CDN: see [HTTPS, reverse proxies and CDNs](../operations/https-proxy.md).
 - Deploying with Docker: see [Container and cloud host deployment](../operations/containers.md).
 - Which constants you can set in `config.inc.php`: see [config.inc.php and constants](../operations/config-file.md).
 - Hardening site security: see [Security hardening](../operations/security.md).

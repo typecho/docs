@@ -2,18 +2,18 @@
 title: Getting help
 sidebar_position: 5
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # Getting help
 
 When the documentation does not answer your question, you can ask for help through the three channels below. The footer of the admin pages (except the login and registration pages) links to two of them: **Support forum** and **Report a bug**.
 
-| Channel | Address | Good for |
+| Channel | URL | Good for |
 |---|---|---|
 | Support forum | [forum.typecho.org](https://forum.typecho.org) | Usage questions, how to use themes and plugins, sharing experience. **Support forum** in the admin footer |
 | GitHub Issues | [github.com/typecho/typecho/issues](https://github.com/typecho/typecho/issues) | Bugs in the program itself and feature requests. **Report a bug** in the admin footer |
-| Telegram | [t.me/typechodev](https://t.me/typechodev) | Typecho's Telegram channel, listed in the Community section of `CONTRIBUTING.md` in the Typecho repository; good for following development news and chatting |
+| Telegram | [t.me/typechodev](https://t.me/typechodev) | Following development news and talking with the developers. This is Typecho's Telegram channel, listed in the Community section of `CONTRIBUTING.md` in the Typecho repository |
 
 :::tip Choose the right channel
 - For "how do I…" and "why does my site do this" questions, go to the forum first.
@@ -73,8 +73,8 @@ Before you paste configuration or logs, remove sensitive content such as databas
 Description: after upgrading to 1.3.0, clicking "Complete upgrade" keeps the page loading, and it ends with a 504.
 
 Steps to reproduce:
-1. Replace admin/ var/ install/ index.php install.php from 1.2.1
-2. Log in to the admin panel as an administrator; you are taken to the upgrade page
+1. On a 1.2.1 site, replace admin/ var/ install/ index.php install.php with the new files
+2. Log in to the admin panel as an administrator; you are redirected to the upgrade page
 3. Click "Complete upgrade"; the page keeps loading for about 60 seconds, then returns 504
 
 Expected result: "The upgrade has been completed" is shown

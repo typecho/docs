@@ -2,7 +2,7 @@
 title: Upgrading
 sidebar_position: 4
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # Upgrading
@@ -13,9 +13,9 @@ Upgrading Typecho takes two steps: first **replace the program files**, then **r
 The upgrade modifies the database and cannot be rolled back automatically. Before you start, back up the **database** (with the database's own export tool; it contains all settings), the **`usr/` directory** (themes, plugins, attachments; with SQLite the database file is also here by default) and **`config.inc.php`**. The **Backup** feature in the admin panel only exports content, without settings or files, and cannot replace these three. See [Backup and restore](../operations/backup.md) for how to do it.
 :::
 
-## Where upgrades start: the new version notice on the dashboard
+## Where upgrades start: the new version notice in the Console
 
-When a new version is released, editors and administrators who open the admin dashboard (the **Overview** page) see a notice below the page title:
+When a new version is released, editors and administrators who open the **Console** in the admin panel (the **Overview** page) see a notice below the page title:
 
 > You are currently using version 1.2.1
 > **The latest official version is 1.3.0**
@@ -35,12 +35,12 @@ The 1.3 upgrade program only supports upgrading from **1.1.0 or later** (`Widget
 | Current version | Upgrade path |
 |---|---|
 | 1.2.x | Upgrade directly to 1.3.0. If the site was upgraded to 1.2 from 1.1, first check the two table columns described below |
-| 1.1.x | **Make the two table structure changes below by hand first, then upgrade to 1.3.0** |
+| 1.1.x | **Manually apply the two table structure changes below first, then upgrade to 1.3.0** |
 | Before 1.1.0 (0.x, 1.0) | Upgrade to 1.1 with the 1.1 upgrade program first, then follow the 1.1.x route. Running the 1.3 upgrade program directly reports "Please upgrade to version 1.1.0 first" |
 
-**Why 1.1 needs the table changes made by hand**: 1.3 removed all historical upgrade scripts, keeping only the single step for 1.3.0 itself. A 1.1 site's version number passes the `MIN_VERSION` check, but the two table structure changes from 1.2 (`comments.agent` changed to `varchar(511)`, `comments.url` changed to `varchar(255)`) no longer exist in 1.3, so these two columns are not modified when 1.1 upgrades directly to 1.3.
+**Why 1.1 needs manual table changes**: 1.3 removed all historical upgrade scripts, keeping only the single step for 1.3.0 itself. A 1.1 site's version number passes the `MIN_VERSION` check, but the two table structure changes from 1.2 (`comments.agent` changed to `varchar(511)`, `comments.url` changed to `varchar(255)`) no longer exist in 1.3, so these two columns are not modified when 1.1 upgrades directly to 1.3.
 
-Upgrading once with 1.2.0 or 1.2.1 first does not fill the gap either: when those versions' upgrade programs pick historical scripts by version number, they stop at the first (oldest) script, so an upgrade from 1.1 runs none of the historical scripts, yet still sets the version number to 1.2.x. A 1.2.x site that was upgraded from 1.1 may therefore lack these two changes as well.
+Upgrading to 1.2.0 or 1.2.1 first does not apply these changes either. When the upgraders in those versions pick historical scripts by version number, they stop at the first (oldest) script. As a result, an upgrade from 1.1 runs none of the historical scripts, yet still sets the version number to 1.2.x. This means a 1.2.x site that was upgraded from 1.1 may also lack these two changes.
 
 After backing up the database, use a database client to check the length of these two columns in the `comments` table (the default `typecho_` prefix is used below). If they are not `511` and `255`, run:
 
@@ -151,13 +151,13 @@ If you have already hit the hang: replace this file, log in to the admin panel a
 
 ## After upgrading
 
-- On the **Dashboard**, check that the version number in the footer is the new version.
+- In the **Console**, check that the version number in the footer is the new version.
 - Check each active plugin and the current theme. 1.3 stores plugin and theme settings as JSON and adjusts some internal classes, so older plugins may need updating.
 - If you get a blank page or a 500 error, first disable plugins and switch back to a bundled theme to narrow it down; see [Debugging and troubleshooting](../operations/debugging.md#isolate) for the steps.
 
 ## Sites deployed with containers
 
-The official image `joyqi/typecho` writes `config.inc.php` to the root of `/app`, **not inside `/app/usr`**; and when the image starts, it only copies in program files that do not exist in `/app`. This leads to two pitfalls:
+The official image `joyqi/typecho` writes `config.inc.php` to the root of `/app`, **not inside `/app/usr`**; and when the image starts, it only copies in program files that do not exist in `/app`. This causes two problems:
 
 - Mount only `/app/usr` and recreate the container as usual: `config.inc.php` disappears with the old container, and the home page redirects to `/install.php`;
 - Mount the whole of `/app`: after switching to an image with a new tag, the program files in the volume are not updated, and the site stays on the pre-upgrade version.

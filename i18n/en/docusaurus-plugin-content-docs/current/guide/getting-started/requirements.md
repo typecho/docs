@@ -2,7 +2,7 @@
 title: Requirements
 sidebar_position: 1
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # Requirements
@@ -19,7 +19,7 @@ Typecho 1.3 requires **PHP 7.4.0 or later**; 1.2.x requires PHP 7.2.0 or later. 
 |---|---|---|
 | PHP | 7.4.0 or later | No version comparison; on PHP older than 7.4 you get a syntax error straight away |
 | PHP extensions | `mbstring`, `json`, `Reflection`, plus at least one database extension | Checked in step 1 of the installer |
-| Database | MySQL / MariaDB 5.5.3+, SQLite 3.7.11+, PostgreSQL 9.1+ | **Not checked**, see below |
+| Database | MySQL / MariaDB 5.5.3+, SQLite 3.7.11+, PostgreSQL 9.1+ | **Not checked** (see below) |
 | Directory permissions | `usr/uploads` writable | Checked in step 1 of the installer |
 | Web server | Any server that can run PHP (Apache, nginx, Caddy, etc.) | Not checked |
 
@@ -31,7 +31,7 @@ The official continuous integration runs syntax checks on PHP 7.4, 8.0, 8.1 and 
 
 ## PHP extensions {#php-extensions}
 
-Step 1 of the installer checks the extensions below one by one; if any of them is missing, you cannot continue:
+In step 1, the installer checks for the extensions below. If any of them is missing, the installation cannot continue:
 
 | Extension | Notes |
 |---|---|
@@ -52,7 +52,7 @@ The installer lists the database adapters available on the server in the drop-do
 | `Pgsql` | `pgsql` | PostgreSQL |
 
 :::tip
-The URL input boxes in the admin panel (**Site URL** and **Homepage URL**) use `idn_to_utf8()` from the `intl` extension to display IDN (internationalized, e.g. Chinese) domain names in their original form. Typecho works without `intl`; such domain names are then shown in their encoded form starting with `xn--`.
+The **Site URL** and **Homepage URL** fields in the admin panel use `idn_to_utf8()` from the `intl` extension to display IDN (internationalized, e.g. Chinese) domain names in their original form. Typecho works without `intl`; such domain names are then shown in their encoded form starting with `xn--`.
 :::
 
 ## Database

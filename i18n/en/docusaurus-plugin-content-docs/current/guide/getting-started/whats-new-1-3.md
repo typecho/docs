@@ -2,7 +2,7 @@
 title: What's new and changed in 1.3
 sidebar_position: 5
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # What's new and changed in 1.3
@@ -23,9 +23,9 @@ This page only lists what is in the 1.3.0 release. Changes merged on the `master
 | New official theme classic-22 | A new theme based on Pico CSS 2, shipped in the package alongside `default`, located at `usr/themes/classic-22` |
 | Save with Ctrl/Cmd+S | In the Markdown editor, press <kbd>Ctrl</kbd>+<kbd>S</kbd> (<kbd>Cmd</kbd>+<kbd>S</kbd> on macOS) to save the draft without clicking a button |
 | Internationalized domain names (IDN) | **Site URL** and **Homepage URL** now use URL input boxes; internationalized domain names (e.g. Chinese) stored in their `xn--` encoded form are shown in their original form in the admin panel (requires the PHP `intl` extension) |
-| High-resolution avatars | Avatars can additionally output Gravatar URLs at 2× and 3× size (`srcset`), so they look sharper on high-resolution screens. This is enabled by default in **Manage → Comments** in the admin panel; on the front end the comment list does not enable it by default: the theme has to pass `avatarHighRes => true` to `listComments()`, and neither of the two bundled themes turns it on |
+| High-resolution avatars | Avatars can additionally output Gravatar URLs at 2× and 3× size (`srcset`), so they look sharper on high-resolution screens. This is enabled by default in **Manage → Comments** in the admin panel. The front-end comment list does not enable it by default: the theme has to pass `avatarHighRes => true` to `listComments()`, and neither of the two bundled themes does so |
 | PostgreSQL SSL | PostgreSQL connections can use SSL (`sslmode=require`); just select it during installation |
-| MySQL socket | During installation the **Database host** can be a Unix socket path, see [Installation](./installation.mdx#mysql-socket) |
+| MySQL socket | During installation, **Database host** accepts a Unix socket path (see [Installation](./installation.mdx#mysql-socket)) |
 
 ## Higher requirements
 
@@ -33,7 +33,7 @@ This page only lists what is in the 1.3.0 release. Changes merged on the `master
 
 ## Renames and removals
 
-The upgrade program handles these changes in the database automatically. But if your theme, plugins or your own scripts use the old names directly, you have to change them by hand.
+The upgrade program handles these changes in the database automatically. But if your theme, plugins or your own scripts use the old names directly, you have to change them manually.
 
 | 1.2 | 1.3 | Impact |
 |---|---|---|
@@ -46,5 +46,5 @@ The upgrade program handles these changes in the database automatically. But if 
 
 ## Things to watch when upgrading
 
-- 1.3 can only be upgraded to from 1.1.0 or later; 1.1 sites must first make two table structure changes by hand. See [Upgrading](./upgrade.md#direct-upgrade).
+- Only 1.1.0 and later can upgrade to 1.3, and 1.1 sites must first apply two table structure changes manually. See [Upgrading](./upgrade.md#direct-upgrade).
 - The 1.3.0 release can hang during the upgrade on sites with 100 or more attachments (mostly when retrying after a failed attempt); for the workaround, see [Upgrading](./upgrade.md#known-issue-attachments).

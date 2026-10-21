@@ -2,12 +2,12 @@
 title: General Settings
 sidebar_position: 1
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # General Settings
 
-"Settings → Basic" (`admin/options-general.php`) in the admin panel; only administrators can open it. After saving, the message "Settings have been saved" appears.
+This page covers "Settings → Basic" (`admin/options-general.php`) in the admin panel, which only administrators can access. After saving, the message "Settings have been saved" appears.
 
 ## Fields at a glance
 
@@ -27,7 +27,7 @@ The site name, site description and keywords cannot contain special characters s
 
 ## Site URL {#site-url}
 
-"Site URL" (`siteUrl`) is used for the home page link and for the URLs of theme and plugin static files (CSS, JS, images) and attachments. Permalinks of posts, pages, categories, feeds and so on do **not** use it; they use the root URL of the current request, so changing this field alone does not fix permalinks with the wrong domain or scheme; see [HTTPS, reverse proxies and CDNs: domain and scheme of permalinks](../operations/https-proxy.md#root-url). You also need to change it when you move to a new domain or switch to HTTPS; see [Migrating from other blogs: changing the domain](../operations/migration.md#new-domain).
+"Site URL" (`siteUrl`) is used for the home page link and for the URLs of theme and plugin static files (CSS, JS, images) and attachments. Permalinks of posts, pages, categories, feeds and so on do **not** use it; they use the root URL of the current request. If permalinks have the wrong domain or scheme, changing this field alone will not fix them (see [HTTPS, reverse proxies and CDNs: domain and scheme of permalinks](../operations/https-proxy.md#root-url)). You also need to change it when you move to a new domain or switch to HTTPS; see [Migrating from other blogs: changing the domain](../operations/migration.md#new-domain).
 
 - A trailing `/` is removed when saving.
 - Since 1.3 the input is a URL field, and you can enter internationalized domain names such as Chinese ones directly (stored in `xn--` form and converted back when displayed; this requires the PHP `intl` extension).
@@ -35,7 +35,7 @@ The site name, site description and keywords cannot contain special characters s
 
 ### Pinning the site URL with `__TYPECHO_SITE_URL__`
 
-Define this constant in `config.inc.php`, and the site URL is taken from the constant:
+Once this constant is defined in `config.inc.php`, the site URL is taken from the constant:
 
 ```php
 define('__TYPECHO_SITE_URL__', 'https://example.com');
@@ -65,6 +65,6 @@ Extensions in "Other formats" are converted to lowercase, and executable types s
 
 ## Language {#lang}
 
-The "Language" drop-down appears only when `usr/langs` (or the directory specified by `__TYPECHO_LANG_DIR__`) contains at least one `.mo` language pack. Its options are Simplified Chinese (the built-in language) plus the language name each language pack declares, for example `English`. After switching, the whole admin panel and the text in themes that uses `_t()` change, **for all users**; there is no per-user language.
+The "Language" drop-down appears only when `usr/langs` (or the directory specified by `__TYPECHO_LANG_DIR__`) contains at least one `.mo` language pack. Its options are Simplified Chinese (the built-in language) plus the language name each language pack declares, for example `English`. Switching the language changes the whole admin panel and any theme text output through `_t()`. The setting applies **to all users**; there is no per-user language.
 
 For installing language packs and the behavior when a language pack is missing, see [Interface language](../extend/languages.md).

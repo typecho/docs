@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # 评论设置
 
-后台“设置 → 评论”（`admin/options-discussion.php`），只有管理员能打开。这里的设置对全站所有文章和页面生效；单篇内容的“允许评论”“允许被引用”在编辑器中设置，评论的审核在“管理 → 评论”中进行，见[评论管理与审核](../content/comments.md)。
+本页对应后台“设置 → 评论”（`admin/options-discussion.php`），只有管理员可以访问。这里的设置对全站所有文章和页面生效；单篇内容的“允许评论”“允许被引用”在编辑器中设置，评论的审核在“管理 → 评论”中进行，见[评论管理与审核](../content/comments.md)。
 
 ## 评论日期格式 {#date-format}
 
@@ -42,7 +42,7 @@ sidebar_position: 2
 | 评论者名称显示时自动加上其个人主页链接 | `commentsShowUrl` | 开 | 评论者填写了网址时，名字链接到该网址 |
 | 对评论者个人主页链接使用 nofollow 属性 | `commentsUrlNofollow` | 开 | 上述链接带 `rel="nofollow"` |
 | 启用 Gravatar 头像服务, 最高显示评级为 [下拉框] 的头像 | `commentsAvatar`，下拉框为 `commentsAvatarRating` | 开，`G` | 评论者头像按邮箱从 Gravatar 获取；评级可选 `G`（普通）、`PG`（13岁以上）、`R`（17岁以上成人）、`X`（限制级），超过所选评级的头像不显示 |
-| 启用分页, 并且每页显示 [数字] 篇评论, 在列出时将 [第一页 / 最后一页] 作为默认显示 | `commentsPageBreak`，数字为 `commentsPageSize`，下拉框为 `commentsPageDisplay` | 关，20，最后一页 | 评论分页。`commentsPageDisplay` 为 `last` 时，打开文章默认显示最后一页，为 `first` 时显示第一页。第一页、最后一页按下面“评论排序”的顺序计算：旧评论在前时最后一页是最新的评论；新评论在前时要选第一页，才会默认显示最新的评论 |
+| 启用分页, 并且每页显示 [数字] 篇评论, 在列出时将 [第一页 / 最后一页] 作为默认显示 | `commentsPageBreak`，数字为 `commentsPageSize`，下拉框为 `commentsPageDisplay` | 关，20，最后一页 | 评论分页。`commentsPageDisplay` 为 `last` 时，打开文章默认显示最后一页，为 `first` 时显示第一页。“第一页”和“最后一页”取决于下面的“评论排序”：旧评论在前时，最后一页是最新的评论；新评论在前时，要选“第一页”才会默认显示最新的评论 |
 | 启用评论回复, 以 [数字] 层作为每个评论最多的回复层数 | `commentsThreaded`，数字为 `commentsMaxNestingLevels` | 开，5 | 嵌套回复，见下文 |
 | 将 [较新的 / 较旧的] 的评论显示在前面 | `commentsOrder` | 较旧的（`ASC`） | `DESC` 新评论在前，`ASC` 旧评论在前 |
 
@@ -68,7 +68,7 @@ sidebar_position: 2
 | 同一 IP 发布评论的时间间隔限制为 [数字] 分钟 | `commentsPostIntervalEnable`，数字为 `commentsPostInterval` | 开，1 | 同一 IP 在同一篇文章下两次评论的最短间隔；太快时提示“对不起, 您的发言过于频繁, 请稍候再次发布.”。文章作者和编辑、管理员不受限制。界面填写分钟数，保存为秒数，例如填 2 保存为 `120` |
 
 :::note 发言间隔只能填整数
-源码会把分钟数保留一位小数（例如 0.5 分钟 = 30 秒），但输入框是普通的数字框，填 `0.5` 时浏览器提示“请输入有效值”，表单无法提交。所以在后台只能填整数分钟。
+源码会把分钟数保留一位小数（例如 0.5 分钟 = 30 秒），但这个输入框是普通的数字输入框：填入 `0.5` 时，浏览器会提示“请输入有效值”，表单无法提交。因此在后台只能填写整数分钟。
 :::
 
 审核相关的状态和处理方式见[评论管理与审核](../content/comments.md)。

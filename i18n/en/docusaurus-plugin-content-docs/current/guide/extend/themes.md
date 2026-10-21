@@ -2,7 +2,7 @@
 title: Installing and Configuring Themes
 sidebar_position: 1
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # Installing and Configuring Themes
@@ -49,7 +49,7 @@ For a directory to be recognized as a theme, it must contain at least an `index.
 
 An image in the directory named `screenshot.png` (jpg, gif, webp and so on also work) is shown as the screenshot. Once the directory is in place, no installation step is needed; refresh the Appearance page to see it.
 
-When you download a theme from GitHub, the extracted directory name often has a `-main` or `-master` suffix. Themes have no hard requirement on the directory name, but theme settings are stored by directory name, so rename it to the name the theme author specifies before uploading. The custom template chosen for a page is stored only by file name, regardless of theme: after switching themes, check the pages that use custom templates; if the new theme has a template file with the same name it is used, otherwise the page is shown as an ordinary page.
+When you download a theme from GitHub, the extracted directory name often has a `-main` or `-master` suffix. Themes have no hard requirement on the directory name, but theme settings are stored by directory name, so rename it to the name the theme author specifies before uploading.
 
 ## Switching themes
 
@@ -61,13 +61,15 @@ When you activate a new theme, **the settings of the previous theme are deleted*
 
 In addition, when you switch themes, if "Site front page" is set to "Call a template file directly", it is automatically reset to "Show the latest posts"; see [Reading settings](../settings/reading.md#front-page).
 
+The custom template chosen for a page is stored by file name only, regardless of theme. After switching themes, check the pages that use custom templates: if the new theme has a template file with the same name, that file is used; otherwise, the page is shown as an ordinary page.
+
 ### The current theme's directory is missing
 
 If the current theme's directory is deleted or renamed, the front end **automatically falls back to the `default` theme** (so do not delete the `default` theme), and the top of the Appearance page shows:
 
 > The theme files of "X" that you used before were not found; you can upload this theme again or activate another theme.
 
-Upload the theme again and refresh the page, and the message disappears; if you activate another theme instead, the previous theme's settings data is deleted.
+After you upload the theme again and refresh the page, the message disappears; if you activate another theme instead, the previous theme's settings data is deleted.
 
 ## Theme settings page {#config}
 

@@ -17,7 +17,7 @@ php install.php
 
 请用 Web 服务器运行 PHP 的帐号（例如 `www-data`）执行安装。安装程序的环境检查只检查执行命令的帐号能否写入；用 root 等其他帐号安装时，`usr/uploads`、SQLite 数据库文件及其所在目录会属于那个帐号，之后网页上传附件、写入数据库可能失败。不方便切换帐号时，安装后把这些路径的所有者改成 Web 服务器的帐号。
 
-SQLite，最少的配置。数据库文件放在网站目录之外，并事先建好它所在的目录、让 Web 服务器的帐号可写（放在 `usr/` 下的 `.db` 文件可能被直接下载，见[安全加固](../operations/security.md#sensitive-files)）：
+SQLite 所需的配置最少。请把数据库文件放在网站目录之外，事先建好它的上级目录，并让 Web 服务器的帐号可写（放在 `usr/` 下的 `.db` 文件可能被直接下载，详见[安全加固](../operations/security.md#sensitive-files)）：
 
 ```bash
 cd /srv/www/typecho
@@ -85,7 +85,7 @@ PHP 8.2.x
 | `TYPECHO_DB_SSL_CA` | 无 | 仅 MySQL：CA 证书路径，文件必须存在。设置后会同时启用服务端证书验证 |
 | `TYPECHO_DB_SSL_VERIFY` | `off` | `on` 或 `off`。MySQL：是否验证服务端证书；PostgreSQL：`on` 时以 `sslmode=require` 连接 |
 | `TYPECHO_DB_FILE` | `usr/` 下随机文件名的 `.db` 文件 | 仅 SQLite：数据库文件路径。可写绝对路径；只写文件名（如 `site.db`）时放在 `usr/` 下。绝对路径只能包含字母、数字、`/`、`.`、`_`、`-`；只写文件名时只能用字母、数字加扩展名 |
-| `TYPECHO_DB_NEXT` | `none` | 数据表已存在时怎么办，见下文 |
+| `TYPECHO_DB_NEXT` | `none` | 数据表已存在时如何处理（见下文） |
 | `TYPECHO_DB_DSN` | 无 | 会被读取，但 1.3.0 的安装程序**不会使用它**：生成的配置里没有 DSN 一项，设置了也不起作用 |
 
 `TYPECHO_DB_NEXT` 的取值与 Web 安装中的隐藏字段 `dbNext` 相同：
@@ -146,7 +146,9 @@ TYPECHO_DB_NEXT=keep \
 php install.php
 ```
 
-第一次用 `export` 设置的变量还在当前 shell 中时，只补上缺少的变量和 `TYPECHO_DB_NEXT=keep` 也可以。安装程序会先校验这些变量（MySQL / PostgreSQL 缺少 `TYPECHO_DB_USER`、`TYPECHO_DB_DATABASE` 时直接报错退出），表前缀也以变量为准，未设置时按 `typecho_` 处理；校验通过后，如果根目录已经存在 `config.inc.php`，才直接使用其中的数据库连接，不再按 `TYPECHO_DB_HOST` 等变量重新连接。
+如果第一次用 `export` 设置的变量仍在当前 shell 中，只需补上缺少的变量和 `TYPECHO_DB_NEXT=keep`。
+
+安装程序会先校验这些变量：MySQL / PostgreSQL 缺少 `TYPECHO_DB_USER` 或 `TYPECHO_DB_DATABASE` 时，直接报错退出。表前缀同样以 `TYPECHO_DB_PREFIX` 为准，未设置时按 `typecho_` 处理。校验通过后，如果根目录已经存在 `config.inc.php`，安装程序会直接使用其中的数据库连接，不再按 `TYPECHO_DB_HOST` 等变量重新连接。
 
 ## 容器
 

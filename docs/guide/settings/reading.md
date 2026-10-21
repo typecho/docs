@@ -5,7 +5,7 @@ sidebar_position: 3
 
 # 阅读设置
 
-后台“设置 → 阅读”（`admin/options-reading.php`），只有管理员能打开。这里决定前台首页显示什么、每页多少篇文章、日期怎么显示，以及订阅源输出全文还是摘要。
+本页对应后台“设置 → 阅读”（`admin/options-reading.php`），只有管理员可以访问。这里决定前台首页显示什么、每页多少篇文章、日期怎么显示，以及订阅源输出全文还是摘要。
 
 ## 字段一览
 
@@ -52,7 +52,7 @@ sidebar_position: 3
 
 ### 直接调用模板文件
 
-主题目录中的 PHP 文件，开头注释里写有 `@package index`，就会出现在“直接调用 [文件] 模板文件”的下拉框中（`index.php` 本身除外）。两个自带主题都没有这样的文件，所以默认看不到这一项。例如在主题中新建 `home.php`：
+主题目录中的 PHP 文件只要在开头注释里写有 `@package index`，就会出现在“直接调用 [文件] 模板文件”的下拉框中（`index.php` 本身除外）。两个自带主题都没有这样的文件，所以默认看不到这一项。例如在主题中新建 `home.php`：
 
 ```php
 <?php
@@ -73,12 +73,12 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 :::
 
 :::caution 模板文件中调用 header() 会报错
-1.3.0 中首页设为模板文件时，Typecho 没有初始化订阅地址，模板（或它引入的 `header.php`）一旦调用 `$this->header()`，首页就会出错（`Typed property Widget\Archive::$archiveFeedUrl must not be accessed before initialization`）。这个问题在 1.3.0 之后的代码中才修复。在模板开头先用 `setArchiveFeedUrl()` 等方法设置好订阅地址即可避免，写法见主题开发中的[首页模板](../../develop/theme/custom-templates.md#首页模板package-index)。
+在 1.3.0 中，首页设为模板文件时，Typecho 不会初始化订阅地址。只要模板（或它引入的 `header.php`）调用了 `$this->header()`，首页就会报错：`Typed property Widget\Archive::$archiveFeedUrl must not be accessed before initialization`。这个问题在 1.3.0 之后的代码中才修复。在模板开头先用 `setArchiveFeedUrl()` 等方法设置好订阅地址即可避免，写法见主题开发中的[首页模板](../../develop/theme/custom-templates.md#首页模板package-index)。
 :::
 
 ### 文章列表页 {#front-archive}
 
-首页改为页面或模板文件后，原来首页上的文章列表就没有地方显示了。勾选“同时将文章列表页路径更改为 [路径]”（`frontArchive`，路径保存在路由表的 `archive` 规则中，默认 `/blog/`），文章列表会出现在这个路径下，分页地址为 `路径/page/N/`。
+首页改为页面或模板文件后，原来首页上的文章列表就没有地方显示了。勾选“同时将文章列表页路径更改为 [路径]”（`frontArchive`，路径保存在路由表的 `archive` 规则中，默认 `/blog/`）后，文章列表会出现在这个路径下，分页地址为 `路径/page/N/`。
 
 例如把路径改为 `/posts/` 并保存后，`/posts/` 显示文章列表，原来的 `/blog/` 返回 404。不勾选时这个路径也返回 404，访客只能通过分类、标签、归档等页面看到文章列表。首页改回“显示最新发布的文章”时，`frontArchive` 自动变为 0。
 

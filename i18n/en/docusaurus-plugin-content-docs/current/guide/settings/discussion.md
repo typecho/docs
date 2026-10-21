@@ -2,12 +2,12 @@
 title: Discussion Settings
 sidebar_position: 2
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # Discussion Settings
 
-"Settings → Comments" (`admin/options-discussion.php`) in the admin panel; only administrators can open it. These settings apply to every post and page on the site; "Allow comments" and "Allow trackbacks" for a single item are set in the editor, and comments are moderated in "Manage → Comments"; see [Comment management and moderation](../content/comments.md).
+This page covers "Settings → Comments" (`admin/options-discussion.php`) in the admin panel, which only administrators can access. These settings apply to every post and page on the site; "Allow comments" and "Allow trackbacks" for a single item are set in the editor, and comments are moderated in "Manage → Comments"; see [Comment management and moderation](../content/comments.md).
 
 ## Comment date format {#date-format}
 
@@ -44,7 +44,7 @@ This group of checkboxes determines how comments are displayed on the front end.
 | Automatically link commenter names to their homepage | `commentsShowUrl` | On | When a commenter has entered a URL, their name links to it |
 | Use the nofollow attribute on commenter homepage links | `commentsUrlNofollow` | On | The links above carry `rel="nofollow"` |
 | Enable Gravatar avatars, showing avatars rated up to [drop-down] | `commentsAvatar`; the drop-down is `commentsAvatarRating` | On, `G` | Commenter avatars are fetched from Gravatar by email address; the rating can be `G` (general), `PG` (13 and over), `R` (adults 17 and over) or `X` (restricted), and avatars rated above the selected rating are not shown |
-| Enable pagination, showing [number] comments per page, with [first page / last page] shown by default | `commentsPageBreak`; the number is `commentsPageSize`, the drop-down is `commentsPageDisplay` | Off, 20, last page | Comment pagination. When `commentsPageDisplay` is `last`, opening a post shows the last page by default; when it is `first`, the first page is shown. First and last follow the comment order set below: with older comments first, the last page holds the newest comments; with newer comments first, choose the first page to show the newest comments by default |
+| Enable pagination, showing [number] comments per page, with [first page / last page] shown by default | `commentsPageBreak`; the number is `commentsPageSize`, the drop-down is `commentsPageDisplay` | Off, 20, last page | Comment pagination. When `commentsPageDisplay` is `last`, opening a post shows the last page by default; when it is `first`, the first page is shown. Which page counts as first or last depends on the comment order set below: with older comments first, the last page holds the newest comments; with newer comments first, choose the first page to show the newest comments by default |
 | Enable comment replies, with [number] as the maximum reply depth per comment | `commentsThreaded`; the number is `commentsMaxNestingLevels` | On, 5 | Nested replies; see below |
 | Show [newer / older] comments first | `commentsOrder` | Older (`ASC`) | `DESC` newer comments first, `ASC` older comments first |
 
@@ -70,7 +70,7 @@ This group determines what conditions a visitor's comment must meet when it is s
 | Limit the interval between comments from the same IP to [number] minutes | `commentsPostIntervalEnable`; the number is `commentsPostInterval` | On, 1 | The minimum interval between two comments from the same IP on the same post; when too fast, the message "Sorry, you are posting too frequently, please try again later." appears. The post's author, editors and administrators are not limited. The UI takes minutes and stores seconds; for example, 2 is stored as `120` |
 
 :::note The comment interval only accepts whole numbers
-The source code keeps one decimal place for the minutes (for example 0.5 minutes = 30 seconds), but the input is a plain number field: entering `0.5` makes the browser report "Please enter a valid value" and the form cannot be submitted. So in the admin panel you can only enter whole minutes.
+The source code keeps the minutes to one decimal place (for example, 0.5 minutes = 30 seconds), but the field is an ordinary number input: if you enter `0.5`, the browser reports "Please enter a valid value" and the form cannot be submitted. In the admin panel, therefore, you can only enter whole minutes.
 :::
 
 For moderation statuses and how to handle them, see [Comment management and moderation](../content/comments.md).

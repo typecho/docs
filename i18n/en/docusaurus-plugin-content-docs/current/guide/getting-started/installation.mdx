@@ -2,7 +2,7 @@
 title: Installation
 sidebar_position: 2
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 import Tabs from '@theme/Tabs';
@@ -16,7 +16,7 @@ This page explains how to download Typecho and install it through the browser. B
 
 The **Downloads** link in the admin panel footer points to the official download page. The package is available from two sources with identical contents:
 
-| Source | Address |
+| Source | URL |
 |---|---|
 | Official download page | [typecho.org/download](https://typecho.org/download) |
 | GitHub Releases | [github.com/typecho/typecho/releases](https://github.com/typecho/typecho/releases), asset name `typecho.zip` |
@@ -77,13 +77,13 @@ CREATE DATABASE typecho OWNER typecho ENCODING 'UTF8';
 
 Open `https://your-domain/install.php` in the browser. The installer has three steps; the `?step=` parameter in the address bar shows the current step:
 
-| Step | Address | Contents |
+| Step | URL | What happens |
 |---|---|---|
 | 1 | `install.php` (or `?step=1`) | Welcome page, license, interface language; click the button to go on to the environment check |
-| 2 | `install.php?step=2` | Choose the database adapter and enter the connection details; writes the configuration file and creates the tables |
+| 2 | `install.php?step=2` | Choose the database adapter and enter the connection details; the installer then writes the configuration file and creates the tables |
 | 3 | `install.php?step=3` | Create the administrator account and write the initial data |
 
-The installer sends you to the step you need: visiting `?step=3` before the tables exist sends you back to `?step=2`; visiting `?step=2` when the tables already exist sends you on to `?step=3`. Once everything is done, visiting `install.php` again redirects straight to the site's home page.
+The installer checks the order of the steps: visiting `?step=3` before the tables exist sends you back to `?step=2`; visiting `?step=2` when the tables already exist sends you on to `?step=3`. Once everything is done, visiting `install.php` again redirects straight to the site's home page.
 
 ### Step 1: Welcome and environment check
 
@@ -98,7 +98,7 @@ First choose an adapter in the **Database adapter** drop-down; the form switches
 | Field | MySQL default | PostgreSQL default | Notes |
 |---|---|---|---|
 | Database prefix | `typecho_` | `typecho_` | The installer accepts 1–16 letters, digits, underscores or hyphens, but on SQLite a prefix containing a hyphen or starting with a digit fails to create the tables; start with a letter or underscore and use only letters, digits and underscores |
-| Database host | `localhost` | `localhost` | MySQL accepts a socket path, see below |
+| Database host | `localhost` | `localhost` | MySQL accepts a socket path (see below) |
 | Database port | `3306` | `5432` | Under **Advanced options** |
 | Database user name | empty (hint `root`) | `postgres` | Required |
 | Database password / database name | — | — | Database name is required; the password may be empty |
@@ -121,7 +121,7 @@ Whenever the host contains a `/`, the installer treats it as a socket path: the 
 
 #### When tables already exist or the configuration file cannot be written
 
-The installer uses a hidden field, `dbNext`, to decide what to do in these situations. When you click <kbd>Confirm, start installation »</kbd>, its value is `none`; after one of the messages below appears, the button you click changes it to another value and resubmits the form:
+The installer uses a hidden field, `dbNext`, to decide how to handle these situations. When you click <kbd>Confirm, start installation »</kbd>, its value is `none`; after one of the messages below appears, the button you click changes it to another value and resubmits the form:
 
 | `dbNext` | When it appears | Effect |
 |---|---|---|
@@ -151,7 +151,7 @@ The installer also creates a default category, a post "Welcome to Typecho", a pa
 
 ## After installation
 
-- **Login address**: the admin panel is at `https://your-domain/admin/`.
+- **Login URL**: the admin panel is at `https://your-domain/admin/`.
 - **URL rewriting**: the installation does not depend on URL rewriting. A 404 when you log in to the admin panel or open a post usually means the web server does not pass requests of the form `/index.php/...` to PHP. For the nginx, Apache and Caddy configurations, see [Web server configuration](../operations/web-server.md).
 - **Configuration file**: `config.inc.php` holds the database connection details; do not make it public.
 

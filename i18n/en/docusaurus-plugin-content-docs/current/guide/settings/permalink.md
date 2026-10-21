@@ -2,12 +2,12 @@
 title: Permalinks
 sidebar_position: 4
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # Permalinks
 
-"Settings → Permalink" (`admin/options-permalink.php`) in the admin panel; only administrators can open it. It determines whether URL rewriting is used, and the URL formats of posts, pages and categories. For the rewrite rules needed on the web server side, see [Web server configuration](../operations/web-server.md).
+This page covers "Settings → Permalink" (`admin/options-permalink.php`) in the admin panel, which only administrators can access. It determines whether URL rewriting is used, and the URL formats of posts, pages and categories. For the rewrite rules needed on the web server side, see [Web server configuration](../operations/web-server.md).
 
 ## Whether to use URL rewriting {#rewrite}
 
@@ -16,7 +16,7 @@ source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
 | Disabled (default) | `0` | `https://example.com/index.php/archives/1/` |
 | Enabled | `1` | `https://example.com/archives/1/` |
 
-Before enabling it, the web server must already be configured with rewrite rules that hand paths that do not exist to `index.php`.
+Before you enable it, the web server must already have rewrite rules that pass non-existent paths to `index.php`.
 
 ### Automatic check when enabling: `checkRewrite()` {#check}
 
@@ -24,7 +24,7 @@ When you select "Enabled" and save, Typecho first runs a check and saves only if
 
 1. If PHP runs as an Apache module (`mod_php`) and the root directory has no `.htaccess` and is writable, it first writes an `.htaccess` automatically. **With other setups such as PHP-FPM it is not written automatically**; you need to create it yourself, with the content shown in [Web server configuration](../operations/web-server.md#htaccess).
 2. The server sends a request **to itself** at `<site URL>/action/ajax` (without `index.php`); a response of `OK` counts as a pass.
-3. If step 1 wrote the file and the check did not pass, it writes the file again in another compatible form and checks again; if it still fails, it deletes the file it wrote.
+3. If step 1 wrote the file and the check did not pass, Typecho rewrites the file in another compatible form and checks again; if the check still fails, Typecho deletes the file it wrote.
 
 There are two outcomes:
 
@@ -33,7 +33,7 @@ There are two outcomes:
 
 Under Apache `mod_php`, when the root directory is not writable, the failure message also adds "We detected that you are using an apache server, but the program cannot create an .htaccess file in the root directory… Please adjust your directory permissions, or create an .htaccess file manually.".
 
-Another common reason for the check failing is that the server cannot reach itself through the site URL (internal network, firewall, port mapping in Docker, the site URL's domain not resolving on the server). In these cases the check fails even if the rules are correct.
+The check also commonly fails when the server cannot reach itself through the site URL, for example because of an internal network, a firewall or Docker port mapping, or because the site URL's domain does not resolve on the server. In these cases the check fails even if the rules are correct.
 
 ### The check fails but you are sure the rules are fine
 
@@ -48,7 +48,7 @@ If you check "enable anyway" when there are no rewrite rules at all, the save su
 
 ### Turning off URL rewriting deletes `.htaccess` {#htaccess-delete}
 
-When you **save this page while URL rewriting is set to "Disabled"** (no matter which field you changed), Typecho deletes the `.htaccess` in the site root directory, including one you created manually: as long as `rewrite` is 0, saving the permalink settings once deletes `.htaccess`. The save that switches from "Enabled" to "Disabled" does not delete it; later saves do.
+When you **save this page while URL rewriting is set to "Disabled"** (no matter which field you changed), Typecho deletes the `.htaccess` in the site root directory, including one you created manually: as long as `rewrite` is 0, saving the permalink settings once deletes `.htaccess`. However, the save that switches from "Enabled" to "Disabled" does not delete it; only later saves do.
 
 If your `.htaccess` also contains other rules (hotlink protection, HTTPS redirects and so on), back it up first, or do not save this page repeatedly before URL rewriting is enabled.
 

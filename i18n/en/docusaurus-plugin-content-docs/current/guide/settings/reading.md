@@ -2,12 +2,12 @@
 title: Reading Settings
 sidebar_position: 3
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # Reading Settings
 
-"Settings → Read" (`admin/options-reading.php`) in the admin panel; only administrators can open it. It determines what the front page shows, how many posts appear per page, how dates are displayed, and whether feeds output full text or summaries.
+This page covers "Settings → Read" (`admin/options-reading.php`) in the admin panel, which only administrators can access. It determines what the front page shows, how many posts appear per page, how dates are displayed, and whether feeds output full text or summaries.
 
 ## Fields at a glance
 
@@ -54,7 +54,7 @@ For example, after you select the "About" page, `frontPage` is saved as `page:2`
 
 ### Calling a template file directly
 
-A PHP file in the theme directory whose opening comment contains `@package index` appears in the drop-down of "Call the [file] template file directly" (except `index.php` itself). Neither bundled theme has such a file, so this option is not visible by default. For example, create `home.php` in the theme:
+Any PHP file in the theme directory other than `index.php` appears in the "Call the [file] template file directly" drop-down if its opening comment contains `@package index`. Neither bundled theme has such a file, so this option is not visible by default. For example, create `home.php` in the theme:
 
 ```php
 <?php
@@ -75,12 +75,12 @@ In 1.3.0, once the front page is set to a template file, visiting the front page
 :::
 
 :::caution Calling header() in the template file fails
-In 1.3.0, when the front page is set to a template file, Typecho does not initialize the feed URLs, so as soon as the template (or the `header.php` it includes) calls `$this->header()`, the front page fails (`Typed property Widget\Archive::$archiveFeedUrl must not be accessed before initialization`). This is fixed only in code after 1.3.0. You can avoid it by setting the feed URLs first with methods such as `setArchiveFeedUrl()` at the top of the template; for how, see [Front page template](../../develop/theme/custom-templates.md#home-page-template) in theme development.
+In 1.3.0, when the front page is set to a template file, Typecho does not initialize the feed URLs. As soon as the template (or the `header.php` it includes) calls `$this->header()`, the front page fails with `Typed property Widget\Archive::$archiveFeedUrl must not be accessed before initialization`. This is fixed only in code after 1.3.0. You can avoid it by setting the feed URLs first with methods such as `setArchiveFeedUrl()` at the top of the template; for how, see [Front page template](../../develop/theme/custom-templates.md#home-page-template) in theme development.
 :::
 
 ### Post list page {#front-archive}
 
-After the front page is changed to a page or a template file, the post list that used to be on the front page has nowhere to be shown. Check "Also change the post list path to [path]" (`frontArchive`; the path is stored in the `archive` rule of the routing table, default `/blog/`), and the post list appears under that path, with pagination URLs `<path>/page/N/`.
+After the front page is changed to a page or a template file, the post list that used to be on the front page has nowhere to be shown. If you check "Also change the post list path to [path]" (`frontArchive`; the path is stored in the `archive` rule of the routing table, default `/blog/`), the post list appears under that path, with pagination URLs `<path>/page/N/`.
 
 For example, after you change the path to `/posts/` and save, `/posts/` shows the post list and the old `/blog/` returns 404. When it is unchecked, this path also returns 404, and visitors can only see post lists through category, tag, archive and similar pages. When the front page is changed back to "Show the latest posts", `frontArchive` automatically becomes 0.
 

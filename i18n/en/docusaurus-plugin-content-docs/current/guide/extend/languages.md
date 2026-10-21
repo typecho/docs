@@ -2,7 +2,7 @@
 title: Interface Language
 sidebar_position: 3
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # Interface Language
@@ -31,7 +31,7 @@ By default they are read from `<site directory>/usr/langs`. To put them somewher
 define('__TYPECHO_LANG_DIR__', '/data/typecho-langs');
 ```
 
-Both the language list in the admin panel and the actual loading read from this directory. For a description of the constant, see [Configuration file](../operations/config-file.md).
+Typecho uses this directory both for the language list in the admin panel and for loading the language pack. For a description of the constant, see [Configuration file](../operations/config-file.md).
 
 ### When a language pack is missing
 
@@ -47,7 +47,7 @@ Both the language list in the admin panel and the actual loading read from this 
 - Edit user → User group: the description "For the full permission table, see here."
 - Editor → Custom fields: the description "Custom fields extend what your templates can do; for usage see the help documentation"
 
-This needs the translations to be updated in the language pack repository; site owners cannot fix it through settings.
+Fixing this requires updating the translations in the language pack repository; site owners cannot fix it through the settings.
 
 ## Translators: contributing translations {#translate}
 

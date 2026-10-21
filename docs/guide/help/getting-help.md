@@ -11,7 +11,7 @@ sidebar_position: 5
 |---|---|---|
 | 支持论坛 | [forum.typecho.org](https://forum.typecho.org) | 使用问题、主题和插件的用法、经验交流。后台页脚“支持论坛” |
 | GitHub Issues | [github.com/typecho/typecho/issues](https://github.com/typecho/typecho/issues) | 程序本身的 Bug 和功能建议。后台页脚“报告错误” |
-| Telegram | [t.me/typechodev](https://t.me/typechodev) | Typecho 的 Telegram 频道，列在 Typecho 仓库 `CONTRIBUTING.md` 的 Community 一节，适合关注开发动态、交流 |
+| Telegram | [t.me/typechodev](https://t.me/typechodev) | 关注开发动态、与开发者交流。这是 Typecho 的 Telegram 频道，列在 Typecho 仓库 `CONTRIBUTING.md` 的 Community 一节 |
 
 :::tip 选对渠道
 - “怎么做”“为什么我的站点这样”之类的问题，请先去论坛。
@@ -71,8 +71,8 @@ sidebar_position: 5
 描述：升级到 1.3.0 后，点击“完成升级”页面一直加载，最终 504。
 
 复现方式：
-1. 从 1.2.1 替换 admin/ var/ install/ index.php install.php
-2. 管理员登录后台，被带到升级页
+1. 在 1.2.1 站点上用新版文件替换 admin/ var/ install/ index.php install.php
+2. 管理员登录后台，自动跳转到升级页
 3. 点击“完成升级”，页面持续加载约 60 秒后返回 504
 
 期望的结果：显示“升级已经完成”
