@@ -60,7 +60,7 @@ define('__TYPECHO_SECURE__', true);
 | 常量 | 效果 |
 |---|---|
 | `__TYPECHO_SITE_URL__` | 用常量的值代替数据库中的站点地址。后台“基本设置”里的“站点地址”一项会隐藏，保存设置时也不再修改它 |
-| `__TYPECHO_DYNAMIC_SITE_URL__` | 为真时，站点地址取当前请求的根地址，即用什么域名访问就用什么域名。同时定义了 `__TYPECHO_SITE_URL__` 时以后者为准 |
+| `__TYPECHO_DYNAMIC_SITE_URL__` | 为真时，站点地址取当前请求的根地址，即用什么域名访问就用什么域名。同时定义了 `__TYPECHO_SITE_URL__` 时以 `__TYPECHO_SITE_URL__` 为准 |
 
 ```php
 // 固定站点地址，例如多台服务器共用一个数据库、或想防止在后台被改错
