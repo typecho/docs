@@ -7,7 +7,7 @@ source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 
 # Breadcrumb Navigation
 
-**Problem**: show location navigation such as "Home » Tech » Post title" at the top of the page.
+**Problem**: show a breadcrumb trail such as "Home » Tech » Post title" at the top of the page.
 
 **Solution**: add the following after `</header>` in `header.php` (or in any template):
 

@@ -2,7 +2,7 @@
 title: Database Operations
 sidebar_position: 7
 translation: machine
-source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Database Operations
@@ -96,7 +96,7 @@ The type of the fetched values depends on the database driver: with PDO drivers,
 | `from($table)` | Table name |
 | `where($condition, ...$values)` | Condition; `?` is a placeholder and the values are escaped. Multiple calls are joined with `AND` |
 | `orWhere($condition, ...$values)` | Same as above, joined with `OR` |
-| `join($table, $condition, $op = Db::INNER_JOIN)` | Join; `$op` can also be `Db::LEFT_JOIN` or `Db::RIGHT_JOIN` (supported by SQLite from 3.39). `Db::OUTER_JOIN` emits a bare `OUTER JOIN`, which none of the three databases accepts, so do not use it |
+| `join($table, $condition, $op = Db::INNER_JOIN)` | Join; `$op` can also be `Db::LEFT_JOIN` or `Db::RIGHT_JOIN` (supported by SQLite from 3.39). Do not use `Db::OUTER_JOIN`: it emits a bare `OUTER JOIN`, which none of the three databases accepts |
 | `order($field, $sort = Db::SORT_ASC)` | Sort; `Db::SORT_DESC` for descending. Multiple calls are appended in order |
 | `group($field)`, `having($condition, ...$values)` | Grouping |
 | `limit($n)`, `offset($n)` | How many rows to take, how many to skip |
@@ -191,12 +191,12 @@ public static function install()
 - **Auto-increment primary key**: MySQL uses `AUTO_INCREMENT`, PostgreSQL uses `SERIAL PRIMARY KEY`, SQLite uses `INTEGER NOT NULL PRIMARY KEY`. On PostgreSQL, Typecho looks up the primary key column on insert and fetches the new value with `RETURNING`, so the table **must have a primary key** for `insert` to return the new row's ID;
 - **Quotes**: MySQL uses backticks; PostgreSQL and SQLite use double quotes. This only matters when creating tables; when you later read and write with the query builder, it quotes column names automatically for the current database;
 - **One statement at a time**: creating an index needs a separate `query()` call;
-- **`IF NOT EXISTS`**: `install()` runs again when the plugin is disabled and re-enabled; with this clause it does not fail;
+- **`IF NOT EXISTS`**: `install()` runs again when the plugin is deactivated and reactivated; with this clause it does not fail;
 - **Time**: Typecho's own tables store times as Unix timestamp integers (`created`, `modified`). Plugins can do the same; when displaying, convert to the site's time zone with `new \Typecho\Date($timestamp)`.
 
 ### Dropping tables
 
-Typecho does not drop the tables a plugin created when the plugin is disabled. Whether to drop them should be the user's decision: if you drop the table directly in `deactivate()`, users who disable the plugin while troubleshooting lose all their data. A common approach is to offer a "delete data when disabled" option in the plugin settings:
+Typecho does not drop the tables a plugin created when the plugin is deactivated. Whether to drop them should be the user's decision: if you drop the table directly in `deactivate()`, users who deactivate the plugin while troubleshooting lose all their data. A common approach is to offer a "delete data when disabled" option in the plugin settings:
 
 ```php
 public static function deactivate()

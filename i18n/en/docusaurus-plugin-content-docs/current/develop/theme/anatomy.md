@@ -2,7 +2,7 @@
 title: Theme Structure and Header Information
 sidebar_position: 3
 translation: machine
-source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Theme Structure and Header Information
@@ -11,7 +11,7 @@ source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 
 A theme is a directory under `usr/themes/`. **The directory name is the theme's identifier**: the current theme stored in the site settings (the `theme` option) is the directory name, and theme options are saved in an option named `theme:<directory>` (`theme:` followed by the directory name). Do not rename the directory after release, or the theme options site owners have already saved will no longer match.
 
-The only required file is `index.php`; the admin panel recognizes a theme by "the directory contains `index.php`". Common files:
+The only required file is `index.php`; the admin panel recognizes any directory that contains `index.php` as a theme. Common files:
 
 | File | Purpose |
 |---|---|

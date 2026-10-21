@@ -2,7 +2,7 @@
 title: Custom Fields in Templates
 sidebar_position: 9
 translation: machine
-source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Custom Fields in Templates
@@ -29,7 +29,7 @@ On post and page views, or inside a post list loop, use `$this->fields->fieldNam
 - This works the same inside the loops of other widgets, for example `$posts->fields->cover`.
 
 :::caution "JSON structure" in the editor panel
-In 1.3.0, for a field that the author adds manually in the editor panel with the type "JSON structure", the template reads the raw text string rather than an array (see the [note](../../guide/content/custom-fields.md#types) on the editor-side page). If your theme depends on structured data, either have authors enter the JSON with the "String" type and `json_decode()` it yourself in the template, or have the theme predefine multi-value fields such as checkboxes as described below.
+In 1.3.0, for a field that the author adds manually in the editor panel with the type "JSON structure", the template reads the raw text string rather than an array (see the [note](../../guide/content/custom-fields.md#types) on the editor-side page). If your theme depends on structured data, either have authors enter the JSON with the "String" type and decode it with `json_decode()` in the template, or have the theme predefine multi-value fields such as checkboxes as described below.
 :::
 
 ## Predefined fields

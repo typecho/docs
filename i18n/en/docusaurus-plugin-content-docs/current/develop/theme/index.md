@@ -2,12 +2,12 @@
 title: Theme Development Overview
 sidebar_position: 1
 translation: machine
-source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Theme Development Overview
 
-A theme determines how the front end of a Typecho site looks. A theme is a directory under `usr/themes/` that contains a number of PHP template files plus static files such as stylesheets, scripts and images. Site owners switch themes in the admin panel under "Dashboard → Appearance"; for how to do that, see [Installing and configuring themes](../../guide/extend/themes.md) in the Guide.
+A theme determines how the front end of a Typecho site looks. A theme is a directory under `usr/themes/` that contains a number of PHP template files plus static files such as stylesheets, scripts and images. Site owners switch themes in the admin panel under "Console → Appearance"; for how to do that, see [Installing and configuring themes](../../guide/extend/themes.md) in the Guide.
 
 ## `$this` in templates
 
@@ -19,7 +19,7 @@ When a visitor opens any front-end page, Typecho first works out from the URL wh
 <?php endwhile; ?>
 ```
 
-- On list pages (home page, category, tag, search, archive), `$this` holds the posts of the current page; take them out one by one with `$this->next()`;
+- On list pages (home page, category, tag, search, archive), `$this` holds the posts on the current page; iterate through them one by one with `$this->next()`;
 - On post and page views, `$this` is that single item; call `$this->title()` and `$this->content()` directly;
 - `$this->options` is the site settings (including the settings of the current theme), and `$this->user` is the currently logged-in user;
 - Most output methods `echo` directly, for example `$this->title()`; the property without parentheses returns the value, for example `$this->title`, which you can use in conditions and string concatenation.

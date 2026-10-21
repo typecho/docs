@@ -2,15 +2,15 @@
 title: Plugin Settings
 sidebar_position: 5
 translation: machine
-source_commit: fc55a1004f355202effc7d999ebe984ff3ec2cf2
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Plugin Settings
 
 A plugin can have two kinds of settings:
 
-- **Plugin settings**: one copy for the whole site, changed by an administrator under "Dashboard → Plugins → Settings", defined by `config()`;
-- **Personal settings**: one copy per user, shown at the bottom of the "Dashboard → Profile" page, defined by `personalConfig()`.
+- **Plugin settings**: one copy for the whole site, changed by an administrator under "Console → Plugins → Settings", defined by `config()`;
+- **Personal settings**: one copy per user, shown at the bottom of the "Console → Profile" page, defined by `personalConfig()`.
 
 Both are described with form elements; Typecho displays the form, validates the input and saves it.
 
@@ -34,7 +34,7 @@ public static function config(Form $form)
 }
 ```
 
-- The third argument is the default value. **When the plugin is enabled**, Typecho saves the default values of all settings, so your plugin code can always read every setting;
+- The third argument is the default value. **When the plugin is activated**, Typecho saves the default values of all settings, so your plugin code can always read every setting;
 - Validation added with `addRule()` runs on save. If it fails, the form is not saved and the message is shown below the field;
 - For the available elements and validation rules, see [Form elements](../reference/form-elements.md).
 
@@ -51,7 +51,7 @@ $all = $config->toArray(); // array of all settings
 
 `plugin()` returns a `Typecho\Config` object. A setting that does not exist reads as `null`. The value of a Checkbox is an array; all other elements give strings.
 
-When the plugin has never saved any settings (no elements are added in `config()`, or the plugin is not enabled), `plugin()` throws `Typecho\Plugin\Exception` ("the configuration of plugin Greeting was not found"). Catch the exception wherever this can happen.
+When the plugin has never saved any settings (no elements are added in `config()`, or the plugin is not activated), `plugin()` throws `Typecho\Plugin\Exception` ("the configuration of plugin Greeting was not found"). Catch the exception wherever this can happen.
 
 ## Where settings are stored
 
@@ -63,9 +63,9 @@ Settings are stored as JSON in the `options` table:
 | Default values of personal settings | `_plugin:<plugin name>` | `0` |
 | Personal settings saved by a user | `_plugin:<plugin name>` | User ID |
 
-For example, after you enable HelloWorld, the `options` table has a new row `plugin:HelloWorld` with the value `{"word":"Hello World"}`.
+For example, after you activate HelloWorld, the `options` table has a new row `plugin:HelloWorld` with the value `{"word":"Hello World"}`.
 
-**Disabling the plugin deletes these rows** (including every user's personal settings). When you enable it again, the settings are reset to their defaults.
+**Deactivating the plugin deletes these rows** (including every user's personal settings). When you activate it again, the settings are reset to their defaults.
 
 ## Checking before save: configCheck()
 
@@ -86,7 +86,7 @@ public static function configCheck(array $settings)
 
 When a plugin class defines a static method `configHandle(array $settings, bool $isInit)`, Typecho no longer saves the plugin settings automatically. Instead, it passes the form values to this method:
 
-- It is called once when the plugin is enabled, with `$isInit` set to `true` and `$settings` containing the default values;
+- It is called once when the plugin is activated, with `$isInit` set to `true` and `$settings` containing the default values;
 - It is called when an administrator saves the settings, with `$isInit` set to `false` and `$settings` containing the submitted values (already validated).
 
 This is useful for transforming data before saving, or for storing the settings somewhere else. If you still want to save them to `plugin:<plugin name>` afterwards, call `\Utils\Helper::configPlugin()`:
@@ -123,7 +123,7 @@ To read the personal settings of the currently logged-in user:
 $nickname = \Widget\Options::alloc()->personalPlugin('Greeting')->nickname;
 ```
 
-If the user has saved their own settings, you get their values; otherwise you get the defaults saved when the plugin was enabled. Visitors who are not logged in also get the defaults.
+If the user has saved their own settings, you get their values; otherwise you get the defaults saved when the plugin was activated. Visitors who are not logged in also get the defaults.
 
 As with `plugin()`, `personalPlugin()` throws `Typecho\Plugin\Exception` when there are no personal settings records at all. A typical case: the plugin adds `personalConfig()` only in a new version, and the user overwrites the files without re-enabling the plugin. When you read the settings in a hook that runs on every admin page (such as `navBar`), you must catch this exception; otherwise every admin page returns a 500 error, including the page where you would disable the plugin.
 
@@ -138,7 +138,7 @@ In 1.3.0, opening the plugin settings page fills every saved setting back into t
 `Helper::configPlugin()` only merges and never deletes existing keys, so you have two options when removing a setting:
 
 - Keep the setting but switch it to a `Hidden` element, so it is no longer shown on the page (recommended);
-- Tell users in the upgrade notes to disable and then re-enable the plugin; disabling clears the saved settings.
+- Tell users in the upgrade notes to deactivate and then reactivate the plugin; deactivating clears the saved settings.
 
 ```php
 $form->addInput(new \Typecho\Widget\Helper\Form\Element\Hidden('oldKey'));

@@ -2,7 +2,7 @@
 title: Your First Plugin
 sidebar_position: 2
 translation: machine
-source_commit: fc55a1004f355202effc7d999ebe984ff3ec2cf2
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Your First Plugin
@@ -125,7 +125,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) {
  */
 ```
 
-All the information listed on the "Dashboard → Plugins" admin page comes from the **first** doc comment in the file:
+All the information listed on the "Console → Plugins" admin page comes from the **first** doc comment in the file:
 
 | What you write | Shown as |
 |---|---|
@@ -288,13 +288,13 @@ Compared with HelloWorld, there are three changes:
 
 ### 3. Activate and check
 
-1. Go to "Dashboard → Plugins" in the admin panel. `Greeting` appears in the list of deactivated plugins, showing the description, version and author from the header comment. Click "Activate".
+1. Go to "Console → Plugins" in the admin panel. `Greeting` appears in the list of deactivated plugins, showing the description, version and author from the header comment. Click "Activate".
 2. The page shows the notice "Plugin activated", and `Greeting` moves to the list of activated plugins, followed by two links, "Settings" and "Deactivate".
 3. A green "Hello, Typecho" appears on the right side of the admin top navigation bar.
 4. Open the site's home page. The same text appears at the bottom of the page.
 5. Click "Settings", change the greeting to some other text and save. The page shows the notice "Plugin settings saved". Both the navigation bar and the front-end footer now show the new text.
 
-If the navigation bar does not change after activation, check in order: whether the namespace is `TypechoPlugin\Greeting`, whether the directory name is `Greeting`, and whether `implements` is followed by `PluginInterface`. After changing `activate()`, deactivate and reactivate the plugin.
+If the navigation bar does not change after activation, check in order: whether the namespace is `TypechoPlugin\Greeting`, whether the directory name is `Greeting`, and whether `implements` is followed by `PluginInterface`. Also remember that after any change to `activate()`, you must deactivate and reactivate the plugin.
 
 ## Next steps
 

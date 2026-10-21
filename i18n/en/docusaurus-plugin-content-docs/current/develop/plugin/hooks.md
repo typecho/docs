@@ -2,7 +2,7 @@
 title: Using Hooks
 sidebar_position: 4
 translation: machine
-source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Using Hooks
@@ -13,7 +13,7 @@ A hook is identified by two parts: the **handle** (the file or class where the h
 
 ## Registering callbacks
 
-In the plugin's `activate()`, use `Typecho\Plugin::factory($handle)` (where `$handle` is the handle) to get the handle object, then assign the callback to the hook name:
+In the plugin's `activate()`, call `Typecho\Plugin::factory($handle)` to get the handle object, then assign the callback to the hook name:
 
 ```php
 public static function activate()
@@ -111,7 +111,7 @@ public static function contentEx(string $content, \Widget\Base\Contents $widget)
 
 If a callback forgets to `return`, the filter result becomes `null` and the body disappears from the page.
 
-The parameters a callback actually receives are "the current value, the remaining parameters, the current value". You will rarely need the extra last parameter, so you can leave it out of the method declaration.
+A callback actually receives the current value, then the remaining parameters, and finally the current value again. You will rarely need that repeated last parameter, so you can leave it out of the method declaration.
 
 ### trigger: taking over
 
@@ -172,7 +172,7 @@ The handle of these two kinds of hooks is the class the object actually belongs 
 
 ### Widget_Service: async tasks
 
-`\Utils\Helper::requestService('taskName', ...$params)` (task name, parameters) sends a request to the site itself after the current request ends, and in that request triggers the hook on `Widget_Service` named after the task. See [HTTP requests and async tasks](./http-async.md).
+After the current request ends, `\Utils\Helper::requestService('taskName', ...$params)` sends a request to the site itself, and that request triggers the `Widget_Service` hook named after the task. See [HTTP requests and async tasks](./http-async.md).
 
 ## Complete example: reading time
 
@@ -266,7 +266,7 @@ After activation, "… characters, about … minutes to read" appears before the
 
 The text inserted into the body also appears in the post page's `description` meta tag, because it is taken from the filtered body. Posts in feeds do not carry this text: when a feed fetches posts, `is('single')` is false and `prepend()` inserts nothing. A content filter without this check affects feeds as well; see [Common plugin patterns](./patterns.md#content-filter).
 
-`prepend()` detects post pages with `is('single')` plus a `type` check rather than `is('post')`: the body of a post page is already output and cached when Typecho generates the page description, and at that point the page type has not yet been set to `post`, so `is('post')` returns `false` while `is('single')` is already `true`.
+`prepend()` detects post pages with `is('single')` plus a `type` check rather than `is('post')`. Typecho already outputs and caches the body of a post page while it generates the page description. At that point the page type has not yet been set to `post`: `is('post')` returns `false`, while `is('single')` is already `true`.
 
 `count()` reads `$widget->text` (the raw, unprocessed text) rather than `$widget->content`: `content` is exactly the value `contentEx` is producing, so reading it inside a `contentEx` callback gives an empty value (PHP does not call `__get()` recursively for the same property).
 

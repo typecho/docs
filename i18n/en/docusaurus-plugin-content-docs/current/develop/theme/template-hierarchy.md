@@ -2,7 +2,7 @@
 title: Template Hierarchy
 sidebar_position: 4
 translation: machine
-source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Template Hierarchy
@@ -42,7 +42,7 @@ Note that step 2 uses a **subdirectory**: `category/tech.php` lives in the `cate
 
 - The slug of a post is the **post ID**, not its URL slug, so a template for one particular post must be named `post/<post ID>.php`;
 - The slug of a date archive is its granularity; `date/year.php`, `date/month.php` and `date/day.php` correspond to yearly, monthly and daily archives;
-- When a page is used as the home page, the home page looks up templates as that page (`page/<slug>.php`, `page.php` ...);
+- When a page is used as the home page, the home page uses that page's templates (`page/<slug>.php`, `page.php` ...);
 - The post list page exists only when the home page is set to a page or a template file and the [post list page](../../guide/settings/reading.md#front-archive) is enabled. It does not use `archive.php`; without `front.php` it uses `index.php` directly.
 
 ## Example
@@ -77,11 +77,11 @@ Shared parts such as `header.php`, `footer.php` and `comments.php` take no part 
 <?php $this->need('header.php'); ?>
 ```
 
-`need()` `require`s the file inside a method of `Widget\Archive`, so `$this` is unchanged in the included file; but **variables newly defined in the included file are only valid in that file**, and the outer template cannot read them. For data that has to be shared between several files, write a function in `functions.php`, or output it together in the included file.
+`need()` `require`s the file inside a method of `Widget\Archive`, so `$this` is unchanged in the included file; but **variables newly defined in the included file are only valid in that file**, and the outer template cannot read them. To share data between several files, write a function in `functions.php`, or output the data directly in the included file.
 
 ## Using is() instead of splitting files
 
-When different pages differ only slightly, you do not need to split them into several files; check inside the same template:
+When pages differ only slightly, you do not need to split them into several files; check the page type inside the same template:
 
 ```php
 <?php if ($this->is('category', 'tech')): ?>

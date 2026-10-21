@@ -2,7 +2,7 @@
 title: Common Plugin Patterns
 sidebar_position: 9
 translation: machine
-source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Common Plugin Patterns
@@ -168,7 +168,7 @@ Trackbacks have a corresponding `trackback` filter used the same way; pingbacks 
 
 ## Attachment storage: the handler hooks of Widget_Upload {#external-storage}
 
-`Widget\Upload` has five trigger hooks. Once registered, the plugin takes over saving, replacing, deleting and addressing attachments:
+`Widget\Upload` has five trigger hooks. Once registered, the plugin takes over saving, replacing and deleting attachments and generating their URLs:
 
 | Hook | Arguments | Callback returns |
 |---|---|---|
@@ -190,7 +190,7 @@ Trackbacks have a corresponding `trackback` filter used the same way; pingbacks 
 ]
 ```
 
-The plugin below saves attachments to a configurable directory and serves them from a configurable URL, for example a mounted network drive paired with a separate static file domain. Replace `save()`, `deleteHandle()` and `attachmentHandle()` with an object storage SDK's upload, delete and URL generation calls, rewrite `info()`, and you have an object storage plugin. `info()` reads the size and MIME type from the local destination file, which does not exist when the file is only uploaded to object storage, so get those two values from the temporary file (`$file['tmp_name']`) or the file content sent over XML-RPC before uploading, and return them together with the path in object storage:
+The plugin below saves attachments to a configurable directory and serves them from a configurable URL, for example a mounted network drive paired with a separate static file domain. Replace the file operations in `save()`, `deleteHandle()` and `attachmentHandle()` with an object storage SDK's upload, delete and URL generation calls, rewrite `info()`, and you have an object storage plugin. In the example, `info()` reads the size and MIME type from the local destination file; when the file is only uploaded to object storage, that local file does not exist. So before uploading, get those two values from the temporary file (`$file['tmp_name']`) or the file content sent over XML-RPC, and return them together with the path in object storage:
 
 ```php title="usr/plugins/LocalBucket/Plugin.php"
 <?php
@@ -333,7 +333,7 @@ Key points:
 - You must implement `deleteHandle`; otherwise deleting an attachment in the admin only deletes the record, and the file stays in storage.
 - When replacing an attachment, Typecho's built-in logic requires the old and new files to have the same extension; the example keeps this rule.
 - `attachmentHandle` is called every time an attachment URL is read, so do not make network requests in it.
-- Once activated, the URL, replacement and deletion of **every** attachment are handled as "access URL / storage directory + `path`", including attachments uploaded before activation, whose `path` is `/usr/uploads/...`. Before activating on a site that already has attachments, copy the site's `usr/uploads` directory as is into the storage directory (so it becomes `<storage directory>/usr/uploads/...`); otherwise the URLs of those attachments do not work, and deleting an attachment only deletes the record while the original file stays. Likewise, when you later change the storage directory or the access URL, move the existing files to the new location yourself;
+- Once activated, the URL, replacement and deletion of **every** attachment are handled as "access URL / storage directory + `path`", and this includes attachments uploaded before activation (whose `path` is `/usr/uploads/...`). Before activating on a site that already has attachments, copy the site's `usr/uploads` directory as is into the storage directory (so it becomes `<storage directory>/usr/uploads/...`). Otherwise those attachments cannot be accessed, and deleting an attachment only deletes the record while the original file stays. Likewise, when you later change the storage directory or the access URL, move the existing files to the new location yourself;
 - The `path` in the file info is decided by the plugin and only that plugin understands it. **After the plugin is deactivated**, attachments it saved still get URLs the default Typecho way (site URL + `path`), which usually do not work. Warn users about this in the plugin description.
 
 `Widget\Upload` also has a few notification hooks: `beforeUpload` / `beforeModify` receive the file info array before it is written to the database, and `upload` / `modify` receive the `Widget\Upload` object after it is written.
@@ -454,7 +454,7 @@ Login-related hooks live on two classes:
 | `Widget_User` | `logout` | Trigger; takes over logout: once registered, Typecho no longer clears the login cookie |
 | `Widget_Logout` | `logout` | After the user clicks "Logout" and the login state has been cleared |
 
-To record logins through the login form, XML-RPC and other routes, use `loginSucceed` / `loginFail` on `Widget_User`. They receive the `Widget\User` object, the login name, the **plaintext password**, whether the login is temporary (every XML-RPC request is a temporary login) and the expiry. Do not write the password to logs or send it anywhere.
+To record logins made through the login form, XML-RPC and other channels, use `loginSucceed` / `loginFail` on `Widget_User`. They receive the `Widget\User` object, the login name, the **plaintext password**, whether the login is temporary (every XML-RPC request is a temporary login) and the expiry. Do not write the password to logs or send it anywhere.
 
 These two hooks fire only after an account has been found and its password checked: when the username (or email) does not exist, the login fails immediately without triggering `loginFail`; when a plugin has registered the `login` hook to take over authentication, neither fires. To record every failure on the admin login form (including nonexistent usernames), also register `loginFailure` on `Widget_Login`; it receives four arguments: the `Widget\User` object, the login name, the plaintext password and whether "Remember me" was checked. On a wrong password, both it and `loginFail` fire.
 

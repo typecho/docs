@@ -2,7 +2,7 @@
 title: Comment Templates
 sidebar_position: 10
 translation: machine
-source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Comment Templates
@@ -116,7 +116,7 @@ When "Reply" is clicked, the script output by `$this->header()` moves the elemen
 
 - `header.php` must call `$this->header()`, and must not suppress `commentReply` (see [Header output: header()](./header.md));
 - The `id` of the form's wrapper element must be `$this->respondId()`;
-- When JavaScript is disabled in the browser, the "Reply" link opens the page with `?replyTo=<comment ID>`, and `$this->commentUrl()` then carries the parent comment parameter, so the reply target is not lost. However, when the site owner has turned on "Enable anti-spam protection" (on by default after installation), the form lacks the verification field that only the script can add and the submission is sent back, so without JavaScript comments still cannot be submitted; see "The comment form" below.
+- When JavaScript is disabled in the browser, the "Reply" link opens the page with `?replyTo=<comment ID>`, and `$this->commentUrl()` then carries the parent comment parameter, so the reply target is not lost. However, when "Enable anti-spam protection" is turned on (the default after installation), the form also needs a verification field that only the script can add. Without JavaScript that field is missing and the submission is rejected, so comments still cannot be posted. See "The comment form" below.
 
 ## The comment form
 
@@ -131,7 +131,7 @@ When "Reply" is clicked, the script output by `$this->header()` moves the elemen
 
 `Widget\Archive` has a `pings()` method that is meant to return a list containing only trackbacks and pingbacks (Trackback, Pingback). But **in 1.3.0, calling `$this->pings()` causes a fatal error**: the return type of `___parentContent()` in the `Widget\Comments\Ping` class is incompatible with the parent class, so PHP fails as soon as it loads the class, and the page stops at the point of the call. So do not use `pings()` or `listPings()`; the `singlePing` callback in `functions.php` has no effect either.
 
-To show trackbacks separately from comments, filter `comments()` by `type`: skip trackbacks at the start of the `threadedComments` callback, then loop once more on its own to output the trackbacks.
+To show trackbacks separately from comments, filter `comments()` by `type`: skip trackbacks at the start of the `threadedComments` callback, then output the trackbacks in a separate loop.
 
 ```php title="usr/themes/starter/functions.php"
 function threadedComments($comments, $options)

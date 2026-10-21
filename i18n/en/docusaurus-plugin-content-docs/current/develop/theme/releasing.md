@@ -2,12 +2,12 @@
 title: Releasing a Theme
 sidebar_position: 13
 translation: machine
-source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Releasing a Theme
 
-Typecho has no maintained official theme directory; authors publish their themes themselves. The common approach is to put the theme on GitHub: users download an archive from the repository or a Release and upload it to `usr/themes/`.
+Typecho currently has no officially maintained theme directory; authors publish their themes themselves. The common approach is to put the theme on GitHub: users download an archive from the repository or a Release and upload it to `usr/themes/`.
 
 ## Checks before release
 
@@ -17,7 +17,7 @@ Typecho has no maintained official theme directory; authors publish their themes
 - **Every PHP file starts with** `if (!defined('__TYPECHO_ROOT_DIR__')) exit;`.
 - **Check with debug mode on**: with `__TYPECHO_DEBUG__`, visit the home page, a post, a page, a category, a tag, search and 404 one by one and make sure there are no warnings; try both PHP 7.4 and a recent PHP 8.
 - **Sensible defaults for theme options**: right after users activate the theme, before they have opened "Theme settings", the theme should display correctly.
-- **Do not depend on things the site owner must create by hand**: when you use a dedicated template tied to a category slug or page slug (such as `category/news.php`), document it in the README.
+- **Do not depend on anything the site owner must create manually**: when you use a dedicated template tied to a category slug or page slug (such as `category/news.php`), document it in the README.
 
 ## Packaging
 
@@ -41,7 +41,7 @@ Do not put development files (SCSS sources, `node_modules`, test scripts and so 
 
 ## Publishing on GitHub
 
-1. In the repository README, state: the theme name, screenshots, the compatible Typecho and PHP versions, installation (upload to `usr/themes/`, activate under "Dashboard → Appearance"), a description of the theme options, and the license;
+1. In the repository README, state: the theme name, screenshots, the compatible Typecho and PHP versions, installation (upload to `usr/themes/`, activate under "Console → Appearance"), a description of the theme options, and the license;
 2. Add the topic `typecho-theme` to the repository. It is the most widely used topic for Typecho themes on GitHub, and users search by it as described in [Finding plugins and themes](../../guide/extend/finding-plugins.md);
 3. Create a Release for each version, attach the archive packaged as described above, and list the changes in the notes;
 4. Post an introduction of the theme on the [Typecho forum](https://forum.typecho.org/), with the repository URL and screenshots.

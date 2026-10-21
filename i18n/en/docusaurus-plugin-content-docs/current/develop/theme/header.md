@@ -29,7 +29,7 @@ source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
 | `pingback` | `<link rel="pingback">` | "XMLRPC interface" is set to "On" |
 | `xmlrpc` | `<link rel="EditURI">` (RSD) | "XMLRPC interface" is not set to "Off" |
 | `wlw` | `<link rel="wlwmanifest">` | As above |
-| `rss2` / `rss1` / `atom` | Three `<link rel="alternate">` feeds | When `is('single')` is true, the content must also "allow appearing in feeds", except a page used as the home page |
+| `rss2` / `rss1` / `atom` | Three `<link rel="alternate">` feeds | When `is('single')` is true, the item must also have "Allow in feeds" checked, except a page used as the home page |
 | `social` | `og:type`, `og:url`, `og:title`, `og:description`, `og:site_name` and `twitter:*` tags | |
 | `commentReply` | The comment reply script (`window.TypechoComment`) | `is('single')` is true (posts, pages, attachments), with "Enable comment replies" turned on |
 | `antiSpam` | The anti-spam script, which adds a verification field to the comment form | `is('single')` is true (posts, pages, attachments), with "Enable anti-spam protection" turned on |
