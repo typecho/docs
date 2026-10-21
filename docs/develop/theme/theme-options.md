@@ -108,7 +108,7 @@ theme:starter  {"logoUrl":"https://example.com/logo.png","colorScheme":"auto","s
 <?php endif; ?>
 ```
 
-- `$this->options->logoUrl` 返回值，`$this->options->logoUrl()` 直接输出。直接输出**不做 HTML 转义**，用户填写的内容会原样进入页面；放在 HTML 属性中、又不希望站长写入 HTML 时，用 `echo htmlspecialchars($this->options->logoUrl);`。
+- `$this->options->logoUrl` 返回值，`$this->options->logoUrl()` 直接输出。直接输出**不做 HTML 转义**，用户填写的内容会原样进入页面；如果值要放进 HTML 属性，又不希望站长在其中写入 HTML，请用 `echo htmlspecialchars($this->options->logoUrl);`。
 - `Checkbox` 的值是数组，用 `in_array()` 判断；没有保存过时为 `null`，所以先用 `!empty()` 判断。
 - 在 `functions.php` 的函数中，可以用 `\Widget\Options::alloc()->logoUrl` 读取同样的值。
 

@@ -5,7 +5,7 @@ sidebar_position: 11
 
 # 在模板中调用 Widget
 
-模板中的 `$this` 只装着当前页面需要的内容。侧边栏的最新文章、分类列表、归档等其他数据，由其他 Widget 提供。在模板中用 `类名::alloc()` 取得一个 Widget，再循环或直接输出。
+模板中的 `$this` 只包含当前页面需要的内容。侧边栏的最新文章、分类列表、归档等其他数据，由其他 Widget 提供。在模板中用 `类名::alloc()` 取得一个 Widget，再循环或直接输出。
 
 ## 基本写法
 
@@ -110,7 +110,7 @@ sidebar_position: 11
 
 `parse()` 中可用的字段：`{permalink}`、`{date}`、`{count}`（文章数）、`{year}`、`{month}`、`{day}`。
 
-文章按 `format` 格式化后的日期分组，`type` 只决定链接地址，所以两者要按同一粒度配对：年归档用 `type=year&format=Y`，月归档用 `type=month&format=Y-m`，日归档用 `type=day&format=Y-m-d`（可以换成 `Y年m月d日` 等写法）。只改 `type` 时仍按月分组：年归档会每个月出现一次，日归档的数量是整个月的。`format` 中不含年份时，不同年份的同一月份会合并成一项。
+文章按 `format` 格式化后的日期分组，`type` 只决定链接地址，所以两者要按同一粒度配对：年归档用 `type=year&format=Y`，月归档用 `type=month&format=Y-m`，日归档用 `type=day&format=Y-m-d`（可以换成 `Y年m月d日` 等写法）。如果只改 `type` 而不改 `format`，文章仍按月分组：年归档的链接会每个月出现一次，日归档显示的篇数是整个月的篇数。`format` 中不含年份时，不同年份的同一月份会合并成一项。
 
 ### 统计：`\Widget\Stat`
 
@@ -132,7 +132,7 @@ sidebar_position: 11
 
 ## 取某个分类的文章
 
-用 `\Widget\Archive` 本身，指定页面类型和分类，取出的就是这个分类下的文章：
+直接使用 `\Widget\Archive`，并指定页面类型和分类，即可取得这个分类下的文章：
 
 ```php
 <?php \Widget\Archive::allocWithAlias('category-tech', 'pageSize=5&type=category', 'slug=tech')->to($tech); ?>

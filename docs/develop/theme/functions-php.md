@@ -18,7 +18,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 | 函数 | 调用时机 | 用途 |
 |---|---|---|
-| `themeInit($archive)` | 前台请求确定页面类型之后、执行列表查询和输出模板之前（单篇内容此时已经取出）；首页设为模板文件时不调用 | 修改当前页面的参数，例如每页篇数 |
+| `themeInit($archive)` | 前台确定页面类型后、执行列表查询和输出模板前；此时单篇内容已经取出。首页设为模板文件时不调用 | 修改当前页面的参数，例如每页篇数 |
 | `themeConfig($form)` | 打开“设置外观”页面、启用主题时 | 定义主题设置表单 |
 | `themeConfigHandle($settings, $isInit)` | 保存主题设置、启用主题时 | 自己处理设置的保存 |
 | `themeFields($layout)` | 编辑器生成自定义字段区域时 | 为文章和页面预置自定义字段 |
@@ -79,7 +79,7 @@ function themeConfigHandle(array $settings, bool $isInit)
 }
 ```
 
-启用主题时，`$settings` 是各字段的默认值。用它把设置写到别的地方（例如生成一个 CSS 文件）时，要自己负责存储，`$this->options` 中也读不到这些值。
+启用主题时，`$settings` 是各字段的默认值。如果用它把设置写到别处（例如生成一个 CSS 文件），存储要由主题自己负责，而且这些值不会出现在 `$this->options` 中。
 
 表单元素的种类和读取方式见[主题设置](./theme-options.md)。
 

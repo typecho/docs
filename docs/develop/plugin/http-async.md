@@ -5,7 +5,7 @@ sidebar_position: 8
 
 # HTTP 请求与异步任务
 
-插件经常需要调用外部服务：推送通知、请求反垃圾接口、上传到对象存储。Typecho 自带一个基于 curl 的 HTTP 客户端 `Typecho\Http\Client`；对于不需要等待结果的请求，还可以交给异步任务，由站点向自己发起的另一个请求执行，访客的请求不必等它完成。
+插件经常需要调用外部服务：推送通知、请求反垃圾接口、上传到对象存储。Typecho 自带一个基于 curl 的 HTTP 客户端 `Typecho\Http\Client`；不需要等待结果的请求还可以交给异步任务：站点向自己另发一个请求来执行它，访客的请求不必等它完成。
 
 ## Typecho\Http\Client
 

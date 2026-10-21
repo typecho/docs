@@ -12,7 +12,7 @@ sidebar_position: 1
 | 想做的事 | 用什么 | 详见 |
 |---|---|---|
 | 在页面输出前后插入内容，修改正文、标题、摘要 | 过滤类钩子，如 `contentEx` | [使用钩子](./hooks.md)、[常见插件模式](./patterns.md#content-filter) |
-| 在发布文章、提交评论、登录时做点什么 | 通知类钩子，如 `finishPublish`、`finishComment`、`loginSucceed` | [钩子列表](../reference/hooks.md) |
+| 在发布文章、提交评论、登录等时机执行自己的逻辑 | 通知类钩子，如 `finishPublish`、`finishComment`、`loginSucceed` | [钩子列表](../reference/hooks.md) |
 | 接管 Typecho 的某个功能：编辑器、附件存储、Markdown 解析、密码校验 | trigger 类钩子，如 `richEditor`、`uploadHandle` | [常见插件模式](./patterns.md) |
 | 给模板提供新的方法和属性 | 动态钩子 `call<Method>`、`___<prop>` | [使用钩子](./hooks.md#动态钩子) |
 | 让管理员或用户配置插件 | `config()`、`personalConfig()` | [插件配置](./settings.md) |

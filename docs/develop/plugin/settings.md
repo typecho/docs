@@ -87,7 +87,7 @@ public static function configCheck(array $settings)
 - 启用插件时调用一次，`$isInit` 为 `true`，`$settings` 是各项的默认值；
 - 管理员保存设置时调用，`$isInit` 为 `false`，`$settings` 是提交的值（已经通过校验）。
 
-适合在保存前转换数据，或者把设置存到别处。处理完后仍要保存到 `plugin:插件名` 的话，调用 `\Utils\Helper::configPlugin()`：
+这种方式适合在保存前转换数据，或者把设置存到别处。如果处理完后仍要保存到 `plugin:插件名`，调用 `\Utils\Helper::configPlugin()`：
 
 ```php
 public static function configHandle(array $settings, bool $isInit)

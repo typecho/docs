@@ -98,8 +98,8 @@ $this->need('header.php');
 站长选中后，选项保存为 `file:home.php`，首页直接输出这个文件。注意：
 
 - 这时首页的 `$this` 中**没有文章**，`$this->next()` 不会取到任何内容，需要的数据要自己用 Widget 取（如上面的最新文章）；
-- 1.3.0 中这种首页跳过了订阅地址等的初始化，模板一旦调用 `$this->header()` 就会报错 `Typed property Widget\Archive::$archiveFeedUrl must not be accessed before initialization`。上面开头的四行 `setArchive…()` 就是为此补上的，`header.php` 中调用了 `header()` 时不能省略；
-- 这种首页不加载 `functions.php`，也不调用 `themeInit()`。模板或它引入的 `header.php` 等文件用到 `functions.php` 中的函数时，在模板开头自己加载：`if (is_file(__DIR__ . '/functions.php')) require_once __DIR__ . '/functions.php';`。这只加载函数定义，`themeInit()` 中的初始化需要时要自己调用；
+- 1.3.0 中这种首页跳过了订阅地址等的初始化，模板一旦调用 `$this->header()` 就会报错 `Typed property Widget\Archive::$archiveFeedUrl must not be accessed before initialization`。示例开头的四行 `setArchive…()` 用来补上这些初始化；只要 `header.php` 中调用了 `header()`，就不能省略它们；
+- 这种首页不加载 `functions.php`，也不调用 `themeInit()`。模板或它引入的 `header.php` 等文件用到 `functions.php` 中的函数时，在模板开头自己加载：`if (is_file(__DIR__ . '/functions.php')) require_once __DIR__ . '/functions.php';`。这样只加载函数定义；如果需要 `themeInit()` 中的初始化，还要自己调用 `themeInit($this)`；
 - 1.3.0 中这种首页的分页地址（`/page/2/`）会报 500 错误，模板中不要输出分页链接；
 - 切换主题时，这个设置会自动恢复为“显示最新发布的文章”。
 

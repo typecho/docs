@@ -180,7 +180,7 @@ public static function filter(array $comment): array
 3. 载入入口文件。插件已经启用、类不存在或没有 `activate()` 方法时，报错“无法启用插件”；
 4. 调用 `activate()`。期间通过 `Typecho\Plugin::factory()` 注册的回调被记下来；
 5. 把这些回调写入选项 `plugins`（JSON），之后的每个请求都从这里读取回调。`activate()` 只调用这一次；
-6. 调用 `config()` 和 `personalConfig()`，把表单中各项的默认值分别存为选项 `plugin:Name` 和 `_plugin:Name`（插件定义了 `configHandle()` / `personalConfigHandle()` 时改为交给它们处理，见[插件配置](./settings.md)）。
+6. 调用 `config()` 和 `personalConfig()`，把表单中各项的默认值分别存为选项 `plugin:Name` 和 `_plugin:Name`。如果插件定义了 `configHandle()` / `personalConfigHandle()`，则改由这两个方法处理（见[插件配置](./settings.md)）。
 
 由此可以得出几点：
 

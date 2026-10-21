@@ -41,7 +41,7 @@ sidebar_position: 4
 - 文章的缩略名是**文章 ID**，不是网址缩略名，所以为某篇文章单独做模板要用 `post/文章ID.php`；
 - 日期归档的缩略名是归档粒度，`date/year.php`、`date/month.php`、`date/day.php` 分别对应年、月、日归档；
 - 以独立页面作为首页时，首页按这个独立页面查找模板（`page/缩略名.php`、`page.php`……）；
-- 文章列表页只在首页改为页面或模板文件、并开启了[文章列表页](../../guide/settings/reading.md#front-archive)时存在，它不用 `archive.php`，没有 `front.php` 时直接用 `index.php`。
+- 只有当首页改为页面或模板文件、并且开启了[文章列表页](../../guide/settings/reading.md#front-archive)时，才存在文章列表页。它不使用 `archive.php`；没有 `front.php` 时直接使用 `index.php`。
 
 ## 示例
 
@@ -75,11 +75,11 @@ post.php
 <?php $this->need('header.php'); ?>
 ```
 
-`need()` 在 `Widget\Archive` 的方法内部 `require` 文件，所以被引入的文件中 `$this` 不变；但被引入文件中**新定义的变量只在那个文件里有效**，外层模板读不到。需要在多个文件之间共享的数据，可以在 `functions.php` 中写成函数，或者放在被引入的那个文件里一并输出。
+`need()` 在 `Widget\Archive` 的方法内部 `require` 文件，所以被引入的文件中 `$this` 不变；但被引入文件中**新定义的变量只在那个文件里有效**，外层模板无法读取。需要在多个文件之间共享的数据，可以在 `functions.php` 中写成函数，也可以直接在被引入的文件中输出。
 
 ## 用 is() 代替拆分文件
 
-不同页面只差一点点时，不必拆成多个文件，在同一个模板中判断即可：
+不同页面差别很小时，不必拆成多个文件，在同一个模板中判断即可：
 
 ```php
 <?php if ($this->is('category', 'tech')): ?>

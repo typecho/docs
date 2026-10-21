@@ -46,7 +46,7 @@ $this->is(string $archiveType, ?string $archiveSlug = null): bool
 | `archive` | **伪类型**：除首页外的所有列表页（分类、标签、作者、日期、搜索、文章列表页）以及 404 页 | 404 页的缩略名为 `404` |
 | `feed` | **伪类型**：由订阅源调用时为真 | — |
 
-`single`、`archive`、`feed` 不是页面本身的类型，而是按情况归类：
+`single`、`archive`、`feed` 不是页面本身的类型，而是对几类页面的归类：
 
 - `single` 与 `archive` 互斥：一个页面要么是单篇内容，要么是列表；首页两者都不是。
 - 404 页面的类型就是 `archive`，缩略名是 `404`，所以判断 404 用 `$this->is('archive', '404')`。

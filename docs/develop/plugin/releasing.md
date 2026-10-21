@@ -5,7 +5,7 @@ sidebar_position: 10
 
 # 发布插件
 
-Typecho 没有在维护的官方插件目录，插件由作者自己发布。常见的做法是放在 GitHub 上：用户从仓库或 Release 下载压缩包，解压后上传到 `usr/plugins/`。
+Typecho 目前没有官方维护的插件目录，插件由作者自行发布。常见的做法是放在 GitHub 上：用户从仓库或 Release 下载压缩包，解压后上传到 `usr/plugins/`。
 
 ## 发布前检查
 
