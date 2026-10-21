@@ -2,7 +2,7 @@
 title: Migrating from Other Blogs
 sidebar_position: 8
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Migrating from Other Blogs
@@ -14,7 +14,7 @@ This page covers three kinds of migration: importing content from WordPress or o
 Typecho's official WordPress import plugin, **WordpressToTypecho**, lives in the plugin repository [github.com/typecho/plugins](https://github.com/typecho/plugins/tree/master/WordpressToTypecho) and is **not shipped with the Typecho release package**. The plugin version is 1.0.3 Beta, and the last change in the repository was on 2021-11-01.
 
 :::warning The plugin has not been updated for 1.3
-This plugin has not been updated since 2021 and was written for versions before 1.3. It can be enabled on 1.3, and the "Import data from WordPress" page opens (enabling it logs an `Undefined variable $error` warning in the PHP log, which does not affect use), but the import results have not been adjusted for 1.3. Run the import on a test site first and check the results before using it on your production site.
+This plugin has not been updated since 2021 and was written for versions before 1.3. It can be enabled on 1.3, and the "Import data from WordPress" page opens (enabling it logs an `Undefined variable $error` warning in the PHP log; the warning is harmless), but the import has not been adapted for 1.3. Run the import on a test site first and check the results before using it on your production site.
 :::
 
 ### What the plugin does
@@ -34,8 +34,8 @@ The plugin does **not** import: attachment files, WordPress users, WordPress set
 
 1. Install a new Typecho 1.3 site. The WordPress MySQL database must be reachable from this server; the plugin only supports MySQL (when enabled it checks whether `Mysqli` or `Pdo_Mysql` is available).
 2. Download the `WordpressToTypecho` directory from the plugin repository and put it in `usr/plugins/WordpressToTypecho/`.
-3. Enable it under "Dashboard → Plugins" in the admin panel, then open the plugin settings and fill in the WordPress database host, port, user name, password, database name and table prefix (default `wp_`).
-4. Open the new "Import data from WordPress" item in the "Dashboard" menu and start the import. With a large amount of data it may time out, so raise PHP's `max_execution_time` first.
+3. Enable it under "Console → Plugins" in the admin panel, then open the plugin settings and fill in the WordPress database host, port, user name, password, database name and table prefix (default `wp_`).
+4. Open the new "Import data from WordPress" item in the "Console" menu and start the import. With a large amount of data it may time out, so raise PHP's `max_execution_time` first.
 5. After the import:
    - Copy WordPress's `wp-content/uploads/` to **the same path** on the new server and make it reachable by the web server, so image URLs in old posts keep working; or replace the URLs in the content in bulk as described [below](#replace-urls);
    - Under "Settings → Permalinks", set the same post URL format as the original site (a custom format is allowed), so search engines and external links keep working;
@@ -54,7 +54,7 @@ Neither the Typecho release package nor the official plugin repository contains 
 
 1. On the old server, back up three parts: the database export, `usr/` and `config.inc.php` (see [Backup and restore](./backup.md)).
 2. On the new server, prepare the program files of the same Typecho version (`admin/`, `var/`, `install/`, `index.php`, `install.php`), using the version number shown in the old site's admin footer.
-3. Put `usr/` and `config.inc.php` back and import the database. For MySQL / PostgreSQL, create the database first. If you renamed the admin directory (`config.inc.php` defines `__TYPECHO_ADMIN_DIR__`), rename the newly copied `admin/` directory to the same name, and carry over any web server or CDN rules for the admin path, see [Custom admin path](./admin-dir.md).
+3. Put `usr/` and `config.inc.php` back and import the database. For MySQL / PostgreSQL, create the database first. If you renamed the admin directory (`config.inc.php` defines `__TYPECHO_ADMIN_DIR__`), rename the newly copied `admin/` directory to the same name, and carry over any web server or CDN rules for the admin path (see [Custom admin path](./admin-dir.md)).
 4. Adjust `config.inc.php` for the new environment:
    - If the database host, user name or password changed, update the values in `addServer()`;
    - **With SQLite**, `'file'` is an absolute path, so update it if the site directory moved;
@@ -72,7 +72,7 @@ Most of Typecho's links are generated from **the domain currently being accessed
 
 | Location | How to change it |
 |---|---|
-| Site URL (option `siteUrl`) | Log in to the admin panel with the new domain and change it under "Settings → General". If you cannot get into the admin panel, change the database directly; see below |
+| Site URL (option `siteUrl`) | Log in to the admin panel with the new domain and change it under "Settings → General". If you cannot access the admin panel, change the database directly; see below |
 | Constants in `config.inc.php` | Any of `__TYPECHO_SITE_URL__`, `__TYPECHO_ROOT_URL__`, `__TYPECHO_URL_PREFIX__`, `__TYPECHO_UPLOAD_URL__`, `__TYPECHO_THEME_URL__`, `__TYPECHO_PLUGIN_URL__` that contain the old domain; the `domain` of `__TYPECHO_COOKIE_OPTIONS__`. See [config.inc.php and constants](./config-file.md) |
 | Images and internal links in post content | The content stores the full URL at the time of insertion, so replace them in bulk; see below |
 | Users' homepage URLs | At installation, the administrator's homepage URL is the site URL. Change it under "Manage → Users" or in the profile settings, or change the `url` field of the `typecho_users` table |
@@ -117,7 +117,7 @@ SET str_value = REPLACE(str_value, 'http://old.example.com/', 'https://new.examp
 
 ## Wrong post counts for categories and tags {#counts}
 
-After importing data, restoring a backup or editing the database by hand, the post counts shown next to categories and tags may be wrong. This number is stored in the `count` field of the `metas` table and is not recalculated automatically.
+After importing data, restoring a backup or editing the database manually, the post counts shown next to categories and tags may be wrong. This number is stored in the `count` field of the `metas` table and is not recalculated automatically.
 
 **How to refresh**: in the admin panel, go to "Manage → Categories" (or "Manage → Tags"), check the items to refresh (you can click the checkbox in the table header to select all), and click "Refresh" in the "Selected items" drop-down menu. With many categories this may take a while.
 

@@ -2,7 +2,7 @@
 title: Containers and Cloud Hosting
 sidebar_position: 3
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Containers and Cloud Hosting
@@ -13,7 +13,7 @@ Typecho is an ordinary PHP application and can be deployed on any environment th
 |---|---|
 | VPS / cloud server | Install the web server, PHP and the database yourself, and follow [Requirements](../getting-started/requirements.md), [Installation](../getting-started/installation.mdx) and [Web server configuration](./web-server.md) |
 | Shared hosting | Upload the files and install through the browser. Select PHP 7.4 or later in the hosting control panel; permalinks usually rely on Apache's `.htaccess`, or the panel's URL rewriting setting (choose the rule for generic PHP applications, or enter the rules from [Web server configuration](./web-server.md#htaccess)) |
-| Containers | Use the official image `joyqi/typecho`, see below |
+| Containers | Use the official image `joyqi/typecho` (see below) |
 
 ## The official image `joyqi/typecho`
 
@@ -37,7 +37,7 @@ Each version + PHP version combination has 7 variants (taking `1.3.0-php8.2` as 
 | Variant | Contents | Use |
 |---|---|---|
 | `1.3.0-php8.2-apache` | Apache (`mod_php`) + `mod_rewrite`, listening on port 80 | **The simplest choice**; a single container can serve the site |
-| `1.3.0-php8.2-fpm`, `1.3.0-php8.2-fpm-alpine` | PHP-FPM, listening on port 9000 | Needs a separate web server such as nginx in front, see [below](#fpm) |
+| `1.3.0-php8.2-fpm`, `1.3.0-php8.2-fpm-alpine` | PHP-FPM, listening on port 9000 | Needs a separate web server such as nginx in front (see [below](#fpm)) |
 | `1.3.0-php8.2`, `1.3.0-php8.2-alpine` | PHP's built-in `php -S` development server listening on port 80 | Only for trying out and testing; **do not use in production** |
 | `1.3.0-php8.2-cli`, `1.3.0-php8.2-cli-alpine` | PHP command line only | Running one-off commands |
 
@@ -48,12 +48,12 @@ There is no Alpine version of the Apache variant.
 According to the image's startup script `/usr/bin/init_typecho` (its source is `scripts/init.sh` in the `typecho/Dockerfile` repository):
 
 - The site root is `/app`, and the whole of `/app` is declared as a volume (`VOLUME /app`);
-- **`config.inc.php` is written to the root of `/app`, not to `/app/usr`**. If you mount a volume only on `/app/usr`, the configuration file is not in the volume; after the container is removed and recreated it is gone, and the home page redirects with 302 to `/install.php`;
+- **`config.inc.php` is written to the root of `/app`, not to `/app/usr`**. If you mount a volume only on `/app/usr`, the configuration file is not in the volume; it is lost when the container is removed and recreated, and the home page redirects with 302 to `/install.php`;
 - The program files are in `/usr/src/typecho` in the image. On **every start** of the container, only the items that **do not exist** in `/app` (`admin`, `install`, `var`, `index.php`, `install.php`, and `usr/themes`, `usr/plugins`, `usr/langs`) are copied from there; existing ones are not overwritten. `usr/uploads` is created if it does not exist;
 - With `TYPECHO_INSTALL=1`, every start runs `php /app/install.php` once as the `www-data` user (`su -p`, environment variables preserved), which is the [command-line installation](../getting-started/cli-install.md). When the same container restarts, it only prints two lines of version information and the site starts as usual;
 - PHP errors are not shown on the page; they go to standard error, viewable with `docker logs`.
 
-About `.htaccess` in the Apache variant: `Dockerfile.apache` writes rewrite rules to `/app/.htaccess` at build time, but `/app` has already been declared as a volume by then. According to the Docker documentation, changes made to that directory in build steps after the volume is declared may be discarded, and the startup script does not copy `.htaccess` either, so `/app` in the container does not necessarily contain this file. If post pages return 404 after you enable permalinks, create the `.htaccess` from [Web server configuration](./web-server.md#htaccess) under `/app`; the Apache variant uses `mod_php`, so Typecho also tries to write it automatically when you enable permalinks in the admin panel.
+About `.htaccess` in the Apache variant: `Dockerfile.apache` writes rewrite rules to `/app/.htaccess` at build time, but `/app` has already been declared as a volume by then. According to the Docker documentation, changes made to that directory in build steps after the volume is declared may be discarded. The startup script does not copy `.htaccess` either, so `/app` in the container does not necessarily contain this file. If post pages return 404 after you enable permalinks, create the `.htaccess` from [Web server configuration](./web-server.md#htaccess) under `/app`; the Apache variant uses `mod_php`, so Typecho also tries to write it automatically when you enable permalinks in the admin panel.
 
 ### Environment variables
 
@@ -136,7 +136,7 @@ docker compose logs typecho   # on first start, prints "Installation successful"
 
 Some notes:
 
-- **Why `TYPECHO_DB_NEXT: keep` is needed**: `config.inc.php` is written to the root of `/app`, but here only `/app/usr` is mounted from the host. `/app` is an anonymous volume declared by the image; when the container is removed and created again (`docker compose down` followed by `up`, or recreating the anonymous volumes as in the upgrade steps below), `/app` is a new, empty volume, and `config.inc.php` is gone with it. `TYPECHO_INSTALL=1` plus `TYPECHO_DB_NEXT=keep` regenerates the configuration from the environment variables on every start; when the database already holds complete data, the installer writes the configuration and stops, without recreating tables or touching the administrator account. If you recreate without `keep`, you get "The installer found that the existing data tables already exist." and are sent to the installer page. `keep` only takes effect when the tables already exist, so it does not affect the first installation on an empty database.
+- **Why `TYPECHO_DB_NEXT: keep` is needed**: `config.inc.php` is written to the root of `/app`, but here only `/app/usr` is mounted from the host. `/app` is an anonymous volume declared by the image; when the container is removed and created again (`docker compose down` followed by `up`, or recreating the anonymous volumes as in the upgrade steps below), `/app` is a new, empty volume, and `config.inc.php` is gone with it. `TYPECHO_INSTALL=1` plus `TYPECHO_DB_NEXT=keep` regenerates the configuration from the environment variables on every start; when the database already holds complete data, the installer writes the configuration and stops, without recreating tables or touching the administrator account. If you recreate the container without `keep`, the installer reports "The installer found that the existing data tables already exist." and redirects to the installer page. `keep` only takes effect when the tables already exist, so it does not affect the first installation on an empty database.
 - **Wait for the database to be ready**: `depends_on` with `condition: service_healthy` makes the Typecho container wait until MySQL accepts connections before starting. Otherwise MySQL is not ready on the first start and the automatic installation fails.
 - As with a regular installation, the MySQL / PostgreSQL database must exist beforehand; here `MYSQL_DATABASE` creates it.
 - After a successful installation, the administrator password appears in plain text in `docker compose logs`. You can leave `TYPECHO_USER_PASSWORD` unset to have it generated randomly, and change it right after logging in.
@@ -160,7 +160,7 @@ Mount only `usr/`, and keep `TYPECHO_INSTALL: "1"`, all of `TYPECHO_SITE_URL` / 
    ```
 
    `docker compose up -d` alone is not enough: when Compose recreates a container it reuses the old container's anonymous volumes, so the old `admin/` and `var/` in the volume are not replaced and the upgrade does not actually happen. `--renew-anon-volumes` replaces `/app` with a new, empty volume;
-3. If you added custom constants to `config.inc.php` (for example the HTTPS, cookie, upload location or theme editor settings), or renamed the admin directory, the new container no longer has them; add them back using the backup from step 1;
+3. If you added custom constants to `config.inc.php` (for example the HTTPS, cookie, upload location or theme editor settings), or renamed the admin directory, these changes are not carried over to the new container; add them back using the backup from step 1;
 4. Log in to the admin panel as an administrator; you are taken to the upgrade page, where you follow the prompts to complete the upgrade. Then check the version number in the admin footer.
 
 With this procedure, the new container regenerates the configuration on startup, logging in to the admin panel redirects to `upgrade.php`, and once that has run the version is the new one. `TYPECHO_DB_NEXT=keep` keeps the data in the database; the regenerated `config.inc.php` contains only the standard content such as the database connection. If `TYPECHO_DB_NEXT=keep` or `TYPECHO_INSTALL=1` is missing, the new container has no `config.inc.php` and the site jumps to the installer; add the variables and recreate the container, and the database is not affected.
@@ -212,9 +212,9 @@ Whatever image you use, Typecho 1.3 itself writes to the following locations at 
 
 | Location | When it is written | Handling in a read-only environment |
 |---|---|---|
-| `usr/uploads/` (or `__TYPECHO_UPLOAD_ROOT_DIR__`) | Uploading or modifying attachments | **Must** be a writable volume. You can point `__TYPECHO_UPLOAD_ROOT_DIR__` at the volume's mount point, see [Attachment storage location](./uploads-storage.md) |
+| `usr/uploads/` (or `__TYPECHO_UPLOAD_ROOT_DIR__`) | Uploading or modifying attachments | **Must** be a writable volume. You can point `__TYPECHO_UPLOAD_ROOT_DIR__` at the volume's mount point (see [Attachment storage location](./uploads-storage.md)) |
 | The SQLite database file and its directory | Every database write | Switch to MySQL / PostgreSQL, or put the database file in a writable volume (SQLite also needs to create temporary journal files in the same directory) |
-| PHP temporary directory (`sys_get_temp_dir()`) | Exporting a backup in the admin panel writes a temporary file first; PHP handling uploads | Mount a `tmpfs` on `/tmp` |
+| PHP temporary directory (`sys_get_temp_dir()`) | When a backup is exported in the admin panel (a temporary file is written first); when PHP handles uploads | Mount a `tmpfs` on `/tmp` |
 | PHP session directory (`session.save_path`) | Every request from a logged-in user starts a session (`var/Widget/Init.php`) | Mount a `tmpfs` on the session directory |
 | `config.inc.php` in the site root | Only during installation | Put it in at image build time, or mount an existing configuration read-only |
 | `.htaccess` in the site root | Only when toggling permalinks under Apache `mod_php` | Put it into the image at build time, or define `__TYPECHO_REWRITE__` |

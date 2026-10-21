@@ -11,7 +11,7 @@ sidebar_position: 9
 
 最有效的一条。新版本发布时，后台控制台会显示“官方最新版本是 …”的提示；也可以关注 [GitHub Releases](https://github.com/typecho/typecho/releases)。升级步骤见[升级](../getting-started/upgrade.md)。
 
-主题和插件同样需要更新。长期没有维护、没有说明支持 1.3 的插件，能不用就不用。
+主题和插件同样需要更新。长期无人维护、也未说明支持 1.3 的插件，应尽量避免使用。
 
 ## 2. 报告安全漏洞 {#report}
 

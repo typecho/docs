@@ -2,7 +2,7 @@
 title: Web Server Configuration
 sidebar_position: 1
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Web Server Configuration
@@ -20,9 +20,9 @@ Typecho does not rely on the `PATH_INFO` variable passed by the server. It compu
 
 | Requirement | Details |
 |---|---|
-| `SCRIPT_FILENAME` points to the real `index.php` | For a request to `/index.php/action/login`, the script handed to PHP must be `/site-root/index.php`, not the non-existent `/site-root/index.php/action/login`. By default (`cgi.fix_pathinfo=1`) PHP corrects such paths itself; with `0` you get "No input file specified." or 403 "Access denied.", see [Common errors](#no-input-file) |
+| `SCRIPT_FILENAME` points to the real `index.php` | For a request to `/index.php/action/login`, the script handed to PHP must be `/site-root/index.php`, not the non-existent `/site-root/index.php/action/login`. By default (`cgi.fix_pathinfo=1`) PHP corrects such paths itself; with `0` you get "No input file specified." or 403 "Access denied." (see [Common errors](#no-input-file)) |
 | `REQUEST_URI` keeps the original URL | When a permalink is forwarded to `index.php`, `REQUEST_URI` must still be the `/archives/1/` the user requested. nginx's `fastcgi_params`, Apache and Caddy all do this by default |
-| `/index.php/...` reaches PHP | Login, comments and saving settings all POST to `/index.php/action/...`. If these URLs are not passed to PHP, login fails with 404, 500 or 403, see [Login fails](#login-fails) |
+| `/index.php/...` reaches PHP | Login, comments and saving settings all POST to `/index.php/action/...`. If these URLs are not passed to PHP, login fails with 404, 500 or 403 (see [Login fails](#login-fails)) |
 
 ## nginx {#nginx}
 
@@ -50,7 +50,7 @@ server {
         deny all;
     }
 
-    # Matches both /index.php and addresses such as /index.php/action/login
+    # Matches both /index.php and URLs such as /index.php/action/login
     location ~ [^/]\.php(/|$) {
         fastcgi_split_path_info ^(.+?\.php)(/.*)$;
         if (!-f $document_root$fastcgi_script_name) {
@@ -172,7 +172,7 @@ blog.example.com {
 }
 ```
 
-The Caddy v1 forms `rewrite { to ... }` and `fastcgi / ... php` no longer exist in Caddy 2. The configuration above is indented with 4 spaces, so `caddy validate` reports `Caddyfile input is not formatted`; this does not affect how it works.
+The Caddy v1 forms `rewrite { to ... }` and `fastcgi / ... php` no longer exist in Caddy 2. The configuration above is indented with 4 spaces, so `caddy validate` reports `Caddyfile input is not formatted`. The warning is harmless; the configuration still works.
 
 ### When PHP sets `cgi.fix_pathinfo=0` {#caddy-fix-pathinfo}
 
@@ -194,7 +194,7 @@ blog.example.com {
     @blocked path_regexp ^/usr/(.+\.db$|backups/|uploads/.*\.php(/|$))
     respond @blocked 403
 
-    # Hand addresses such as /index.php/action/login straight to index.php (works with cgi.fix_pathinfo=0)
+    # Hand URLs such as /index.php/action/login straight to index.php (works with cgi.fix_pathinfo=0)
     @pathinfo path_regexp ^/index\.php/
     rewrite @pathinfo /index.php?{query}
 
@@ -220,9 +220,9 @@ When the check fails, the page shows "Rewrite check failed, please check your se
 
 | Cause | Fix |
 |---|---|
-| The rewrite rules are not in effect | Check the configuration as described above, and open a post URL (such as `/archives/1/`) by hand to confirm it works |
-| Apache cannot create `.htaccess` in the root directory | The page additionally says "The program cannot create the .htaccess file in the root directory"; create the `.htaccess` above by hand |
-| The server cannot reach its own public address (containers, internal networks, a domain configured only in the local hosts file, CDN origin restrictions, and so on) | After confirming the rules work in a browser, tick "If you still want to enable this feature, check here" and save; or define `__TYPECHO_REWRITE__` in `config.inc.php`, see [config.inc.php and constants](./config-file.md#rewrite) |
+| The rewrite rules are not in effect | Check the configuration as described above, then open a post URL (such as `/archives/1/`) in a browser to confirm it works |
+| Apache cannot create `.htaccess` in the root directory | The page additionally says "The program cannot create the .htaccess file in the root directory"; create the `.htaccess` above manually |
+| The server cannot reach its own public address (containers, internal networks, a domain configured only in the local hosts file, CDN origin restrictions, and so on) | After confirming the rules work in a browser, tick "If you still want to enable this feature, check here" and save; or define `__TYPECHO_REWRITE__` in `config.inc.php` (see [config.inc.php and constants](./config-file.md#rewrite)) |
 
 ## Common errors {#troubleshooting}
 
@@ -242,8 +242,8 @@ The script path PHP received does not exist. The nginx configuration on this pag
 
 - nginx: this only happens when PHP-FPM sets `cgi.fix_pathinfo=0` **and** the PHP `location` lacks `fastcgi_split_path_info` (with the default `1`, PHP-FPM corrects the path itself and the same configuration works). In that configuration, `GET /index.php/archives/1/` shows "No input file specified.", while **the login POST returns 403 `Access denied.`**, and the PHP-FPM log contains `Access to the script '.../index.php/action/login' has been denied (see security.limit_extensions)`. Both symptoms are the same problem; add `fastcgi_split_path_info` as shown above.
 - nginx: a wrong `SCRIPT_FILENAME` (for example a path that does not match `root`) causes the same error.
-- Caddy: also breaks with `cgi.fix_pathinfo=0`, showing 403 `Access denied.`, see [above](#caddy-fix-pathinfo).
-- When nginx and PHP-FPM are not on the same machine or in the same container, `SCRIPT_FILENAME` must be a path visible **on the PHP-FPM side**, see [Containers and cloud hosting](./containers.md#fpm).
+- Caddy: also breaks with `cgi.fix_pathinfo=0`, showing 403 `Access denied.` (see [above](#caddy-fix-pathinfo)).
+- When nginx and PHP-FPM are not on the same machine or in the same container, `SCRIPT_FILENAME` must be a path visible **on the PHP-FPM side** (see [Containers and cloud hosting](./containers.md#fpm)).
 - This message also appears when PHP sets `open_basedir` and it does not include the site directory.
 - Apache: switch to the compatible form `RewriteRule . /index.php [L]` described above.
 
@@ -263,4 +263,4 @@ None of these incorrect configurations returns 405. If you get **405 Not Allowed
 
 ### The admin panel opens, but after logging in you are back at the login page
 
-This is usually related to cookies or the site URL, and is common with HTTPS, reverse proxies and CDNs, see [HTTPS, reverse proxies and CDNs](./https-proxy.md#login-loop).
+This is usually related to cookies or the site URL, and is common with HTTPS, reverse proxies and CDNs (see [HTTPS, reverse proxies and CDNs](./https-proxy.md#login-loop)).

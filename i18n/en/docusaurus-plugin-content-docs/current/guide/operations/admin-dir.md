@@ -2,14 +2,14 @@
 title: Custom Admin Path
 sidebar_position: 5
 translation: machine
-source_commit: 0dccf9f7706701fc8b129b2d5f8efd9c36c511de
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Custom Admin Path
 
 Typecho's admin panel is at `/admin/` by default. Renaming it blocks part of the automated scanning and brute-force attempts aimed at `/admin/login.php`. Two things are needed: **change the constant** and **rename the directory**.
 
-After renaming, `/admin/` returns 404, and login, the dashboard and the settings pages are all used under the new path.
+After renaming, `/admin/` returns 404, and the login page, the Console and the settings pages are all reached at the new path.
 
 ## Steps
 
@@ -42,7 +42,7 @@ Both steps must be done together: if you only change the constant, admin links p
 
 | Rule | Reason |
 |---|---|
-| The new directory must sit directly in the site root, one level deep | Admin pages load the configuration with `__DIR__ . '/../config.inc.php'` (`admin/common.php`); one level deeper and the configuration file cannot be found |
+| The new directory must sit directly in the site root, one level deep | Admin pages load the configuration with `__DIR__ . '/../config.inc.php'` (`admin/common.php`), so if the directory is nested one level deeper, the configuration file cannot be found |
 | The constant's value matches the directory name, written as `/directory-name/` | Typecho uses it to build admin URLs (`___adminUrl()` in `var/Widget/Options.php`), and in admin pages it strips this segment from the end of the current URL to compute the site root URL (`___rootUrl()`). If the two do not match, admin links and form URLs break |
 | Use only letters, digits and hyphens in the name | Avoids characters that need URL encoding |
 

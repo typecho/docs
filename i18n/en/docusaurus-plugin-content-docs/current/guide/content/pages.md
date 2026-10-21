@@ -2,7 +2,7 @@
 title: Pages
 sidebar_position: 3
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Pages
@@ -20,7 +20,7 @@ Pages suit content that is not ordered by time, such as "About", "Links" or a "G
 | Sort order | By publish time | By "Page order" |
 | Custom template | None | Each page can use a template from the theme |
 | Visibility | Public, hidden, password protected, private, pending | Only public and hidden |
-| Default address | `/archives/{cid}/` | `/{slug}.html` |
+| Default URL | `/archives/{cid}/` | `/{slug}.html` |
 | Comments, custom fields, attachments, drafts and revisions, autosave | Yes | Yes, used the same way as in [Writing posts](./posts.md) |
 
 ## Editing a page
@@ -33,17 +33,17 @@ The editing area is the same as for posts: title, URL slug, content, [custom fie
 | Page order | `order` | A number. "Give your custom pages a sequence value so that they are sorted by it in ascending order" |
 | Custom template | `template` | Lists the files in the current theme declared as custom templates; "None" uses the theme's `page.php` |
 | Parent page | `parent` | When selected, "this page will be shown as a child page" |
-| Visibility | `visibility` | Public, hidden. Hidden pages do not appear in the theme's page list but can still be visited by anyone who knows the address |
+| Visibility | `visibility` | Public, hidden. Hidden pages do not appear in the theme's page list but can still be visited by anyone who knows the URL |
 | Permissions | `allowComment`, `allowPing`, `allowFeed` | As for posts |
 
-The **URL slug** determines the page address. The default rule is `/{slug}.html`; for example, the slug `links` gives `/links.html`. If you leave it empty, it is generated automatically: on creation it takes the ASCII letters and digits from the title (joined with `-`), and if the title has none of these characters (for example a title written only in Chinese), the page ID is used (`applySlug()` in `var/Widget/Base/Contents.php`). The rule for page addresses is changed under "Page path" in "Settings → Permalinks"; the available parameters are `{cid}`, `{slug}` and `{directory}`, where `{directory}` is a multi-level path containing the slugs of all parent pages, which suits page trees.
+The **URL slug** determines the page URL. The default rule is `/{slug}.html` (for example, the slug `links` gives `/links.html`). If you leave it empty, a slug is generated when the page is created: the ASCII letters and digits from the title, joined with `-`. If the title has none of these characters (for example a title written only in Chinese), the page ID is used instead (see `applySlug()` in `var/Widget/Base/Contents.php`). The rule for page URLs is changed under "Page path" in "Settings → Permalinks"; the available parameters are `{cid}`, `{slug}` and `{directory}`, where `{directory}` is a multi-level path containing the slugs of all parent pages, which suits page trees.
 
 ## Page tree {#tree}
 
 Since 1.3, pages can have parent pages, forming a multi-level structure:
 
 - Select a page under "Parent page" and the current page becomes its child page;
-- The "Child pages" column under "Manage → Pages": when a page has no child pages it shows "Add", which creates a child page for it directly (`write-page.php?parent=page ID`, with the parent page preselected); when it has child pages it shows "one page" or "N pages", which opens the child page list (`manage-pages.php?parent=page ID`), titled "Manage child pages of About";
+- In the "Child pages" column under "Manage → Pages", a page without child pages shows "Add"; clicking it creates a child page directly (`write-page.php?parent=page ID`, with the parent page preselected). A page with child pages shows "one page" or "N pages"; clicking it opens the child page list (`manage-pages.php?parent=page ID`), titled "Manage child pages of About";
 - When you delete a page that has child pages, its child pages move up one level and are attached to the deleted page's parent (child pages of a top-level page become top-level pages).
 
 ## Sorting
@@ -51,7 +51,7 @@ Since 1.3, pages can have parent pages, forming a multi-level structure:
 Themes usually list pages by "Page order" in ascending order. There are two ways to set it:
 
 1. Fill in "Page order" when editing a page;
-2. **Drag rows** directly under "Manage → Pages". When you release, the pages in the current list are renumbered 1, 2, 3… in their displayed order, overwriting any numbers entered by hand. Dragging only works within a list of the same level; to reorder child pages, open the child page list first.
+2. **Drag rows** directly under "Manage → Pages". When you release the row, the pages in the current list are renumbered 1, 2, 3… in their displayed order, overwriting any manually entered numbers. Dragging only works within a list of the same level; to reorder child pages, open the child page list first.
 
 ## Custom templates {#template}
 

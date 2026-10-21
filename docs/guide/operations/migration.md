@@ -55,7 +55,7 @@ Typecho 安装包和官方插件仓库中**没有** Emlog 的导入工具（官�
 3. 放回 `usr/` 和 `config.inc.php`，并导入数据库。MySQL / PostgreSQL 的数据库要先创建好。改过后台目录名时（`config.inc.php` 中定义了 `__TYPECHO_ADMIN_DIR__`），把新放入的 `admin/` 目录改成同样的名字，Web 服务器、CDN 上针对后台路径的规则也要一并迁移，见[自定义后台路径](./admin-dir.md)。
 4. 按新环境修改 `config.inc.php`：
    - 数据库地址、用户名、密码有变化时，修改 `addServer()` 中的值；
-   - **使用 SQLite 时**，`'file'` 是绝对路径，网站目录换了位置就要同步修改；
+   - **使用 SQLite 时**，`'file'` 是绝对路径，网站目录的位置变化时需要同步修改；
    - `__TYPECHO_UPLOAD_ROOT_DIR__`、`__TYPECHO_BACKUP_DIR__`、`__TYPECHO_LANG_DIR__` 等绝对路径常量也要检查。
 5. 确认 `usr/uploads/` 对 PHP 进程可写，并按[Web 服务器配置](./web-server.md)配好永久链接规则。
 6. 修改本机的 `hosts` 文件，把域名指向新服务器，检查首页、文章、后台登录、上传附件都正常。测试时写入的内容会在下一步被覆盖。
@@ -70,7 +70,7 @@ Typecho 的大部分链接根据**当前访问的域名**生成，换域名后�
 
 | 位置 | 怎么改 |
 |---|---|
-| 站点地址（选项 `siteUrl`） | 用新域名登录后台，在“设置 → 基本”中修改。后台进不去时直接改数据库，见下文 |
+| 站点地址（选项 `siteUrl`） | 用新域名登录后台，在“设置 → 基本”中修改。无法进入后台时直接修改数据库，见下文 |
 | `config.inc.php` 中的常量 | `__TYPECHO_SITE_URL__`、`__TYPECHO_ROOT_URL__`、`__TYPECHO_URL_PREFIX__`、`__TYPECHO_UPLOAD_URL__`、`__TYPECHO_THEME_URL__`、`__TYPECHO_PLUGIN_URL__` 中写了旧域名的；`__TYPECHO_COOKIE_OPTIONS__` 的 `domain`。见[config.inc.php 与常量](./config-file.md) |
 | 文章正文中的图片和内链 | 正文保存的是插入时的完整地址，需要批量替换，见下文 |
 | 用户的个人主页地址 | 安装时管理员的主页地址就是站点地址。在“管理 → 用户”或“个人设置”中修改，或改 `typecho_users` 表的 `url` 字段 |

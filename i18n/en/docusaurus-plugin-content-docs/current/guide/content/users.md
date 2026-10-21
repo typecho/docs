@@ -2,7 +2,7 @@
 title: Users, roles and registration
 sidebar_position: 9
 translation: machine
-source_commit: c9097eed4a7142f9eabc1bca041ef819d6a64bbd
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Users, roles and registration
@@ -17,7 +17,7 @@ Typecho uses "user groups" (roles) to control what each account can do. Users ar
 | Editor | `editor` | Manages all content on the site: all posts, pages, categories, tags, files and comments |
 | Contributor | `contributor` | Can write posts, but they must be reviewed before they are published; can manage only their own posts and the comments on them |
 | Subscriber | `subscriber` | Can only log in to the admin panel and edit their own profile; the default role for new users when registration is open |
-| Visitor | `visitor` | A visitor who is not logged in. Cannot be assigned to an account in the admin panel, see [below](#visitor) |
+| Visitor | `visitor` | A visitor who is not logged in. Cannot be assigned to an account in the admin panel; see [below](#visitor) |
 
 Roles are cumulative: a higher role has all the permissions of the roles below it.
 
@@ -28,7 +28,7 @@ The link "See here for the detailed permission table" below the user group on th
 | Action | Administrator | Editor | Contributor | Subscriber | Visitor |
 |---|---|---|---|---|---|
 | Browse the front end, post comments (when the comment settings allow) | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Log in to the admin panel, view the dashboard | ✓ | ✓ | ✓ | ✓ | ✗ |
+| Log in to the admin panel, view the Console | ✓ | ✓ | ✓ | ✓ | ✗ |
 | Edit their own profile and password (Profile) | ✓ | ✓ | ✓ | ✓ | ✗ |
 | "Writing settings" in Profile | ✓ | ✓ | ✓ | ✗ | ✗ |
 | Write posts, save drafts | ✓ | ✓ | ✓ | ✗ | ✗ |
@@ -52,8 +52,8 @@ The link "See here for the detailed permission table" below the user group on th
 
 Additional notes:
 
-- A private post can be seen **only by its author**, regardless of role; administrators cannot see other people's private posts either, see [Visibility and password protection](./visibility.md).
-- A plugin's personal settings (at the bottom of the Profile page) declare their own minimum role, subscriber by default, see [Profile](./profile.md#plugins).
+- A private post can be seen **only by its author**, regardless of role; administrators cannot see other people's private posts either. See [Visibility and password protection](./visibility.md).
+- A plugin's personal settings (at the bottom of the Profile page) declare their own minimum role, which defaults to subscriber; see [Profile](./profile.md#plugins).
 - Admin pages added by plugins also have a minimum role set by the plugin, administrator by default.
 - For the entry points of each page and which menus are shown, see [Admin overview](./admin-overview.md).
 
@@ -76,9 +76,9 @@ According to the UI hint, an empty nickname should fall back to the username. Bu
 
 ### The user group drop-down has only four options {#visitor}
 
-The user group drop-down offers only four options, **Subscriber, Contributor, Editor and Administrator**. **Visitor (visitor) cannot be assigned manually**: it represents a visitor who is not logged in, and is not a role for accounts.
+The user group drop-down offers only four options, **Subscriber, Contributor, Editor and Administrator**. **The `visitor` group cannot be assigned manually**: it represents a visitor who is not logged in, not a role for accounts.
 
-If an account ends up in the `visitor` group, for example because the database was edited directly, it can still log in, but every admin page (including the dashboard and Profile) returns 403; on the "Edit user" page its user group is shown as the first option, "Subscriber", and saving it directly turns it into a subscriber.
+If an account ends up in the `visitor` group, for example because the database was edited directly, it can still log in, but every admin page (including the Console and Profile) returns 403. On the "Edit user" page, its user group is shown as the first option, "Subscriber"; saving the page as is turns the account into a subscriber.
 
 ## User list and deletion
 
@@ -100,5 +100,5 @@ When "Allow registration" (`allowRegister`, default "Not allowed") in **Settings
 
 - The "Username or email" field in the login box accepts either.
 - An account can stay logged in at only one place at a time; a new login invalidates the previous one.
-- When the password is wrong, the login request deliberately waits about 3 seconds before returning, but there is no account lockout mechanism, see [Security hardening](../operations/security.md).
+- When the password is wrong, the login request deliberately waits about 3 seconds before returning, but there is no account lockout mechanism; see [Security hardening](../operations/security.md).
 - If a password is forgotten, the admin panel has no "Forgot password" feature. An administrator can set a new password for other users in "Edit user"; if the administrator's own password is lost, see [Installation](../getting-started/installation.mdx#lost-admin-password).

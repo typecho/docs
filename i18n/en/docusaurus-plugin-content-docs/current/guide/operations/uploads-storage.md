@@ -2,7 +2,7 @@
 title: Attachment Storage Location
 sidebar_position: 6
 translation: machine
-source_commit: fc55a1004f355202effc7d999ebe984ff3ec2cf2
+source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
 ---
 
 # Attachment Storage Location
@@ -16,7 +16,7 @@ Three constants change where attachments are stored and the URL they are served 
 | Constant | Default | What it controls |
 |---|---|---|
 | `__TYPECHO_UPLOAD_DIR__` | `/usr/uploads` | The **relative path** prefix of attachments. It is written into the attachment record (the `path` field) at upload time and never changes afterwards |
-| `__TYPECHO_UPLOAD_ROOT_DIR__` | The site root directory (`__TYPECHO_ROOT_DIR__`) | The directory the relative path starts from, that is, where the files are **actually stored** |
+| `__TYPECHO_UPLOAD_ROOT_DIR__` | The site root directory (`__TYPECHO_ROOT_DIR__`) | The base directory that the relative path is resolved against, that is, where the files are **actually stored** |
 | `__TYPECHO_UPLOAD_URL__` | Site URL | The prefix of the attachment **access URL** |
 
 How they relate (`var/Widget/Upload.php`):

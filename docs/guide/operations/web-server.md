@@ -155,7 +155,7 @@ RewriteRule . /index.php [L]
 
 ## Caddy 2 {#caddy}
 
-Caddy 2 的 `php_fastcgi` 指令已经包含了 Typecho 需要的处理：按 `.php` 拆分路径，文件不存在时回落到 `index.php`，并保留原始的 `REQUEST_URI`。
+Caddy 2 的 `php_fastcgi` 指令已经内置了 Typecho 所需的处理：按 `.php` 拆分路径，文件不存在时回落到 `index.php`，并保留原始的 `REQUEST_URI`。
 
 ```caddy
 blog.example.com {
@@ -220,7 +220,7 @@ blog.example.com {
 |---|---|
 | 重写规则没有生效 | 按上文检查配置，手动打开一个文章地址（如 `/archives/1/`）确认能访问 |
 | Apache 无法在根目录创建 `.htaccess` | 页面会额外提示“程序无法在根目录创建.htaccess文件”，手动创建上面的 `.htaccess` |
-| 服务器访问不到自己的公网地址（容器、内网、只在本机 hosts 中配置的域名、CDN 回源限制等） | 确认规则在浏览器中可用后，勾选“如果你仍然想启用此功能, 请勾选这里”再保存；或者在 `config.inc.php` 中定义 `__TYPECHO_REWRITE__`，见[config.inc.php 与常量](./config-file.md#rewrite) |
+| 服务器无法访问自己的公网地址（容器、内网、只在本机 hosts 中配置的域名、CDN 回源限制等） | 确认规则在浏览器中可用后，勾选“如果你仍然想启用此功能, 请勾选这里”再保存；或者在 `config.inc.php` 中定义 `__TYPECHO_REWRITE__`，见[config.inc.php 与常量](./config-file.md#rewrite) |
 
 ## 常见错误 {#troubleshooting}
 
@@ -257,7 +257,7 @@ PHP 收到的脚本路径不存在。本页的 nginx 配置在 `cgi.fix_pathinfo
 
 `location ~ \.php$` 本身不一定出错：只要 `location /` 里有 `try_files ... /index.php$is_args$args` 回落，登录就正常。
 
-上面这几种错误写法都不会返回 405。如果你遇到的是 **405 Not Allowed**，说明问题不在上述配置，请把 nginx 配置和错误日志发到[支持论坛](https://forum.typecho.org)。
+上面这几种错误配置都不会导致 405。如果你遇到的是 **405 Not Allowed**，说明问题不在上述配置，请把 nginx 配置和错误日志发到[支持论坛](https://forum.typecho.org)。
 
 ### 后台能打开，登录后又回到登录页
 
