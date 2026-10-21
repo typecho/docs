@@ -43,7 +43,7 @@ Typecho 不保存头像图片。后台和前台的头像都来自 [Gravatar](htt
 | 自动保存 | `autoSave` | 关闭 | 打开后，编辑器在停止输入 3 秒后自动保存草稿或修订版本，见[撰写文章](./posts.md#drafts) |
 | 默认允许 | `defaultAllowComment`、`defaultAllowPing`、`defaultAllowFeed` | 全部勾选 | 三个复选框“可以被评论”“可以被引用”“出现在聚合中”，决定新文章的“允许评论”“允许被引用”“允许在聚合中出现”默认是否勾选；通过 XML-RPC 发布时，客户端没有指定评论、引用设置才使用这里的值，“出现在聚合中”总是使用这里的值 |
 
-点击“保存设置”生效。这些设置按用户生效：例如某用户打开 `markdown` 和 `xmlrpcMarkdown` 后，用这个账号通过 `metaWeblog.newPost` 发布的文章，正文带有 `<!--markdown-->` 标记，其他用户不受影响；客户端没有指定评论、引用设置时，“默认允许”中没有勾选的项在通过 XML-RPC 发布的文章中也会关闭（例如取消“可以被引用”、客户端也没有传 `mt_allow_pings` 时，`allowPing` 为 0）。
+点击“保存设置”生效。这些设置按用户生效，不影响其他用户。例如，某用户打开 `markdown` 和 `xmlrpcMarkdown` 后，用这个账号通过 `metaWeblog.newPost` 发布的文章，正文会带有 `<!--markdown-->` 标记。又如，客户端没有指定评论、引用设置时，“默认允许”中没有勾选的项，在通过 XML-RPC 发布的文章中也会关闭：取消“可以被引用”后，如果客户端也没有传 `mt_allow_pings`，`allowPing` 就为 0。
 
 ## 修改密码 {#change-password}
 

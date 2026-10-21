@@ -7,7 +7,7 @@ sidebar_position: 4
 
 `config.inc.php` 位于网站根目录（与 `index.php` 同级），由安装程序生成，保存数据库连接和几个基础路径。Typecho 的许多高级行为都通过在这个文件中**定义常量**来调整，本页列出 1.3 中全部可用的常量。
 
-本页的常量与读取位置对应 Typecho 1.3.0，文件路径相对于 Typecho 程序根目录。
+本页列出的常量及其在源码中的读取位置对应 Typecho 1.3.0，文件路径相对于 Typecho 程序根目录。
 
 ## 安装程序生成的内容
 
@@ -111,7 +111,7 @@ define('__TYPECHO_THEME_WRITEABLE__', false);
 
 | 常量 | 类型 / 默认 | 作用 | 读取位置 |
 |---|---|---|---|
-| `__TYPECHO_REWRITE__` | 布尔，未定义 | 为真时总是生成不带 `index.php` 的地址，不再看后台的“是否使用地址重写功能”设置；后台“永久链接”页中这个选项和重写检测都不再出现。适合服务器访问不到自己、导致重写检测失败的环境。**定义后要确保服务器的重写规则确实生效**，否则所有文章都会 404 | `var/Widget/Options.php:549`、`var/Widget/Options/Permalink.php:167`、`:204` |
+| `__TYPECHO_REWRITE__` | 布尔，未定义 | 为真时总是生成不带 `index.php` 的地址，不再看后台的“是否使用地址重写功能”设置；后台“永久链接”页中这个选项和重写检测都不再出现。适合服务器无法访问自身、导致重写检测失败的环境。**定义后要确保服务器的重写规则确实生效**，否则所有文章都会 404 | `var/Widget/Options.php:549`、`var/Widget/Options/Permalink.php:167`、`:204` |
 | `__TYPECHO_PATHINFO_ENCODING__` | 编码名，未定义 | 服务器传入的路径不是 UTF-8 时，先从这个编码转换成 UTF-8（源码注释说明是针对 IIS），如 `'GBK'` | `var/Typecho/Request.php:353` |
 
 `__TYPECHO_REWRITE__` 为假（`false`）时同样会隐藏后台的选项，此时是否重写由数据库中原有的 `rewrite` 选项决定。
@@ -141,7 +141,7 @@ define('__TYPECHO_THEME_WRITEABLE__', false);
 | 常量 | 类型 / 默认 | 作用 | 读取位置 |
 |---|---|---|---|
 | `__TYPECHO_GRAVATAR_PREFIX__` | 字符串，默认 `https://secure.gravatar.com/avatar/` | 头像服务地址，用于换成 Gravatar 镜像。Typecho 会在后面直接拼接邮箱的 MD5 和 `?s=尺寸` 等参数，所以要以 `/avatar/` 这样的路径结尾 | `var/Typecho/Common.php:853` |
-| `__TYPECHO_SERVICE_URL__` | 字符串，未定义 | Typecho 向**自己**发送异步请求（发送引用通告、插件的异步任务）时使用的地址，会代替协议、域名和端口。适合服务器访问不到自己公网域名的环境，例如 `'http://127.0.0.1'` | `var/Widget/Service.php:203` |
+| `__TYPECHO_SERVICE_URL__` | 字符串，未定义 | Typecho 向**自己**发送异步请求（发送引用通告、插件的异步任务）时使用的地址，会代替协议、域名和端口。适合服务器无法访问自身公网域名的环境，例如 `'http://127.0.0.1'` | `var/Widget/Service.php:203` |
 
 ## 不要自己定义的常量
 

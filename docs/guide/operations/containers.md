@@ -46,12 +46,12 @@ Apache 变体没有 Alpine 版本。
 按镜像中的启动脚本 `/usr/bin/init_typecho`（源码即 `typecho/Dockerfile` 仓库的 `scripts/init.sh`）：
 
 - 网站根目录是 `/app`，并且整个 `/app` 被声明为卷（`VOLUME /app`）；
-- **`config.inc.php` 写在 `/app` 根目录，不在 `/app/usr` 里**。只把卷挂在 `/app/usr` 时，配置文件不在卷中，容器删除重建后就没有了，首页会 302 跳转到 `/install.php`；
+- **`config.inc.php` 写在 `/app` 根目录，不在 `/app/usr` 里**。只把卷挂在 `/app/usr` 时，配置文件不在卷中，容器删除重建后配置文件随之丢失，首页会 302 跳转到 `/install.php`；
 - 程序文件放在镜像的 `/usr/src/typecho`，容器**每次启动**时，`/app` 中**不存在的**项目（`admin`、`install`、`var`、`index.php`、`install.php`，以及 `usr/themes`、`usr/plugins`、`usr/langs`）才会从这里复制过去，已存在的不会被覆盖；`usr/uploads` 不存在时会创建；
 - `TYPECHO_INSTALL=1` 时，每次启动都以 `www-data` 用户运行一次 `php /app/install.php`（`su -p`，环境变量原样保留），即[命令行安装](../getting-started/cli-install.md)。同一个容器重启时只打印两行版本信息，站点照常启动；
 - PHP 错误不显示在页面上，而是输出到标准错误，用 `docker logs` 查看。
 
-关于 Apache 变体的 `.htaccess`：`Dockerfile.apache` 在构建时向 `/app/.htaccess` 写入重写规则，但此前 `/app` 已被声明为卷，按 Docker 文档，声明卷之后在构建步骤中对该目录的改动可能被丢弃，启动脚本也不会复制 `.htaccess`，所以容器的 `/app` 中不一定有这个文件。开启永久链接后如果文章页 404，在 `/app` 下创建[Web 服务器配置](./web-server.md#htaccess)中的 `.htaccess` 即可；Apache 变体使用 `mod_php`，Typecho 在后台开启永久链接时也会尝试自动写入它。
+关于 Apache 变体的 `.htaccess`：`Dockerfile.apache` 在构建时向 `/app/.htaccess` 写入重写规则，但此前 `/app` 已被声明为卷。按 Docker 文档，声明卷之后，构建步骤对该目录的改动可能被丢弃；启动脚本也不会复制 `.htaccess`。因此容器的 `/app` 中不一定有这个文件。开启永久链接后如果文章页 404，在 `/app` 下创建[Web 服务器配置](./web-server.md#htaccess)中的 `.htaccess` 即可；Apache 变体使用 `mod_php`，Typecho 在后台开启永久链接时也会尝试自动写入它。
 
 ### 环境变量
 
@@ -67,7 +67,7 @@ Apache 变体没有 Alpine 版本。
 前五个是镜像自己的全部变量。
 
 :::danger 不要照抄 Docker Hub 说明页
-镜像说明页（2026-04-11 更新）与 1.3.0 镜像的实际行为有五处不符，以下内容**不能信**，请以本页为准：
+镜像说明页（2026-04-11 更新）与 1.3.0 镜像的实际行为有五处不符，以下内容**不可采信**，请以本页为准：
 
 1. **`TYPECHO_DB_NEXT=force`**：会被拒绝，输出 `dbNext: 确认您的配置`。有效值只有 `none`、`delete`、`keep`、`config`；删表重装用 `delete`。
 2. **标签列表和示例**：列的是 `nightly-php7.3`、`nightly-php8.0` 等已经不存在的标签，示例用 `nightly-php7.4`。实际标签见[上文](#标签)。
@@ -134,7 +134,7 @@ docker compose logs typecho   # 第一次启动时会打印“安装成功”和
 
 几点说明：
 
-- **为什么要 `TYPECHO_DB_NEXT: keep`**：`config.inc.php` 写在 `/app` 根目录，而这里只把 `/app/usr` 挂载到了宿主机。`/app` 是镜像声明的匿名卷，容器被删除后重新创建（`docker compose down` 后再 `up`，或者按下文的升级步骤重建匿名卷）时，`/app` 是一个新的空卷，`config.inc.php` 也就没有了。`TYPECHO_INSTALL=1` 加 `TYPECHO_DB_NEXT=keep` 让每次启动都用环境变量重新生成配置；数据库中已有完整数据时，安装程序写好配置后直接结束，不会重建数据表，也不会改动管理员帐号。去掉 `keep` 重建时，会报“安装程序检查到原有数据表已经存在.”并跳到安装页。`keep` 只在数据表已经存在时才起作用，所以不影响空库上的首次安装。
+- **为什么要 `TYPECHO_DB_NEXT: keep`**：`config.inc.php` 写在 `/app` 根目录，而这里只把 `/app/usr` 挂载到了宿主机。`/app` 是镜像声明的匿名卷，容器被删除后重新创建（`docker compose down` 后再 `up`，或者按下文的升级步骤重建匿名卷）时，`/app` 是一个新的空卷，`config.inc.php` 也随之丢失。`TYPECHO_INSTALL=1` 加 `TYPECHO_DB_NEXT=keep` 让每次启动都用环境变量重新生成配置；数据库中已有完整数据时，安装程序写好配置后直接结束，不会重建数据表，也不会改动管理员帐号。去掉 `keep` 重建时，会报“安装程序检查到原有数据表已经存在.”并跳到安装页。`keep` 只在数据表已经存在时才起作用，所以不影响空库上的首次安装。
 - **等数据库就绪**：`depends_on` 加 `condition: service_healthy` 让 Typecho 容器等 MySQL 可以连接后再启动。否则第一次启动时 MySQL 还没准备好，自动安装会失败。
 - 和普通安装一样，MySQL / PostgreSQL 的数据库必须事先存在，这里由 `MYSQL_DATABASE` 创建。
 - 安装成功后管理员密码会以明文出现在 `docker compose logs` 中。可以不设置 `TYPECHO_USER_PASSWORD`，让它随机生成，登录后立即修改。
@@ -158,7 +158,7 @@ docker compose logs typecho   # 第一次启动时会打印“安装成功”和
    ```
 
    只执行 `docker compose up -d` 不够：Compose 重建容器时会沿用旧容器的匿名卷，卷里旧版本的 `admin/`、`var/` 不会被替换，升级实际上不会发生。`--renew-anon-volumes` 让 `/app` 换成新的空卷；
-3. 如果你在 `config.inc.php` 中加过自定义常量（例如 HTTPS、Cookie、附件位置、关闭主题编辑器的设置），或者改过后台目录名，新容器中都没有了，要对照第 1 步的备份重新加上；
+3. 如果你在 `config.inc.php` 中加过自定义常量（例如 HTTPS、Cookie、附件位置、关闭主题编辑器的设置），或者改过后台目录名，这些改动不会保留到新容器中，需要对照第 1 步的备份重新加上；
 4. 用管理员登录后台，会被带到升级页面，按提示完成升级，然后在后台页脚确认版本号。
 
 按这个流程，新容器启动时重新生成配置，登录后台会跳到 `upgrade.php`，执行后版本即为新版本。`TYPECHO_DB_NEXT=keep` 保留的是数据库中的数据，重新生成的 `config.inc.php` 只包含数据库连接等标准内容。漏掉 `TYPECHO_DB_NEXT=keep` 或 `TYPECHO_INSTALL=1` 时，新容器没有 `config.inc.php`，站点会跳到安装页；这时补上变量重建即可，数据库不受影响。
@@ -212,7 +212,7 @@ volumes:
 |---|---|---|
 | `usr/uploads/`（或 `__TYPECHO_UPLOAD_ROOT_DIR__`） | 上传、修改附件 | **必须**挂载可写卷。可以用 `__TYPECHO_UPLOAD_ROOT_DIR__` 指到卷的挂载点，见[附件存储位置](./uploads-storage.md) |
 | SQLite 数据库文件及其所在目录 | 每次写数据库 | 改用 MySQL / PostgreSQL，或把数据库文件放在可写卷中（SQLite 还需要在同一目录创建临时日志文件） |
-| PHP 临时目录（`sys_get_temp_dir()`） | 后台导出备份时先写临时文件；PHP 处理上传时 | 为 `/tmp` 挂载 `tmpfs` |
+| PHP 临时目录（`sys_get_temp_dir()`） | 后台导出备份时（先写入临时文件）；PHP 处理上传时 | 为 `/tmp` 挂载 `tmpfs` |
 | PHP 会话目录（`session.save_path`） | 已登录用户的每个请求都会启动会话（`var/Widget/Init.php`） | 为会话目录挂载 `tmpfs` |
 | 网站根目录的 `config.inc.php` | 仅安装时 | 构建镜像时放进去，或以只读方式挂载一份已有的配置 |
 | 网站根目录的 `.htaccess` | 仅在 Apache `mod_php` 下开关永久链接时 | 构建时放进镜像；或定义 `__TYPECHO_REWRITE__` |
