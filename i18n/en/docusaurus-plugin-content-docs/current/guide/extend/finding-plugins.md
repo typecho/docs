@@ -2,7 +2,7 @@
 title: Finding Plugins and Themes
 sidebar_position: 4
 translation: machine
-source_commit: b560bd74333d461677cbf639d87213a65dd5fde6
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # Finding Plugins and Themes
@@ -36,9 +36,9 @@ All links in the table below are GitHub repository searches sorted by most recen
 
 Typecho 1.3 requires PHP 7.4 or later, and its internal code has also switched to namespaces. Plugins and themes written for versions before 1.3 (1.1, 1.2 or even earlier) do not necessarily work properly on 1.3. Check these points before installing:
 
-1. **Last update time**: the most reliable sign is a repository with commits after the 1.3.0 release (January 2026), or a README / release notes that mention 1.3. Be prepared for projects that have not been updated for many years not to work.
+1. **Last update time**: the most reliable sign is a repository with commits after the 1.3.0 release (January 2026), or a README / release notes that mention 1.3. Expect that a project not updated for many years may not work.
 2. **Declared minimum version**: if the comment at the top of a plugin's `Plugin.php` or a theme's `index.php` contains a version such as `@since 1.3.0`, the author declares that it requires that version or later. Typecho checks `@since` when enabling a plugin and refuses to enable it when the current version is lower. A plugin without `@since` is not checked, which does not mean it is compatible.
-3. **Coding style**: the 1.3 style uses namespaced classes, for example a plugin class with `namespace TypechoPlugin\PluginName;` and `class Plugin implements PluginInterface`, and class names such as `\Widget\Options` and `\Typecho\Widget\Helper\Form`. Code that only uses old underscore class names such as `Typecho_Widget` and `Widget_Abstract_Contents` was written for versions before 1.3, and whether it runs can only be known by trying it.
+3. **Coding style**: the 1.3 style uses namespaced classes, for example a plugin class with `namespace TypechoPlugin\PluginName;` and `class Plugin implements PluginInterface`, and class names such as `\Widget\Options` and `\Typecho\Widget\Helper\Form`. Code that only uses old underscore class names such as `Typecho_Widget` and `Widget_Abstract_Contents` was written for versions before 1.3; you can only find out whether it runs by testing it.
 4. **Issues**: search for "1.3" or "PHP 8" to see whether anyone has reported compatibility problems.
 
 When trying a new plugin or theme:

@@ -2,7 +2,7 @@
 title: Installing and Configuring Plugins
 sidebar_position: 2
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # Installing and Configuring Plugins
@@ -46,13 +46,13 @@ When you disable a plugin, its site-wide settings and all users' personal settin
 A faulty plugin is one of the most common reasons for a sudden 500 in the admin panel or on the front end. To troubleshoot:
 
 1. **Think back to which plugin you most recently enabled or updated**, and disable it in "Console → Plugins";
-2. If the admin panel can no longer be opened, you cannot disable it from the UI. In that case **do not simply delete the plugin directory** (see the warning below); instead disable it through the database as described in [Debugging and troubleshooting: disabling plugins and switching back to the default theme](../operations/debugging.md#isolate). Disabling it this way does not delete its settings, but when you enable the plugin again later, its default values overwrite saved settings with the same names; so first back up the `plugin:<plugin name>` and `_plugin:<plugin name>` rows in the `options` table, and restore the settings from the backup after enabling it;
-3. Turn on debug mode to see the actual error, see [Debugging and troubleshooting](../operations/debugging.md#debug), then contact the plugin author or ask for help on the forum.
+2. If the admin panel can no longer be opened, you cannot disable it from the UI. In that case **do not simply delete the plugin directory** (see the warning below); instead disable it through the database as described in [Debugging and troubleshooting: disabling plugins and switching back to the default theme](../operations/debugging.md#isolate). Disabling it this way does not delete its settings, but when you enable the plugin again later, its default values overwrite saved settings with the same names. So before you enable it again, back up the `plugin:<plugin name>` and `_plugin:<plugin name>` rows in the `options` table, and restore the settings from the backup after enabling it;
+3. Turn on debug mode to see the actual error (see [Debugging and troubleshooting](../operations/debugging.md#debug)), then contact the plugin author or ask for help on the forum.
 
 :::danger Deleting the directory of an enabled plugin can make the whole admin panel return 500
-Many people's first reaction to a problem is to delete the plugin directory, but doing this to an **enabled** plugin has a result that depends on which hooks the plugin attaches its callbacks to:
+When something goes wrong, many people's first reaction is to delete the plugin directory. For an **enabled** plugin, however, what happens next depends on which hooks the plugin has attached its callbacks to:
 
-- When a page reaches a hook registered by the plugin, the plugin's code cannot be found and the page returns 500. If the plugin is attached to a hook that runs on every admin page (for example, the bundled `HelloWorld` is attached to the admin navigation bar), **every admin page returns 500**, including the dashboard, plugin management and post writing, so you cannot even open the plugins page to disable it;
+- When a page reaches a hook registered by the plugin, the plugin's code cannot be found and the page returns 500. If the plugin is attached to a hook that runs on every admin page (for example, the bundled `HelloWorld` is attached to the admin navigation bar), **every admin page returns 500**, including the Console, plugin management and post writing, so you cannot even open the plugins page to disable it;
 - A plugin attached only to front-end or other hooks breaks only the pages that reach those hooks after its directory is deleted. If the plugin management page opens, the plugin's row in the list shows "This plugin file has been damaged or removed unsafely; it is strongly recommended that you disable it"; you can click "Disable" directly.
 
 If you have already deleted the directory and the admin panel returns 500: put the plugin directory back exactly as it was, disable the plugin in the admin panel, and then delete it; if the plugin management page cannot be used and the directory cannot be recovered, reset the plugin list in the database as described in [Debugging and troubleshooting](../operations/debugging.md#isolate).

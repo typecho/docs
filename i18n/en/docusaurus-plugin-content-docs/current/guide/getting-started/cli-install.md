@@ -2,7 +2,7 @@
 title: Command-line and unattended installation
 sidebar_position: 3
 translation: machine
-source_commit: aa7feeba4a3e65c1981bae0a64ca5696e3af4504
+source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
 ---
 
 # Command-line and unattended installation
@@ -19,7 +19,7 @@ When `install.php` detects that it is running under the CLI, it skips the web in
 
 Run the installation as the account the web server runs PHP under (for example `www-data`). The installer's environment check only tests whether the account running the command can write; if you install as root or another account, `usr/uploads`, the SQLite database file and its directory end up owned by that account, and later web uploads and database writes can fail. If switching accounts is impractical, change the owner of these paths to the web server's account after installation.
 
-SQLite, with the minimum configuration. Put the database file outside the site directory, and create its directory beforehand so that the web server's account can write to it (a `.db` file under `usr/` can be downloaded directly; see [Security hardening](../operations/security.md#sensitive-files)):
+SQLite needs the least configuration. Put the database file outside the site directory, create its parent directory beforehand, and make that directory writable by the web server's account (a `.db` file under `usr/` can be downloaded directly; see [Security hardening](../operations/security.md#sensitive-files)):
 
 ```bash
 cd /srv/www/typecho
@@ -87,7 +87,7 @@ The tables below list every environment variable that `install.php` reads in CLI
 | `TYPECHO_DB_SSL_CA` | none | MySQL only: CA certificate path; the file must exist. Setting it also enables server certificate verification |
 | `TYPECHO_DB_SSL_VERIFY` | `off` | `on` or `off`. MySQL: whether to verify the server certificate; PostgreSQL: `on` connects with `sslmode=require` |
 | `TYPECHO_DB_FILE` | A `.db` file with a random name under `usr/` | SQLite only: database file path. You can give an absolute path; a bare file name (such as `site.db`) is placed under `usr/`. An absolute path may only contain letters, digits, `/`, `.`, `_` and `-`; a bare file name may only use letters and digits plus an extension |
-| `TYPECHO_DB_NEXT` | `none` | What to do when the tables already exist, see below |
+| `TYPECHO_DB_NEXT` | `none` | What to do when the tables already exist (see below) |
 | `TYPECHO_DB_DSN` | none | Read, but the 1.3.0 installer **does not use it**: the generated configuration has no DSN entry, so setting it has no effect |
 
 `TYPECHO_DB_NEXT` takes the same values as the hidden field `dbNext` in the web installation:
@@ -148,7 +148,9 @@ TYPECHO_DB_NEXT=keep \
 php install.php
 ```
 
-If the variables you set with `export` the first time are still in the current shell, adding only the missing variable and `TYPECHO_DB_NEXT=keep` also works. The installer validates these variables first (for MySQL / PostgreSQL, a missing `TYPECHO_DB_USER` or `TYPECHO_DB_DATABASE` makes it exit with an error), and the table prefix also comes from the variable, falling back to `typecho_` when unset. Only after validation passes, if `config.inc.php` already exists in the site root, does the installer use the database connection in it instead of reconnecting according to `TYPECHO_DB_HOST` and the other variables.
+If the variables you set with `export` the first time are still in the current shell, you only need to add the missing variable and `TYPECHO_DB_NEXT=keep`.
+
+The installer validates these variables first: for MySQL / PostgreSQL, it exits with an error if `TYPECHO_DB_USER` or `TYPECHO_DB_DATABASE` is missing. The table prefix also comes from `TYPECHO_DB_PREFIX`, and falls back to `typecho_` when it is unset. Once validation passes, if `config.inc.php` already exists in the site root, the installer uses the database connection in that file and does not reconnect using `TYPECHO_DB_HOST` and the other variables.
 
 ## Containers
 
