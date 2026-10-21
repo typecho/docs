@@ -732,6 +732,14 @@ a code {
   border-top: 0;
 }
 
+/* Undo the prose-level `anywhere` so code in a cell breaks only where normal
+   line breaking allows, not at an arbitrary character. */
+.markdown table th code,
+.markdown table td code {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
 /* ---- Admonitions ----------------------------------------------------- */
 
 .alert {
