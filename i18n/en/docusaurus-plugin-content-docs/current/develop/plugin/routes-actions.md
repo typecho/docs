@@ -2,7 +2,7 @@
 title: Routes, Actions and Admin Panels
 sidebar_position: 6
 translation: machine
-source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Routes, Actions and Admin Panels
@@ -137,7 +137,7 @@ Parameters of `addRoute($name, $url, $widget, $action = null, $after = null)`:
 - `$action`: the method called after a match. Typecho first creates an object of the class (which calls its `execute()` method), then calls this method;
 - `$after`: the route after which the new route is inserted. If omitted or not found, the route goes last.
 
-When a request comes in, Typecho matches the routes one by one in routing table order and uses the first one that matches. If the class handling it throws an exception with code 404, Typecho goes on to try the following routes. The default routes include quite a few broad rules (for example `/[slug].html` for pages and `[permalink:string]/[type:alpha]` for comment submission), so a route placed last only gets its turn after every earlier route that matches has returned 404. That is why the example above places the guestbook route after `index` (the home page), so it is checked first.
+When a request comes in, Typecho matches the routes one by one in routing table order and uses the first one that matches. If the class handling it throws an exception with code 404, Typecho goes on to try the following routes. The default routes include quite a few broad rules (for example `/[slug].html` for pages and `[permalink:string]/[type:alpha]` for comment submission). A route placed last is tried only after every earlier route that matches has returned 404. That is why the example above places the guestbook route after `index` (the home page), so it is checked first.
 
 To generate the URL of a route in code:
 
@@ -280,7 +280,7 @@ Helper::addPanel(3, 'Guestbook/panel.php', _t('Messages'), _t('Manage messages')
 
 Parameters of `addPanel($index, $fileName, $title, $subTitle, $level, $hidden = false, $addLink = '')`:
 
-- `$index`: which menu to put it under: `1` Dashboard, `2` Write, `3` Manage, `4` Settings, or a value returned by `addMenu()`;
+- `$index`: which menu to put it under: `1` Console, `2` Write, `3` Manage, `4` Settings, or a value returned by `addMenu()`;
 - `$fileName`: `<plugin directory name>/<file name>`; the file lives in the plugin directory;
 - `$title`: the text shown in the menu; `$subTitle`: the page title;
 - `$level`: the minimum user group: `subscriber`, `contributor`, `editor` or `administrator`. Users without enough permission do not see the menu item and get 403 if they access it directly;
@@ -367,9 +367,9 @@ The panel file is loaded by `admin/extending.php`, so:
 
 ## Checking
 
-After enabling `Guestbook` (the URLs below assume URL rewriting is on and Typecho is installed at the site root; without URL rewriting the address is `/index.php/guestbook/`, and in a subdirectory installation prefix it with the subdirectory):
+The URLs below assume URL rewriting is on and Typecho is installed at the site root. Without URL rewriting, the URL is `/index.php/guestbook/`; in a subdirectory installation, prefix it with the subdirectory. After activating `Guestbook`:
 
 1. Open `/guestbook/`: you see the guestbook and the form. After you submit a message you return to this page, and the message appears below the form;
 2. "Messages" appears in the admin "Manage" menu. Open it to list the message you just posted; select it and delete it, and the top of the page shows "Deleted 1 message(s)";
 3. Log in with a non-administrator account: there is no "Messages" in the menu, and accessing the panel URL directly returns 403;
-4. After you disable the plugin, `/guestbook/` returns 404 and the "Messages" menu item disappears; the table is kept, and the messages are still there when you enable the plugin again.
+4. After you deactivate the plugin, `/guestbook/` returns 404 and the "Messages" menu item disappears; the table is kept, and the messages are still there when you activate the plugin again.

@@ -2,12 +2,12 @@
 title: Your First Theme
 sidebar_position: 2
 translation: machine
-source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Your First Theme
 
-Starting from an empty directory, this page writes, file by file, a minimal theme named `starter` that you can enable in the admin panel and that displays the home page, posts, pages, categories, search and 404. Every file follows the patterns of the `classic-22` theme that ships with Typecho (`usr/themes/classic-22/`); once you are done, you can compare against it and keep extending.
+Starting from an empty directory, this page builds a minimal theme named `starter`, one file at a time. The theme can be activated in the admin panel and displays the home page, posts, pages, categories, search and 404. Every file follows the patterns of the `classic-22` theme that ships with Typecho (`usr/themes/classic-22/`); once you are done, you can compare against it and keep extending.
 
 All PHP code in a theme runs inside a `Widget\Archive` object, and `$this` in a template is that object; see [Theme development overview](./index.md).
 
@@ -84,7 +84,7 @@ Section by section:
 - `if (!defined('__TYPECHO_ROOT_DIR__')) exit;` stops anyone from requesting this PHP file directly. Every template file should start with this line.
 - `$this->need('header.php')` includes another file from the same theme directory; `$this` stays the same inside the included file.
 - `$this->is('index')` checks whether the current page is the home page; when it is not, `archiveTitle()` outputs a heading such as "Posts in category Tech". The array keys are page types; `%s` in the values is replaced with the category name, search keyword and so on; the last two arguments are the prefix and suffix.
-- `while ($this->next())` takes out the posts of the current page one by one; inside the loop, `$this->title()`, `$this->permalink()` and so on all refer to the current post. When there are no posts, `$this->have()` is false.
+- `while ($this->next())` steps through the posts on the current page one by one; inside the loop, `$this->title()`, `$this->permalink()` and so on all refer to the current post. When there are no posts, `$this->have()` is false.
 - `$this->content(_t('Read more'))` outputs the body; when the post contains `<!--more-->`, the list shows only the part before the separator, followed by a "Read more" link.
 - `$this->pageNav()` outputs pagination; the number of posts per page is set by "Posts per page" under "Settings → Reading".
 
@@ -269,7 +269,7 @@ function themeConfig($form)
 }
 ```
 
-With `themeConfig()` in place, a "Theme settings" tab appears at the top of "Dashboard → Appearance" in the admin panel, and the saved value is read in templates with `$this->options->footerText`. For details, see [Theme options](./theme-options.md) and [functions.php callbacks](./functions-php.md).
+With `themeConfig()` in place, a "Theme settings" tab appears at the top of "Console → Appearance" in the admin panel, and the saved value is read in templates with `$this->options->footerText`. For details, see [Theme options](./theme-options.md) and [functions.php callbacks](./functions-php.md).
 
 ## style.css
 
@@ -285,7 +285,7 @@ body { max-width: 720px; margin: 0 auto; padding: 0 16px; font-family: sans-seri
 
 ## Enable and check
 
-1. Go to "Dashboard → Appearance" in the admin panel; "Starter" appears in the list. Click "Activate";
+1. Go to "Console → Appearance" in the admin panel; "Starter" appears in the list. Click "Activate";
 2. Open the following pages one by one and confirm that they all display correctly:
 
 | Page | Example URL | Template used |

@@ -2,12 +2,12 @@
 title: 404 and Error Pages
 sidebar_position: 6
 translation: machine
-source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # 404 and Error Pages
 
-Typecho has two kinds of "error pages": **page not found** (HTTP 404) is output by the theme; **other errors** (the database cannot be reached, a template hits a fatal error, and errors raised by Typecho components such as a rejected comment, with HTTP 403, 500, 503 and so on) are output by Typecho itself, and you can replace that page with your own using `__TYPECHO_EXCEPTION_FILE__`.
+Typecho has two kinds of "error pages": **page not found** (HTTP 404) is output by the theme; **other errors** (database connection failures, fatal template errors, and errors raised by Typecho components such as a rejected comment, with HTTP 403, 500, 503 and so on) are output by Typecho itself, and you can replace that page with your own using `__TYPECHO_EXCEPTION_FILE__`.
 
 ## The theme's 404.php
 

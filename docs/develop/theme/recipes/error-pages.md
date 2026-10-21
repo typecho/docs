@@ -5,7 +5,7 @@ sidebar_position: 6
 
 # 404 与错误页
 
-Typecho 有两种“出错页面”：**找不到页面**（HTTP 404）由主题输出；**其他错误**（数据库连不上、模板出现致命错误，以及评论被拒绝等 Typecho 组件报出的错误，HTTP 403、500、503 等）由 Typecho 自己输出，可以用 `__TYPECHO_EXCEPTION_FILE__` 换成自己的页面。
+Typecho 有两种“出错页面”：**找不到页面**（HTTP 404）由主题输出；**其他错误**（数据库连接失败、模板致命错误，以及评论被拒绝等由 Typecho 组件报出的错误，对应 HTTP 403、500、503 等）由 Typecho 自己输出，可以用 `__TYPECHO_EXCEPTION_FILE__` 换成自己的页面。
 
 ## 主题的 404.php
 

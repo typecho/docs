@@ -2,12 +2,12 @@
 title: HTTP Requests and Async Tasks
 sidebar_position: 8
 translation: machine
-source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # HTTP Requests and Async Tasks
 
-Plugins often need to call external services: pushing notifications, querying an anti-spam API, uploading to object storage. Typecho ships with a curl-based HTTP client, `Typecho\Http\Client`. For requests whose result you do not need to wait for, you can also hand them off to an async task, which runs in another request the site sends to itself, so the visitor's request does not wait for it to complete.
+Plugins often need to call external services: pushing notifications, querying an anti-spam API, uploading to object storage. Typecho ships with a curl-based HTTP client, `Typecho\Http\Client`. For requests whose result you do not need to wait for, you can also hand them off to an async task: the site sends a separate request to itself to run it, so the visitor's request does not wait for it to complete.
 
 ## Typecho\Http\Client
 

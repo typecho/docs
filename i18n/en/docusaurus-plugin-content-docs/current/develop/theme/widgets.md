@@ -2,7 +2,7 @@
 title: Calling Widgets in Templates
 sidebar_position: 11
 translation: machine
-source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Calling Widgets in Templates
@@ -112,7 +112,7 @@ The options of `listPages()` are the same as those of `listCategories()`. For lo
 
 Fields available in `parse()`: `{permalink}`, `{date}`, `{count}` (number of posts), `{year}`, `{month}`, `{day}`.
 
-Posts are grouped by their date formatted with `format`; `type` only decides the link URL, so the two must be paired at the same granularity: `type=year&format=Y` for yearly archives, `type=month&format=Y-m` for monthly archives and `type=day&format=Y-m-d` for daily archives (other notations such as `F j, Y` also work). Changing only `type` still groups by month: a yearly archive then appears once per month, and a daily archive shows the count for the whole month. When `format` does not include the year, the same month of different years is merged into one item.
+Posts are grouped by their date formatted with `format`; `type` only decides the link URL, so the two must be paired at the same granularity: `type=year&format=Y` for yearly archives, `type=month&format=Y-m` for monthly archives and `type=day&format=Y-m-d` for daily archives (other notations such as `F j, Y` also work). If you change `type` but not `format`, posts are still grouped by month: the yearly archive link then appears once per month, and a daily archive link shows the post count for the whole month. When `format` does not include the year, the same month of different years is merged into one item.
 
 ### Statistics: `\Widget\Stat`
 
@@ -134,7 +134,7 @@ See [Tag cloud](./recipes/tag-cloud.md).
 
 ## Fetching the posts of a category
 
-Use `\Widget\Archive` itself, specifying the page type and the category; what you get is the posts in that category:
+Use `\Widget\Archive` directly with a page type and a category to get the posts in that category:
 
 ```php
 <?php \Widget\Archive::allocWithAlias('category-tech', 'pageSize=5&type=category', 'slug=tech')->to($tech); ?>

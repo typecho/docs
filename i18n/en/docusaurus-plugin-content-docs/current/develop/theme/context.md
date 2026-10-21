@@ -2,7 +2,7 @@
 title: Page Context and is()
 sidebar_position: 5
 translation: machine
-source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Page Context and is()
@@ -48,7 +48,7 @@ $this->is(string $archiveType, ?string $archiveSlug = null): bool
 | `archive` | **Pseudo-type**: all list pages except the home page (category, tag, author, date, search, post list page) plus the 404 page | the slug of the 404 page is `404` |
 | `feed` | **Pseudo-type**: true when called from a feed | — |
 
-`single`, `archive` and `feed` are not types of the page itself but groupings by situation:
+`single`, `archive` and `feed` are not page types in their own right but groupings of several page types:
 
 - `single` and `archive` are mutually exclusive: a page is either a single item or a list; the home page is neither.
 - The type of the 404 page is `archive` and its slug is `404`, so check for 404 with `$this->is('archive', '404')`.

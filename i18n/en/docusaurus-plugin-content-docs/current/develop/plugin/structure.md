@@ -2,7 +2,7 @@
 title: Plugin Structure and Lifecycle
 sidebar_position: 3
 translation: machine
-source_commit: fc55a1004f355202effc7d999ebe984ff3ec2cf2
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Plugin Structure and Lifecycle
@@ -116,7 +116,7 @@ Other tags are ignored. `@dependence`, common in old plugins, is no longer read;
 The value of `@since` is compared with the current Typecho version using PHP's `version_compare()`. The plugin can be activated only when the current version is **greater than or equal to** `@since`:
 
 - With `@since 1.3.0`, versions 1.3.0 and later can activate it;
-- If the version requirement is not met when you click "Activate", the plugin is not activated and the page shows "[plugin name] cannot work properly under this version of Typecho" (with the plugin's name in place of [plugin name]);
+- If the version requirement is not met when you click "Activate", the plugin is not activated and the page shows "[plugin name] cannot work properly under this version of Typecho";
 - If an already activated plugin no longer meets the requirement after an upgrade or downgrade, a warning icon appears after its name in the plugin list, but the plugin stays activated;
 - Omitting `@since` means no check.
 
@@ -182,7 +182,7 @@ After you click "Activate", Typecho (`Widget\Plugins\Edit::activate()`) does the
 3. Loads the entry file. If the plugin is already activated, the class does not exist, or there is no `activate()` method, it reports the error "Unable to activate plugin";
 4. Calls `activate()`. The callbacks registered through `Typecho\Plugin::factory()` during the call are recorded;
 5. Writes these callbacks to the `plugins` option (JSON); every later request reads the callbacks from there. `activate()` is called only this once;
-6. Calls `config()` and `personalConfig()`, and stores the default values of the form items as the options `plugin:Name` and `_plugin:Name` respectively (if the plugin defines `configHandle()` / `personalConfigHandle()`, they handle this instead; see [Plugin settings](./settings.md)).
+6. Calls `config()` and `personalConfig()`, and stores the default values of the form items as the options `plugin:Name` and `_plugin:Name` respectively. If the plugin defines `configHandle()` / `personalConfigHandle()`, those methods handle this instead (see [Plugin settings](./settings.md)).
 
 A few consequences follow:
 

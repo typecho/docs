@@ -98,7 +98,7 @@ namespace TypechoPlugin\HelloWorld;
 
 `PluginInterface` 是每个插件都要实现的接口，`Form` 和 `Text` 用来构造设置表单，`Options` 用来读取设置。
 
-`use` 导入后，第 22 行可以直接写 `implements PluginInterface`。**请保持这种写法**：1.3.0 读取插件信息时，只认得 `implements PluginInterface` 或 `implements Typecho_Plugin_Interface` 这两种不带反斜线的写法，写成 `implements \Typecho\Plugin\PluginInterface` 时，后台会把插件当作“即插即用”插件，`activate()` 永远不会被调用，见[插件结构与生命周期](./structure.md#header)。
+`use` 导入后，第 22 行可以直接写 `implements PluginInterface`。**请保持这种写法**：1.3.0 读取插件信息时，只识别 `implements PluginInterface` 和 `implements Typecho_Plugin_Interface` 这两种不带反斜线的写法。如果写成 `implements \Typecho\Plugin\PluginInterface`，后台会把插件当作“即插即用”插件，`activate()` 永远不会被调用。详见[插件结构与生命周期](./structure.md#header)。
 
 ### 第 10–12 行：防止直接访问
 

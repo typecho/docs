@@ -28,7 +28,7 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 | Posts, pages | Post title - Site name |
 | Category | Posts in category Tech - Site name |
 | Tag | Posts tagged PHP - Site name |
-| Search | Posts containing the keyword Typecho - Site name |
+| Search | Posts containing Typecho - Site name |
 | Author | Posts by admin - Site name |
 | Date archive | October 2026 - Site name |
 | 404 | Page not found - Site name |
@@ -36,5 +36,5 @@ source_commit: b0ec365a3ca43910ca5e09209e55c73aa58e7b60
 **How it works**: `archiveTitle($defines, $before, $end)` outputs "`$before` + title + `$end`" only when the current page has an archive title; the home page has no archive title, so nothing is output.
 
 - `$defines` gives a format per page type (`category`, `tag`, `search`, `author`, `date`, `post`, `page`, etc.); `%s` is replaced with the category name, keyword and so on; for types not listed, the title itself is output.
-- `$before` defaults to ` &raquo; ` and `$end` defaults to empty. Above, `$before` is set to empty and `$end` to ` - `, so the title comes first and the site name after it.
+- `$before` defaults to ` &raquo; ` and `$end` defaults to an empty string. Above, `$before` is set to an empty string and `$end` to ` - `, so the title comes first and the site name after it.
 - When you need the title string rather than direct output, use `$this->getArchiveTitle()`.

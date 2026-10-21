@@ -2,7 +2,7 @@
 title: functions.php Callbacks
 sidebar_position: 6
 translation: machine
-source_commit: 14d78c21098657a0c0b6bdd0a0cc8530d6f1e55e
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # functions.php Callbacks
@@ -20,7 +20,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 | Function | When it is called | Purpose |
 |---|---|---|
-| `themeInit($archive)` | On front-end requests, after the page type is resolved and before list queries run and the template is output (single-item content is already loaded); not called when the home page is a template file | Change the parameters of the current page, for example the number of posts per page |
+| `themeInit($archive)` | On front-end requests, after the page type is resolved and before list queries run and the template is output; single-item content is already loaded by then. Not called when the home page is a template file | Change the parameters of the current page, for example the number of posts per page |
 | `themeConfig($form)` | When the "Theme settings" page is opened, and when the theme is activated | Define the theme settings form |
 | `themeConfigHandle($settings, $isInit)` | When the theme settings are saved, and when the theme is activated | Handle saving the settings yourself |
 | `themeFields($layout)` | When the editor builds its custom fields area | Predefine custom fields for posts and pages |
@@ -81,7 +81,7 @@ function themeConfigHandle(array $settings, bool $isInit)
 }
 ```
 
-When the theme is activated, `$settings` holds the default value of each field. If you use it to write the settings somewhere else (for example to generate a CSS file), you are responsible for storing them yourself, and these values cannot be read from `$this->options` either.
+When the theme is activated, `$settings` holds the default value of each field. If you use it to write the settings somewhere else (for example, to generate a CSS file), the theme is responsible for storing them, and the values will not be available in `$this->options`.
 
 For the kinds of form elements and how to read them, see [Theme options](./theme-options.md).
 

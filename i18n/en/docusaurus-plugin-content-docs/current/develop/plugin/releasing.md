@@ -2,12 +2,12 @@
 title: Releasing a Plugin
 sidebar_position: 10
 translation: machine
-source_commit: fc55a1004f355202effc7d999ebe984ff3ec2cf2
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Releasing a Plugin
 
-Typecho has no maintained official plugin directory; authors publish their plugins themselves. The common approach is to host them on GitHub: users download an archive from the repository or a Release, extract it and upload it to `usr/plugins/`.
+Typecho currently has no officially maintained plugin directory; authors publish their plugins themselves. The common approach is to host them on GitHub: users download an archive from the repository or a Release, extract it and upload it to `usr/plugins/`.
 
 ## Pre-release checklist
 
@@ -43,13 +43,13 @@ The directory name is the plugin name: Typecho uses it to find the plugin class 
 git archive --format=zip --prefix=Guestbook/ -o Guestbook-1.0.0.zip HEAD
 ```
 
-Do not put development files (test scripts, front-end sources, `node_modules`, etc.) in the archive. If you use third-party PHP libraries: Typecho does not use Composer, so you need to put the library files into the plugin directory and `require` them yourself.
+Do not put development files (test scripts, front-end sources, `node_modules`, etc.) in the archive. If your plugin uses third-party PHP libraries, put the library files into the plugin directory and `require` them yourself, since Typecho does not use Composer.
 
 For a single-file plugin (`usr/plugins/Name.php`), just release that one file.
 
 ## Releasing on GitHub
 
-1. In the repository's README, state: the plugin name, what it does, the compatible Typecho and PHP versions, required PHP extensions, how to install it (upload to `usr/plugins/` and activate it under "Dashboard → Plugins"), what the settings do, and the license.
+1. In the repository's README, state: the plugin name, what it does, the compatible Typecho and PHP versions, required PHP extensions, how to install it (upload to `usr/plugins/` and activate it under "Console → Plugins"), what the settings do, and the license.
 2. Add the topic `typecho-plugin` to the repository. It is the most widely used topic for Typecho plugins on GitHub, and users search by it in [Finding Plugins and Themes](../../guide/extend/finding-plugins.md).
 3. Create a Release for each version, attach the archive packaged as described above, and list the changes in the notes.
 4. Post an introduction of the plugin on the [Typecho forum](https://forum.typecho.org/) with the repository URL.

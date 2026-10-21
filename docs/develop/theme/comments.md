@@ -114,7 +114,7 @@ function threadedComments($comments, $options)
 
 - `header.php` 中必须调用 `$this->header()`，并且不能屏蔽 `commentReply`（见[头部输出 header()](./header.md)）；
 - 表单外层元素的 `id` 必须是 `$this->respondId()`；
-- 浏览器禁用 JavaScript 时，“回复”链接会带上 `?replyTo=评论ID` 打开页面，`$this->commentUrl()` 随之带上父评论参数，回复对象不会丢失。但站长开启了“开启反垃圾保护”（安装后默认开启）时，表单缺少只能由脚本加入的校验字段，提交会被退回，所以这时没有 JavaScript 仍然无法提交评论，见下文“评论表单”。
+- 浏览器禁用 JavaScript 时，“回复”链接会带上 `?replyTo=评论ID` 打开页面，`$this->commentUrl()` 随之带上父评论参数，回复对象不会丢失。但如果站点开启了“开启反垃圾保护”（安装后默认开启），表单还需要一个只能由脚本加入的校验字段。没有 JavaScript 时缺少这个字段，提交会被拒绝，因此仍然无法发表评论。详见下文“评论表单”。
 
 ## 评论表单
 
@@ -129,7 +129,7 @@ function threadedComments($comments, $options)
 
 `Widget\Archive` 有一个 `pings()` 方法，本应返回只含引用（Trackback、Pingback）的列表。但 **1.3.0 中调用 `$this->pings()` 会导致致命错误**：`Widget\Comments\Ping` 类的 `___parentContent()` 返回类型与父类不兼容，PHP 加载这个类时就会报错，页面在调用处中断。所以不要使用 `pings()` 和 `listPings()`，`functions.php` 中的 `singlePing` 回调也不会生效。
 
-需要把引用和评论分开显示时，从 `comments()` 中按 `type` 筛选：在 `threadedComments` 回调的开头跳过引用，再单独循环一遍输出引用。
+需要把引用和评论分开显示时，从 `comments()` 中按 `type` 筛选：在 `threadedComments` 回调的开头跳过引用，再用另一个循环输出引用。
 
 ```php title="usr/themes/starter/functions.php"
 function threadedComments($comments, $options)

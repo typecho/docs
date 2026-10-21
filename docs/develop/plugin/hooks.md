@@ -83,7 +83,7 @@ Typecho 在类中触发钩子有两种写法，决定了钩子挂在哪个类上
 \Typecho\Plugin::factory('Widget\Archive')->call('beforeRender', $this);
 ```
 
-依次调用所有回调，参数原样传入。`call()` 返回**最后一个**回调的返回值；没有回调时返回 `null`。大多数 `call` 钩子不使用返回值，适合在某件事发生前后做点什么，例如 `finishPublish`（文章发布之后）。
+依次调用所有回调，参数原样传入。`call()` 返回**最后一个**回调的返回值；没有回调时返回 `null`。大多数 `call` 钩子不使用返回值，适合在某件事发生前后执行自己的逻辑，例如 `finishPublish`（文章发布之后）。
 
 ```php
 public static function beforeRender(\Widget\Archive $archive)
@@ -109,7 +109,7 @@ public static function contentEx(string $content, \Widget\Base\Contents $widget)
 
 回调忘记 `return` 时，过滤结果变成 `null`，页面上的正文会消失。
 
-回调实际收到的参数是“当前值、其余参数、当前值”，最后多出的一个参数一般用不到，声明方法时可以不写。
+回调实际收到的参数依次是当前值、其余参数，最后再重复一次当前值。末尾这个重复的参数一般用不到，声明方法时可以省略。
 
 ### trigger：接管
 
@@ -264,7 +264,7 @@ class Plugin implements PluginInterface
 
 插入正文的文字会一起出现在文章页的 `description` 元信息中，因为它取自过滤后的正文。订阅源中的文章不会带上这段文字：订阅源取出文章时 `is('single')` 为假，`prepend()` 不插入。不做这个判断的内容过滤会同时影响订阅源，见[常见插件模式](./patterns.md#content-filter)。
 
-`prepend()` 中用 `is('single')` 加 `type` 判断文章页，而不是 `is('post')`：文章页的正文在 Typecho 生成页面描述时就已经输出并缓存，那时页面类型还没有确定为 `post`，`is('post')` 返回 `false`，`is('single')` 已经是 `true`。
+`prepend()` 中用 `is('single')` 加 `type` 判断文章页，而不是 `is('post')`。原因是 Typecho 在生成页面描述时，就已经输出并缓存了文章页的正文。那时页面类型还没有确定为 `post`：`is('post')` 返回 `false`，而 `is('single')` 已经是 `true`。
 
 `count()` 读取的是 `$widget->text`（未经处理的原文），而不是 `$widget->content`：`content` 正是 `contentEx` 正在生成的值，在 `contentEx` 的回调中读取它得到的是空值（PHP 不会为同一个属性递归调用 `__get()`）。
 

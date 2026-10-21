@@ -2,20 +2,20 @@
 title: Plugin Development Overview
 sidebar_position: 1
 translation: machine
-source_commit: fc55a1004f355202effc7d999ebe984ff3ec2cf2
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Plugin Development Overview
 
-A plugin is a piece of PHP code placed under `usr/plugins/`. Once you activate it in the admin panel under "Dashboard → Plugins", it can change or extend almost any behavior of Typecho without modifying Typecho's own files. The theme decides what the pages look like; plugins decide what the site can do.
+A plugin is a piece of PHP code placed under `usr/plugins/`. Once you activate it in the admin panel under "Console → Plugins", it can change or extend almost any behavior of Typecho without modifying Typecho's own files. The theme decides what the pages look like; plugins decide what the site can do.
 
 ## What plugins can do
 
 | What you want to do | What to use | See |
 |---|---|---|
 | Insert content before or after page output, modify the body, title or excerpt | Filter hooks, such as `contentEx` | [Using hooks](./hooks.md), [Common plugin patterns](./patterns.md#content-filter) |
-| Do something when a post is published, a comment is submitted, or a user logs in | Notification hooks, such as `finishPublish`, `finishComment`, `loginSucceed` | [Hook list](../reference/hooks.md) |
-| Take over a Typecho feature: the editor, attachment storage, Markdown parsing, password verification | trigger hooks, such as `richEditor`, `uploadHandle` | [Common plugin patterns](./patterns.md) |
+| Run your own logic when a post is published, a comment is submitted, or a user logs in | Notification hooks, such as `finishPublish`, `finishComment`, `loginSucceed` | [Hook list](../reference/hooks.md) |
+| Take over a Typecho feature: the editor, attachment storage, Markdown parsing, password verification | Trigger hooks, such as `richEditor`, `uploadHandle` | [Common plugin patterns](./patterns.md) |
 | Provide new methods and properties to templates | Dynamic hooks `call<Method>`, `___<prop>` | [Using hooks](./hooks.md#dynamic-hooks) |
 | Let administrators or users configure the plugin | `config()`, `personalConfig()` | [Plugin settings](./settings.md) |
 | Add front-end pages | Routes | [Routes, actions and admin panels](./routes-actions.md) |

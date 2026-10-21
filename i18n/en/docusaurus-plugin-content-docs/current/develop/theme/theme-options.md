@@ -2,12 +2,12 @@
 title: Theme Options
 sidebar_position: 8
 translation: machine
-source_commit: 865a40f1e805668ce7e5b8bfd8fa66c9a718b2d1
+source_commit: 715b32e6e39938f9f8c621d5604038433f977c15
 ---
 
 # Theme Options
 
-A theme can provide its own options so that site owners can adjust the logo, color scheme, sidebar and so on without changing code. Options are defined in `themeConfig()` in `functions.php`, site owners fill them in under "Dashboard → Appearance → Theme settings" in the admin panel, and templates read them through `$this->options`.
+A theme can provide its own options so that site owners can adjust the logo, color scheme, sidebar and so on without changing code. Options are defined in `themeConfig()` in `functions.php`, site owners fill them in under "Console → Appearance → Theme settings" in the admin panel, and templates read them through `$this->options`.
 
 ## Defining the settings form
 
@@ -110,7 +110,7 @@ Theme options are merged into the site settings, so read them with `$this->optio
 <?php endif; ?>
 ```
 
-- `$this->options->logoUrl` returns the value, and `$this->options->logoUrl()` outputs it directly. Direct output **does no HTML escaping**: what the user entered goes into the page as is. When the value goes into an HTML attribute and you do not want the site owner to be able to write HTML, use `echo htmlspecialchars($this->options->logoUrl);`.
+- `$this->options->logoUrl` returns the value, and `$this->options->logoUrl()` outputs it directly. Direct output **does no HTML escaping**: what the user entered goes into the page as is. When the value goes into an HTML attribute and the site owner should not be able to inject HTML, use `echo htmlspecialchars($this->options->logoUrl);`.
 - The value of a `Checkbox` is an array; check it with `in_array()`. It is `null` when it has never been saved, so check with `!empty()` first.
 - In functions in `functions.php`, you can read the same values with `\Widget\Options::alloc()->logoUrl`.
 
