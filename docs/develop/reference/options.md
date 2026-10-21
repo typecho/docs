@@ -33,16 +33,16 @@ sidebar_position: 5
 |---|---|
 | `adminStaticUrl(string $type, ?string $file = null, bool $return = false)` | 获取或输出后台静态文件路径 |
 | `adminUrl(?string $path = null, bool $return = false)` | 输出后台路径 |
-| `commentsHTMLTagAllowed()` | 编码输出允许出现在评论中的html标签 |
-| `execute()` | 执行函数 |
-| `index(?string $path = null)` | 输出解析地址 |
-| `personalPlugin($pluginName)` | 获取个人插件系统参数 |
-| `plugin($pluginName)` | 获取插件系统参数 |
+| `commentsHTMLTagAllowed()` | 编码后输出评论中允许使用的 HTML 标签 |
+| `execute()` | 执行组件 |
+| `index(?string $path = null)` | 输出页面链接的地址，见下文 |
+| `personalPlugin($pluginName)` | 获取当前用户的插件个人设置 |
+| `plugin($pluginName)` | 获取插件的全站设置 |
 | `pluginDir(?string $plugin = null): string` | 获取插件目录 |
 | `pluginUrl(?string $path = null)` | 输出插件路径 |
 | `siteUrl(?string $path = null)` | 输出网站路径 |
-| `themeFile(string $theme, string $file = ''): string` | 获取皮肤文件 |
-| `themeUrl(?string $path = null, ?string $theme = null)` | 输出模板路径 |
+| `themeFile(string $theme, string $file = ''): string` | 获取主题文件的绝对路径 |
+| `themeUrl(?string $path = null, ?string $theme = null)` | 输出主题路径 |
 
 - `siteUrl($path)`、`index($path)`、`themeUrl($path)`、`pluginUrl($path)` **直接输出**拼接好的地址；`themeUrl($path, $theme)` 给出第二个参数时改为**返回**另一个主题目录中的文件地址。
 - `index($path)` 与 `siteUrl($path)` 的区别：没有开启地址重写时，`index` 带 `index.php`（`https://example.com/index.php/archives/1/`），生成指向页面的链接应该用它；`siteUrl` 总是站点根地址，适合静态文件。
@@ -55,38 +55,38 @@ sidebar_position: 5
 | 属性 | 类型 | 说明 |
 |---|---|---|
 | `actionTable` | `array` | 已注册的 Action（插件通过 `Helper::addAction()` 添加） |
-| `adminUrl` | `string` | 获取后台路径 |
+| `adminUrl` | `string` | 后台路径 |
 | `allowedAttachmentTypes` | `array` | 允许上传的文件类型 |
-| `commentsFeedAtomUrl` | `string` | 评论ATOM1.0聚合 |
-| `commentsFeedRssUrl` | `string` | 评论RSS1.0聚合 |
-| `commentsFeedUrl` | `string` | 评论RSS2.0聚合 |
-| `contentType` | `string` | 获取格式 |
-| `feedAtomUrl` | `string` | ATOM1.O |
-| `feedRssUrl` | `string` | RSS1.0 |
-| `feedUrl` | `string` | RSS2.0 |
-| `gmtTime` | `int` | 获取GMT标准时间 |
-| `index` | `string` | 获取解析路径前缀 |
-| `loginAction` | `string` | 获取登录提交地址 |
-| `loginUrl` | `string` | 获取登录地址 |
-| `logoutUrl` | `string` | 获取登出地址 |
-| `missingTheme` | `?string` | 动态判断皮肤目录 |
-| `originalSiteUrl` | `string` | 实际使用的站点地址：设置中保存的站点地址；定义了 `__TYPECHO_SITE_URL__` 时为该常量，开启了 `__TYPECHO_DYNAMIC_SITE_URL__` 时为 `rootUrl`。`siteUrl` 由它规范化得到，并在 HTTPS 请求中把 `http://` 换成 `https://` |
+| `commentsFeedAtomUrl` | `string` | 评论的 Atom 1.0 订阅地址 |
+| `commentsFeedRssUrl` | `string` | 评论的 RSS 1.0 订阅地址 |
+| `commentsFeedUrl` | `string` | 评论的 RSS 2.0 订阅地址 |
+| `contentType` | `string` | 内容类型 |
+| `feedAtomUrl` | `string` | Atom 1.0 订阅地址 |
+| `feedRssUrl` | `string` | RSS 1.0 订阅地址 |
+| `feedUrl` | `string` | RSS 2.0 订阅地址 |
+| `gmtTime` | `int` | GMT 标准时间 |
+| `index` | `string` | 页面链接的地址前缀（没有开启地址重写时带 `index.php`） |
+| `loginAction` | `string` | 登录表单的提交地址 |
+| `loginUrl` | `string` | 登录地址 |
+| `logoutUrl` | `string` | 登出地址 |
+| `missingTheme` | `?string` | 设置中的主题目录不存在时为该目录名，否则为 `null` |
+| `originalSiteUrl` | `string` | 实际使用的站点地址：默认为设置中保存的站点地址；定义了 `__TYPECHO_SITE_URL__` 时为该常量，开启了 `__TYPECHO_DYNAMIC_SITE_URL__` 时为 `rootUrl`。`siteUrl` 由它规范化得到，并在 HTTPS 请求中把 `http://` 换成 `https://` |
 | `panelTable` | `array` | 插件注册的后台面板 |
 | `pluginDir` | `string` | 插件目录的绝对路径 |
 | `plugins` | `array` | 已启用插件及其注册的钩子 |
-| `pluginUrl` | `string` | 获取插件路径 |
-| `profileUrl` | `string` | 获取个人档案地址 |
+| `pluginUrl` | `string` | 插件路径 |
+| `profileUrl` | `string` | 个人档案地址 |
 | `registerAction` | `string` | 注册表单的提交地址，带安全令牌 |
-| `registerUrl` | `string` | 获取注册地址 |
-| `rootUrl` | `string` | 动态获取根目录 |
+| `registerUrl` | `string` | 注册地址 |
+| `rootUrl` | `string` | 站点根地址：定义了 `__TYPECHO_ROOT_URL__` 时为该常量，否则由当前请求得出 |
 | `routingTable` | `array` | 解析后的路由表 |
-| `serverTimezone` | `int` | 获取系统时区 |
+| `serverTimezone` | `int` | 服务器时区 |
 | `siteDomain` | `string` | 站点地址中的主机名 |
 | `siteUrl` | `string` | 站点地址（带末尾 `/`） |
 | `software` | `string` | 软件名称 |
 | `theme` | `string` | 当前主题目录名；目录不存在时为 `default` |
-| `themeUrl` | `string` | 获取模板路径 |
-| `time` | `int` | 获取时间 |
+| `themeUrl` | `string` | 当前主题的路径 |
+| `time` | `int` | 当前时间 |
 | `version` | `string` | 软件版本 |
 | `xmlRpcUrl` | `string` | xmlrpc api地址 |
 

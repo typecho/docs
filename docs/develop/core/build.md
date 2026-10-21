@@ -81,7 +81,7 @@ npx --yes --package=sass sass --style=compressed --no-source-map \
 | `make langs` | 克隆 `typecho/languages`，用 `msgfmt` 把每个 `.po` 编译为 `.mo`，复制到 `usr/langs/`（会先删除整个 `usr/langs/`）。需要安装 gettext |
 | `make update` | 把 GitHub 上 `typecho/typecho` 的最新代码浅克隆到 `tools/build/`，用 yuicompressor 压缩其中的 CSS 和 `admin/js/` 下的 JS（需要 Java），并对 PHP 文件做语法检查 |
 | `make package` | 在 `update` 的结果上删除开发文件，打包成 `build.tar.gz` |
-| `make install`、`make upgrade`、`make theme` | 用 `update` 的结果覆盖上一级目录中的文件（全部、程序文件、默认主题） |
+| `make install`、`make upgrade`、`make theme` | 用 `update` 的结果覆盖上一级目录中的对应内容：`install` 覆盖全部文件，`upgrade` 覆盖程序文件，`theme` 覆盖默认主题 |
 | `make all` | `update` + `package` + `clear` |
 | `make clear` | 删除 `tools/build/` |
 

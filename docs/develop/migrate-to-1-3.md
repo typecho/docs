@@ -93,7 +93,7 @@ PHP Fatal error: Declaration of MyContents::___permalink() must be compatible wi
 
 - 子类中重新声明的属性，类型要与父类相同（例如 `protected \Widget\Options $options;`），或者干脆不要重新声明；
 - 覆盖的方法要带上与父类相同或兼容的参数类型和返回类型，例如 `protected function ___permalink(): string`；
-- 父类的类型化属性在赋值之前不能读取，否则抛出 `must not be accessed before initialization`。例如在首页上读取 `Widget\Archive` 的归档缩略名就会这样，见[页面上下文与 is()](./theme/context.md)。
+- 父类的类型化属性在赋值之前不能读取，否则会抛出 `must not be accessed before initialization`，例如在首页读取 `Widget\Archive` 的归档缩略名时。详见[页面上下文与 is()](./theme/context.md)。
 
 ## 默认主题移除了 archive.php
 

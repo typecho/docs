@@ -22,41 +22,41 @@ sidebar_position: 2
 | `attachments(int $limit = 0, int $offset = 0): Related` | 获取附件对象 |
 | `comments(): Archive` | 获取评论归档对象 |
 | `content($more = null)` | 输出文章内容 |
-| `execute()` | 执行函数 |
+| `execute()` | 执行组件 |
 | `footer()` | 支持页脚自定义 |
 | `getArchiveDescription(): ?string` | 返回归档描述（分类描述、文章摘要，首页和搜索页为站点描述） |
 | `getArchiveFeedAtomUrl(): string` | 返回当前页面的 Atom 订阅地址 |
 | `getArchiveFeedRssUrl(): string` | 返回当前页面的 RSS 1.0 订阅地址 |
 | `getArchiveFeedUrl(): string` | 返回当前页面的 RSS 2.0 订阅地址 |
 | `getArchiveKeywords(): ?string` | 返回归档关键词（文章标签、分类名等） |
-| `getArchiveSlug(): ?string` | 返回归档缩略名。首页上调用会抛出错误，见上文 |
+| `getArchiveSlug(): ?string` | 返回归档缩略名。在首页调用会抛出错误，见下文 |
 | `getArchiveTitle(): ?string` | 返回归档标题，首页为 `null` |
 | `getArchiveType(): ?string` | 返回页面类型，取值见[页面上下文与 is()](../theme/context.md) |
 | `getArchiveUrl(): ?string` | 返回当前页面地址 |
 | `getCountSql(): ?Query` | 返回列表计数用的查询对象 |
 | `getCurrentPage(): int` | 返回当前页码 |
 | `getDescription(): ?string` | **已弃用**。 |
-| `getFeed()` | **已弃用**。Get the value of feed |
+| `getFeed()` | **已弃用**。 |
 | `getFeedAtomUrl(): string` | **已弃用**。 |
 | `getFeedRssUrl(): string` | **已弃用**。 |
 | `getFeedUrl(): string` | **已弃用**。 |
 | `getKeywords(): ?string` | **已弃用**。 |
 | `getThemeDir(): ?string` | 返回当前主题目录的绝对路径 |
 | `getThemeFile(): ?string` | 返回将要（或正在）输出的模板文件名 |
-| `getTotal(): int` | 返回列表的文章总数。只能在列表页调用，见上文 |
+| `getTotal(): int` | 返回列表的文章总数。只能在列表页调用，见下文 |
 | `getTotalPage(): int` | 获取页数 |
 | `header(?string $rule = null)` | 输出头部元数据 |
 | `is(string $archiveType, ?string $archiveSlug = null): bool` | 判断归档类型和名称 |
 | `keywords(string $split = ',', string $default = '')` | 输出关键字 |
-| `need(string $fileName)` | 获取主题文件 |
-| `pageLink(string $word = '&laquo; Previous Entries', string $page = 'prev')` | 前一页 |
+| `need(string $fileName)` | 引入主题文件 |
+| `pageLink(string $word = '&laquo; Previous Entries', string $page = 'prev')` | 输出上一页或下一页的链接（由 `$page` 决定） |
 | `pageNav(string $prev = '&laquo;', string $next = '&raquo;', int $splitPage = 3, string $splitWord = '...', $template = '')` | 输出分页 |
 | `pings(): Ping` | 获取回响归档对象 |
 | `query($select)` | 提交查询 |
 | `related(int $limit = 5, ?string $type = null): Contents` | 获取关联内容组件 |
-| `remember(string $cookieName, bool $return = false)` | 输出cookie记忆别名 |
+| `remember(string $cookieName, bool $return = false)` | 输出 Cookie 中记住的评论者称呼、邮箱或网址 |
 | `render()` | 输出视图 |
-| `select(...$fields): Query` | 重载select |
+| `select(...$fields): Query` | 返回内容查询对象 |
 | `setArchiveDescription(string $archiveDescription)` | 设置归档描述 |
 | `setArchiveFeedAtomUrl(string $archiveFeedAtomUrl)` | 设置 Atom 订阅地址 |
 | `setArchiveFeedRssUrl(string $archiveFeedRssUrl)` | 设置 RSS 1.0 订阅地址 |
@@ -67,7 +67,7 @@ sidebar_position: 2
 | `setArchiveType(string $archiveType)` | 设置页面类型 |
 | `setArchiveUrl(?string $archiveUrl): void` | 设置当前页面地址 |
 | `setCountSql($countSql)` | 设置计数查询 |
-| `setFeed($feed)` | **已弃用**。Set the value of feed |
+| `setFeed($feed)` | **已弃用**。 |
 | `setThemeDir(string $themeDir)` | 设置主题目录 |
 | `setThemeFile(string $themeFile)` | 指定要输出的模板文件 |
 | `setTotal(int $total)` | 设置文章总数 |

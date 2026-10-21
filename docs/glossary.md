@@ -7,13 +7,13 @@ slug: /glossary
 | 中文 | English | 说明 |
 |---|---|---|
 | 文章 | post | `contents.type = post` |
-| 独立页面 | page | 后台菜单“独立页面”；可成树 |
+| 独立页面 | page | 后台菜单名为“独立页面”；可以组成树形层级 |
 | 附件 / 文件 | attachment | 后台菜单叫“文件” |
 | 草稿 | draft | `post_draft` / `page_draft` |
-| 修订版本 | revision | 1.3 新类型 |
+| 修订版本 | revision | 1.3 新增的类型 |
 | 分类 / 标签 | category / tag | 统称 metas，不译作“元数据” |
 | 评论 / 引用通告 / Pingback | comment / trackback / pingback | Pingback 不译 |
-| 控制台 | dashboard | 后台首页 |
+| 控制台 | Console | 后台首页 |
 | 永久链接 | permalink | |
 | 地址重写（伪静态） | URL rewriting | 首次出现时括注“伪静态” |
 | 主题 / 模板 | theme / template | 模板 = 主题中的单个 PHP 文件 |

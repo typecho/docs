@@ -14,7 +14,7 @@ Typecho 1.2 起改用带命名空间的类名（如 `\Widget\Contents\Post\Recen
 1. **显式别名**：类名在下面的别名表中，直接对应到表中的新类。
 2. **`Typecho_`、`Widget_`、`IXR_` 开头的下划线类名**：把 `_` 换成 `\`，例如 `Widget_Contents_Post_Recent` → `\Widget\Contents\Post\Recent`，`Typecho_Widget_Helper_Form_Element_Text` → `\Typecho\Widget\Helper\Form\Element\Text`。
 3. **其他带下划线的类名**视为插件类：`插件名_类名` → `\TypechoPlugin\插件名\类名`，文件为 `usr/plugins/插件名/类名.php`。例如旧式插件的 `HelloWorld_Plugin` 对应 `\TypechoPlugin\HelloWorld\Plugin`。
-4. 反过来，带命名空间的新类名也会自动得到下划线形式的别名，所以新旧两种写法指向同一个类，`instanceof` 判断和继承都互相通用。
+4. 反过来，带命名空间的新类名也会自动得到下划线形式的别名。因此新旧两种写法指向同一个类，`instanceof` 判断和继承用哪种写法都可以。
 
 插件钩子的句柄名同样做了归一：`\Typecho\Plugin::factory('Widget\Archive')` 与 `factory('Widget_Archive')` 是同一个句柄；显式别名表中的类以旧名作为句柄名（例如 `\Widget\Base\Contents` 的句柄是 `Widget_Abstract_Contents`）。
 
@@ -49,7 +49,7 @@ Typecho 1.2 起改用带命名空间的类名（如 `\Widget\Contents\Post\Recen
 
 ## 无法再使用的旧类名
 
-Typecho 1.1 的类中，下面这些在 1.3.0 中无法解析：
+下面这些 Typecho 1.1 的类名在 1.3.0 中无法解析：
 
 | 旧类名 | 说明 |
 |---|---|
@@ -58,7 +58,7 @@ Typecho 1.1 的类中，下面这些在 1.3.0 中无法解析：
 | `Typecho_Http_Client_Adapter`、`Typecho_Http_Client_Adapter_Curl`、`Typecho_Http_Client_Adapter_Socket` | HTTP 客户端不再区分适配器，统一为 `\Typecho\Http\Client` |
 | `Widget_Comments_Ping` | 对应的 `\Widget\Comments\Ping` 在 1.3.0 中加载时出现致命错误（`___parentContent()` 的返回类型与父类不兼容），见[评论模板](../theme/comments.md#pings) |
 
-能解析不代表行为完全相同：类名可以对应上，但方法签名、返回值可能已经改变，见[主题与插件迁移到 1.3](../migrate-to-1-3.md)。
+类名能够解析，不代表行为完全相同：方法签名、返回值可能已经改变，见[主题与插件迁移到 1.3](../migrate-to-1-3.md)。
 
 ## 旧类名一览
 

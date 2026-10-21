@@ -101,7 +101,7 @@ pathInfo = /archives/999/
 - 显示 404 页面或错误页（异常处理函数最后调用了 `exit`）；
 - Widget 调用了 `redirect()`、`goBack()`、`throwJson()` 等响应方法，这些方法输出后直接 `exit`，见 [Request、Response 与常用工具](./request-response.md#response)。大多数 `/action/*` 请求以这类方法结束，因此不执行 `end`；但 Action 正常返回时（例如用 GET 请求 `/action/upload`，只设置 403 状态后返回），`end` 照常执行。
 
-需要在每个请求结束时做事，不能只依赖 `index.php:end`。
+如果需要在每个请求结束时执行某些操作，不能只依赖 `index.php:end`。
 
 ## 7. 输出
 

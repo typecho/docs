@@ -164,7 +164,7 @@ $pairs  = $posts->toArray(['cid', 'title']);        // [['cid' => 1, 'title' => 
 | `$this->user` | `Widget\User::alloc()` |
 | `$this->security` | `Widget\Security::alloc()` |
 
-子类可以重写 `initComponents(int &$components)` 少准备一些。参数是 `INIT_DB`、`INIT_USER`、`INIT_SECURITY`、`INIT_OPTIONS` 的按位组合，默认 `INIT_ALL`；`INIT_NONE` 表示都不要，这时连 `$this->db` 也不设置。只要不是 `INIT_NONE`，`$this->db` 总会被设置。
+子类可以重写 `initComponents(int &$components)`，只准备需要的部分。参数是 `INIT_DB`、`INIT_USER`、`INIT_SECURITY`、`INIT_OPTIONS` 的按位组合，默认 `INIT_ALL`；`INIT_NONE` 表示都不要，这时连 `$this->db` 也不设置。只要不是 `INIT_NONE`，`$this->db` 总会被设置。
 
 之后 `init()` 调用 `initParameter(Config $parameter)`，子类可以在这里给 `$this->parameter` 设置默认值，或根据参数做准备。`Widget\Options` 同时用了这两个方法，因为它不能在创建时依赖它自己：
 

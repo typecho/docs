@@ -65,7 +65,7 @@ public function pass(string $group, bool $return = false): bool
 | `plugins.php`、`options-plugin.php`、`themes.php`、`theme-editor.php`、`options-theme.php`、`backup.php`、`upgrade.php`、`manage-users.php`、`user.php`、`options-general.php`、`options-discussion.php`、`options-reading.php`、`options-permalink.php` | `administrator` |
 | `extending.php?panel=…`（插件面板） | 插件在 `Helper::addPanel()` 中给出的 `$level` |
 
-角色不够的用户访问这些页面得到 403，未登录的访客被跳转到登录页。访问者（`visitor`）可以登录，但连 `index.php` 也会得到 403。
+角色不够的用户访问这些页面得到 403，未登录的访客被跳转到登录页。访问者（`visitor`）虽然可以登录，但即使访问后台首页 `index.php` 也会得到 403。
 
 菜单中不显示自己无权访问的项目，这同样由 `pass($角色, true)` 判断。页面内部还有更细的判断，例如 `manage-posts.php` 只有编辑及以上角色才显示“所有文章”切换，`write-post.php` 只有编辑及以上才能选择“公开度”。
 
