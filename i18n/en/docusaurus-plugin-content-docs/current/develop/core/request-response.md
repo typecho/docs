@@ -2,7 +2,7 @@
 title: Request, Response and Common Utilities
 sidebar_position: 6
 translation: machine
-source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Request, Response and Common Utilities
@@ -37,7 +37,7 @@ Looks for the first value that exists, in this order:
 So when names clash, GET takes precedence over POST. Two further rules:
 
 - An empty string is treated as non-existent, and `$default` is returned;
-- When one of the value and `$default` is an array and the other is not, `$default` is returned: if the default is not an array, a submitted array (`a[]=1`) is ignored; if the default is an array, a submitted string is ignored. This prevents an array from being used as a string. Only array versus non-array is checked; the value is not converted to or validated against the default's type: `get('page', 1)` reads the string `"2"`. When you need an integer, use `filter('int')->get('page', 1)`, and still check the range yourself.
+- When the value is an array and `$default` is not, or the other way round, `$default` is returned: if the default is not an array, a submitted array (`a[]=1`) is ignored; if the default is an array, a submitted string is ignored. This prevents an array from being used as a string. Only array versus non-array is checked; the value is not converted to or validated against the default's type: `get('page', 1)` reads the string `"2"`. When you need an integer, use `filter('int')->get('page', 1)`, and still check the range yourself.
 
 The third argument returns, by reference, whether the parameter exists:
 

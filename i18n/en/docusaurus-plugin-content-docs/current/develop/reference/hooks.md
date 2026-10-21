@@ -2,7 +2,7 @@
 title: Hook Reference
 sidebar_position: 1
 translation: machine
-source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Hook Reference
@@ -21,7 +21,7 @@ All plugin hooks in Typecho 1.3.0. For how to register callbacks and what the th
 - **Arguments**: the expressions passed to the hook at the call site, copied verbatim from the source. `$this` is the object that triggers the hook, whose type is the class under the section heading; in file handles, `$post` and `$page` are the post or page being edited.
 - **Location**: `file:line`, with line numbers matching Typecho 1.3.0. When the same hook is triggered in several places, all of them are listed.
 
-For hooks triggered by `self::pluginHandle()`, the handle is the class the object actually belongs to. The tables list them under the class where they appear in the source; `getDefaultFieldItems` and `isFieldReadOnly`, which `Widget\Contents\EditTrait` triggers with `static::pluginHandle()`, are listed under `Widget\Contents\Post\Edit` and `Widget\Contents\Page\Edit`, which use the trait.
+For hooks triggered by `self::pluginHandle()`, the handle is the class the object actually belongs to. The tables list them under the class where they appear in the source. `Widget\Contents\EditTrait` triggers `getDefaultFieldItems` and `isFieldReadOnly` with `static::pluginHandle()`; these two hooks are listed under the classes that use the trait, `Widget\Contents\Post\Edit` and `Widget\Contents\Page\Edit`.
 
 ## Return values {#return-values}
 
@@ -37,7 +37,7 @@ Callbacks for the following hooks must return the stated value; otherwise login 
 | `Widget_Upload` | `deleteHandle` | `bool`, whether the deletion succeeded |
 | `Widget_Upload` | `uploadHandle` / `modifyHandle` | An array with the same structure as the default implementation's (`name`, `path`, `size`, `type`, `mime`), or `false` on failure |
 | `Widget_Feed` | `feedItem` / `commentFeedItem` | `string` or `null`. Typecho still generates the item as usual; the returned string is inserted as raw XML at the end of that item |
-| `Widget_Abstract_Contents`, `Widget_Contents_Post_Edit`, `Widget_Contents_Page_Edit` | `isFieldReadOnly` | `bool`. Returning `true` skips this custom field, returning `false` handles it as usual; registering a callback that does not return `true` does not make the field read-only |
+| `Widget_Abstract_Contents`, `Widget_Contents_Post_Edit`, `Widget_Contents_Page_Edit` | `isFieldReadOnly` | `bool`. Return `true` to skip this custom field, or `false` to handle it as usual. Registering a callback makes the field read-only only if the callback returns `true` |
 
 Every `filter` hook must return the processed value; they are not listed one by one.
 

@@ -2,7 +2,7 @@
 title: $this->options
 sidebar_position: 5
 translation: machine
-source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # $this->options
@@ -35,15 +35,15 @@ Calling a method with the name of any option outputs its value directly (this is
 |---|---|
 | `adminStaticUrl(string $type, ?string $file = null, bool $return = false)` | Get or output the path of an admin static file |
 | `adminUrl(?string $path = null, bool $return = false)` | Output the admin path |
-| `commentsHTMLTagAllowed()` | Output, encoded, the HTML tags allowed in comments |
-| `execute()` | Execute function |
-| `index(?string $path = null)` | Output the resolved URL |
+| `commentsHTMLTagAllowed()` | Output the HTML tags allowed in comments, HTML-encoded |
+| `execute()` | Execute the widget |
+| `index(?string $path = null)` | Output a URL for linking to pages (see below) |
 | `personalPlugin($pluginName)` | Get a plugin's personal settings |
 | `plugin($pluginName)` | Get a plugin's settings |
 | `pluginDir(?string $plugin = null): string` | Get the plugin directory |
 | `pluginUrl(?string $path = null)` | Output the plugin path |
 | `siteUrl(?string $path = null)` | Output the site path |
-| `themeFile(string $theme, string $file = ''): string` | Get a theme file |
+| `themeFile(string $theme, string $file = ''): string` | Get the absolute path of a theme file |
 | `themeUrl(?string $path = null, ?string $theme = null)` | Output the theme path |
 
 - `siteUrl($path)`, `index($path)`, `themeUrl($path)` and `pluginUrl($path)` **output** the assembled URL directly; `themeUrl($path, $theme)` with the second argument instead **returns** the URL of a file in another theme's directory.
@@ -57,38 +57,38 @@ Calling a method with the name of any option outputs its value directly (this is
 | Property | Type | Description |
 |---|---|---|
 | `actionTable` | `array` | Registered actions (added by plugins via `Helper::addAction()`) |
-| `adminUrl` | `string` | Get the admin path |
+| `adminUrl` | `string` | Admin path |
 | `allowedAttachmentTypes` | `array` | File types allowed for upload |
-| `commentsFeedAtomUrl` | `string` | Comments Atom 1.0 feed |
-| `commentsFeedRssUrl` | `string` | Comments RSS 1.0 feed |
-| `commentsFeedUrl` | `string` | Comments RSS 2.0 feed |
-| `contentType` | `string` | Get the content type |
-| `feedAtomUrl` | `string` | Atom 1.0 |
-| `feedRssUrl` | `string` | RSS 1.0 |
-| `feedUrl` | `string` | RSS 2.0 |
-| `gmtTime` | `int` | Get the GMT time |
-| `index` | `string` | Get the prefix for resolved paths |
-| `loginAction` | `string` | Get the login submit URL |
-| `loginUrl` | `string` | Get the login URL |
-| `logoutUrl` | `string` | Get the logout URL |
-| `missingTheme` | `?string` | Dynamically determine the theme directory |
-| `originalSiteUrl` | `string` | The site URL actually in use: the site URL saved in the settings; the constant `__TYPECHO_SITE_URL__` when it is defined, or `rootUrl` when `__TYPECHO_DYNAMIC_SITE_URL__` is enabled. `siteUrl` is normalized from it, with `http://` changed to `https://` on HTTPS requests |
+| `commentsFeedAtomUrl` | `string` | Atom 1.0 feed URL for comments |
+| `commentsFeedRssUrl` | `string` | RSS 1.0 feed URL for comments |
+| `commentsFeedUrl` | `string` | RSS 2.0 feed URL for comments |
+| `contentType` | `string` | Content type |
+| `feedAtomUrl` | `string` | Atom 1.0 feed URL |
+| `feedRssUrl` | `string` | RSS 1.0 feed URL |
+| `feedUrl` | `string` | RSS 2.0 feed URL |
+| `gmtTime` | `int` | GMT time |
+| `index` | `string` | URL prefix for links to pages (includes `index.php` when URL rewriting is off) |
+| `loginAction` | `string` | Submit URL of the login form |
+| `loginUrl` | `string` | Login URL |
+| `logoutUrl` | `string` | Logout URL |
+| `missingTheme` | `?string` | The configured theme directory name if that directory does not exist; otherwise `null` |
+| `originalSiteUrl` | `string` | The site URL actually in use: by default the site URL saved in the settings; the constant `__TYPECHO_SITE_URL__` when it is defined, or `rootUrl` when `__TYPECHO_DYNAMIC_SITE_URL__` is enabled. `siteUrl` is normalized from it, with `http://` changed to `https://` on HTTPS requests |
 | `panelTable` | `array` | Admin panels registered by plugins |
 | `pluginDir` | `string` | Absolute path of the plugin directory |
 | `plugins` | `array` | Enabled plugins and the hooks they registered |
-| `pluginUrl` | `string` | Get the plugin path |
-| `profileUrl` | `string` | Get the profile URL |
+| `pluginUrl` | `string` | Plugin path |
+| `profileUrl` | `string` | Profile URL |
 | `registerAction` | `string` | Submit URL of the registration form, with a security token |
-| `registerUrl` | `string` | Get the registration URL |
-| `rootUrl` | `string` | Dynamically get the root directory |
+| `registerUrl` | `string` | Registration URL |
+| `rootUrl` | `string` | Site root URL: the constant `__TYPECHO_ROOT_URL__` if it is defined, otherwise derived from the current request |
 | `routingTable` | `array` | The parsed routing table |
-| `serverTimezone` | `int` | Get the server time zone |
+| `serverTimezone` | `int` | Server time zone |
 | `siteDomain` | `string` | Host name in the site URL |
 | `siteUrl` | `string` | Site URL (with a trailing `/`) |
 | `software` | `string` | Software name |
 | `theme` | `string` | Directory name of the current theme; `default` if the directory does not exist |
-| `themeUrl` | `string` | Get the theme path |
-| `time` | `int` | Get the time |
+| `themeUrl` | `string` | Path of the current theme |
+| `time` | `int` | Current time |
 | `version` | `string` | Software version |
 | `xmlRpcUrl` | `string` | XML-RPC API URL |
 

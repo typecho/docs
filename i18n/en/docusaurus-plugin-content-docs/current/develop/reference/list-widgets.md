@@ -2,7 +2,7 @@
 title: List Widgets
 sidebar_position: 4
 translation: machine
-source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # List Widgets
@@ -75,7 +75,7 @@ Do not use `\Widget\Archive` for this: it changes the meaning of `type=index` ac
 | `getRow(int $id): ?array` | Get one row of data (an array) by ID |
 | `getRows(array $ids, int $ignore = 0): array` | Get multiple nodes |
 | `hasParent($id, $parentId): bool` | Whether the node has a given ancestor node |
-| `levelsAlt(...$args)` | Output based on the depth remainder |
+| `levelsAlt(...$args)` | Outputs one of the arguments in rotation, by nesting level |
 | `listCategories($categoryOptions = null)` | Output a hierarchical category list; options below |
 
 | Property | Type | Description |
@@ -102,7 +102,7 @@ There is also `levels` (the depth, `0` at the top level). `getAllChildIds()`, `g
 | `getRow(int $id): ?array` | Get one row of data (an array) by ID |
 | `getRows(array $ids, int $ignore = 0): array` | Get multiple nodes |
 | `hasParent($id, $parentId): bool` | Whether the node has a given ancestor node |
-| `levelsAlt(...$args)` | Output based on the depth remainder |
+| `levelsAlt(...$args)` | Outputs one of the arguments in rotation, by nesting level |
 | `listPages($pageOptions = null)` | Output a hierarchical page list; options below |
 
 | Property | Type | Description |
@@ -169,9 +169,9 @@ Changing only `type=year` and keeping `format=Y-m` still groups by month, and th
 | Method | Description |
 |---|---|
 | `execute()` | Entry function |
-| `split(...$args)` | Output a string according to the split count |
+| `split(...$args)` | Outputs the threshold matching the tag's post count (see below) |
 
-The arguments of `split(...$args)` are integer thresholds. It outputs the first number greater than the tag's post count, or `0` if none is greater; for usage see [Tag cloud](../theme/recipes/tag-cloud.md). `sort` accepts field names such as `count`, `name` and `mid`.
+The arguments of `split(...$args)` are integer thresholds. It outputs the first number greater than the tag's post count, or `0` if none is greater. For usage, see [Tag cloud](../theme/recipes/tag-cloud.md). `sort` accepts field names such as `count`, `name` and `mid`.
 
 ## Stat
 
@@ -179,29 +179,29 @@ The arguments of `split(...$args)` are integer thresholds. It outputs the first 
 
 | Property | Type | Description |
 |---|---|---|
-| `categoriesNum` | `int` | Get the number of categories |
-| `currentCommentsNum` | `int` | Get the number of comments on the current post |
-| `currentDraftPostsNum` | `int` | Get the number of draft posts of the current user |
-| `currentPublishedCommentsNum` | `int` | Get the number of displayed comments on the current post |
-| `currentPublishedPostsNum` | `int` | Get the number of published posts of the current user |
-| `currentSpamCommentsNum` | `int` | Get the number of spam comments on the current post |
-| `currentWaitingCommentsNum` | `int` | Get the number of comments awaiting moderation on the current post |
-| `currentWaitingPostsNum` | `int` | Get the number of posts awaiting review of the current user |
-| `draftPagesNum` | `int` | Get the number of draft pages |
-| `draftPostsNum` | `int` | Get the number of draft posts |
-| `myDraftPostsNum` | `int` | Get the number of draft posts of the current user |
-| `myPublishedCommentsNum` | `int` | Get the number of displayed comments of the current user |
-| `myPublishedPostsNum` | `int` | Get the number of published posts of the current user |
-| `mySpamCommentsNum` | `int` | Get the number of spam comments of the current user |
-| `myWaitingCommentsNum` | `int` | Get the number of comments awaiting moderation of the current user |
-| `myWaitingPostsNum` | `int` | Get the number of posts awaiting review of the current user |
-| `publishedCommentsNum` | `int` | Get the number of currently displayed comments |
-| `publishedPagesNum` | `int` | Get the number of published pages |
-| `publishedPostsNum` | `int` | Get the number of published posts |
-| `spamCommentsNum` | `int` | Get the current number of spam comments |
-| `tagsNum` | `int` | Get the number of tags |
-| `waitingCommentsNum` | `int` | Get the current number of comments awaiting moderation |
-| `waitingPostsNum` | `int` | Get the number of posts awaiting review |
+| `categoriesNum` | `int` | Number of categories |
+| `currentCommentsNum` | `int` | Number of comments on the current post |
+| `currentDraftPostsNum` | `int` | Number of draft posts by the current user |
+| `currentPublishedCommentsNum` | `int` | Number of displayed comments on the current post |
+| `currentPublishedPostsNum` | `int` | Number of published posts by the current user |
+| `currentSpamCommentsNum` | `int` | Number of spam comments on the current post |
+| `currentWaitingCommentsNum` | `int` | Number of comments awaiting moderation on the current post |
+| `currentWaitingPostsNum` | `int` | Number of posts by the current user awaiting review |
+| `draftPagesNum` | `int` | Number of draft pages |
+| `draftPostsNum` | `int` | Number of draft posts |
+| `myDraftPostsNum` | `int` | Number of draft posts by the current user |
+| `myPublishedCommentsNum` | `int` | Number of displayed comments by the current user |
+| `myPublishedPostsNum` | `int` | Number of published posts by the current user |
+| `mySpamCommentsNum` | `int` | Number of spam comments by the current user |
+| `myWaitingCommentsNum` | `int` | Number of comments by the current user awaiting moderation |
+| `myWaitingPostsNum` | `int` | Number of posts by the current user awaiting review |
+| `publishedCommentsNum` | `int` | Number of displayed comments |
+| `publishedPagesNum` | `int` | Number of published pages |
+| `publishedPostsNum` | `int` | Number of published posts |
+| `spamCommentsNum` | `int` | Number of spam comments |
+| `tagsNum` | `int` | Number of tags |
+| `waitingCommentsNum` | `int` | Number of comments awaiting moderation |
+| `waitingPostsNum` | `int` | Number of posts awaiting review |
 
 - The `my…` series counts for the currently logged-in user;
 - The `current…Posts` series counts for the user given by the request parameter `uid`, and the `current…Comments` series counts for the content given by the request parameter `cid`. You pass these parameters as the second argument of `alloc()`: `\Widget\Stat::alloc(null, 'cid=3')`.

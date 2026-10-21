@@ -54,7 +54,7 @@ The repository has a `dev` branch. The workflow `.github/workflows/Typecho-hotfi
 - When the PR **is merged** and its source branch name starts with `fix/`, that branch is also merged into `dev`;
 - For a PR whose source branch name does not start with `fix/`, its source branch is merged into `dev` when the PR gets the `merge-to-dev` label.
 
-The merge is done by branch name in the `typecho/typecho` repository. This way fixes on `master` are carried over to `dev` without being committed again by hand.
+The merge is done by branch name in the `typecho/typecho` repository. This way fixes on `master` reach `dev` without having to be committed again manually.
 
 ## Release process {#release}
 

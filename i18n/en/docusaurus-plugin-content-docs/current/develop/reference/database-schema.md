@@ -2,7 +2,7 @@
 title: Database Schema
 sidebar_position: 10
 translation: machine
-source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Database Schema
@@ -34,8 +34,8 @@ The "Type" column shows the MySQL type. In PostgreSQL and SQLite, integer column
 | `order` | `int(10) unsigned` | `0` | Sort order of pages |
 | `authorId` | `int(10) unsigned` | `0` | The author's `users.uid` |
 | `template` | `varchar(32)` | `NULL` | File name of the custom template used by a page |
-| `type` | `varchar(16)` | `'post'` | Content type, see the table below |
-| `status` | `varchar(16)` | `'publish'` | Status, see the table below |
+| `type` | `varchar(16)` | `'post'` | Content type (see the table below) |
+| `status` | `varchar(16)` | `'publish'` | Status (see the table below) |
 | `password` | `varchar(32)` | `NULL` | Access password, stored in plain text; empty means no password |
 | `commentsNum` | `int(10) unsigned` | `0` | Number of approved comments (including trackbacks) |
 | `allowComment` | `char(1)` | `'0'` | Allow comments, `'1'` / `'0'` |
@@ -76,14 +76,14 @@ Indexes: unique index on `slug`, regular index on `created`.
 | `created` | `int(10) unsigned` | `0` | Submission time, Unix timestamp |
 | `author` | `varchar(150)` | `NULL` | Commenter's name; the source site name for trackbacks |
 | `authorId` | `int(10) unsigned` | `0` | The `users.uid` for comments by logged-in users, `0` for visitors |
-| `ownerId` | `int(10) unsigned` | `0` | `users.uid` of the author of the commented content |
+| `ownerId` | `int(10) unsigned` | `0` | `users.uid` of the author of the content being commented on |
 | `mail` | `varchar(150)` | `NULL` | Email |
 | `url` | `varchar(255)` | `NULL` | Website; the source URL for trackbacks |
 | `ip` | `varchar(64)` | `NULL` | IP address |
 | `agent` | `varchar(511)` | `NULL` | User-Agent |
 | `text` | `text` | | Comment content |
-| `type` | `varchar(16)` | `'comment'` | Type, see the table below |
-| `status` | `varchar(16)` | `'approved'` | Status, see the table below |
+| `type` | `varchar(16)` | `'comment'` | Type (see the table below) |
+| `status` | `varchar(16)` | `'approved'` | Status (see the table below) |
 | `parent` | `int(10) unsigned` | `0` | `coid` of the comment being replied to, `0` for a direct comment |
 
 Indexes: `cid`, `created`.
@@ -155,8 +155,8 @@ Primary key (a unique index in SQLite): `(cid, name)`; indexes: `int_value`, `fl
 | `screenName` | `varchar(32)` | `NULL` | Nickname, used for display |
 | `created` | `int(10) unsigned` | `0` | Registration time |
 | `activated` | `int(10) unsigned` | `0` | Last activity time, updated on every request of a logged-in user |
-| `logged` | `int(10) unsigned` | `0` | Set to the current value of `activated` on each login, i.e. the last activity time during the previous login session |
-| `group` | `varchar(16)` | `'visitor'` | User group: `administrator`, `editor`, `contributor`, `subscriber`, `visitor`, see the [permission table](../../guide/content/users.md#permission-table) |
+| `logged` | `int(10) unsigned` | `0` | On each login, set to the value `activated` had before the login, i.e. the last activity time during the previous login session |
+| `group` | `varchar(16)` | `'visitor'` | User group: `administrator`, `editor`, `contributor`, `subscriber`, `visitor` (see the [permission table](../../guide/content/users.md#permission-table)) |
 | `authCode` | `varchar(64)` | `NULL` | Login credential, regenerated on every login |
 
 Unique indexes: `name`, `mail`.
@@ -175,9 +175,9 @@ Besides the site-wide options in the [option name list](./option-names.md), the 
 
 | `name` | `user` | Contents |
 |---|---|---|
-| `theme:<directory>` | `0` | Theme settings, see [Theme Settings](../theme/theme-options.md) |
-| `plugin:<plugin name>` | `0` | Plugin settings, see [Plugin Configuration](../plugin/settings.md) |
-| `_plugin:<plugin name>` | `0` or user ID | Default value of a plugin's personal settings / a specific user's value |
+| `theme:<directory>` | `0` | Theme settings (see [Theme Settings](../theme/theme-options.md)) |
+| `plugin:<plugin name>` | `0` | Plugin settings (see [Plugin Configuration](../plugin/settings.md)) |
+| `_plugin:<plugin name>` | `0` or user ID | Plugin personal settings: the default values when `user` is `0`, or that user's values when `user` is a user ID |
 | Personal setting option names (such as `autoSave`, `markdown`) | User ID | Values a user saves in "Profile", overriding the site-wide option of the same name |
 
 `name` is `varchar(32)`, so longer option names cannot be saved in MySQL and PostgreSQL. The `_plugin:` prefix takes 8 characters, so keep plugin names to 24 characters or fewer.

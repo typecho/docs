@@ -2,7 +2,7 @@
 title: Writing Upgrade Scripts
 sidebar_position: 7
 translation: machine
-source_commit: 8e3ee54cc8774bccb3ee80aae02ff77229f90176
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Writing Upgrade Scripts
@@ -71,7 +71,7 @@ Rules:
 - **Declare methods in ascending version order.** The execution order is the declaration order: if `v9_9_9` is written before `v9_0_0`, `v9_9_9` runs first, then `v9_0_0` still runs (it is higher than the version before the upgrade), and the `$options->version` it sees is already `9.9.9`;
 - Do not put any other methods in `Utils\Upgrade`, including private helper methods. Reflection lists every method, and a method whose name does not match `v<version>` causes a PHP warning (`Undefined array key 1`). Put helper code in another class;
 - A method runs whenever its version is higher than the version in the database, regardless of `Common::VERSION`. Do not add methods for the next version ahead of time;
-- Write table names as `table.<name>`; the adapter replaces them with the real, prefixed table names. To stay compatible with all three databases, MySQL, PostgreSQL and SQLite, build queries with `Db\Query` as far as possible and do not write SQL specific to one database; see [Database operations](../plugin/database.md).
+- Write table names as `table.<name>`; the adapter replaces them with the real, prefixed table names. To stay compatible with all three databases, MySQL, PostgreSQL and SQLite, build queries with `Db\Query` as far as possible and do not write SQL specific to one database (see [Database operations](../plugin/database.md)).
 
 ## Example: v1_3_0
 
@@ -149,7 +149,7 @@ Step 4 is the model for batch migration. When you write similar code:
 - **Page by primary key, not by `offset`.** Page by "primary key greater than the largest value of the previous batch, in ascending primary key order, take N rows". Data changes during migration, and paging with `offset` can skip rows or process them twice;
 - **Use "fewer rows fetched than the batch size" as the end condition**, as in `while ($rowCount === 100)`;
 - **Check for every row whether it has already been migrated**, as the example above only processes values that start with `a:`. That way running it again does no harm;
-- **There is no transaction.** The upgrade program does not wrap anything in a transaction. If a method throws an exception partway through, the statements already executed are not rolled back, and `generator` stays at the last successful version. When the administrator clicks "Complete upgrade" again, the whole method runs again from the start. For example, if a method inserts a row and then throws an exception, the second run fails because of a primary key or unique constraint conflict. So every step must be safe to repeat: check for existence before inserting, and give update statements a condition that excludes rows already processed;
+- **There are no transactions.** The upgrade program does not use transactions. If a method throws an exception partway through, the statements already executed are not rolled back, and `generator` stays at the last successful version. When the administrator clicks "Complete upgrade" again, the whole method runs again from the start. For example, if a method inserts a row and then throws an exception, the second run fails because of a primary key or unique constraint conflict. So every step must be safe to repeat: check for existence before inserting, and give update statements a condition that excludes rows already processed;
 - **The whole upgrade happens in a single HTTP request** and is subject to PHP's `max_execution_time` and memory limits. Reading in batches keeps memory under control but does not shorten the total time. For migrations of very large data sets, keep the number of queries per row as low as possible;
 - **Throw an exception on failure**, so that the upgrade stops and the message is shown to the administrator. Do not swallow the exception and carry on, or `generator` will be updated to the new version and the migration will never run again. The upgrade program only catches `Exception`; a PHP `Error` (such as `TypeError`) is shown directly as an error page.
 

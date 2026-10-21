@@ -2,7 +2,7 @@
 title: Request Lifecycle
 sidebar_position: 2
 translation: machine
-source_commit: 1d967a0c62b5a260a8146b63efb3c9323aa91cc3
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Request Lifecycle
@@ -114,7 +114,7 @@ Page content is `echo`ed into the output buffer while the code runs. When the sc
 Each admin page is a standalone PHP file under `admin/`, executed directly by the web server; the request never passes through `index.php`, so:
 
 - There is no route matching, and `index.php:begin` and `index.php:end` are not triggered;
-- An admin page does `include 'common.php'` on its first line, and `admin/common.php` performs the initialization.
+- An admin page includes `common.php` on its first line, and `admin/common.php` performs the initialization.
 
 The steps of `admin/common.php`:
 

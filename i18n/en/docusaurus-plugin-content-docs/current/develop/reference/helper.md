@@ -2,7 +2,7 @@
 title: Utils\Helper
 sidebar_position: 8
 translation: machine
-source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
+source_commit: 342fdf14c307f4efef7d31add7e5c261f14c71b4
 ---
 
 # Utils\Helper
@@ -13,7 +13,7 @@ source_commit: c4fe96854858d8912390c7dfe6c2eab21c87ac5c
 
 | Method | Description |
 |---|---|
-| `addRoute(string $name, string $url, string $widget, ?string $action = null, ?string $after = null): int` | Add a route. `$name` is the route name; `$url` is the path rule, for placeholders see [Default routes and actions](./routes-actions.md#placeholders); `$widget` is the class that handles the request; `$action` is the method called after the object is created; `$after` is the route to insert after; if omitted or not found, the route goes last. The route name must not duplicate an existing route |
+| `addRoute(string $name, string $url, string $widget, ?string $action = null, ?string $after = null): int` | Add a route. `$name`: the route name; `$url`: the path rule (for placeholders, see [Default routes and actions](./routes-actions.md#placeholders)); `$widget`: the class that handles the request; `$action`: the method called after the object is created; `$after`: the route to insert after (if omitted or not found, the route goes last). The route name must not duplicate an existing route |
 | `removeRoute(string $name): int` | Remove a route |
 
 Both return the number of rows affected when updating the `routingTable` option. For usage, see [Routes, actions and admin panels](../plugin/routes-actions.md#routes).
@@ -22,7 +22,7 @@ Both return the number of rows affected when updating the `routingTable` option.
 
 | Method | Description |
 |---|---|
-| `addAction(string $actionName, string $widgetName): int` | Make `/action/$actionName` handled by `$widgetName`; this class must implement `\Widget\ActionInterface`. If the name matches a core action, it replaces the core action |
+| `addAction(string $actionName, string $widgetName): int` | Route `/action/$actionName` to `$widgetName`, which must implement `\Widget\ActionInterface`. If the name matches a core action, it replaces the core action |
 | `removeAction(string $actionName): int` | Remove an action |
 
 The return value is the number of rows affected when updating the `actionTable` option.
@@ -33,7 +33,7 @@ The return value is the number of rows affected when updating the `actionTable` 
 |---|---|
 | `addMenu(string $menuName): int` | Add a top-level menu and return its menu index (starting at `10`), for use with `addPanel()` |
 | `removeMenu(string $menuName): int` | Remove a top-level menu and return its former menu index. Returns `10` if the menu does not exist |
-| `addPanel(int $index, string $fileName, string $title, string $subTitle, string $level, bool $hidden = false, string $addLink = ''): int` | Add a panel under the menu with index `$index` and return its position in that menu. `$index`: `1` Dashboard, `2` Write, `3` Manage, `4` Settings, or the return value of `addMenu()`; `$fileName`: `<plugin directory name>/<file name>`; `$title`: menu text; `$subTitle`: page title; `$level`: minimum user group; `$hidden`: do not show in the menu; `$addLink`: link of the "Add" button after the title |
+| `addPanel(int $index, string $fileName, string $title, string $subTitle, string $level, bool $hidden = false, string $addLink = ''): int` | Add a panel under the menu with index `$index` and return its position in that menu. `$index`: `1` Console, `2` Write, `3` Manage, `4` Settings, or the return value of `addMenu()`; `$fileName`: `<plugin directory name>/<file name>`; `$title`: menu text; `$subTitle`: page title; `$level`: minimum user group; `$hidden`: do not show in the menu; `$addLink`: link of the "Add" button after the title |
 | `removePanel(int $index, string $fileName): int` | Remove a panel and return its former position; returns `0` if not found |
 | `url(string $fileName): string` | Full URL of the panel, i.e. `<admin URL>/extending.php?panel=$fileName` |
 
@@ -52,7 +52,7 @@ For usage, see [Routes, actions and admin panels](../plugin/routes-actions.md#ad
 
 | Method | Description |
 |---|---|
-| `requestService($method, ...$params)` | Schedule an async task: after the current request ends with a redirect or direct output, Typecho requests its own `/action/service`, and in that request triggers the hook named `$method` on `Widget_Service` with `$params` as arguments (JSON-encoded). See [HTTP requests and async tasks](../plugin/http-async.md) |
+| `requestService($method, ...$params)` | Schedule an async task. After the current request ends with a redirect or direct output, Typecho sends a request to its own `/action/service`; that request triggers the hook named `$method` on `Widget_Service` and passes it `$params` (JSON-encoded). See [HTTP requests and async tasks](../plugin/http-async.md) |
 
 ## Other
 

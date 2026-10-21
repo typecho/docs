@@ -84,7 +84,7 @@ The "Type" column in the tables describes what the value means; in the database 
 | `attachmentTypes` | string | [General](../../guide/settings/general.md) | `@image@` | File types allowed for upload, `@image@` and so on joined with commas |
 | `secret` | string | none | random | A 32-character key generated randomly at install time, used for security tokens; do not disclose it |
 | `installed` | 0/1 | none | `1` | Installation-complete flag, `1` after installation |
-| `allowXmlRpc` | 0/1/2 | [General](../../guide/settings/general.md) | `2` | XML-RPC interface: off / pingback only off / on |
+| `allowXmlRpc` | 0/1/2 | [General](../../guide/settings/general.md) | `2` | XML-RPC interface: `0` off, `1` on with only Pingback disabled, `2` on |
 
 ## Personal settings
 
