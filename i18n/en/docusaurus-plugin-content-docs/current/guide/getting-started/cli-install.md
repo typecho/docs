@@ -2,7 +2,7 @@
 title: Command-line and unattended installation
 sidebar_position: 3
 translation: machine
-source_commit: c2e75722c48df83f37f164719b50ae59d28e802d
+source_commit: f5c2b6b95d1f6b27020d7e5b5efa396c4cb4f2be
 ---
 
 # Command-line and unattended installation
