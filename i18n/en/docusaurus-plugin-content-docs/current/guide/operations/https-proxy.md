@@ -2,7 +2,7 @@
 title: HTTPS, Reverse Proxies and CDNs
 sidebar_position: 2
 translation: machine
-source_commit: 5cf852b2f6ae6c6a96b12a34d8bd77f83e99bfa7
+source_commit: 1565400125cd1045b0ce41f6ea18336ffafffd35
 ---
 
 # HTTPS, Reverse Proxies and CDNs
